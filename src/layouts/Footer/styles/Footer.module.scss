@@ -1,0 +1,255 @@
+.f1 {
+  padding: 40px;
+  padding-bottom: 20px;
+  background-color: rgba(30, 30, 30, 1);
+  color: white;
+  overflow-x: hidden;
+}
+
+.logodiv {
+  display: flex;
+  align-items: center;
+}
+
+.fed {
+  // font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  margin-left: 20px;
+  font-size: 30px;
+  line-height: 36px;
+  text-shadow: 1px 0px 0.496831px #f45725;
+}
+
+.flexdiv {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 35px;
+}
+
+.footerleft {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.footerleftlink {
+  padding-top: 0.6rem;
+  color: #afafaf;
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 24px;
+}
+
+.row1,
+.row2 {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+}
+
+.row1 h4,
+.row2 h4,
+.footerright h4 {
+  margin-bottom: 10px;
+  color: #ffffff;
+  // font-family: "Oswald", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+
+.icondiv {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  color: #afafaf;
+}
+
+.icondiv2 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+  color: #afafaf;
+}
+
+.link1 {
+  color: #afafaf;
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  margin-right: 5px;
+  margin-bottom: 3px;
+  margin-top: 10px;
+  font-size: 40px;
+}
+
+.link1 :hover{
+  color: #FF8A00;
+  transition: 0.3s ease-in-out;
+}
+
+.Linkstyles:hover{
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+  transition: 0.3s ease-in-out;
+}
+
+.footerleftlink:hover{
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+  transition: 0.3s ease-in-out;
+}
+
+.bottomdiv {
+  margin-top: 20px;
+  padding: 10px 0;
+  border-top: 1px solid #5c5c5a;
+}
+
+.bottomleft {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.terms_and_policies {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+} 
+
+.terms_and_policies a{
+  text-decoration: none;
+  color: #ffffff;
+}
+
+
+.tap1Div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  
+}
+.copyrightPTag {
+  text-align: center;
+}
+.dotDiv{
+  background-color: #ffffff;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.omegaLink {
+  transition: color 0.3s ease;
+}
+
+.omegaLink:hover {
+  color: #38ccff; // Change this to the desired hover color
+}
+
+.omegaSocialLink {
+  transition: color 0.3s ease;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  margin-top: 10px;
+  font-size: 40px;
+}
+
+.omegaSocialLink:hover {
+  &.link1 :hover{
+    color:#38ccff;
+  }
+  color: #38ccff;// Change this to the desired hover color
+}
+
+@media screen and (max-width: 768px) {
+  .flexdiv {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footerleft{
+    width: 100%;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logodiv {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .icon {
+    font-size: 30px;
+    flex-direction: column;
+    
+  }
+
+
+  .fed {
+    margin-left: 0;
+    font-size: 25px;
+  }
+
+  .footerleft {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: left;
+    width: 100%;
+  }
+
+  .row1, .row2 {
+    margin-top: 10px;
+  }
+
+  .icondiv2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 88vw;
+  }
+
+  .socialh4{
+    visibility: hidden;
+  }
+  .bottomdiv{
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  .icondiv2{
+    margin-left: -0.8rem;
+  }
+}
+
+

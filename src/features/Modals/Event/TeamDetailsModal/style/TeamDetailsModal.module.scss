@@ -1,0 +1,373 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background: rgb(28, 28, 28);
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 15px;
+  border-bottom: 1px solid #000000;
+  background: linear-gradient(135deg, #f97507 0%, #ff6b35 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  padding: 8px ;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.modalContent {
+  padding: 24px;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+
+  p {
+    margin-top: 16px;
+    color: #6b7280;
+    font-size: 1rem;
+  }
+}
+
+.eventInfo {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: none;
+  border-radius: 8px;
+
+  h3 {
+    margin: 0;
+    background: linear-gradient(
+    rgba(244, 43, 3, 0.84) 0%,
+    rgba(255, 190, 11, 0.84) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.teamInfo {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #232323;
+  border-radius: 8px;
+  border: 1px solid #dd5c00;
+}
+
+.teamHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0;
+    color: #c8c8c8;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+}
+
+.teamDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.teamDetailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgb(29, 29, 29);
+  border-radius: 6px;
+  border: 1px solid #585858;
+
+  .label {
+    font-weight: 600;
+    color: #777676;
+    min-width: 100px;
+  }
+
+  .value {
+    color: #cc5c06;
+    font-weight: 500;
+  }
+}
+
+.teamCodeContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teamCode {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #f97507;
+  background: #474747;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #da7603;
+  font-size: 0.875rem;
+}
+
+.copyButton {
+  background: #f97507;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #ea580c;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.membersSection {
+  margin-bottom: 24px;
+}
+
+.membersHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0;
+    color: #d3d1d1;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+}
+
+.membersList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.memberCard {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #232323;
+  border-radius: 8px;
+  border: 1px solid #e27100;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.memberAvatar {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #f97507;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f97507 0%, #ff6b35 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.memberInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.memberName {
+  margin: 0 0 8px 0;
+  color: #afafaf;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.memberDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.memberDetail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.875rem;
+
+  svg {
+    color: #9ca3af;
+    flex-shrink: 0;
+  }
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.modalFooter {
+  padding: 20px 24px;
+  border-top: 1px solid #202020;
+  display: flex;
+  justify-content: flex-end;
+  background: #131313;
+  border-radius: 0 0 12px 12px;
+}
+
+.closeBtn {
+  background: #d06202;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #be4f01;
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .modal {
+    max-width: 95vw;
+    max-height: 65vh;
+    margin: 10px;
+  }
+
+  .modalContent {
+    padding: 16px;
+  }
+
+  .modalHeader {
+    padding: 0px 20px;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .teamDetailItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    .label {
+      min-width: auto;
+    }
+  }
+
+  .memberCard {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .memberAvatar {
+    align-self: center;
+  }
+
+  .memberDetails {
+    align-items: center;
+  }
+}

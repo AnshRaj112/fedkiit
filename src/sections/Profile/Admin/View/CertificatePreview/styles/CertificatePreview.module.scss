@@ -1,0 +1,120 @@
+
+// .container {
+//   display: flex;
+//   flex-direction: column;
+//   width: 100%;
+//   height: 100%;
+//   padding: 20px;
+//   max-width: 800px;
+//   margin: 0 auto;
+//   border: 1px solid #ccc;
+//   border-radius: 10px;
+
+//   .preview {
+//     width: 100%;
+//     height: 300px;
+//     border: 1px solid #ccc;
+//     border-radius: 5px;
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     background-size: contain;
+//     background-repeat: no-repeat;
+//     background-position: center;
+
+//     &.loading {
+//       text-align: center;
+
+//       p {
+//         font-size: 16px;
+//       }
+//     }
+
+//     &.empty {
+//       text-align: center;
+
+//       .createButton {
+//         margin-top: 10px;
+//         padding: 10px 20px;
+//         border-radius: 5px;
+//       }
+//     }
+//   }
+
+//   .form {
+//     width: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     gap: 20px;
+
+//     .subject {
+//       label {
+//         font-weight: bold;
+//         margin-bottom: 5px;
+//         display: flex;
+//       }
+
+//       input {
+//         width: 100%;
+//         padding: 10px;
+//         border: 1px solid #ccc;
+//         border-radius: 5px;
+//       }
+//     }
+   
+//     .details {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 20px;
+
+//       .description,
+//       .email {
+//         label {
+//           font-weight: bold;
+//           margin-bottom: 5px;
+//           display: block;
+          
+//         }
+        
+//         textarea,
+//         input {
+//           width: 100%;
+//           padding: 10px;
+//           border: 1px solid #ccc;
+//           border-radius: 5px;
+//           display: flex;
+//         }
+
+//         textarea {
+//           min-height: 80px;
+//         }
+//       }
+//     }
+
+//     .info {
+//       display: flex; 
+//       flex-direction: row;
+//       gap: 20px;
+//     }
+//   }
+
+//   .buttonGroup {
+//     display: flex;
+//     justify-content: center;
+//     margin-top: 20px;
+
+//     .testMailButton {
+//       padding: 10px 20px;
+//       border-radius: 5px;
+//       background-color: #007bff;
+      
+//       border: none;
+//       cursor: pointer;
+
+//       &:hover {
+//         background-color: #0056b3;
+//       }
+//     }
+//   }
+// }

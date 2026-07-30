@@ -1,0 +1,149 @@
+.Alumni h2 {
+  text-align: center;
+  font-size: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.Alumni h2 span {
+  color: #FF8A00;
+}
+
+
+.alumniSection {
+  text-align: left;
+  padding: 30px;
+  color: white;
+}
+
+.alumniSection h3 {
+  font-size: 40px;
+  color: #FF8A00;
+  margin-bottom: 60px;
+}
+
+.alumniSection span {
+  font-weight: 800;
+}
+
+.error{
+  padding: 30px 70px;
+  z-index: 1;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.alumniGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 32px;
+  justify-content: center;
+  padding: 10px 50px;
+  z-index: 2;
+}
+
+.lastRowCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+//
+
+/* Responsive styles */
+
+@media (max-width: 1024px) {
+  .alumniGrid{
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+
+  .Alumni h2 {
+    font-size: 2.5rem;
+  }
+
+  .alumniSection h3 {
+    font-size: 2em;
+  }
+
+  .alumniSection span {
+    margin-left: 5px;
+  }
+
+  .para p{
+    font-size: 13px;
+  }
+  .error{
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .alumniGrid {
+    gap: 5vw;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .alumniGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+  }
+
+  .lastRowCentered{
+    margin-top: 1.7rem;
+  }
+
+  .Alumni h2 {
+    font-size: 2rem;
+  }
+
+
+  .error{
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+  .alumniSection span {
+    margin-left: 5px;
+  }
+
+
+  
+}
+
+@media (max-width: 430px){
+  .lastRowCentered{
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 415px) {
+  .alumniGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6vw;
+  }
+  .lastRowCentered{
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,183 @@
+#profile {
+  color: #ffffff;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background: linear-gradient(
+  90deg,
+  rgba(32, 32, 32, 0.95) -11.52%,
+  rgba(37, 37, 37, 0.95) 106.29%
+);
+border-radius: 1.26863rem;
+border: 1.2px solid rgba(214, 214, 214, 0.81);
+}
+
+.flex{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
+.proHeading {
+  font-size: 35px;
+  letter-spacing: 0.02em;
+  line-height: 40px;
+  padding-bottom: 50px;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  .headInnerText{
+    margin-inline: auto;
+  }
+
+  .closeModal {
+    color: white;
+    border: none;
+    background: none;
+    font-size: 30px;
+    position: relative;
+    cursor: pointer;
+    margin-top: -5px;
+  }
+
+  .closeModal:hover{
+    color:#FF8A00;
+    transition: .2s linear;
+  }
+
+  .heading{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .headInnerText span{
+   margin-right: 3px;
+   background: linear-gradient(to right , #d03e21 40%, #FF8A00 );
+   -webkit-background-clip: text;
+   color: transparent;
+  
+  }
+
+  .table{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: -40px;
+  }
+
+  .email{
+    cursor: not-allowed;
+    opacity: 0.5;;
+  }
+
+  .option{
+    font-size: 15px;
+  }
+
+  .submit{
+    font-size: 15px;
+    width: 15rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  .vals{
+    width: 17rem;
+    font-size: 15px;
+    margin: 0px;
+    margin-right: 8px;
+  }
+  
+  .dets {
+    margin-top: 15px;
+    padding-right: 100px;
+    font-size: 20px;
+  }
+
+  @media screen and (max-width:600px) {
+  
+    .dets {
+      padding-right: 50px;
+    }
+  }
+  
+  @media screen and (max-width:500px) {
+    #profile {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  
+    .dets {
+      padding-right: 30px;
+    }
+  }
+
+  @media screen and (max-width:450px) {
+    
+    .table{
+        display: grid;
+        justify-content: center;
+    }
+
+    #profile {
+      width: 100%;
+    }
+
+    .proHeading{
+      margin-top: 40px;
+      margin-bottom: 0px;
+      padding-bottom: 20px;
+      font-size: 30px;
+    }
+
+    .details{
+        margin-top: 0px;
+    }
+
+    .dets{
+      margin-left: 8px;
+      margin-top: 10px;
+      margin-bottom: -15px;
+      font-size: 17px;
+  }
+
+  .vals{
+    margin-left: -8px;
+  }
+
+    .submit{
+        margin-top: 25px;
+    }
+
+    .closeModal{
+      top: 0.3rem;
+      right: 1rem;
+    }
+    
+    }
+
+  
+  
