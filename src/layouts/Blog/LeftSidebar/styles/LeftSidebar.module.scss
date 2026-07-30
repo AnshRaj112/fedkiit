@@ -1,0 +1,182 @@
+@use "../../../../assets/styles/Global.scss" as *;
+
+.leftSidebar {
+  padding: 1.5rem;
+  border-right: 2px solid var(--primary);
+  height: 95vh;
+  overflow-y: auto;
+  background-color: $page-color;
+  border-radius: 16px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: all 0.3s ease;
+  width: clamp(200px, 20vw, 300px);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 28vw;
+    padding: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 38vw;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 2px solid var(--primary);
+    border-radius: 12px;
+    gap: 0.8rem;
+  }
+
+  h3.subtitle {
+    font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+    background: var(--primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(255, 190, 11, 0.5);
+    font-weight: 700;
+  }
+
+  .searchBar {
+    width: 100%;
+    input {
+      width: 100%;
+      padding: clamp(6px, 1.3vw, 10px);
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: $back-glass;
+      color: $text-color;
+      font-size: clamp(0.85rem, 1vw, 0.95rem);
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      &:hover,
+      &:focus {
+        border: 1px solid white;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .filterSection {
+    width: 100%;
+  }
+
+  .departmentSelect {
+    width: 100%;
+
+    :global(.select-container) {
+      width: 100%;
+      background: $back-glass;
+      border: 2px solid rgba(244, 43, 3, 0.5);
+      border-radius: 10px;
+      color: white;
+      transition: all 0.3s ease;
+
+      &:focus-within {
+        box-shadow: 0 0 10px rgba(244, 43, 3, 0.4);
+      }
+    }
+
+    :global(.select-control) {
+      padding: clamp(5px, 0.9vw, 9px);
+      font-size: clamp(0.8rem, 1vw, 0.95rem);
+    }
+
+    :global(.select-menu) {
+      background-color: $bg-color;
+      border: 2px solid rgba(244, 43, 3, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    :global(.select-option) {
+      padding: 8px 12px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 190, 11, 0.3);
+      }
+
+      &.is-selected {
+        background: var(--primary);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebarToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: $text-color;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .leftSidebar.collapsed {
+    height: auto;
+    max-height: 60px;
+    overflow: hidden;
+
+    .filterSection,
+    .searchBar {
+      display: none;
+    }
+
+    h3 {
+      margin: 0;
+      cursor: pointer;
+    }
+  }
+}

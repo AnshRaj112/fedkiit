@@ -1,0 +1,402 @@
+.Team h2 {
+  text-align: center;
+  font-size: 50px;
+  margin-top: 20px;
+}
+
+.Team h2 span {
+  color: #FF8A00;
+}
+
+.para p {
+  padding: 30px 70px;
+  z-index: 1;
+  text-align: center;
+  margin-top: 10px;
+  padding-bottom: 0;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+
+.error {
+  padding: 30px 70px;
+  z-index: 1;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.teamSection {
+  text-align: left;
+  padding: 30px;
+  color: white;
+  // margin-top: 20px;
+}
+
+.teamSection h3 {
+  font-size: 40px;
+  color: #FF8A00;
+  margin-bottom: 60px;
+  margin-left: 50px;
+}
+
+.teamSection span {
+  font-weight: 800;
+}
+
+.Team strong {
+  font-weight: 800;
+}
+
+.teamTitle {
+  color: #fff;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  gap: 32px;
+  justify-content: center;
+  padding: 10px 50px;
+  z-index: 0;
+}
+
+.directorGrid {
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  padding-top: 0;
+}
+
+.lastRowCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 29px;
+  margin-top: -1rem;
+}
+
+
+
+
+.circle {
+  height: 50vh;
+  width: 30vh;
+  background-color: rgba(255, 92, 0, 0.69);
+  position: absolute;
+  top: 80%;
+  left: -10%;
+  border-radius: 50%;
+  filter: blur(150px);
+}
+
+
+.alumniBut {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 60px;
+  margin-top: -30px;
+  color: #FF8A00;
+  font-size: 25px;
+  padding-bottom: 20px;
+
+}
+
+.alumniBut a {
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
+}
+
+
+.alumniBut .ulhover {
+  margin-right: 10px;
+  font-weight: 700;
+  padding: 5px;
+  padding-right: 0;
+  font-size: 25px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.alumniBut .ulhover:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+.alumniBut .ulhover:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+//* Outer dark box */
+.FICwrapper {
+  background: #0d0d0d;
+  /* same as TEAM page background */
+  padding: 50px;
+  border-radius: 20px;
+  max-width: 1150px;
+  min-height: 220px;
+  margin: 30px auto;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+
+}
+
+/* Grid layout */
+.FICsection {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+/* Left Image */
+.image img {
+  display: flex;
+  justify-content: center;
+  /* centers horizontally */
+  align-items: center;
+  width: 180px;
+  height: 180px;
+  border-radius: 0%;
+  object-fit: cover;
+  box-shadow: 0 10px 40px rgba(255, 138, 0, 0.2);
+  border: 3px solid rgba(255, 138, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.FICsection .image img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 60px rgba(255, 138, 0, 0.4);
+}
+
+/* Text Block */
+.textBlock {
+  text-align: left;
+  /* ensures all text aligns left */
+}
+
+/* Name */
+.name {
+  font-size: 32px;
+  font-weight: 800;
+  color: #FF8A00;
+  margin: 0;
+}
+
+/* Role title */
+.role {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #FF8A00;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+/* Intro & Vision */
+.intro,
+.vision {
+  margin-top: 25px;
+  font-style: italic
+}
+
+.intro p,
+.vision p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .FICsection {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .FICsection .image {
+    margin-bottom: 20px;
+  }
+
+  .FICsection .image img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .name {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .FICwrapper {
+    max-width: 350px;
+  }
+
+  .FICsection {
+    grid-template-columns: 1fr;
+  }
+
+  .FICsection .image {
+    margin-bottom: 20px;
+    margin: 0 auto;
+  }
+
+  .FICsection .image img {
+    width: 150px;
+    height: 150px;
+    text-align: center;
+  }
+
+  .vision {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .name {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .role {
+    text-align: center;
+    align-items: center;
+  }
+}
+
+/* Responsive styles */
+
+@media (max-width: 1024px) {
+
+  .circle {
+    left: -30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .circle {
+    left: -20%;
+  }
+
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .Team h2 {
+    font-size: 2.5rem;
+  }
+
+  .teamSection h3 {
+    font-size: 2em;
+  }
+
+
+  .para p {
+    font-size: 1rem;
+    padding: 30px 30px;
+    line-height: auto;
+  }
+}
+
+@media (max-width: 550px) {
+  .teamGrid {
+    gap: 5vw;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+  }
+
+  .teamSection h3 {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .para p {
+    margin-bottom: 20px;
+  }
+
+  .Team h2 {
+    font-size: 40px;
+  }
+
+  .circle {
+    left: -30%;
+    background-color: rgba(255, 92, 0, 0.59);
+  }
+
+  .teamSection h3 {
+    margin-left: 0px;
+  }
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .lastRowCentered {
+    margin-top: 1rem;
+  }
+
+
+
+
+  .alumniBut {
+    margin-right: 10px;
+    padding-right: 15px;
+  }
+
+  .alumniBut a {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 430px) {
+  .lastRowCentered {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 415px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5vw;
+  }
+
+  .lastRowCentered {
+    margin-bottom: 0;
+  }
+}

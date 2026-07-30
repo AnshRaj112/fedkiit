@@ -1,0 +1,150 @@
+.mainPreview {
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  background: rgba(7, 7, 7, 0.5);
+  z-index: 50;
+  backdrop-filter: blur(2px);
+  overflow: hidden;
+}
+
+
+
+.previewContainerWrapper {
+  background: linear-gradient(
+    90deg,
+    rgba(32, 32, 32, 0.95) -11.52%,
+    rgba(37, 37, 37, 0.95) 106.29%
+  );
+  border-radius: 1.26863rem;
+  backdrop-filter: blur(4px);
+  border: 1.2px solid rgba(214, 214, 214, 0.81);
+  width: 35rem;
+  height: 90%;
+  margin: auto;
+  z-index: 100;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previewContainer {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  overflow-y: auto;
+  overflow-x: hidden; /* Added to prevent horizontal overflow */
+}
+
+.previewContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.previewContainer::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.previewContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+.previewContainer > * {
+  padding-right: 1rem; 
+}
+
+
+.closeBtn{
+  position: absolute;
+  width: 100%;
+  right: 3px;
+  display: flex;
+  justify-content: flex-end;
+  color: #fff;
+  cursor: pointer;
+  z-index: 5;
+  top: 1rem;
+  right: 1rem;
+}
+
+.closeBtn:hover{
+  color:#FF8A00;
+  transition: .2s linear;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.formFieldContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  // justify-content: center;
+  // justify-content: space-evenly;
+  column-gap: 3rem;
+  width: 100%;
+  padding: 1em;
+  padding-left: 2rem;
+  row-gap: 1rem;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background-color: rgba(128, 127, 126, 0.066);
+  margin-bottom: 1em;
+}
+.formFieldContainer:hover {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
+.formFieldContainer:active {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
+
+@media (min-width: 481px) and (max-width:800px){
+  .previewContainer{
+    height: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px){
+  .previewContainerWrapper{
+    height: 70%;
+    width: 90%;
+  }
+    .previewContainer{
+      height: 100%;
+      width: 100%;
+      margin-left: 1rem;
+      padding: 1rem;
+    }
+
+    .closeBtn{
+      width: 80%;
+    }
+
+}
+
+@media (max-width: 380px) {
+  .previewContainerWrapper{
+    height: 70%;
+    width: 90%;
+  }
+    .previewContainer{
+      height: 100%;
+      width: 100%;
+      margin-left: 1rem;
+    }  
+
+    .formFieldContainer{
+      width: 115%;
+      margin-left: -1rem;
+    }
+}

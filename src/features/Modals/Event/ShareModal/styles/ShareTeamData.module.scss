@@ -1,0 +1,163 @@
+.shareContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 5;
+  // text-align: left;
+}
+
+.maindiv {
+  z-index: 1000;
+  background: rgba(42, 42, 42, 0.9);
+  border-radius: 10px;
+  gap: 0.7rem;
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  padding: 30px;
+  overflow-y: auto;
+  margin-top: 5.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30rem;
+  box-shadow: 0 6px 10px 3px rgba(24, 15, 15, 0.3);
+  color: #f97507;
+  word-wrap: break-word; // Handles long words
+  word-break: break-word; // Ensures text breaks within words if needed
+  overflow-wrap: break-word; // For better compatibility
+  white-space: normal; // Prevents single-line text overflow
+}
+
+
+.closebtn {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1.2rem;
+  color: white;
+  z-index: 20;
+}
+
+.closebtn:hover {
+  color: #d14206;
+  transition: 0.2s linear;
+}
+
+.copyContainer {
+  border: 1px solid #d14206;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  // text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff90;
+}
+
+.copyUrl {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word; // Ensure long URLs break properly
+  text-overflow: ellipsis; // Optionally add ellipsis for overflowing text
+  white-space: normal; // Allow text wrapping
+}
+
+.shareTitle{
+  font-weight:700;
+  margin-left:6.5rem;
+  font-size:1rem;
+  background: linear-gradient(
+    260deg,
+    rgba(255, 190, 11, 0.84) -29.7%,
+    rgba(244, 43, 3, 0.84) 128.34%
+); 
+color: transparent;
+-webkit-background-clip: text;
+background-clip: text;
+}
+
+.registrationTitle{
+  font-weight:bold;
+  // margin-left:-9.5rem;
+  margin-top: 0.5rem;
+  font-size:1.5rem;
+  background: linear-gradient(
+    260deg,
+    rgba(255, 190, 11, 0.84) -29.7%,
+    rgba(244, 43, 3, 0.84) 128.34%
+); 
+color: transparent;
+-webkit-background-clip: text;
+background-clip: text;
+margin-bottom: 0.5rem;
+}
+
+.copyButton {
+  color: #ffffff90;
+  background: #2a2a2a;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: 0.2s linear;
+  margin-left: 10px;
+  border-radius: 10px
+}
+
+
+@media (max-width:500px){
+  .maindiv{
+      width: 20rem;
+      height: 60vh;
+      overflow-y: auto;
+      margin-top: 9rem;
+  }
+
+  .copyContainer{
+      font-size:0.8rem;
+  }
+
+  .shareTitle{
+      font-size: 0.8rem;
+      margin-left: 5rem;
+  }
+
+  .registrationTitle{
+      font-size: 1rem;
+      // margin-top: -20px;
+      // margin-left: -2.5rem;
+  }
+
+  .copyButton {
+  font-size: 0.6rem;
+  width:30%;
+}
+
+
+}

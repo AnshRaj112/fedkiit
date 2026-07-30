@@ -1,0 +1,219 @@
+.main {
+  height: auto;
+  width: 100%;
+  background-color: #1C1C1C;
+  margin-top: 20px;
+}
+
+.hero {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #1C1C1C;
+  position: relative; 
+  margin-top: 2rem;   
+  padding-bottom: 4.5vw;
+  padding-left: 0px;
+  z-index: 0;
+}
+
+.heroTextContainer {
+  height: 100%;
+  width: 100%;    
+  z-index: 1;
+  padding-left: 2.5rem;
+  margin-top: 3rem;
+
+}
+
+.heroCarousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.main span{
+  color: transparent;
+  background-clip: text;
+}
+
+.largeContent p {
+  font-weight: 700;
+  font-size: 2.45rem;
+  color: #FFFFFF;
+}
+
+.largeContent h3{
+  animation: fadeIn 3s ease-in-out;
+  white-space: nowrap; 
+}
+
+.dynamicText {
+  height: 65px; 
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.typing {
+  display: inline-block;
+  white-space: nowrap;
+  border-right: 4px solid;
+  animation: blink 0.75s step-end infinite;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.smallContent p {
+  font-size: 1.1rem;
+  color: #FFFFFF;
+  letter-spacing: 0.1vw;
+  font-weight: 500;
+}
+
+// .circle {
+//   height: 52rem;
+//   width: 50rem;
+//   background-color: rgba(255, 92, 0, 0.29);
+//   filter: blur(100px);
+//   position: absolute;
+//   top: 60%;
+//   opacity: 50%;
+//   left: -35%;
+//   border-radius: 50%;
+//   overflow: hidden;
+//   z-index: -1;
+// }
+
+.circle {
+  height: 52rem;
+  width: 50rem;
+  flex-shrink: 0;
+  // margin-top: 4rem;
+  z-index: 1;
+  // padding-left: 40px;
+  border-radius: 32.99306rem;
+  opacity: 0.5;
+  background: rgba(255, 92, 0, 0.29);
+  // mix-blend-mode: color-dodge;
+  filter: blur(110.9010238647461px);
+  position: absolute;
+  top: 60%;
+  left: -35%;
+}
+
+
+.maincontent {
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.smallContent {
+  display: flex;
+  align-items: center;
+}
+
+
+.smallContainer {
+  padding-top: 2vw;
+  padding-bottom: 3vw;
+}
+
+
+@media (max-width: 1025px) {
+.largeContent p{
+  font-size: 1.3rem;
+}
+
+.smallContainer strong{
+  font-size: 0.8rem;
+}
+
+}
+
+@media screen and (max-width: 768px) {
+  .hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: #1C1C1C;
+    position: relative; 
+    margin-top: 1rem;
+    margin-right: 0rem;
+  }
+
+  .smallcontent {
+    padding-top: 1rem;
+  }
+
+  .heroTextContainer {
+    z-index: 1; 
+    padding-left: 25px;
+    padding-right: 30px;
+  }
+}
+
+
+
+@media screen and (max-width: 480px) {
+
+  .largeContent p{
+    font-size: 1.2rem;
+    text-align: center;
+    
+  }
+
+  .heroCarousel{
+    margin-top: 1rem;
+  }
+
+  .dynamicText {
+    height: 45px; /* Set to a fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+
+  }
+
+  .smallContent p{
+    font-size: 1rem;
+  }
+  .hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: #1C1C1C;
+    position: relative; 
+    align-items: center;
+  }
+
+  .heroTextContainer{
+    margin-top: 4rem;
+    margin-left: 1rem;
+    justify-content: center;
+    text-align: center;
+    word-spacing: 0.1rem;
+  }
+
+  .main{
+    margin-top: -1rem;
+  }
+
+  .smallContent {
+    padding-top: 2rem;
+  }
+
+  .circle{
+    top: 80%;
+    left: -150%;
+    opacity: 50%;
+    height: 100vw;
+    background-color: rgba(255, 92, 0, 0.3);
+  }
+}

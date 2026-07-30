@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap');.pixelHackSection {
+  background: #000026;
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+  font-family: 'Pixelify Sans', sans-serif;
+
+  .topic {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    span {
+      color: #FFD389;
+      font-family: 'Pixelify Sans', sans-serif;
+    }
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
+  }
+  .manualButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FFD389;
+    color: #000026;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    font-family: 'Oswald', sans-serif;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: #FFD389;
+      transition: 0.3s;
+      scale: 1.1;
+    }
+  }
+
+  .featuresContainer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .featureCard {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .icon {
+      font-size: 3rem;
+      color: #FFD389;
+      margin-bottom: 1rem;
+    }
+    h2{
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        font-style: 'Pixelify Sans', sans-serif;
+    }
+
+    h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+
+      @media(max-width: 768px) {
+        font-size: 1.2rem;
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    
+  }
+}
+@media (max-width: 768px) {
+  .featureCard {
+    width: 100%;
+  }
+  
+  
+}

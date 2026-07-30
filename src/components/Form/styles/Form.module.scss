@@ -1,0 +1,113 @@
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.6em;
+  width: 86%;
+}
+.formInput {
+  width: 90% !important;
+  margin-bottom: 1.4em;
+}
+.formInputTxtArea {
+  width: 90% !important;
+  height: 31vh !important;
+}
+
+.formFieldContainer {
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  padding: 1em;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  position: relative;
+  background-color: rgba(128, 127, 126, 0.066);
+  margin-bottom: 1em;
+}
+.disabledSec {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background-color: #fd8e100e;
+  z-index: 10;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+.formFieldContainer:hover {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
+.formFieldContainer:active {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
+.mainFieldForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.fieldInput {
+  width: 90% !important;
+}
+.containerInput {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+.sectionValidation {
+  position: absolute;
+  bottom: 0px;
+  right: 50px;
+  background-color: rgb(41, 41, 41);
+  border-radius: 4px;
+  width: 500px;
+  max-height: 424px;
+  z-index: 1800 !important;
+  padding: 1em;
+  border: 1px solid #b8b7b78c;
+  margin-bottom: 2.4em;
+  overflow-y: auto;
+}
+.sectionValidation::-webkit-scrollbar {
+  width: 0px;
+}
+.popField {
+  position: absolute;
+  bottom: -120%;
+  right: 0;
+  background-color: rgb(41, 41, 41);
+  border-radius: 4px;
+  width: 600px;
+  max-height: 424px;
+  z-index: 1500 !important;
+  padding: 1em;
+  border: 1px solid #b8b7b78c;
+  margin-bottom: 2.4em;
+  overflow-y: auto;
+}
+.popField::-webkit-scrollbar {
+  width: 0px;
+}
+.popFieldInpt {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.popFieldInptContainer {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.bindInptContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 8px;
+}

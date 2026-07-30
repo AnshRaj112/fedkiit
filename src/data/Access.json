@@ -1,0 +1,20 @@
+{
+    "success": true,
+    "data": [
+        "ADMIN",
+        "USER",
+        "PRESIDENT",
+        "VICEPRESIDENT",
+        "DIRECTOR_CREATIVE",
+        "DIRECTOR_TECHNICAL",
+        "DIRECTOR_MARKETING",
+        "DIRECTOR_OPERATIONS",
+        "DIRECTOR_SPONSORSHIP",
+        "CREATIVE",
+        "TECHNICAL",
+        "MARKETING",
+        "OPERATION",
+        "SPONSORSHIP",
+        "ALUMNI"
+    ]
+}

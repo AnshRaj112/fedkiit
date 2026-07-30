@@ -1,0 +1,273 @@
+.contactFormContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #1C1C1C;
+  color: white;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.contactFormContainer h2 {
+  font-size: 50px;
+  margin-bottom: 10px;
+  margin-top: 1.5rem;
+}
+
+.bottomLine {
+  width: 10rem;
+  height: 0.3125rem;
+  background: var(--primary);
+  color: transparent;
+  border-radius: 5px;
+  margin-bottom: 3rem;
+}
+
+.highlight {
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+}
+
+.formSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 0rem;
+}
+
+.contactForm {
+  width: 60%;
+  padding-left: 30px;
+  padding-right: 60px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(7.5px);
+  color: white;
+}
+
+.formGroup textarea::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+  transition: .2s linear;
+  background-color: transparent;
+}
+
+.formGroup textarea::-webkit-scrollbar-thumb {
+  border-radius: 22px;
+  background: var(--primary);
+  // border: 1.5px solid hwb(0 11% 89%);
+}
+
+.formGroup textarea::-webkit-scrollbar-track {
+  padding: 0px 20px;
+  background-color: transparent;
+}
+
+.formGroup input {
+  height: 60px;
+}
+
+.formGroup textarea {
+  height: 200px;
+  resize: none;
+}
+
+// .contactForm button {
+//   background: var(--primary);
+//   color: transparent;
+//   color: white;
+//   border: none;
+//   padding: 10px 20px;
+//   border-radius: 15px;
+//   cursor: pointer;
+//   font-size: 16px;
+//   width: 100%;
+// }
+
+.contactForm Button:hover {
+  transition: .2s linear;
+  background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
+}
+
+.imageSection {
+  width: 50%;
+  position: relative;
+  margin-left: 125px;
+}
+
+.backCircle {
+  width: 20rem;
+  height: 10rem;
+  flex-shrink: 0;
+  margin-top: 4rem;
+  z-index: 1;
+  padding-left: 40px;
+  border-radius: 32.99306rem;
+  opacity: 0.4;
+  background: rgba(255, 92, 0, 0.29);
+  mix-blend-mode: color-dodge;
+  filter: blur(110.9010238647461px);
+  position: absolute;
+  right: 150px;
+  top: 150px;
+}
+
+.contactFormContainer img {
+  width: 80%;
+  height: 70%;
+  margin-right: 0;
+}
+
+.circle {
+  height: 50vh;
+  width: 50vh;
+  background-color: rgba(255, 92, 0, 0.6);
+  position: absolute;
+  top: 15%;
+  right: -10%;
+  opacity: 50%;
+  border-radius: 50%;
+  filter: blur(150px);
+  z-index: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .contactForm {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+  }
+  .formSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 0;
+  }
+  .circle {
+    top: -5%;
+    right: -20%;
+  }
+  .formGroup input,
+  .formGroup textarea {
+    width: 100%;
+  }
+  :global(form button) {
+    width: 100%;
+  }
+  .imageSection {
+    margin-left: 3rem;
+  }
+  .circle {
+    margin-top: -30rem;
+    margin-right: -6rem;
+    z-index: -1;
+  }
+  .backCircle {
+    position: absolute;
+    left: 2%;
+    top: -10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .formSection {
+    flex-direction: column;
+    align-items: center;
+  }
+  .contactForm {
+    width: 150%;
+    // padding: 0 20px;
+  }
+  .imageSection {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .contactFormContainer img {
+    width: 60%;
+    height: auto;
+    margin-right: 2rem;
+  }
+  .backCircle {
+    width: 15rem;
+    height: 7rem;
+    right: 90%;
+    top: 50%;
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .contactFormContainer h2 {
+    font-size: 30px;
+  }
+  .bottomLine{
+    width: 6rem;
+  }
+  
+  .contactForm{
+    width: 150%;
+  }
+  .imageSection{
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .form-section{
+    margin-top: -3rem;
+  }
+
+  .form-group{
+    width: 110%;
+    margin-left: -2rem;
+  }
+
+  .submitbutton{
+    margin-left: -2rem;
+    width: 100%;
+  }
+
+  .backCircle{
+    display: none;
+  }
+
+  .circle{
+    top: 25rem;
+    background-color: rgba(255, 92, 0, 0.59);
+    
+  }
+
+  
+}
+
+@media (max-width: 430px){
+  .contactForm{
+    width: 150%;
+  }
+}
+@media (max-width: 400px){
+  .contactForm{
+    width: 150%;
+  }
+}
+

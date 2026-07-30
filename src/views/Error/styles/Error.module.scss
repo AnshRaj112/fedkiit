@@ -1,0 +1,101 @@
+.errorImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.errorImage img {
+    height: auto; 
+    max-width: 100%; 
+    border-radius: 20px 20px 0 0;
+    border: none; 
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.errorImage p {
+    text-align: center;
+    margin: 10px 20px; 
+    font-size: 18px;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    border-radius: 20px;
+    background-color: #2f2f2f;
+    padding: 20px; 
+}
+
+.errorImage button {
+    margin: 20px 0;
+    background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+    padding: 10px 25px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 1rem; 
+}
+
+.errorImage button:hover {
+    transition: .2s linear;
+    background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
+}
+
+@media (max-width: 768px) {
+    .errorImage {
+        height: 100vh; 
+        width: 100vw;  
+        margin: 0;
+    }
+
+    .errorImage p {
+        font-size: 14px; 
+    }
+
+    .errorImage button {
+        margin: 20px 0;
+        padding: 8px 17px;
+        font-size: 0.9rem; 
+    }
+
+    .box {
+        width: 80%; 
+        height: auto; 
+        padding: 10px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .errorImage p {
+        font-size: 12px; 
+    }
+
+    .errorImage{
+        height: 82vh;
+    }
+
+    .box{
+        height: 70%;
+        width: 90%;
+    }
+
+    .errorImage button {
+        margin: 20px 0;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+
+    .box {
+        width: 90%; 
+        height: auto; 
+        padding: 10px; 
+    }
+}

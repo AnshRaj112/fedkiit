@@ -1,0 +1,148 @@
+.container {
+  background-color: transparent;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.buttonContainer {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  line-height: 40px;
+  padding-bottom: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headInnerText {
+  margin-left: 3.5rem;
+  margin-top: 12px;
+}
+
+.headInnerText span {
+  margin-right: 3px;
+  background: linear-gradient(to right, #d03e21 40%, #FF8A00);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.eventListContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tabHeading {
+  cursor: pointer;
+  margin: 0 4rem;
+  margin-top: -1rem;
+  padding: 0.5rem;
+  font-size: 1.4rem;
+  user-select: none;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tabHeading:hover {
+  color: #dc5e14;
+}
+
+.activeTab {
+  border-bottom: 2px solid #dc5e14;
+  font-weight: bold;
+}
+
+.eventSectionContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventSection {
+  display: flex;
+  flex-direction: column;
+  margin: 0 4rem 2rem 4rem;
+}
+
+.eventGrid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr));
+  gap: 2rem;
+}
+
+.eventCardContainer {
+  margin-bottom: 1rem;
+  position: relative;
+  max-width: 24rem;
+}
+
+.eventList::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+  transition: .2s linear;
+  background-color: #292929;
+}
+
+.eventList::-webkit-scrollbar-thumb {
+  border-radius: 22px;
+  background: var(--primary);
+}
+
+.eventList::-webkit-scrollbar-track {
+  padding: 0px 20px;
+  background-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .buttonContainer {
+    display: none;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .topSection {
+    flex-direction: column;
+  }
+  .topSectionInputContainer:nth-child(1) {
+    margin-right: 0;
+  }
+  .EventInput {
+    width: 100%;
+  }
+  .EventInputArea {
+    width: 100%;
+  }
+  .posterPreview {
+    width: 100%;
+  }
+  .buttonContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .eventSection {
+    margin: 0rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .container {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+}
