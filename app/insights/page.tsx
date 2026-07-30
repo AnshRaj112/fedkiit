@@ -1,0 +1,17 @@
+export default function InsightsPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center pt-24">
+      <div className="text-center">
+        <div className="fed-label inline-flex mb-6">
+          <span className="fed-label-dot" />
+          COMING SOON
+        </div>
+        <h1 className="fed-h1 mb-4">Insights</h1>
+        <p className="text-[#888] max-w-sm mx-auto">
+          Startup wisdom, founder stories and deep-dives from the FED KIIT
+          community. Coming soon.
+        </p>
+      </div>
+    </div>
+  );
+}
