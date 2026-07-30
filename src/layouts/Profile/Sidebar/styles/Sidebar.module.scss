@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.sidebar {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  width: 34%;
+  position: relative;
+}
+
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 40px;
+  // margin-bottom: auto;
+}
+
+.divider {
+  height: 90%;
+  width: 1.6px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #fff !important;
+}
+.profilePhoto {
+  width: 148px;
+  height: 148px;
+  border-radius: 19px;
+  object-fit: cover;
+}
+
+.profileInfo {
+  text-align: center;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  color: rgb(255, 255, 255);
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.role {
+  font-family: "Poppins";
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.605);
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+  // background-color: red;
+  padding-left: 18%;
+}
+
+
+.menu div {
+  width: 60%;
+  font-family: "Poppins";
+  // background-color: pink;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 20px;
+  gap: 4.06px;
+  padding: 12px 0px;
+  transition: background-color 0.3s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.menu div a{
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menuItem:hover {
+  background-color: #ffffff;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: left;
+  gap: 0.658rem;
+  margin-top: -49.82rem;
+  margin-left: 427px;
+}
+
+.button {
+  padding: 10px 20px;
+  height: 46.2px;
+  width: 132.14px;
+  font-family: "Poppins";
+  font-size: 0.943rem;
+  border-radius: 3.95px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.viewEvents {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  &:active {
+    background-color: #919191;
+    color: #ff8a00;
+  }
+}
+
+.addEvent {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+
+  &:hover {
+    background-color: #cc7a00;
+  }
+
+  &:active {
+    background-color: #919191;
+    color: #ff8a00;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    // background-color: rebeccapurple;
+  }
+  .menu {
+    flex-direction: row;
+    width: 100%;
+    padding-left: 0px;
+  }
+  .menu div {
+    width: auto;
+    margin-right: 0.6em;
+    margin-left: 0.6em;
+  }
+  .menu div:nth-child(2) {
+    display: none;
+  }
+  .menu div:nth-child(3) {
+    display: none;
+  }
+  .menu div:nth-child(4) {
+    display: none;
+  }
+  .divider {
+    width: 30%;
+    height: 1px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    margin: auto auto 0 auto;
+  }
+  
+}
+
+@media screen and (max-width: 1025px) {
+  
+  .sidebar{
+    height: 61.5vh;
+  }
+}
+
+@media screen and (max-width: 916px) {
+
+  .sidebar{
+    height: 71vh;
+  }
+  
+}
+
+@media screen and (max-width: 801px) {
+
+  .sidebar{
+    height: 60vh;
+  }
+  
+}
+
+@media screen and (max-width: 769px) {
+
+  .sidebar{
+    height: auto;
+  }
+  
+}

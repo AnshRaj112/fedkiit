@@ -1,0 +1,483 @@
+
+// card component
+.card {
+  background-color: #1b1b1b;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+
+  // default card layout
+  &.defaultCard {
+    width: 100%;
+    max-width: unset;
+    box-sizing: border-box;
+    min-height: 220px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2rem;
+
+    .imageWrapper {
+      padding: 19px;
+      width: 100%;
+    }
+
+    .content {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+
+      .header {
+        margin-bottom: 8px;
+
+        .title {
+          font-size: 1rem;
+          font-weight: 700;
+          line-height: 1.3;
+          color: #ff6f20;
+          white-space: normal;
+          max-height: 2.6em;
+
+          &:hover {
+            color: #ff8c42;
+          }
+        }
+
+        .date {
+          font-size: 0.8rem;
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+
+      .author {
+        font-size: 0.9rem;
+        color: #ffffff;
+        margin-bottom: 8px;
+        font-weight: normal !important;
+      }
+
+      .summaryWrapper {
+        margin-bottom: 0.8rem;
+      }
+
+      .summary {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        color: #d3d3d3;
+        margin: 0;
+        padding-right: 4px;
+        max-height: 4rem;
+        overflow-y: auto;
+      }
+    }
+  }
+
+  // recent card layout
+  &.recentCard {
+    max-width: 90%;
+    min-width: 100%;
+    min-height: 34.2rem;
+    margin: 0 auto;
+    background-color: #1b1b1b;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    margin-top: 1.8px;
+
+    .imageWrapper {
+      padding: 12px;
+
+      .banner {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 12px;
+        display: block;
+      }
+    }
+
+    .content {
+      padding: 18px 18px 12px 18px;
+
+      .header {
+        margin-bottom: 12px;
+
+        .title {
+          font-size: 1.4rem;
+          font-weight: 700;
+          line-height: 1;
+          color: #ff6f20;
+          margin-bottom: 8px;
+        }
+
+        .date {
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.6);
+          white-space: nowrap;
+        }
+      }
+
+      .author {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+        color: #ffffff;
+
+        strong {
+          font-size: 0.9rem;
+          font-weight: normal !important;
+        }
+      }
+
+      .summary {
+        font-size: 1rem;
+        line-height: 1.4;
+        color: #d3d3d3;
+        max-height: 4rem;
+        overflow-y: auto;
+      }
+    }
+  }
+
+  // trending card layout
+  &.trendingCard {
+    @extend .recentCard;
+    min-height: 1.1rem;
+    max-width: 40px;
+    margin-bottom: 1.4rem;
+    width: 100%; 
+
+    .imageWrapper {
+      .banner {
+        height: 180px;
+      }
+    }
+
+    .content {
+      padding: 6px 8px 8px 8px;
+
+      .header {
+        margin-bottom: 4px;
+
+        .title {
+          font-size: 1rem;
+          margin-bottom: 2px;
+          margin-left: 12px;
+        }
+
+        .date {
+          font-size: 0.8rem;
+        }
+      }
+
+      .author {
+        font-size: 0.92rem;
+        margin-bottom: 4px;
+        margin-left: 12px;
+      }
+
+      .summary {
+        font-size: 0.85rem;
+        line-height: 1.2;
+        max-height: 4rem;
+        overflow-y: auto;
+      }
+
+      .readMore {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  // image section
+  .imageWrapper {
+    padding: 12px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .banner {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      aspect-ratio: 5 / 2;
+      display: block;
+    }
+  }
+
+  // content section
+  .content {
+    padding: 12px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+
+      .title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+        color: #ff6f20;
+
+        a {
+          color: inherit;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .date {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    .author {
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 10px;
+
+      strong {
+        font-weight: normal !important;
+      }
+    }
+
+    .summary {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #d3d3d3;
+      margin: 0;
+      max-height: 4rem;
+      overflow-y: auto;
+    }
+
+    .customButtons {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+    }
+  }
+}
+
+// summary wrapper
+.summaryWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+// read more link
+.readMore {
+  display: inline;
+  color: #ff6f20;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  font-size: 13px;
+  text-decoration: underline;
+
+  &:hover {
+    color: #ff8c42;
+  }
+}
+
+// responsive - tablet
+@media (max-width: 768px) {
+  .card {
+    margin: 0 auto 1rem auto;
+
+    &.trendingCard,
+    &.recentCard,
+    &.defaultCard {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      margin: 0 auto 1.2rem auto;
+      box-sizing: border-box;
+
+      .content {
+        padding: 12px 16px;
+
+        .header {
+          flex-wrap: wrap;
+          gap: 0.3rem;
+
+          .title {
+            max-width: 100%;
+            font-size: 1.1rem;
+            line-height: 1.4;
+          }
+
+          .date {
+            font-size: 0.9rem;
+          }
+        }
+
+        .author {
+          font-size: 1rem;
+        }
+
+        .summary {
+          font-size: 1rem;
+          line-height: 1.5;
+          max-height: 120px;
+          overflow-y: auto;
+
+          .readMore {
+            white-space: nowrap;
+            display: inline;
+          }
+        }
+      }
+
+      .imageWrapper {
+        padding: 12px;
+        .banner {
+          height: 380px;
+        }
+        .banner {
+          border-radius: 8px;
+        }
+      }
+    }
+
+    &.recentCard {
+      .content {
+        .header {
+          .title {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// responsive - mobile
+@media (max-width: 480px) {
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+
+    &.trendingCard {
+     
+      .content {
+        padding: 10px 11px;
+
+        .header {
+          .title {
+            font-size: 1rem;
+          }
+
+          .date {
+            font-size: 0.8rem;
+          }
+        }
+
+        .author {
+          font-size: 0.9rem;
+        }
+
+        .summary {
+          font-size: 0.9rem;
+          max-height: 100px;
+          overflow-y: auto;
+
+          .readMore {
+            white-space: nowrap;
+            display: inline;
+          }
+        }
+      }
+    }
+    &.recentCard {
+      .imageWrapper {
+        .banner {
+          height: 10rem;
+          object-fit: cover;
+          width: 100%;
+        }
+        padding: 10px;
+      }
+
+      .content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .summary {
+          font-size: 0.9rem;
+          max-height: 100px;
+          overflow-y: auto;
+          margin-bottom: 0;
+
+          .readMore {
+            white-space: nowrap;
+            display: inline;
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    &.defaultCard {
+      max-width: 100%;
+      margin: 0 auto 1rem auto;
+
+      .content {
+        padding: 10px 11px;
+
+        .header {
+          .title {
+            font-size: 1rem;
+          }
+
+          .date {
+            font-size: 0.8rem;
+          }
+        }
+
+        .author {
+          font-size: 0.9rem;
+        }
+
+        .summary {
+          font-size: 0.9rem;
+          max-height: 100px;
+          overflow-y: auto;
+
+          .readMore {
+            white-space: nowrap;
+            display: inline;
+          }
+        }
+      }
+
+      .imageWrapper {
+        .banner {
+          height: 10rem;
+          object-fit: cover;
+          width: 100%;
+        }
+        padding: 10px;
+      }
+    }
+  }
+}

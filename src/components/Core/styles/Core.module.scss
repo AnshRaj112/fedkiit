@@ -1,0 +1,109 @@
+.main_Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  outline: none;
+  border: none;
+  padding: 8px 16px;
+  font-size: 12px;
+  background-color: transparent;
+  border: 1px solid rgba(211, 211, 211, 0.5);
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.h2 {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+.h3 {
+  font-size: 1.5em;
+  font-weight: 800;
+}
+
+.h4 {
+  font-size: 1.25em;
+  font-weight: 700;
+}
+
+.h5 {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.h6 {
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.p {
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.body2 {
+  font-size: 0.875em;
+  font-weight: normal;
+}
+
+.containerInput {
+  position: relative;
+  width: auto;
+}
+.input {
+  display: flex;
+  outline: none;
+  border: none;
+  padding: 10px;
+  font-size: 12px;
+  margin: 6px;
+  margin-bottom: 10px;
+  background-color: transparent;
+  border: 1px solid rgba(211, 211, 211, 0.5) !important;
+  border-radius: 4px;
+  color: #fff;
+  position: relative;
+  width: auto;
+}
+.input:hover {
+  border: 1px solid #fff !important;
+  transition: 0.3s ease-in-out;
+}
+
+.inputTxtArea {
+  min-height: 185px;
+  width: 380px;
+  resize: none;
+}
+.inputSelect {
+  color: #fff;
+  width: 380px !important;
+}
+.inputSelect option {
+  color: black;
+}
+.inputDate {
+  padding: 6px !important;
+  width: auto !important;
+  height: 40px !important;
+  position: relative;
+}
+// Both halves of this selector list must be :global(). The automated pass that
+// wrapped impure selectors worked line by line, so it only caught the part on
+// the line that opened the block and left the first half scoped — which meant
+// the spin-button reset silently stopped applying.
+:global(input[type="number"]::-webkit-inner-spin-button),
+:global(input[type="number"]::-webkit-outer-spin-button) {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}

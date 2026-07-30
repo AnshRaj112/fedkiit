@@ -1,0 +1,59 @@
+.skeleton_card {
+  height: 6.7rem;
+  width: 6.7rem;
+  background: linear-gradient(90deg, #313131 25%, #525252 50%, #313131 75%);;
+  background-size: 200% 100%;
+  animation: slideShimmer 1.5s infinite ease-in-out, dimInOut 1.5s infinite ease-in-out;
+  border-radius: 20px;
+}
+
+.skeletonBack{
+  height: 7rem;
+  width: 7rem;
+  background-color: #3f3f3f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
+
+@keyframes dimInOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton_card::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: inherit;
+  border-radius: 20px;
+}
+@media (max-width: 1024px) {
+  .skeleton_card {
+    height: 4.7rem;
+    width: 4.7rem;
+  }
+  .skeletonBack{
+    height: 5rem;
+    width: 5rem;
+  }
+  
+}

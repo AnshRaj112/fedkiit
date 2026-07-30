@@ -1,0 +1,302 @@
+.teamMember {
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  height: 23.5vw;
+  z-index: 0;
+  width: 20vw;
+  cursor: pointer;
+  margin-bottom: 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.teamMemberImg {
+  width: fit-content;
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ImgDiv{
+  height: 82%;
+  width: 100%;
+  background-color: #aeaeae;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+}
+.ImgDiv span{
+  margin-left: 0;
+}
+.teamMemberInfo {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.teamMemberInfo h4 {
+  padding: 10px;
+  font-size: 1.2em;
+}
+
+.memName {
+  margin-top: 5px;
+  font-size: 1.2em; /* Default font size */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  // text-overflow: ellipsis;
+  width: 100%;
+  display: block;
+}
+
+
+
+.memName.responsive {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  // text-overflow: ellipsis;
+  font-size: 0.7rem; 
+}
+
+
+.teamMemberInner {
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  height: 100%; //test
+  width: 100%;
+}
+
+.teamMember:hover .teamMemberInner {
+  transform: rotateY(180deg);
+  outline: none;
+  border-color: #FF8A00;
+}
+
+.teamMember:hover .teamMemberFront {
+  opacity: 0;
+}
+
+.teamMemberBack {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(10, 10, 10, 0.1);
+  box-shadow: 0 4px 30px rgba(107, 97, 97, 0.292);
+  transform: rotateY(180deg);
+}
+
+.knowPara {
+  padding-top: 30px;
+  height: 200px;
+  width: 200px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin-bottom: 10px;
+}
+
+.knowPara::-webkit-scrollbar {
+  display: none;
+}
+
+.knowPara p {
+  margin: 0;
+  padding: 10px;
+}
+
+.teamMemberFront {
+  background-color: #fff;
+  z-index: 0;
+  transform: rotateY(0deg);
+  border-radius: 10px;
+  transition: opacity 0.5s ease;
+  height: 100%; //test
+  width: 100%;
+}
+
+.teamMemberBack h5 {
+  font-size: 25px;
+  margin-top: 5px;
+  padding: 0 20px;
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.socialLinks a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 50px;
+  font-weight: bold;
+  padding: 10px;
+  padding-bottom: 0;
+  margin: 7px;
+}
+
+.socialLinks a:hover {
+  color: #FF8A00;
+  transition: 0.3s ease-in-out;
+}
+
+.knowMoreContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.knowMore {
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+:global(button) {
+  color: #FF8A00;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.updatebtn{
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 55%;
+}
+
+.updatebtn button{
+  border: 1px solid #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: small;
+  background-color: #313131;
+}
+
+.updatebtn button:hover{
+  background-color: rgba(244, 128, 3, 0.84);
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.memName{
+  margin-top:5px;
+}
+
+
+
+/* Responsive styles */
+
+@media (max-width: 1024px) {
+  .teamMemberInfo h4 {
+    padding-top: 5px;
+  }
+  
+  .teamMemberInfo h4 {
+    font-size: 1em;
+  }
+  .teamMemberBack h3 {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+  .socialLinks a {
+    font-size: 30px;
+  }
+  :global(button) {
+    margin-top: 5px;
+    font-size: 1rem;
+  }
+  .teamMember {
+    height: 23.6vw;
+    width: 18vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamMemberInfo h4 {
+    padding-top: 5px;
+  }
+  .teamMemberInfo h4 {
+    font-size: 0.8em;
+  }
+  .teamMemberBack h5 {
+    font-size: 18px;
+  }
+  .socialLinks a {
+    font-size: 30px;
+  }
+  .knowPara {
+    height: 125px;
+    width: 170px;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+  .memName{
+  margin-top:0px;
+}
+}
+
+@media (max-width: 480px) {
+
+.memName{
+  margin-top:1px;
+}
+
+  .teamMemberInfo h4 {
+    padding-top: 5px;
+  }
+  :global(h2) {
+    font-size: 2.5rem;
+  }
+
+  .teamMember {
+    height: 47vw;
+    width: 38vw;
+    margin-bottom: 10vw;
+  }
+
+  .teamSection h3 {
+    font-size: 2em;
+  }
+
+  .teamMemberBack h5 {
+    font-size: 16px;
+  }
+  .knowMore {
+    padding: 20px;
+  }
+
+  .knowPara {
+    height: 125px;
+    width: 150px;
+    font-size: 10px;
+    padding: 0 10px;
+  }
+
+  .socialLinks a {
+    font-size: 30px;
+  }
+}

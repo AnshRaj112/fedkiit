@@ -1,0 +1,421 @@
+
+// form header
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.6em;
+  width: 86%;
+  height: fit-content;
+  align-items: center;
+}
+
+// header buttons
+.buttonContainer {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+// form heading text
+.headInnerText {
+  font-size: 24px;
+  margin-bottom: 16px;
+
+  span {
+    margin-right: 3px;
+    background: linear-gradient(to right, #d03e21 40%, #FF8A00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+// inputs and textarea
+.formInput {
+  width: 90% !important;
+  margin-bottom: 1.4em;
+}
+
+.formInputTxtArea {
+  width: 90% !important;
+  height: 31vh !important;
+}
+
+// input container
+.formFieldContainer {
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  padding: 1em;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background-color: rgba(126, 126, 128, 0.066);
+  margin-bottom: 1em;
+}
+
+.formFieldContainer:hover,
+.formFieldContainer:active {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
+
+// field row
+.mainFieldForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.fieldInput {
+  width: 90% !important;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+// blog section
+.blogListSection {
+  width: 86%;
+  margin-top: 40px;
+  margin-bottom: 60px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// filter section
+.filterSection {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.searchContainer {
+  width: 100%;
+}
+
+.visibilityFilterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.filterLabel {
+  color: #fff;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+// select styles
+.visibilitySelect {
+  width: 100%;
+
+  :global(.select-container) {
+    background: rgba(47, 0, 18, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+
+    &:hover,
+    &:focus-within {
+      border-color: rgba(255, 138, 0, 0.6);
+    }
+  }
+
+  :global(.select-control) {
+    min-height: 36px;
+  }
+
+  :global(.select-menu) {
+    background-color: #2d2d2d;
+    border: 1px solid rgba(255, 138, 0, 0.3);
+  }
+
+  :global(.select-option) {
+    &:hover {
+      background: rgba(255, 138, 0, 0.2);
+    }
+
+    &.is-selected {
+      background: rgba(255, 138, 0, 0.4);
+      color: #fff;
+    }
+  }
+}
+
+// search input
+.searchInput {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(126, 126, 128, 0.066);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &:hover,
+  &:focus {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    outline: none;
+  }
+}
+
+// blog list
+.blogListContainer {
+  height: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// loading and empty state
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  color: #fff;
+  opacity: 0.7;
+}
+
+.emptyState {
+  padding: 30px;
+  text-align: center;
+  color: #fff;
+  opacity: 0.7;
+  background-color: rgba(47, 0, 18, 0.07);
+  border-radius: 8px;
+}
+
+// blog grid
+.blogsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.blogItem {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1b1b;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+// badge
+.visibilityBadge {
+  position: absolute;
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+ 
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  z-index: 10;
+}
+
+// button wrappers
+.customButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-right: 10px;
+}
+
+// buttons
+.editButton {
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.viewButton {
+  background: linear-gradient(260deg, rgba(11, 255, 123, 0.84) -29.7%, rgba(3, 180, 100, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &:hover {
+    background: linear-gradient(260deg, rgba(11, 255, 123, 0.9) -29.7%, rgba(3, 180, 100, 0.9) 128.34%);
+  }
+}
+
+.readButton {
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+
+  &:hover {
+    background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
+  }
+}
+
+// input with button icon
+.mediumLinkWrapper,
+.descriptionWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.4em;
+
+  input,
+  textarea {
+    width: 100%;
+    padding-right: 42px;
+  }
+}
+
+// icon button
+.geminiButtonM,
+.geminiButtonD {
+  position: absolute;
+  top: 40px;
+  right: 37px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// animation effects
+.animateDescription {
+  animation: pulse 0.4s ease-in-out;
+}
+
+.animateMediumLink {
+  animation: pulse 0.4s ease-in-out;
+}
+
+// delete button
+.deleteButton {
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+
+  &:hover {
+    background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
+  }
+}
+
+.mediumLinkWrapper,
+.descriptionWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.4em;
+
+  input,
+  textarea {
+    width: 100%;
+    padding-right: 42px; // space for the button
+  }
+}
+
+.geminiButtonM,
+.geminiButtonD {
+  position: absolute;
+  top: 40px;
+  right: 37px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+
+/* Animation remains same */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animateDescription {
+  animation: pulse 0.4s ease-in-out;
+}
+
+.animateMediumLink {
+  animation: pulse 0.4s ease-in-out;
+}

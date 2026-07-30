@@ -1,0 +1,204 @@
+.participatedEvents {
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+  padding-top: 35px;
+  padding-bottom: 27px;
+  height: auto;
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .proHeading {
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    line-height: 40px;
+    margin-bottom: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .headInnerText span {
+    margin-right: 3px;
+    background: linear-gradient(to right, #d03e21 40%, #ff8a00);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .headInnerText {
+    margin-left: 10.5rem;
+  }
+
+  .tables {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 60%;
+    margin-left: 10.5rem;
+  }
+
+  .eventsTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      border-bottom: 2px solid grey;
+      padding-bottom: 10px;
+      padding-top: 5px;
+      font-size: 20px;
+    }
+
+    td {
+      font-size: 15px;
+    }
+
+    th,
+    td {
+      text-align: center;
+      width: 34%;
+    }
+  }
+
+  .eventsTable thead,
+  .eventsTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .eventsTable tbody {
+    display: block;
+    max-height: 360px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    width: 100%;
+  }
+
+  .mobilewidth {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .noEvents {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 700;
+    color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .participatedEvents .tables {
+    margin-left: 5rem;
+  }
+
+  .participatedEvents .headInnerText {
+    margin-left: 5rem;
+  }
+}
+
+@media screen and (max-width: 867px) {
+  .participatedEvents .tables {
+    margin-left: 2rem;
+  }
+
+  .participatedEvents .headInnerText {
+    margin-left: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .participatedEvents .headInnerText {
+    text-align: center;
+    width: 100%;
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+
+  .participatedEvents .eventsTable tbody {
+    max-height: 250px;
+  }
+
+  .participatedEvents .proHeading {
+    margin-bottom: 20px;
+  }
+
+  .eventsTable {
+    margin-left: 3vw;
+    margin-right: 3vw;
+  }
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: .9rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .participatedEvents .tables {
+    width: 100%;
+    margin-left: 0rem;
+  }
+
+  .noEvents {
+    font-size: 22px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 515px) {
+  .participatedEvents .headInnerText {
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  .noEvents {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .participatedEvents .headInnerText {
+    font-size: 30px;
+  }
+
+  .participatedEvents .eventsTable th {
+    font-size: 17px;
+  }
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .noEvents {
+    font-size: 18px;
+  }
+}
+
