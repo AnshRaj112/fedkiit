@@ -74,6 +74,43 @@ These redirects live in `proxy.ts`, not `next.config.ts`: Next matches a
 redirect `source` case-insensitively, so a rule from `/Events` to `/events` also
 matches `/events` and loops forever.
 
+## Route guards — the redirect after sign-in
+
+The original never navigated from inside `Login.jsx`. It called
+`authCtx.login(...)` and let the **route table** react:
+
+```jsx
+<Route path="/Login" element={authCtx.isLoggedIn ? <LoginRedirect /> : <Login />} />
+```
+
+App Router routes are files, so nothing observes `isLoggedIn`, and `proxy.ts`
+only runs on a server request — which a client-side sign-in never makes. The
+first cut of this port dropped the behaviour: a correct login showed "Login
+successful" and then sat on `/Login` forever.
+
+`app/(auth)/AuthRouteGuard.jsx` reinstates it for all five auth routes, honouring
+both the original's `sessionStorage.prevPage` and the `?next=` the proxy appends.
+
+Two things it has to get right that the original did not have to:
+
+- **`?next=//evil.com` is rejected**, same rule `proxy.ts` applies — the return
+  URL now comes off the query string, so it is attacker-supplied.
+- **It cannot ping-pong with the proxy.** If localStorage says "signed in" but
+  the cookie is gone, redirecting to `/profile` bounces straight back here. The
+  guard makes one attempt per page view and keeps the form rendered, and on a
+  fresh load with `?next=` already set it drops the stale client session instead
+  of redirecting — the server has the final say.
+
+Verified in the browser by driving the real form with the login response stubbed
+at the XHR layer:
+
+| Start | After sign-in |
+|---|---|
+| `/Login` | **`/profile`** |
+| `/Login?next=/Events` | **`/Events`** |
+| `/Login?next=//example.com/phish` | **`/profile`** (origin preserved) |
+| `/Login` with stale localStorage, no cookie | **login form, no loop** |
+
 ---
 
 ## What was ported
