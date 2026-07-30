@@ -1,0 +1,138 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: linear-gradient(
+    90deg,
+    rgba(32, 32, 32, 0.95) -11.52%,
+    rgba(37, 37, 37, 0.95) 106.29%
+  );
+  margin-top: 4rem;
+  padding: 2rem;
+  border-radius: 1.26863rem;
+  border: 1.2px solid rgba(214, 214, 214, 0.81);
+}
+  .submit{
+    font-size: 15px;
+    width: 15rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+
+  .closeModal {
+    color: white;
+    border: none;
+    background: none;
+    font-size: 30px;
+    position: absolute;
+    cursor: pointer;
+    top: 0.1rem;
+    right: 0.7rem;
+  }
+
+ 
+.wrapper {
+    position: relative;
+  height: 3rem;
+  width: auto;
+  margin-top: 0.5rem;
+  
+  &::before,
+  &::after {
+    display: block;
+    position: absolute;
+    z-index: 99;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: .75rem 0.75rem;
+    pointer-events: none;
+  }
+  
+  &::before {
+    content: "+";
+    right: 0;
+    text-align: right; /* Align the text to the right */
+  }
+  
+  &::after {
+    content: "-";
+    left: 0;
+    font-size: 2rem;
+    margin-top: -3%;
+    text-align: left; /* Align the text to the left */
+  }
+  }
+
+
+  
+  .rangeInput {
+    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    width: 15rem;
+    height: 2rem;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: row-resize;
+  }
+  
+  .rangeInput[step] {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2) calc(12.5% - 1px),
+      #05051a 12.5%
+    );
+  }
+  
+  .rangeInput::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0;
+    box-shadow: -20rem 0 0 20rem rgba(255, 255, 255, 0.2);
+  }
+  
+  .rangeInput::-moz-range-thumb {
+    border: none;
+    width: 0;
+    box-shadow: -20rem 0 0 20rem rgba(255, 255, 255, 0.2);
+  }
+  
+  .imagePreview{
+    border: 5px solid #1c1c1c;
+  }
+
+  .imageTitle{
+    font-size: 1.3rem;
+    font-weight: 600;
+    // margin-top: 0.5rem;
+    background: var(
+      --Primary,
+      linear-gradient(
+        260deg,
+        rgba(255, 190, 11, 0.84) -29.7%,
+        rgba(244, 43, 3, 0.84) 128.34%
+      )
+    );
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-top: -1rem;
+
+  }
+
+  .errMsg{
+    font-size: 0.9rem;
+    color:red;
+    width: 70%;
+  }

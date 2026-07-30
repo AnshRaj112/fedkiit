@@ -1,0 +1,153 @@
+
+.hero {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 20px;
+ 
+  
+}
+
+
+  .heroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+  }
+  .head {
+    color: rgb(255, 255, 255);
+  font-weight: bold;
+  padding: 10px;
+  
+  background: linear-gradient(
+    to bottom,
+    rgba(244, 43, 3, 0.84) 0%,
+    rgba(255, 190, 11, 0.84) 100%
+  );
+  border-radius: 20px;
+  width: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  }
+  
+
+  .hero img {
+    margin-left: -2.5rem;
+    height: 300px;
+    margin-top: 0rem;
+  //   width: 70%;
+  }
+  
+
+  .text {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    p:first-child {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+  
+
+  
+    p:last-child {
+      margin: 0.5rem 0 1.5rem 0;
+      font-size: 1rem;
+    }
+  
+    button {
+      margin-top: 20px;
+    --border: 10px;
+    --slant: 0.4rem;
+    
+    font-size: 80%;
+    padding: 1em 1.8em;
+
+    border-bottom:  rgba(244, 43, 3, 0.84) solid 8px;
+    
+     border-right:  rgba(244, 43, 3, 0.84) solid 8px;
+    
+    font-weight: bold;
+    width: 14rem;
+    transition: ease-in 0.5s, font-size 0.3s ease-in-out;
+
+
+    position: relative;
+    color: black;
+
+    background: #e9e5e5;
+
+    clip-path: polygon(
+      var(--slant) 0,
+      100% 0,
+      100% calc(100% - var(--slant)),
+      calc(100% - var(--slant)) 100%,
+      0 100%,
+      0 var(--slant)
+    );
+    
+    
+    &:hover {
+      font-size: 15px;
+      transition: border 0.5 ease-out 0.5 , font-size 0.5s ease-in-out 0.5s;
+      border: none;
+      
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      transform: rotate(135deg);
+      bottom: -30px;
+      right: -16px;
+      width: 100px;
+      height: 20.5px;
+      border-bottom-right-radius: 1px;
+      z-index: -1;
+    }
+  }
+}
+
+  @media (max-width: 480px){
+   
+    .head{
+      margin-top: 50px;
+    }
+
+    .hero{
+      margin-top: 0px;
+         
+    }
+    .hero img{
+        height: 200px;
+        margin-top: 30px;
+    }
+
+    .text{
+        width: 100%;
+        text-align: center;
+        margin: 30px 10px;
+    }
+
+    .text p{
+      width: 70%;
+      white-space: wrap;
+    }
+
+    .text button{
+      margin-top: 0px;
+      font-size: 85%;
+    }
+  }
+  

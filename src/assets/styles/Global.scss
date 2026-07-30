@@ -1,0 +1,21 @@
+// Global SCSS variables — ported from FED-Frontend/src/assets/styles/Global.scss.
+//
+// Values are byte-for-byte the originals, including the duplicated
+// `$text-color` (declared `green`, then immediately overwritten with `white`)
+// which is preserved so nothing renders differently.
+//
+// The `:root { --primary }` block that lived here has moved to app/globals.scss.
+// This file is injected into every *.module.scss through
+// `sassOptions.additionalData`, and a `:root` rule inside a CSS Module is an
+// impure selector that Next.js rejects — it also only ever needed emitting once.
+
+$page-color: #1c1c1c;
+$text-color: green;
+
+//EventCard
+$border-color: rgb(143, 139, 139);
+$orange-color: rgb(0, 0, 0);
+$back-glass: rgba(255, 255, 255, 0.1);
+$text-color: white;
+//EventCardModal
+$bg-color: rgb(46, 44, 44);

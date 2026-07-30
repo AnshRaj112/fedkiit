@@ -1,0 +1,102 @@
+// Global stylesheet — ported verbatim from FED-Frontend/src/index.scss.
+//
+// Tailwind is deliberately NOT imported here. The original UI is built entirely
+// from SCSS modules, and Tailwind's preflight reset would subtly alter margins,
+// borders and font metrics across every ported component. The goal is a
+// pixel-identical replica, so the original reset below is the only one applied.
+
+@use "../src/assets/styles/Global.scss" as *;
+
+// Google Fonts are loaded from <link> tags in app/layout.tsx, NOT from
+// `@import url(...)` here.
+//
+// The original index.scss used @import. Under Next's CSS bundler those rules do
+// not survive into the emitted chunk — verified at runtime: the page had zero
+// registered "Open Sans" font faces (against 183 in the Vite build), so all body
+// text silently fell back to a system sans-serif and every line box was ~2px
+// shorter than the original.
+
+@import "react-datepicker/dist/react-datepicker.css";
+
+// The brand gradient. Lived in Global.scss on the original site; it moved here
+// because Global.scss is now injected into every CSS Module, and a `:root`
+// rule inside a module is an impure selector.
+:root {
+  --primary: linear-gradient(
+    260deg,
+    rgba(255, 190, 11, 0.84) -29.7%,
+    rgba(244, 43, 3, 0.84) 128.34%
+  );
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $page-color;
+  color: $text-color;
+  overflow-x: hidden;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $page-color;
+  overflow: hidden;
+  margin-top: 90px;
+}
+
+.page.omega-page {
+  background-color: #000000;
+}
+
+.authpage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $page-color;
+  overflow: hidden;
+}
+
+.pageExt {
+  max-width: 1750px;
+  width: 100%;
+  background-color: $page-color;
+  overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+  transition: 0.2s linear;
+  background-color: #292929;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 22px;
+  background: var(--primary);
+}
+
+body::-webkit-scrollbar-track {
+  padding: 0px 20px;
+  background-color: transparent;
+}
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}

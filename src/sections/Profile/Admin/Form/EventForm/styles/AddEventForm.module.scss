@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.container {
+  background-color: transparent;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: left;
+  gap: 0.658rem;
+  margin-bottom: 2em;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.eventList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.topSection {
+  display: flex;
+  flex-direction: row;
+}
+.topSectionInputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.topSectionInputContainer:nth-child(1) {
+  margin-right: 2em;
+}
+.EventInput {
+  margin-bottom: 2.2em;
+  width: 90%;
+}
+.EventInputArea {
+  width: 90%;
+  height: 32vh;
+}
+.posterPreview {
+  background-color: #55555562;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 286px;
+  width: 96%;
+  margin-top: 0.8em;
+  z-index: 1;
+}
+
+.posterPreview p {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .topSection {
+    flex-direction: column;
+  }
+  .topSectionInputContainer:nth-child(1) {
+    margin-right: 0;
+  }
+  .EventInput {
+    width: 100%;
+  }
+  .EventInputArea {
+    width: 100%;
+  }
+  .posterPreview {
+    width: 100%;
+  }
+  .buttonContainer {
+    display: none;
+  }
+}

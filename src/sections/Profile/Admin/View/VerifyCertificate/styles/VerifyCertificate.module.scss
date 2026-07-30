@@ -1,0 +1,212 @@
+@use "../../../../../../assets/styles/Global.scss" as *;
+$primary-color: #1C1C1C;
+$secondary-color: #1DB954;
+$accent-color: #FF8A00;
+$bg-blur: rgba(255, 255, 255, 0.05);
+$text-color: #f1f1f1;
+$border-radius: 16px;
+$shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+.container {
+  padding: 2rem 1.5rem;
+  // background: #0a0a0a;
+  color: $text-color;
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+
+  span {
+    color: $accent-color;
+  }
+
+  &::after {
+    content: "Digital Certificate Verification";
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 0.5rem;
+    color: #bbb;
+  }
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    max-width: 95%;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    border: 2px solid $accent-color;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+    @media(max-width: 390px) {
+      padding: 0.1rem;
+      width: 85%;
+
+    
+  }
+
+  }
+}
+
+.detailsContainer {
+  background: $bg-blur;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  display:inline-flexbox;
+  width:100%;  
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media(max-width: 480px) {
+      padding: 1.0rem;
+      margin-top: 2rem;
+    
+  }
+    @media(max-width: 390px) {
+      padding: 0rem;
+      width:95%;
+      margin-left: 9px;
+      margin-top: 2rem;
+    
+  }
+}
+
+.detailsTable {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  th, td {
+    padding: 0.95rem;
+    text-align: left;
+  }
+
+  th {
+    color: $accent-color;
+    font-weight: 600;
+    width: 40%;
+  }
+
+  td {
+    color: #ddd;
+  }
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .verifiedTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $secondary-color;
+    font-weight: 600;
+    font-size: 1rem;
+
+    @media(max-width: 390px) {
+      padding: 0.1rem;
+      margin-left: 2px;
+  }
+    svg {
+      font-size: 1.25rem;
+    }
+  }
+
+  .downloadBtn {
+    background-color: $accent-color;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken($accent-color, 10%);
+      transform: scale(1.05);
+    }
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items:center;
+    gap: 1rem;
+  }
+
+}
+
+.loadingContainer, .errorContainer {
+  text-align: center;
+  // margin-top: 5rem;
+  // color: red;
+
+  p {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  .shareIcon {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+.actionButtons{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.shareBtn {
+  font-size: smaller;
+
+  &:hover {
+    background-color: darken($accent-color, 10%);
+    transform: scale(1.05);
+  }
+}
