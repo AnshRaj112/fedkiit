@@ -88,28 +88,43 @@ only runs on a server request — which a client-side sign-in never makes. The
 first cut of this port dropped the behaviour: a correct login showed "Login
 successful" and then sat on `/Login` forever.
 
-`app/(auth)/AuthRouteGuard.jsx` reinstates it for all five auth routes, honouring
-both the original's `sessionStorage.prevPage` and the `?next=` the proxy appends.
+**The redirect belongs in the components, not in a layout wrapper.** A guard in
+`app/(auth)/layout.jsx` reacting to `isLoggedIn` was tried first and is wrong:
+`SignUP.jsx` and `CompleteProfile.jsx` sign the user in and then navigate
+themselves to `/`, and a layout guard cancels that in-flight `router.push`
+before it commits. Measured on the signup flow — the push never reached
+`history` at all, and a new account landed on `/profile` instead of `/`:
 
-Two things it has to get right that the original did not have to:
+```
+20494ms  resolve /api/auth/register
+21025ms  history.replaceState(/Login?next=%2Fprofile)   <- guard won
+         (no history.pushState(/) — SignUp's own push was discarded)
+```
 
-- **`?next=//evil.com` is rejected**, same rule `proxy.ts` applies — the return
-  URL now comes off the query string, so it is attacker-supplied.
-- **It cannot ping-pong with the proxy.** If localStorage says "signed in" but
-  the cookie is gone, redirecting to `/profile` bounces straight back here. The
-  guard makes one attempt per page view and keeps the form rendered, and on a
-  fresh load with `?next=` already set it drops the stale client session instead
-  of redirecting — the server has the final say.
+No delay fixes that reliably, because the push only commits once its RSC
+payload arrives. So each component owns its own navigation, which is how the
+ported source was already written: `Login.jsx`, `GoogleLogin.jsx` and
+`GoogleSignup.jsx` all carry `shouldNavigate` / `navigatePath` state and an
+effect that acts on it — dead code in the original precisely *because* the route
+table did the job. Setting `setShouldNavigate(true)` after `authCtx.login(...)`
+brings it to life. `SendOtp.jsx` already did exactly this and needed no change.
 
-Verified in the browser by driving the real form with the login response stubbed
-at the XHR layer:
+`src/utils/postAuthRedirect.js` resolves the destination the way `LoginRedirect`
+did, plus the `?next=` the proxy appends. Because that value now comes off the
+query string it is attacker-supplied, so anything that is not a plain internal
+path is discarded — `//evil.com` included.
 
-| Start | After sign-in |
-|---|---|
-| `/Login` | **`/profile`** |
-| `/Login?next=/Events` | **`/Events`** |
-| `/Login?next=//example.com/phish` | **`/profile`** (origin preserved) |
-| `/Login` with stale localStorage, no cookie | **login form, no loop** |
+Verified in the browser by driving the real forms with the API stubbed at the
+XHR layer:
+
+| Flow | Start | Lands on |
+|---|---|---|
+| Login | `/Login` | **`/profile`** |
+| Login | `/Login?next=/Events` | **`/Events`** |
+| Login | `/Login?next=//example.com/phish` | **`/profile`** — origin preserved |
+| Login | blocked page → login | **back to the blocked page**, `prevPage` cleared |
+| Signup | `/SignUp` | **`/`** — matches the original |
+| Login | stale localStorage, no cookie | **login form, one bounce, no loop** |
 
 ---
 
@@ -302,8 +317,47 @@ Two further problems surfaced while verifying, both inherited from the original
 length. The Express controller checked only for presence, so `email: "bad"` was
 accepted and wrote unreplyable rows into `contactus`.
 
+## Auth routes — verified
+
+Every auth route was exercised against the running server, signed out and
+signed in. `proxy.ts` is the gate; the numbers below are what it returned.
+
+| Route | Signed out | Signed in |
+|---|---|---|
+| `/Login` `/SignUp` `/ForgotPassword` `/completeProfile` `/otp` | 200 | **307 → `/profile`** |
+| `/profile` and all six sub-pages | **307 → `/Login?next=…`** | 200 |
+| `/login` `/signup` `/forgotpassword` `/completeprofile` | 308 → canonical casing | — |
+
+A forged or expired token is treated as no token, and the bad cookie is cleared
+on the way out:
+
+```
+GET /profile   Cookie: token=<tampered>
+307 → /Login?next=%2Fprofile
+set-cookie: token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+```
+
+The seven auth endpoints reject malformed input rather than failing open —
+`login`, `register`, `verifyEmail`, `forgotPassword` and `googleAuth` all
+answer 400 on an empty body, and `logout` is idempotent. `changePassword` is
+the reset step and is gated on a single-use OTP, rate limited, and returns the
+same message whether or not the account exists.
+
 ## Known issues
 
+- **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
+  `onSubmit` and `Button` renders an untyped `<button>`, so "Send OTP" submits
+  natively and the page navigates to `?email=…` before the 1.5s handler can run.
+  Reproduced identically in the original — inherited, not a port defect. Left
+  alone because fixing it changes behaviour rather than restoring it.
+- **`/profile/members` and `/profile/BlogForm` are not access-gated in the UI.**
+  App.jsx only registered those routes for `ADMIN` (and `SENIOR_EXECUTIVE_CREATIVE`
+  for the blog form), so a non-admin hitting the URL fell through to the error
+  page; here they render for any signed-in user. Every mutation behind them is
+  still enforced server-side — `createBlog` checks `canManageBlogs`, `addMember`
+  and `editDetails` return 403 — so the exposure is the admin screen itself, not
+  the ability to use it. The data it lists comes from `fetchTeam`, which is
+  public either way (see below).
 - `/api/user/fetchTeam` returns members' email addresses to anonymous callers.
   Preserved deliberately: trimming the projection changes the response bytes and
   the Team page's sort order. Worth fixing, but it is a behaviour change, not a
