@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Hero.module.scss";
 import CarouselImg from "../../../data/Carousel.json";
-import { Carousel } from "../../../components";
+import Carousel from "../../../components/Carousel/Carousel";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 
 const titles = [

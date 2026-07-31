@@ -2,8 +2,14 @@
 
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
-import { Hero, About, Sponser, Feedback, Contact } from "../../sections";
-import { LiveEventPopup } from "../../features";
+// Imported from sections/Home, not the sections barrel. That barrel also
+// re-exports sections/Profile — the whole admin panel — and because every one
+// of them is a client component the bundler pulled the entire graph into the
+// landing page: certificate tooling, admin tables, the lot.
+import { Hero, About, Sponser, Feedback, Contact } from "../../sections/Home";
+// Direct, for the same reason: the features barrel also exports EventStats,
+// the avatar editor and the admin form modals.
+import LiveEventPopup from "../../features/Modals/Event/LiveEventPopup/LiveEventPopup";
 
 const Home = () => {
 

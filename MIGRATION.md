@@ -343,6 +343,81 @@ answer 400 on an empty body, and `logout` is idempotent. `changePassword` is
 the reset step and is gated on a single-use OTP, rate limited, and returns the
 same message whether or not the account exists.
 
+## Load time — the barrel files were the problem
+
+The landing page was shipping **2.3 MB of JavaScript**. The cause is visible in
+any dev-server warning trace:
+
+```
+./src/sections/Profile/Admin/View/VerifyCertificate/VerifyCertificate.jsx
+./src/sections/Profile/index.jsx
+./src/sections/index.jsx          <- re-exports Home *and* Profile
+./src/views/Home/Home.jsx
+./app/(main)/page.jsx
+```
+
+`Home.jsx` imported `{ Hero, About, Sponser, Feedback, Contact }` from the
+`sections` barrel, which also re-exports `sections/Profile` — the entire admin
+panel. Every one of those is a client component, so the bundler pulled the whole
+graph into the landing page: certificate tooling, admin tables, the avatar
+editor, event analytics. A visitor who only wanted the hero image downloaded the
+admin panel. The `features` barrel did the same thing for `LiveEventPopup`.
+
+Under Vite this cost nothing noticeable, because the dev server serves ES modules
+untouched and the SPA loaded one bundle for every route anyway. Under Next each
+route gets its own bundle, so a barrel import silently undoes the code splitting.
+
+Fixed by importing the four components directly instead of through a barrel. The
+barrels are untouched — other call sites still use them.
+
+| Page | Before | After |
+|---|---|---|
+| `/` | 2317 KB | **1082 KB** |
+| `/Events` | 2063 KB | **1082 KB** |
+| `/Team` | 2014 KB | **1082 KB** |
+| `/Login` | 1248 KB | **920 KB** |
+
+Uncompressed. Over the wire the landing page is **327 KB** of JS and 55 KB of
+HTML, and locally serves in TTFB 38 ms / DOMContentLoaded 135 ms / load 536 ms.
+
+**Dev-server slowness is separate and expected.** `next dev` compiles each route
+on first request, so a cold page can take seconds while production serves the
+same page in 5–30 ms. Measure `npm run build && npm start`, never `npm run dev`.
+
+## Invalid HTML nesting that only mattered under SSR
+
+`EventCard` wrapped its meta row in a `<p>` that contained `div.price`, which in
+turn contained another `<p>`. The HTML parser does not allow either.
+
+Client-rendered under Vite this was invisible: React builds the DOM node by node,
+and nothing reparents an already-constructed tree. Server-rendered it is real
+markup, so the parser closed the `<p>` early and `div.price` came out a *sibling*
+of the meta row rather than a child — a different layout, which React then
+reported as a hydration mismatch on every event card.
+
+The wrapper is now a `<div className={style.meta}>`, and the two `.eventname p`
+rules list `.eventname .meta` alongside so the computed styles are unchanged.
+Verified in the browser: the wrapper computes to `font-size: 14.4px`
+(= 0.9rem), `display: flex`, `align-items: center`, `margin-top: 1.6px`
+(= 0.1rem) — exactly what the `<p>` had — with `div.price` a real child, and the
+console clean across 580 rendered cards.
+
+Two smaller fixes from the same log:
+
+- `darken($accent-color, 10%)` in `VerifyCertificate.module.scss` is deprecated
+  in Dart Sass. Replaced with `color.adjust($accent-color, $lightness: -10%)`,
+  its documented equivalent — confirmed by compiling both and diffing the output
+  (`rgb(80%, 43.2941176471%, 0%)` either way). The build no longer emits
+  deprecation warnings.
+- `<html>` carries `data-scroll-behavior="smooth"`, acknowledging the
+  `scroll-behavior: smooth` that `globals.scss` sets, so Next stops warning and
+  keeps the original's smooth scrolling.
+
+Not fixed, deliberately: the `<Fit />` "height decreased" messages come from
+`react-fit`, a transitive dependency of `react-date-picker`, when the calendar
+popup is repositioned to fit the viewport. It uses the `warning` package, which
+compiles to a no-op in production, so this is dev-only third-party noise.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

@@ -188,7 +188,10 @@
   text-overflow:ellipsis;
 }
 
-.eventname p {
+// `.meta` is the wrapper that used to be a <p> — see EventCard.jsx. It is
+// listed alongside so the computed styles are exactly what they were.
+.eventname p,
+.eventname .meta {
   font-size: 0.9rem;
   width: auto;
   display: flex;
@@ -309,7 +312,8 @@
     background-clip: text;
   }
 
-  .eventname p {
+  .eventname p,
+  .eventname .meta {
     font-size: 0.7rem;
     display: flex;
     align-items: center;

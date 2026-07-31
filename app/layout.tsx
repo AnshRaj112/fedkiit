@@ -59,7 +59,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // `data-scroll-behavior="smooth"` acknowledges the `scroll-behavior: smooth`
+    // that globals.scss sets on <html>. Without it Next warns, because it has to
+    // decide whether a route change should animate the scroll to the top — with
+    // the attribute present it keeps the smooth scroll the original had.
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/*
           The exact font families and weights the original SCSS pulled in.
