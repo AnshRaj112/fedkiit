@@ -462,6 +462,98 @@ Not fixed, deliberately: the `<Fit />` "height decreased" messages come from
 popup is repositioned to fit the viewport. It uses the `warning` package, which
 compiles to a no-op in production, so this is dev-only third-party noise.
 
+## Admin forms & events — re-verified against the Express controllers
+
+The calendar on the admin form page had **no styling at all**. The original
+`index.scss` pulled in three vendor stylesheets; only one was carried over:
+
+```scss
+@import "react-date-picker/dist/DatePicker.css";   // was missing
+@import "react-calendar/dist/Calendar.css";        // was missing
+@import "react-datepicker/dist/react-datepicker.css";
+```
+
+`react-date-picker` draws its popup with `react-calendar`, so with `Calendar.css`
+absent the picker opened as an unstyled column of numbers. Confirmed by grepping
+the emitted CSS — **zero** `.react-calendar` rules shipped, now 50. In the
+browser the popup measures 350×248 with a `#a0a096` border, which is
+react-calendar's own default and therefore exactly what the original rendered.
+
+Re-reading every form/event controller alongside its port turned up more:
+
+**`getFormAnalytics` returned the wrong shape entirely.** `EventStats.jsx` reads
+`response.data.form.formAnalytics`, `response.data.form.info` and
+`response.data.yearCounts`; the port returned `{ success, message, data }`, so
+`response.data.form` was `undefined` and the admin analytics panel threw. It now
+returns `{ message, form, yearCounts }`, including the `yearCounts` histogram
+built from registrants' `year` field, and the 404 for a form nobody has
+registered to. Its access check is the controller's own allowlist
+(ADMIN / PRESIDENT / VICEPRESIDENT / DIRECTOR_*) plus the `srex@fedkiit.com`
+escape hatch, answering 401 "Access Denied" — not the `isMember` test the port
+had invented.
+
+**The attendance flow did not work.** The QR code carries a *signed JWT*:
+
+| | Express | Port (before) |
+|---|---|---|
+| `attendanceCode` returns | `{ message, attendanceToken }`, a JWT expiring in 20 min | `{ success, data }` with the raw record id |
+| `markAttendance` accepts | `{ formId, token }`, verifies the JWT | a bare ObjectId |
+
+`QRCodeModal` reads `response.data.attendanceToken` — absent, so no QR was
+generated — and `AttendancePage` posts the scanned JWT, which the port rejected
+as not being a 24-character id. Both sides now match the original, including the
+`formId` binding that stops one event's QR checking someone in at another, and
+the `?teamCode=` branch. Verified by minting a token with the original's
+`jsonwebtoken` call and verifying it with the port's `jose` code, and the
+reverse:
+
+```
+Express-minted QR verifies in the port : true
+Port-minted QR verifies in Express     : true
+  lifetime (minutes)                   : 20
+Tampered QR rejected                   : true
+```
+
+**Access levels corrected in both directions:**
+
+| Endpoint | Express | Port (before) | Now |
+|---|---|---|---|
+| `export-attendance/:id` | `checkAccess("ADMIN")` | any club member | ADMIN |
+| `markAttendance` | signed-in (its `checkAccess` is commented out) | any club member | signed-in |
+| `getFormAnalytics/:id` | controller allowlist | any club member | allowlist |
+
+`markAttendance` reads as the loosest of the three but is not: the door
+volunteer signs in as a plain USER, so requiring member access locked the door
+staff out, and the 20-minute signed QR is the actual control.
+
+**Image dimensions were wrong.** Both controllers resize through Cloudinary at
+fixed sizes; the port used 1000×1000 and 500×500 instead:
+
+| | Express | Port (before) | Now |
+|---|---|---|---|
+| `addForm` FormImages | h 350.67 × w 196.37 | 1000 × 1000 | h 350.67 × w 196.37 |
+| `addForm` QRMediaImages | h 400 × w 150 | 500 × 500 | h 400 × w 150 |
+| `editForm` FormImages | h 350.67 × w 196.37 | 1000 × 1000 | h 350.67 × w 196.37 |
+| `editForm` QRMediaImages | h 150 × w 400 | 500 × 500 | h 150 × w 400 |
+
+The two QR rows are transposed relative to each other because `addForm` passes
+`(QrImageWidth, QrImageHeight)` and `editForm` passes `(QrImageHeight, QrImageWidth)`
+into the same `(height, width)` parameters. Each call site is reproduced as
+written rather than reconciled. Note also that Express's helper is
+`uploadImage(path, folder, height, width)` while this project's is
+`(file, folder, width, height)`, so the arguments read transposed in the source
+while sending identical values.
+
+`addForm` also returns 200 with "Form created successfully", and `editForm`
+"Form info and sections updated successfully", matching the originals.
+
+**One divergence kept on purpose.** `addForm` in Express computes
+`isPublic: Boolean(isPublic) || false` over a multipart field, and
+`Boolean("false")` is `true` — so every event created through the admin form was
+public, registration-closed and past regardless of the toggles. `editForm`
+already used `isPublic === "true"`. The port uses the `editForm` form in both, so
+the three switches actually work. Restoring byte-parity here would re-break them.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
@@ -477,6 +569,15 @@ compiles to a no-op in production, so this is dev-only third-party noise.
   and `editDetails` return 403 — so the exposure is the admin screen itself, not
   the ability to use it. The data it lists comes from `fetchTeam`, which is
   public either way (see below).
+- **`checkAccess("USER")` is stricter in Express than here.** It passes only when
+  `access === "USER"` (or ADMIN), so club executives could not register for an
+  event, create or join a team, or fetch their attendance code — they got a 403.
+  The ported routes require a signed-in user instead, which lets staff use those
+  features. Worth a decision rather than a silent change: matching Express
+  exactly would start returning 403 to every executive account.
+- `GET /api/form/allJoinRequestUpdates` answers `{ updates: [] }` to anonymous
+  callers where Express returned 401. App.jsx polls it on load, so a 401 logged
+  an error on every signed-out page view.
 - `/api/user/fetchTeam` returns members' email addresses to anonymous callers.
   Preserved deliberately: trimming the projection changes the response bytes and
   the Team page's sort order. Worth fixing, but it is a behaviour change, not a

@@ -14,10 +14,25 @@ import { uploadImage } from "@/lib/services/upload";
  * fields, and assembles the same `info` blob the original wrote, so existing
  * documents and new ones stay structurally identical.
  */
-const FORM_IMAGE_W = 1000;
-const FORM_IMAGE_H = 1000;
-const QR_IMAGE_W = 500;
-const QR_IMAGE_H = 500;
+/**
+ * The dimensions the Express controller used, reproduced exactly.
+ *
+ * Note the argument order differs between the two codebases: Express's
+ * `uploadImage(path, folder, height, width)` takes height first, this project's
+ * `uploadImage(file, folder, width, height)` takes width first. The values below
+ * are therefore transposed relative to the original source, so Cloudinary
+ * receives the same numbers.
+ *
+ * The QR pair is deliberately "wrong": addForm passed
+ * `(QrImageWidth, QrImageHeight)` into the height/width slots, so the original
+ * uploaded QR media at height 400 / width 150. editForm passes them the other
+ * way round. Each call site is matched as it stands rather than reconciled —
+ * that would be a behaviour change, not a port fix.
+ */
+const FORM_IMAGE_W = 196.37;
+const FORM_IMAGE_H = 350.67;
+const QR_IMAGE_W = 150;
+const QR_IMAGE_H = 400;
 
 export async function POST(request: Request) {
   return handle(async () => {
@@ -96,9 +111,11 @@ export async function POST(request: Request) {
     // Drop the cached listing so the new event shows up immediately.
     revalidatePath("/Events");
 
-    return json(
-      { success: true, message: "Form added successfully", form: created },
-      201,
-    );
+    // 200 and this wording are what the Express controller returned.
+    return json({
+      success: true,
+      message: "Form created successfully",
+      form: created,
+    });
   });
 }

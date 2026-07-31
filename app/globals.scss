@@ -16,6 +16,14 @@
 // text silently fell back to a system sans-serif and every line box was ~2px
 // shorter than the original.
 
+// All three vendor stylesheets the original index.scss pulled in. Only the
+// react-datepicker one was carried over at first, which left the <DatePicker>
+// on the admin form with no styling at all: react-date-picker renders its popup
+// with react-calendar, and with Calendar.css missing the calendar opened as an
+// unstyled column of numbers. Verified by grepping the emitted CSS — zero
+// `.react-calendar` rules shipped.
+@import "react-date-picker/dist/DatePicker.css";
+@import "react-calendar/dist/Calendar.css";
 @import "react-datepicker/dist/react-datepicker.css";
 
 // The brand gradient. Lived in Global.scss on the original site; it moved here
