@@ -56,7 +56,15 @@ function Hero() {
         <div className={styles.heroTextContainer}>
           <AnimatedBox direction="left">
             <div className={styles.largeContent}>
-              <p>
+              {/*
+                A <div>, not the <p> the original used: it contains the animated
+                <h3>, which the HTML parser will not keep inside a <p>. That was
+                harmless client-rendered and a hydration mismatch once
+                server-rendered. `.tagline` is listed alongside `.largeContent p`
+                in the stylesheet, so the text is styled exactly as before, and
+                the <h3> stays an <h3> rather than being downgraded to a span.
+              */}
+              <div className={styles.tagline}>
                 Nurturing Using Innovative & Creative strategies{" "}
                 <span
                   className={styles.dynamicText}
@@ -68,7 +76,7 @@ function Hero() {
                 >
                   <h3 className={styles.typing}>{currentTitle}</h3>
                 </span>{" "}
-              </p>
+              </div>
             </div>
             <div className={styles.smallContainer}>
               <div className={styles.smallContent}>

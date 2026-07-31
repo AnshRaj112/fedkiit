@@ -384,25 +384,69 @@ HTML, and locally serves in TTFB 38 ms / DOMContentLoaded 135 ms / load 536 ms.
 on first request, so a cold page can take seconds while production serves the
 same page in 5–30 ms. Measure `npm run build && npm start`, never `npm run dev`.
 
-## Invalid HTML nesting that only mattered under SSR
+## Invalid HTML nesting that only mattered under SSR — all of it
 
-`EventCard` wrapped its meta row in a `<p>` that contained `div.price`, which in
-turn contained another `<p>`. The HTML parser does not allow either.
+Four components wrapped block-level content in a `<p>`:
 
-Client-rendered under Vite this was invisible: React builds the DOM node by node,
-and nothing reparents an already-constructed tree. Server-rendered it is real
-markup, so the parser closed the `<p>` early and `div.price` came out a *sibling*
-of the meta row rather than a child — a different layout, which React then
-reported as a hydration mismatch on every event card.
+| Component | The nesting |
+|---|---|
+| `EventCard` | `<p>` → `div.price` → `<p>` |
+| `EventModal` | `<p>` → `div.price` → `<p>` |
+| `Hero` | `<p>` → `<span>` → `<h3>` |
+| `Social` | `<p>` → `div.fed` → `<div>` |
 
-The wrapper is now a `<div className={style.meta}>`, and the two `.eventname p`
-rules list `.eventname .meta` alongside so the computed styles are unchanged.
-Verified in the browser: the wrapper computes to `font-size: 14.4px`
-(= 0.9rem), `display: flex`, `align-items: center`, `margin-top: 1.6px`
-(= 0.1rem) — exactly what the `<p>` had — with `div.price` a real child, and the
-console clean across 580 rendered cards.
+Client-rendered under Vite none of this mattered: React builds the DOM node by
+node, and nothing reparents a tree that already exists. Server-rendered it is
+real markup, so the parser closes the `<p>` at the first block child and the
+content lands as a *sibling* — a different layout, which React then reports as a
+hydration mismatch.
 
-Two smaller fixes from the same log:
+Each wrapper is now a `<div>` carrying a class listed alongside the original
+`p` selector, so the computed styles are unchanged. Verified in the browser:
+
+| | Was styled by | Now computes to |
+|---|---|---|
+| `EventCard .meta` | `.eventname p` | 14.4px / flex / center / 1.6px |
+| `EventModal .meta` | `.eventname p` | 14.4px / flex / center / 1.6px / #fff |
+| `Hero .tagline` | `.largeContent p` | 39.2px / 700 / #fff |
+| `Social .content` | `.text p` | 40px / 600 / #fff / center |
+
+Hero keeps its `<h3>` rather than downgrading it to a `<span>` — the wrapper
+changed instead, so the heading still counts as a heading.
+
+`Social`'s wrapper is worth a note: `styles.content` had **no rule in the
+stylesheet**, so the className resolved to `undefined` and did nothing — the
+element was styled purely by `.text p`. `.content` now exists and carries those
+declarations. (`EventCardModal.price` is undefined in the same way; both are
+inherited from the original and left as they are.)
+
+**`npm run audit:nesting` keeps it that way.** `scripts/audit-nesting.mjs`
+walks a tag stack through every JSX file and reports any element the HTML parser
+would reparent. It skips comments, string and regex literals — without that, a
+comment mentioning `<p>` or a `.replace(/<a\s[^>]*>/gi, '')` gets read as markup,
+which produced three separate rounds of false positives while writing it. The
+scanner was validated by running it against the pre-fix files: it reports all
+four real cases and nothing for the two false-positive files.
+
+## Social embeds do not survive hydration
+
+Fixing `Social`'s nesting uncovered a second, unrelated mismatch on the same
+page: `react-social-media-embed` mints a fresh UUID per render and writes it
+into both `id` and `className`, so the server's markup can never match the
+client's. The embed sizes compound it — they come from `useDimensions()`, which
+reads `window` and therefore measures 0 on the server.
+
+`InstagramEmbed` and `LinkedInEmbed` are now loaded through `next/dynamic` with
+`ssr: false`. Nothing is lost: the visible post is drawn by Instagram's and
+LinkedIn's own scripts after mount, so the server-rendered markup was an
+invisible placeholder either way. `/Social` renders the same four embeds at the
+same 1674px page height, with the console clean.
+
+`{ ssr: false }` is written out at both call sites because `next/dynamic` is a
+compile-time transform and rejects a shared options variable —
+*"next/dynamic options must be an object literal."*
+
+## Smaller fixes from the same dev-server log
 
 - `darken($accent-color, 10%)` in `VerifyCertificate.module.scss` is deprecated
   in Dart Sass. Replaced with `color.adjust($accent-color, $lightness: -10%)`,
