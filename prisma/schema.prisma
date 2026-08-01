@@ -1,0 +1,298 @@
+// FED KIIT — Prisma schema
+//
+// Migrated from FED-Backend/prisma/schema/*.prisma (multi-file) into a single
+// schema. Every `@@map` and `@map` is preserved verbatim: this app points at the
+// same MongoDB database as the Express backend, so collection and field names
+// must not drift.
+//
+//   npx prisma generate
+//   npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Users & access control
+// ---------------------------------------------------------------------------
+
+enum AccessTypes {
+  ADMIN
+
+  PRESIDENT
+  VICEPRESIDENT
+
+  USER
+
+  DIRECTOR_TECHNICAL
+  DIRECTOR_CREATIVE
+  DIRECTOR_MARKETING
+  DIRECTOR_OPERATIONS
+  DIRECTOR_PR_AND_FINANCE
+  DIRECTOR_HUMAN_RESOURCE
+
+  DEPUTY_DIRECTOR_TECHNICAL
+  DEPUTY_DIRECTOR_CREATIVE
+  DEPUTY_DIRECTOR_MARKETING
+  DEPUTY_DIRECTOR_OPERATIONS
+  DEPUTY_DIRECTOR_PR_AND_FINANCE
+  DEPUTY_DIRECTOR_HUMAN_RESOURCE
+
+  SENIOR_EXECUTIVE_TECHNICAL
+  SENIOR_EXECUTIVE_CREATIVE
+  SENIOR_EXECUTIVE_MARKETING
+  SENIOR_EXECUTIVE_OPERATIONS
+  SENIOR_EXECUTIVE_PR_AND_FINANCE
+  SENIOR_EXECUTIVE_HUMAN_RESOURCE
+
+  TECHNICAL
+  CREATIVE
+  MARKETING
+  OPERATIONS
+  PR_AND_FINANCE
+  HUMAN_RESOURCE
+
+  ALUMNI
+  EX_MEMBER
+}
+
+model user {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  email            String             @unique
+  name             String?
+  access           AccessTypes        @default(USER)
+  year             String?
+  img              String?
+  blurhash         String?
+  password         String
+  rollNumber       String?
+  school           String?
+  college          String?
+  contactNo        String?
+  whatsappNo       String?
+  extra            Json?
+  regForm          String[]           @default([])
+  editProfileCount Int?               @default(5)
+  userForms        formRegistration[]
+
+  @@map("userdb")
+}
+
+// ---------------------------------------------------------------------------
+// One-time passwords
+// ---------------------------------------------------------------------------
+
+enum OtpPurpose {
+  FORGOT_PASSWORD
+  EMAIL_VERIFICATION
+}
+
+model otp {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  email      String
+  otp        String
+  createdAt  DateTime   @default(now())
+  age        Float
+  allowRetry Boolean
+  for        OtpPurpose
+  subject    String
+  template   String
+
+  @@unique([email, for])
+  @@map("otp")
+}
+
+// ---------------------------------------------------------------------------
+// Forms (an "event" in the UI is a form + its info blob)
+// ---------------------------------------------------------------------------
+
+model form {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  info     Json
+  sections Json[]
+  extra    Json?
+
+  userReg       formRegistration[]
+  formAnalytics registrationTracker[]
+
+  events Event[]
+}
+
+model formRegistration {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  user   user   @relation(fields: [userId], references: [id])
+  userId String @map("userId") @db.ObjectId
+
+  form   form   @relation(fields: [formId], references: [id])
+  formId String @map("formId") @db.ObjectId
+
+  value            Json[]
+  regTeamMemEmails String[]
+
+  teamSize Int    @default(1)
+  teamName String
+  teamCode String
+
+  @@unique([formId, teamCode])
+  @@map("form_registration")
+}
+
+model registrationTracker {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  form   form   @relation(fields: [formId], references: [id])
+  formId String @unique @map("formId") @db.ObjectId
+
+  regTeamNames  String[]
+  regUserEmails String[]
+
+  totalRegistrationCount Int?   @default(1)
+  totalClickCount        Int?   @default(0)
+  faildAttempt           Json[]
+  faildAttemptCount      Int?   @default(0)
+
+  @@map("registration_tracker")
+}
+
+model teamJoinRequest {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  formId             String    @db.ObjectId
+  requesterEmail     String
+  requesterName      String
+  teamRegistrationId String    @db.ObjectId
+  teamName           String?
+  leaderEmail        String
+  status             String    @default("PENDING")
+  seenByRequester    Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  expiresAt          DateTime
+  respondedAt        DateTime?
+
+  @@index([formId, requesterEmail])
+  @@index([teamRegistrationId, status])
+  @@map("team_join_request")
+}
+
+model attendance {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @db.ObjectId
+  formId String @db.ObjectId
+
+  teamName String
+  teamCode String
+
+  isPresent         Boolean @default(false)
+  isPaymentVerified Boolean @default(false)
+
+  info Json
+
+  markedAt DateTime?
+
+  @@unique([formId, userId, teamCode])
+  @@map("attendance")
+}
+
+// ---------------------------------------------------------------------------
+// Events, organisations & certificates
+// ---------------------------------------------------------------------------
+
+model Organisation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  events      Event[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  description        String
+  organisationId     String
+  formId             String?              @db.ObjectId
+  certificates       Certificate[]
+  issuedCertificates issuedCertificates[]
+  attendees          Json[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  organisation Organisation @relation(fields: [organisationId], references: [id])
+  form         form?        @relation(fields: [formId], references: [id])
+}
+
+model Certificate {
+  id        String   @id @default(cuid()) @map("_id")
+  eventId   String
+  template  String
+  fields    Json[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event              Event                @relation(fields: [eventId], references: [id])
+  issuedCertificates issuedCertificates[]
+}
+
+model issuedCertificates {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  eventId       String
+  fields        Json[]
+  email         String
+  certificateId String?
+  fieldValues   Json
+  imageSrc      String?
+  mailed        Boolean @default(false)
+
+  event       Event        @relation(fields: [eventId], references: [id])
+  Certificate Certificate? @relation(fields: [certificateId], references: [id])
+}
+
+// ---------------------------------------------------------------------------
+// Content & inbound
+// ---------------------------------------------------------------------------
+
+model blog {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  image      String
+  category   String?
+  title      String
+  author     Json
+  blogLink   String
+  desc       String
+  date       String
+  visibility String
+  approval   Json?
+  summary    String?
+
+  @@map("blog")
+}
+
+model SocialPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  platform  String   // 'instagram' | 'linkedin'
+  url       String   // original post URL
+  embedUrl  String   // derived iframe-ready URL
+  caption   String?
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("social_posts")
+}
+
+model ContactUs {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  date    DateTime
+  email   String
+  name    String
+  message String
+
+  @@map("contactus")
+}
