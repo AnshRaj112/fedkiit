@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-<<<<<<< Updated upstream
-  /* config options here */
-=======
   // Inject the shared SCSS variables into every stylesheet. The original
   // modules each did `@import ".../Global.scss"`, and two used Vite's absolute
   // "/src/..." form which Next cannot resolve. Injecting once is equivalent and
@@ -66,7 +63,7 @@ const nextConfig: NextConfig = {
   // rule from "/Events" to "/events" also matches "/events" and loops
   // permanently. Those redirects live in `proxy.ts`, which can compare the
   // pathname case-sensitively.
->>>>>>> Stashed changes
+ Stashed changes
 };
 
 export default nextConfig;
