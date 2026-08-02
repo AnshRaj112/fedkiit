@@ -4,19 +4,13 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="fed-section pt-32 md:pt-40 pb-16 md:pb-24 overflow-hidden"
+      className="fed-section overflow-hidden"
       aria-label="Hero – Empowering the next generation of founders"
     >
       <div className="fed-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left: Text Content (Col span 7) */}
           <div className="lg:col-span-7 pr-0 lg:pr-6">
-            {/* Tag Label */}
-            <div className="fed-label mb-6 inline-flex animate-fade-up animate-delay-100">
-              <span className="fed-label-dot" />
-              THE STARTUP CULTURE
-            </div>
-
             {/* Main Headline */}
             <h1 className="fed-h1 mb-6 animate-fade-up animate-delay-200">
               Empowering the{" "}
@@ -27,14 +21,14 @@ export default function HeroSection() {
             </h1>
 
             {/* Description */}
-            <p className="text-[#a0a0a0] text-base md:text-lg leading-relaxed max-w-xl mb-8 animate-fade-up animate-delay-300">
+            <p className="text-[#a0a0a0] text-base md:text-lg leading-relaxed max-w-xl mb-16 md:mb-20 animate-fade-up animate-delay-300">
               We bridge the gap between engineering and entrepreneurship. FED
               KIIT is a community-driven initiative fostering innovation,
               mentorship, and building products that scale.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 animate-fade-up animate-delay-400">
+            <div className="flex flex-wrap items-center gap-4 mt-12 md:mt-14 animate-fade-up animate-delay-400">
               <Link href="/login" className="fed-btn-primary py-3 px-6 text-base">
                 Login →
               </Link>

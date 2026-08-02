@@ -7,8 +7,12 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <section id="stats" className="py-12 md:py-16 relative z-10" aria-label="Impact statistics">
-      <div className="fed-container">
+    <section
+      id="stats"
+      className="py-12 md:py-16 relative z-10 section-glow-left overflow-hidden"
+      aria-label="Impact statistics"
+    >
+      <div className="fed-container" style={{ position: "relative", zIndex: 1 }}>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {stats.map((stat) => (
             <div key={stat.label} className="fed-stat-card">

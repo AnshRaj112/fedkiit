@@ -1,0 +1,32 @@
+{
+  "testimonials": [
+    {
+      "id": "aditi",
+      "quote": "FED gave me the runway to launch my first product before graduating.",
+      "name": "Aditi K.",
+      "role": "Founder, Palette (YC W24)",
+      "initials": "AK"
+    },
+    {
+      "id": "rohan",
+      "quote": "The mentor network here is unreal — I closed my seed round through a FED intro.",
+      "name": "Rohan G.",
+      "role": "CEO, Wispr Labs",
+      "initials": "RG"
+    },
+    {
+      "id": "priya",
+      "quote": "Being part of FED transformed my mindset from a student to a builder. Invaluable.",
+      "name": "Priya M.",
+      "role": "Co-founder, NexaFlow",
+      "initials": "PM"
+    },
+    {
+      "id": "arjun",
+      "quote": "FED's hackathons are where I met my co-founder. The community is everything.",
+      "name": "Arjun S.",
+      "role": "CTO, BuildStack",
+      "initials": "AS"
+    }
+  ]
+}

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -65,35 +68,53 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const [currentYear, setCurrentYear] = useState<number>(2026);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
-    <footer className="bg-[#080808]/90 border-t border-white/5 pt-16 pb-10 relative z-10">
+    <footer
+      className="bg-[#080808]/95 border-t border-white/10 relative z-10"
+      style={{ paddingTop: "6rem", paddingBottom: "4rem" }}
+    >
       <div className="fed-container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
-          {/* Brand Column */}
+        {/* Main Grid: 5 columns on desktop so Brand (2) + Explore (1) + Support (1) + Legal (1) fit on a single line */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12"
+          style={{ marginBottom: "4.5rem" }}
+        >
+          {/* Brand Column (Spans 2 cols) */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-4 group">
+            <Link href="/" className="inline-flex items-center gap-3 group" style={{ marginBottom: "1.25rem" }}>
               <div className="fed-logo-badge group-hover:scale-105 transition-transform duration-300">
                 <Image
                   src="/fedkiit-mascot.png"
-                  alt="FED KIIT"
-                  width={32}
-                  height={32}
-                  className="object-cover rounded-md"
+                  alt="FED KIIT Logo"
+                  width={44}
+                  height={44}
+                  className="object-cover w-full h-full"
                 />
               </div>
-              <span className="fed-logo-text">FED KIIT</span>
+              <span className="fed-logo-text" style={{ fontSize: "1.2rem" }}>FED KIIT</span>
             </Link>
-            <p className="text-[#888888] text-sm leading-relaxed max-w-sm mb-6">
-              The Foundation for Entrepreneurship Development at KIIT. Fueling the next generation of founders.
+
+            <p
+              className="text-[#999999] text-sm leading-relaxed max-w-sm"
+              style={{ marginBottom: "1.75rem", fontSize: "0.925rem" }}
+            >
+              Federation of Entrepreneurship Development. Fueling the next generation of founders.
             </p>
-            <div className="flex gap-3">
+
+            <div className="flex items-center gap-3">
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#999999] hover:text-white hover:bg-white/12 hover:border-white/20 transition-all duration-200"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#aaaaaa] hover:text-white hover:bg-white/15 hover:border-white/25 transition-all duration-200"
                   aria-label={s.label}
                 >
                   {s.icon}
@@ -102,11 +123,16 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link Columns */}
+          {/* Link Columns: Explore (1 col), Support (1 col), Legal (1 col) */}
           {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="text-white font-bold text-sm mb-4 tracking-wide">{title}</h4>
-              <ul className="space-y-3">
+            <div key={title} className="lg:col-span-1">
+              <h4
+                className="text-white font-bold text-base tracking-wide"
+                style={{ marginBottom: "1.25rem" }}
+              >
+                {title}
+              </h4>
+              <ul className="flex flex-col gap-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -123,11 +149,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[#666666] text-xs">
-            © {new Date().getFullYear()} FED KIIT. All rights reserved.
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{
+            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+            paddingTop: "2.5rem",
+          }}
+        >
+          <p className="text-[#777777] text-xs font-medium">
+            © {currentYear} FED KIIT. All rights reserved.
           </p>
-          <p className="text-[#666666] text-xs">
+          <p className="text-[#777777] text-xs font-medium">
             Built with ❤️ at KIIT University
           </p>
         </div>

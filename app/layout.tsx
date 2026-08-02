@@ -12,19 +12,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "FED KIIT",
-    template: "%s | FED KIIT",
-  },
-  description: SITE.description,
-  keywords: [...SITE.keywords],
+  title: "FED KIIT",
+  description:
+    "FED KIIT bridges the gap between engineering and entrepreneurship. A community-driven initiative fostering innovation, mentorship, and building products that scale.",
+  keywords: ["FED KIIT", "entrepreneurship", "KIIT University", "startup", "founders", "innovation"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE.name,
     title: "FED KIIT",
-    description: SITE.description,
+    description:
+      "Empowering the next generation of founders at KIIT University.",
     locale: SITE.locale,
   },
   twitter: {
@@ -32,7 +31,13 @@ export const metadata: Metadata = {
     title: "FED KIIT",
     description: SITE.description,
   },
-  icons: { icon: "/fedkiit-logo.svg" },
+  icons: {
+    icon: [
+      { url: "/fedkiit-logo.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/fedkiit-logo.svg",
+    apple: "/fedkiit-logo.svg",
+  },
   other: {
     "facebook-domain-verification": "j4kyebnva8sowmo539jn3julvtgvqq",
   },
