@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import type { SocialPost } from "@/lib/types/SocialPost";
 
 export default async function SocialFeed() {

@@ -1,9 +1,9 @@
-// Route entry — renders the component ported from
-// FED-Frontend/src/pages/Social/Social.jsx
-"use client";
-
-import Social from "@/src/views/Social/Social";
+import SocialFeed from "@/components/SocialFeed";
 
 export default function Page() {
-  return <Social />;
+  return (
+    <main className="w-full">
+      <SocialFeed />
+    </main>
+  );
 }
