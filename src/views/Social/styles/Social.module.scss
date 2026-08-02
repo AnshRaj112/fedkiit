@@ -768,13 +768,17 @@
     max-width: 350px;
     font-size: 17px;
     text-align: center;
+    //font-family: Poppins;
     font-weight: 600;
     color: white;
     margin-left: 2rem;
   }
 
+ 
+  
   .box {
     font-size: 60.84px;
+    //font-family: Poppins;
     background-image: linear-gradient(
       260deg,
       rgba(255, 190, 11, 0.84) -29.7%,
@@ -788,6 +792,7 @@
   #box1::after {
     content: "FED";
     display: flex;
+    //font-family: Poppins;
     font-weight: 700;
     transform: rotateX(180deg);
     background-image: linear-gradient(
@@ -799,6 +804,7 @@
     color: transparent;
     justify-content: center;
     align-items: center;
+    //margin-top: -3.2rem;
     margin-right: -0.74rem;
     margin-bottom: 8rem;
   }
@@ -810,22 +816,5 @@
   .fed{
     margin-left: 0.6rem;
   }
-}
-
-// Blog section — top-level, applies at all screen sizes
-.blogSection {
-  margin-top: 4rem;
-  padding: 0 2rem;
-}
-
-.blogSection h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: white;
-}
-
-.blogGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  
 }

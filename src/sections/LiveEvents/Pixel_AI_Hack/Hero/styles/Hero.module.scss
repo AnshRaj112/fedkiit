@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap');
+.hero {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    margin-top: 10px;
+    background: #000026;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.circle, .circle2 {
+    position: absolute;
+    top: 100px;
+    // border-radius: 50%;
+    filter: blur(40px);
+    height: 50vh;
+    width: 20vw;
+    background: linear-gradient(
+      rgba(17, 44, 60, 0.8),  
+      rgba(226, 8, 76, 0.8),
+      rgba(255, 211, 137, 0.8),
+      rgba(180, 223, 255, 0.8)
+    );
+}
+
+.circle {
+    right: -10%;
+    transform: rotate(0deg);
+}
+
+.circle2 {
+    left: -10%;
+    transform: rotate(70deg);
+}
+
+.hero img {
+    height: 500px;
+    width: 100%;
+    object-fit: cover;
+    margin-top: -50px;
+}
+
+.head {
+    border: 1px solid #fff;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    // font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+}
+.represent {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  color: #ffd389;
+  margin-top  : 2rem;
+  letter-spacing: 2px;
+}
+
+.text {
+    margin-top: -5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color:#a2cfe9;
+   
+    
+    p:first-child {
+        font-size: 1.5rem;
+        margin: 35px 0;
+        font-family: 'Pixelify Sans', sans-serif;
+    }
+
+    button {
+        display: inline-block;
+        padding: 15px 28px;
+        background-color: #FFD389;
+        color: #000026;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        font-family: 'Oswald', sans-serif;
+        margin-top: 0rem;
+        font-size: 1.2rem;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    
+        &:hover {
+          background-color: #FFD389;
+          transition: 0.3s;
+          scale: 1.1;
+
+        }
+          
+        }
+      }
+
+@media (max-width: 480px) {
+    .circle {
+        top: 62%;
+        width: 27%;
+        height: 32%;
+    }
+
+    .circle2 {
+        top: 6%;
+        right: 47%;
+        width: 44vw;
+        height: 32vh;
+    }
+
+    .hero img {
+        height: 300px;
+        margin-top: 1.6rem;
+    }
+    .text p:first-child {
+        font-size: 1rem;
+        margin: 5rem 4rem;
+        font-family: 'Pixelify Sans', sans-serif;
+    }
+
+    
+}

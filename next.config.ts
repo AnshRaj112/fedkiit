@@ -35,7 +35,7 @@ const nextConfig: NextConfig = {
   },
 
   // Cloudinary and Prisma pull in optional native deps that must not be bundled.
-  serverExternalPackages: ["@prisma/client", "bcryptjs", "cloudinary"],
+  serverExternalPackages: ["@prisma/client", "cloudinary"],
 
   async headers() {
     return [
@@ -49,21 +49,16 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(self), microphone=(), geolocation=()",
           },
-          {
-            key: "Content-Security-Policy",
-            value: "frame-src 'self' https://www.instagram.com https://www.linkedin.com;",
-          },
         ],
       },
     ];
   },
 
-  // Note: legacy capitalised URLs (/Events, /Team, /SignUp â€¦) are *not*
+  // Note: legacy capitalised URLs (/Events, /Team, /SignUp …) are *not*
   // redirected here. Next matches a redirect `source` case-insensitively, so a
   // rule from "/Events" to "/events" also matches "/events" and loops
   // permanently. Those redirects live in `proxy.ts`, which can compare the
   // pathname case-sensitively.
- Stashed changes
 };
 
 export default nextConfig;

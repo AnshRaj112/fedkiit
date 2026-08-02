@@ -1,0 +1,28 @@
+.main {
+  height: 100%;
+  width: 100%;
+  background-color: #1c1c1c;
+  position: relative;
+  overflow: hidden;
+}
+
+.frameMiddle {
+  height: 20vw;
+  width: 15vw;
+  background-color: #ff5e00a7;
+  filter: blur(100px);
+  position: absolute;
+  top: 40%;
+  right: -8%;
+  border-radius: 50%;
+}
+.frameBottom {
+  height: 20vw;
+  width: 15vw;
+  background-color: #ff5e00a7;
+  filter: blur(100px);
+  position: absolute;
+  bottom: -26%;
+  left: -8%;
+  border-radius: 50%;
+}

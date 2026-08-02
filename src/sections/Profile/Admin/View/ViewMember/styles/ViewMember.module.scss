@@ -1,0 +1,137 @@
+.right {
+  width: 100%;
+}
+
+.mainMember {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 2em 3em;
+  padding-right: 1em;
+}
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchInput {
+  width: 90%;
+  padding: 10px;
+  border-radius: 15px;
+  border: 1px solid #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+
+.buttonContainer {
+  font-size: 30px;
+  line-height: 40px;
+  padding-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headInnerText {
+  margin-left: 1.2rem;
+  margin-top: 12px;
+}
+
+.headInnerText span {
+  margin-right: 3px;
+  background: linear-gradient(to right, #d03e21 40%, #FF8A00);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.eventmember {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  height: auto;
+  flex-wrap: wrap;
+  margin: 0 1rem;
+}
+
+.buttons button {
+  border-radius: 10px;
+  border: 0.3px #969393 solid;
+  color: #ffff;
+  margin-right: 0px;
+  height: 3rem;
+  width: 6rem;
+  font-size: 0.9rem;
+  margin-left: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  
+  justify-content: center;
+  padding: 10px 20px;
+  padding-right: 0;
+  height: 360px;
+  overflow: hidden scroll;
+  scrollbar-width: none;
+}
+
+@media (max-width: 1024px) {
+  .teamGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+  }
+}
+
+/* Custom styles for TeamCard component */
+.teamMemberCustom {
+  height: 18rem;
+  width: 16rem;
+  padding: 2rem;
+  padding-top: 0;
+
+}
+.teamMemberBackh5Custom {
+  font-size: smaller;
+}
+
+.socialLinksaCustom {
+  font-size: 1rem;
+}
+
+.buttonCustom {
+  font-size: 1rem;
+}
+
+.knowParaCustom {
+  height: 10rem;
+}
+
+.updatebtnCustom{
+  display: flex;
+  width: 70%;
+}

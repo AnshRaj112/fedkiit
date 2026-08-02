@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './styles/BlogCard.module.scss';
+import { Blurhash } from "react-blurhash";
 
 function BlogCard(props) {
   const { data, customButtons, expandDescription = false, hideDescription = false, onClick, cardType = 'default' } = props;
@@ -101,18 +102,22 @@ function BlogCard(props) {
     <div className={getCardClass()} style={{ cursor: 'default' }}>
       <div className={styles.imageWrapper} onClick={() => window.open(blogLink, '_blank')} style={{ cursor: 'pointer' }}>
         {!isImageLoaded && (
-          <div className={styles.placeholder}></div>
+          <Blurhash
+            hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+            width="100%"
+            height="180px"
+            resolutionX={32}
+            resolutionY={32}
+            punch={1}
+            className={styles.blurhash}
+          />
         )}
         <img
-            className={styles.banner}
-            src={image || "https://via.placeholder.com/300x180"}
-            alt={title || "Blog image"}
-            style={{ display: isImageLoaded ? 'block' : 'none' }}
-            onLoad={() => setIsImageLoaded(true)}
-            onError={(e) => {
-            e.currentTarget.src = "https://via.placeholder.com/300x180";
-            setIsImageLoaded(true);
-          }}
+          className={styles.banner}
+          src={image}
+          alt={title}
+          style={{ display: isImageLoaded ? 'block' : 'none' }}
+          onLoad={() => setIsImageLoaded(true)}
         />
       </div>
       <div className={styles.content}>
@@ -123,9 +128,6 @@ function BlogCard(props) {
           <p className={styles.date}>
             {date ? (() => {
               const dateObj = new Date(date);
-              if (isNaN(dateObj.getTime())) {
-              return "Invalid Date";
-            }
               const day = dateObj.getDate().toString().padStart(2, '0');
               const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
               const year = dateObj.getFullYear();
@@ -134,7 +136,7 @@ function BlogCard(props) {
           </p>
         </div>
         <p className={styles.author}>
-          By <strong>{parsedAuthor?.name || "Unknown"}</strong>
+          By <strong>{parsedAuthor.name}</strong>
         </p>
         {!hideDescription && (
           <div className={styles.summaryWrapper}>

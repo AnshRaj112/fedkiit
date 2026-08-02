@@ -1,0 +1,161 @@
+.accordion {
+  margin-top: 70px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 40px;
+
+    span {
+      color: #38ccff;
+    }
+  }
+
+
+  .card { 
+    margin-top: 40px;
+    display: flex;
+    width: 87%; 
+    max-width: 800px; 
+    height: auto;
+    backdrop-filter: blur(10px);
+    background: #0b0b0b11;
+    border: solid;
+    border-color: white;
+    border-width: 1px;
+    position: relative; 
+
+    
+
+
+
+   
+  }
+
+  .accordion-item {
+    margin-top: 10px;
+    width: 100%; 
+    max-width: 800px; 
+
+    .accordion-title {
+      background-color: #000;
+      padding: 25px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    span {
+      background-color: #38ccff;
+      padding: 5px 15px;
+      margin: -25px;
+      margin-top: -35px;
+      font-size: 40px;
+      width: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    p {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: -10px;
+      margin-left: 20px;
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 20px 40px;
+      background-color: #000;
+
+      &.active {
+        display: block;
+        font-size: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 35px;
+    }
+
+    .accordion-item {
+      .accordion-title {
+        padding: 20px;
+      }
+
+      span {
+        font-size: 35px;
+        width: 60px;
+        margin: -20px;
+        margin-top: -30px;
+      }
+
+    }
+  }
+
+  @media (max-width:840px){
+    .accordion-item{
+      p {
+        font-size: 14px;
+      }
+    }
+  }  
+
+  @media (max-width:700px){
+    .accordion-item{
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+
+
+  @media (max-width: 480px) {
+    .title {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .accordion-item {
+      .accordion-title {
+        padding: 15px;
+      }
+
+      span {
+        font-size: 30px;
+        width: 50px;
+        margin: -15px;
+        margin-top: -25px;
+      }
+
+      p {
+        font-size: 10px;
+        padding-right: 30px;
+      }
+
+     
+      .accordion-content{
+        &.active{
+          font-size: 10px;
+        }
+      }
+    }
+  }
+}

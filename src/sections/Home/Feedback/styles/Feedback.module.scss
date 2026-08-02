@@ -1,0 +1,217 @@
+.feedbackContainer {
+  background-color: #1C1C1C;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 60px;
+}
+.FeedbackMsg{
+  width: 260px;
+  height: 132px;
+  margin-bottom: 8px;
+  overflow-y: scroll;
+}
+:global(::-webkit-scrollbar) {
+  visibility: hidden;
+}
+.feedbackContainer .upQuote {
+  width: 150px;
+  height: 90px;
+  position: absolute;
+  right: 0%;
+  top: 15%;
+}
+
+.feedbackContainer .downQuote {
+  width: 150px;
+  height: 90px;
+  position: absolute;
+  left: 0%;
+  bottom: 0%;
+  rotate: 180deg;
+  margin-bottom: 5px;
+}
+
+.feedbackContainer h2 {
+  font-size: 50px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+.bottomLine {
+  width: 12rem;
+  height: 0.3125rem;
+  background: var(--primary);
+  color: transparent;
+  border-radius: 5px;
+  margin-bottom: 4rem;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 3rem;
+  font-size: 1.7rem;
+}
+.heading span{
+  background: var(--primary);
+    background-clip: text;
+    color: transparent;
+}
+.highlight {
+  background: var(--primary);
+    background-clip: text;
+    color: transparent;
+}
+
+.feedbacksContainer {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.feedbacks {
+  display: flex;
+  animation: scroll 20s linear infinite;
+  margin-left: 1300px;
+  
+}
+
+
+
+.feedbackCard {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(7.5px);
+  padding: 20px;
+  margin: 10px;
+  min-width: 300px;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+  height: auto;
+  
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.feedbackText {
+  font-size: 1em;
+  margin-bottom: 20px;
+  white-space: normal; /* Allow text to wrap */
+}
+
+.feedbackAuthor {
+  background: var(--primary);
+    background-clip: text;
+    color: transparent;
+  font-weight: bold;
+  margin-bottom: 5px;
+  white-space: normal;
+}
+
+.feedbackEv {
+  font-size: 0.9em;
+  color: #cccccc;
+  white-space: normal;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .feedbackContainer h2 {
+    font-size: 1.5em;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .feedbackCard {
+    min-width: 250px;
+    padding: 15px;
+  }
+
+  .feedbackContainer .upQuote,
+  .feedbackContainer .downQuote {
+    width: 100px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feedbackContainer{
+    width: 100%;
+  }
+  
+  .FeedbackMsg{
+    width: 220px;
+    height: 100px;
+    overflow-y: scroll;
+  }
+  .feedbackContainer h2 {
+    font-size: 30px;
+  }
+
+  .bottomLine{
+    width: 7rem;
+  }
+
+  .feedbackCard {
+    min-width: 240px;
+    padding: 15px;
+  }
+  
+  .heading {
+    font-size: 1.8rem;
+    margin-top: 20px;
+  }
+
+  .feedbackText {
+    font-size: 0.86em;
+    margin-bottom: 15px;
+  }
+
+  .feedbackAuthor {
+    font-size: 0.7em;
+  }
+
+  .feedbackEv {
+    font-size: 0.6em;
+  }
+
+  .feedbacks {
+    display: flex;
+    animation: scroll 17s linear infinite;
+    margin-left: -1500px;
+    margin-right: -2000px;
+  
+  }
+
+  .feedbackContainer .upQuote,
+  .feedbackContainer .downQuote {
+    width: 80px;
+    height: 50px;
+  }
+  
+  .feedbackContainer .upQuote {
+    top: 37%;
+  }
+
+  .feedbackContainer .downQuote {
+    bottom: 5%;
+  }
+}

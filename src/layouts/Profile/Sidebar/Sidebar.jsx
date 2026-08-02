@@ -206,26 +206,6 @@ const Sidebar = ({ activepage, handleChange }) => {
         />{" "}
         <Link href={"/profile/attendance"}> Attendance</Link>
       </div>
-
-      <div
-        onClick={() => handleChange("Social")}
-        style={{
-          background: activepage === "Social" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip: activepage === "Social" ? "text" : "initial",
-          backgroundClip: activepage === "Social" ? "text" : "initial",
-          color: activepage === "Social" ? "transparent" : "inherit",
-          marginLeft: "-6px",
-        }}
-      >
-        <FaRegNewspaper
-          size={17}
-          style={{
-            color: activepage === "Social" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
-        <Link href="/profile/social">Social Management</Link>
-      </div>
     </>
   );
 

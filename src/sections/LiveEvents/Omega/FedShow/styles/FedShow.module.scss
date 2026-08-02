@@ -1,0 +1,333 @@
+.fedShow {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: -10px;
+
+    
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.head {
+  margin-top: 3rem;
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.subHead {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(
+    rgba(244, 43, 3, 0.84) 0%,
+    rgba(255, 190, 11, 0.84) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileFedShowImg{
+  display: none;
+}
+
+.fedShow .imgLeft {
+  height: 400px;
+  margin-top: 7.5rem;
+  margin-right: 4rem;
+  margin-bottom: 1rem;
+  //   width: 70%;
+}
+
+.fedShow .imgRight {
+  height: 400px;
+  margin-top: 7.5rem;
+  margin-left: 4rem;
+  margin-bottom: 1rem;
+  //   width: 70%;
+}
+
+.fedShow .imgRight2 {
+  height: 400px;
+  margin-top: 7.5rem;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  //   width: 70%;
+}
+
+.showName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -4rem;
+  margin-left: -1rem;
+  width: 307.8px;
+  height: 218.7px;
+}
+
+.info {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
+    font-weight: 600;
+  
+    p {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      margin: 5px;
+    }
+  
+    .icon {
+      margin-right: 5px;
+      color: #fff;
+    }
+  }
+
+  
+  .registerBtn {
+    margin-top: 40px;
+    margin-left: 40px;
+    --border: 10px;
+    --slant: 0.4rem;
+    
+    font-size: 80%;
+    padding: 1em 1.8em;
+  
+    border-bottom:  rgba(244, 43, 3, 0.84) solid 8px;
+    
+    border-right:  rgba(244, 43, 3, 0.84) solid 8px;
+   
+    
+    font-weight: bold;
+    width: 14rem;
+    transition: ease-in 0.5s, font-size 0.3s ease-in-out;
+  
+  
+    position: relative;
+    color: black;
+  
+    background: #e9e5e5;
+  
+    clip-path: polygon(
+      var(--slant) 0,
+      100% 0,
+      100% calc(100% - var(--slant)),
+      calc(100% - var(--slant)) 100%,
+      0 100%,
+      0 var(--slant)
+    );
+    
+    
+    &:hover {
+      font-size: 15px;
+      transition: border 0.5 ease-out 0.5 , font-size 0.5s ease-in-out 0.5s;
+      border: none;
+      
+    }
+  
+    &::after {
+      content: "";
+      position: absolute;
+      transform: rotate(135deg);
+      bottom: -30px;
+      right: -16px;
+      width: 100px;
+      height: 20.5px;
+      border-bottom-right-radius: 1px;
+      z-index: -1;
+    }
+}
+  
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  p:first-child {
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+
+  p:last-child {
+    margin: 0.5rem 0 1.5rem 0;
+    font-size: 1rem;
+  }
+
+  .registerBtn {
+    margin-top: 20px;
+    --border: 5px;
+    --slant: 0.7em;
+    --color: blue;
+    font-size: 80%;
+    padding: 1em 1.8em;
+    border-bottom: rgb(0, 136, 255) solid 5px;
+    border-right: rgb(0, 136, 255) solid 5px;
+    font-weight: bold;
+    width: 14rem;
+    transition: ease-in 0.5s, font-size 0.3s ease-in-out;
+
+    position: relative;
+    color: black;
+    background: #e9e5e5;
+    box-shadow: 0 0 0 0px inset var(--s, #0000),
+      0 var(--border) 0 0 var(--color), var(--border) 0 0 0 var(--color);
+    clip-path: polygon(
+      var(--slant) 0,
+      100% 0,
+      100% calc(100% - var(--slant)),
+      calc(100% - var(--slant)) 100%,
+      0 100%,
+      0 var(--slant)
+    );
+
+    &:hover {
+      font-size: 15px;
+      transition: border 0.5 ease-out 0.5, font-size 0.5s ease-in-out 0.5s;
+      border: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      transform: rotate(135deg);
+      bottom: -30px;
+      right: -16px;
+      width: 70px;
+      height: 15.5px;
+      background-color: rgb(0, 136, 255);
+      border-bottom-right-radius: 12px;
+      z-index: -1;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .fedShow .imgLeft{
+    margin-right : -1rem ;
+    margin-top: 13rem;
+  }
+  .fedShow .imgRight{
+    margin-left: -1rem;
+    margin-top: 13rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .imgLeft,
+  .imgRight {
+    display: none;
+  }
+
+  .imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .mobileFedShowImg {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+
+  .head {
+    margin-top: 50px;
+  }
+  .subHead{
+    font-size: 30px;
+    margin-left: 40px;
+  }
+
+  .fedShow {
+    margin-top: 0px;
+  }
+
+  .text {
+    width: 100%;
+    text-align: center;
+    margin: 30px 10px;
+  }
+
+  .text p {
+    width: 70%;
+    white-space: wrap;
+  }
+
+  .text button {
+    margin-top: 40px;
+    font-size: 85%;
+  }
+}
+.speakersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; // Center the cards in the row
+}
+
+.speakerCard {
+  width: 250px;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.speakerImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.speakerName {
+  font-size: 18px;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.speakerDesignation {
+  font-size: 14px;
+  color: #828282;
+}
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-top: 60px;
+}
+
+.our {
+  color: white;
+  padding-right: 2px;
+}
+
+.speakers {
+   background: linear-gradient(
+    rgba(244, 43, 3, 0.84) 0%,
+    rgba(255, 190, 11, 0.84) 100%
+  );
+    -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

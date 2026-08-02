@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap');.container {
+  width: 100%;
+  // min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  background: #000026;
+
+  .accordion {
+    width: 100%;
+    // max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.accordion-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 15px 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .question {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #FFD389;
+    }
+  }
+
+  .answer {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 10px;
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+  }
+}
+
+.active .answer {
+  max-height: 500px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .accordion {
+    width: 90%;
+  }
+
+  .question {
+    font-size: 1.2rem;
+  }
+
+  .answer {
+    font-size: 1rem;
+  }
+}

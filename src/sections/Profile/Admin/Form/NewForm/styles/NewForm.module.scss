@@ -1,0 +1,68 @@
+.formHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.6em;
+    width: 86%;
+    height: fit-content;
+    align-items: center;
+  }
+  
+.buttonContainer {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+}
+  
+.headInnerText span{
+  margin-right: 3px;
+  background: linear-gradient(to right , #d03e21 40%, #FF8A00 );
+  -webkit-background-clip: text;
+  color: transparent;
+  
+}
+  .formInput {
+    width: 90% !important;
+    margin-bottom: 1.4em;
+  }
+  .formInputTxtArea {
+    width: 90% !important;
+    height: 31vh !important;
+  }
+  
+  .formFieldContainer {
+    display: flex;
+    flex-direction: column;
+    width: 86%;
+    padding: 1em;
+    border-radius: 8px;
+    border: 0.5px solid transparent;
+    background-color: rgba(128, 127, 126, 0.066);
+    margin-bottom: 1em;
+  }
+  .formFieldContainer:hover {
+    border: 0.5px solid #ff88008c;
+    transition: 0.5s ease-in-out;
+  }
+  .formFieldContainer:active {
+    border: 0.5px solid #ff88008c;
+    transition: 0.5s ease-in-out;
+  }
+  .mainFieldForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .fieldInput {
+    width: 90% !important;
+  }
+  .containerInput {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+  }
+  
