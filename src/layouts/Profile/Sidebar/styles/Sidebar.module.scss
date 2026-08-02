@@ -1,0 +1,216 @@
+// Profile sidebar.
+//
+// Two things were actively wrong here: the divider was a 1.6px solid white bar
+// with !important, and `.menuItem:hover` painted the row pure white - white on
+// white text. The rail is now a hairline border and rows highlight by moving up
+// the surface ramp. The Poppins @import is gone; the sidebar takes --font-sans
+// like the rest of the panel.
+
+.sidebar {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  width: 34%;
+  position: relative;
+  font-family: var(--font-sans);
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+.divider {
+  height: 90%;
+  width: 1px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: var(--border);
+}
+
+.profilePhoto {
+  width: 148px;
+  height: 148px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
+.profileInfo {
+  text-align: center;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.role {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+  padding-left: 18%;
+}
+
+.menu div {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu div:hover {
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.menu div a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+// Set on the row by Sidebar.jsx for the current page. Written under .menu so it
+// outranks the hover rule instead of needing !important.
+.menu div.menuActive {
+  background-color: var(--surface-2);
+  color: var(--accent);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: left;
+  gap: 0.658rem;
+  margin-top: -49.82rem;
+  margin-left: 427px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+.viewEvents,
+.addEvent {
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+  .menu {
+    flex-direction: row;
+    width: 100%;
+    padding-left: 0px;
+  }
+  .menu div {
+    width: auto;
+    margin-right: 0.6em;
+    margin-left: 0.6em;
+  }
+  .menu div:nth-child(2) {
+    display: none;
+  }
+  .menu div:nth-child(3) {
+    display: none;
+  }
+  .menu div:nth-child(4) {
+    display: none;
+  }
+  .divider {
+    width: 30%;
+    height: 1px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    margin: auto auto 0 auto;
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .sidebar {
+    height: 61.5vh;
+  }
+}
+
+@media screen and (max-width: 916px) {
+  .sidebar {
+    height: 71vh;
+  }
+}
+
+@media screen and (max-width: 801px) {
+  .sidebar {
+    height: 60vh;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .sidebar {
+    height: auto;
+  }
+}

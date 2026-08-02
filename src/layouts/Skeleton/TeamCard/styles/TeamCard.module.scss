@@ -1,0 +1,69 @@
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    opacity: 0.7;
+    width: 100%;
+    height: 110%;
+    top: -5px;
+  }
+  
+  
+  .skeleton2 {
+    position: relative;
+    overflow: hidden;
+    opacity: 0.7;
+    width: 100%;
+    height: 110%;
+    top: -5px;
+  }
+
+  .skeletonBack{
+    width: 90%;
+    height: 70%;
+    background-color: var(--surface-3);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: 10px;
+    margin-bottom: 0;
+  
+  }
+  
+  .skeletonBack2{
+    width: 90%;
+    height: 20%;
+    background-color: var(--surface-3);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: 10px;
+  }
+  
+  
+  .skeletonDiv {
+    position: relative;
+    height: 40vw;
+    width: 20vw;
+    overflow: hidden;
+    bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .skeletonOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  @media (max-width: 480px) {
+    .skeletonDiv{
+      height: 47vw;
+      width: 38vw;
+    }
+  }

@@ -1,0 +1,154 @@
+// Form builder - admin.
+//
+// The page reads as a stack of hairline-bordered wells on pure black. The old
+// sheet leaned on a gradient text-clip heading and a translucent grey fill for
+// every group; both are gone in favour of the surface ramp.
+
+.formHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 1.6em;
+  width: 86%;
+  height: fit-content;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.headInnerText {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  span {
+    margin-right: 6px;
+    color: var(--accent);
+  }
+}
+
+/* ------------------------------------------------------------------ toggles */
+
+// Visibility / registration / status switches. One well rather than three so
+// the row labels line up and the switches share a right edge.
+.settings {
+  width: 86%;
+  margin: 0.5em 0 1em;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+}
+
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  + .settingsRow {
+    margin-top: 16px;
+  }
+}
+
+.settingsLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-secondary);
+}
+
+.settingsOn {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.settingsOff {
+  color: var(--text-tertiary);
+}
+
+.settingsIcon {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+
+  &[data-active="true"] {
+    color: var(--accent);
+  }
+}
+
+/* ------------------------------------------------------------------- fields */
+
+.formInput {
+  width: 90% !important;
+  margin-bottom: 1.4em;
+}
+
+.formInputTxtArea {
+  width: 90% !important;
+  height: 31vh !important;
+}
+
+.formFieldContainer {
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  transition: background-color 0.2s ease;
+}
+
+.formFieldContainer:hover {
+  background-color: var(--surface-2);
+}
+
+.mainFieldForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.fieldInput {
+  width: 90% !important;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+/* ----------------------------------------------------------------- sections */
+
+.sectionsBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 86%;
+  margin-bottom: 12px;
+}
+
+.sectionsLabel {
+  margin-right: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}

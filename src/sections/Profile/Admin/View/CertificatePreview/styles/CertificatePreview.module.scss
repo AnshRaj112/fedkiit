@@ -1,0 +1,113 @@
+// Certificate preview + test mail - admin.
+//
+// This module was entirely commented out, so `styles.info` resolved to
+// undefined and the screen fell back to inline styles with light-theme borders
+// (#ccc) and no tokens. The rules below restore it against the current markup.
+
+.page {
+  height: 90vh;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--text-primary);
+
+  span {
+    color: var(--accent);
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.previewLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 450px;
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-0);
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.form {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-top: 20px;
+  margin-left: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.control {
+  width: 100%;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .label {
+    margin-top: 0;
+  }
+}
+
+.submit {
+  margin-top: -10px;
+  border-color: transparent;
+  background-color: var(--accent);
+  color: var(--text-inverse);
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+}

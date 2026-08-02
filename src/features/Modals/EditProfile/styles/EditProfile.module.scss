@@ -1,0 +1,189 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.72);
+  font-family: var(--font-sans);
+}
+
+.panel {
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+// Positioning only - appearance comes from <CloseButton />.
+.closeModal {
+  flex: none;
+}
+
+.details {
+  width: 100%;
+}
+
+.profileTable {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.table {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+
+  // The <Input> primitive wraps its control in a div of its own, so the field
+  // has to be stretched through that wrapper rather than on the input itself.
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.dets {
+  flex: none;
+  width: 7.5rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+// `!important` mirrors the shared Input primitive, which marks its own border
+// that way - a plain declaration here would lose to it regardless of order.
+.vals {
+  width: 100% !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  background-color: var(--surface-0) !important;
+  font-family: inherit;
+  color: var(--text-primary) !important;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent) !important;
+    background-color: var(--surface-2) !important;
+    box-shadow: 0 0 0 3px var(--accent-quiet);
+  }
+}
+
+.email {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-tertiary);
+  text-align: center;
+
+  strong {
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+}
+
+// Same override problem as .vals: the shared Button primitive declares its own
+// geometry, and its stylesheet is emitted after this one. The colours arrive as
+// an inline style prop from the JSX, so only :hover needs to shout.
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px !important;
+  padding: 0 28px !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--accent-hover) !important;
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .overlay {
+    padding: 12px;
+  }
+
+  .table {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .dets {
+    width: auto;
+  }
+}

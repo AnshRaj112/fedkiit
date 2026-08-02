@@ -1,0 +1,118 @@
+.mDiv {
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  background-color: var(--surface-0);
+}
+
+.mDivCon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  z-index: 5;
+
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+}
+
+.ArrowBackIcon {
+  position: absolute;
+  top: 5%;
+  left: 30px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+#showCreate {
+  width: 100%;
+  display: block;
+}
+
+#hideCreate {
+  width: 0;
+  display: none;
+}
+
+.CreateProfile,
+.Please {
+  text-align: center;
+}
+
+.CreateProfile {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding: 5px;
+  color: var(--accent);
+}
+
+.Please {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.BackGround {
+  flex-direction: column;
+  margin: auto;
+  margin-top: 3%;
+  height: 92%;
+  width: 34vw;
+  display: flex;
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+}
+
+.FormTag {
+  width: 96%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+@media (max-width: 500px) {
+  .BackGround {
+    width: 80vw;
+    padding-bottom: 20px;
+  }
+
+  .CreateProfile {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .Please {
+    margin: 10px 0px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 501px) {
+  .BackGround {
+    width: 60vw;
+    padding-bottom: 20px;
+  }
+
+  .CreateProfile {
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  .Please {
+    margin: 10px 0px;
+    font-size: 15.5px;
+  }
+}

@@ -1,0 +1,151 @@
+// Member directory - admin.
+//
+// The search field was a 1px pure-white outline on transparent and the filter
+// row was a set of 0.3px grey rectangles; both are now the standard hairline
+// control on the surface ramp.
+
+.right {
+  width: 100%;
+}
+
+.mainMember {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 2em 3em;
+  padding-right: 1em;
+  font-family: var(--font-sans);
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchInput {
+  width: 90%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-0);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--surface-2);
+    box-shadow: 0 0 0 3px var(--accent-quiet);
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.headInnerText {
+  margin: 0;
+  margin-left: 1.2rem;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  span {
+    margin-right: 6px;
+    color: var(--accent);
+  }
+}
+
+.eventmember {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  height: auto;
+  margin: 0 1rem;
+}
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    justify-content: center;
+    padding: 10px 20px;
+    padding-right: 0;
+    max-height: min(70vh, 720px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+
+@media (max-width: 1024px) {
+  .teamGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+  }
+}
+
+/* --------------------------------------------------- TeamCard size overrides */
+
+.teamMemberCustom {
+  width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+.teamMemberBackh5Custom {
+  font-size: 0.8125rem;
+}
+
+.socialLinksaCustom {
+  font-size: 1rem;
+}
+
+.buttonCustom {
+  font-size: 1rem;
+}
+
+.knowParaCustom {
+  height: 10rem;
+}
+
+.updatebtnCustom {
+  display: flex;
+  width: 70%;
+}

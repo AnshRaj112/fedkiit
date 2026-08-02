@@ -1,0 +1,216 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  font-family: var(--font-sans);
+}
+
+// A long success message can outgrow the viewport, so the panel scrolls rather
+// than the overlay: a flex child pinned to flex-end pushes its overflow past
+// the top of the scroll container, where it can never be reached.
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: 92vh;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  overflow-y: auto;
+  scrollbar-width: none;
+  overflow-wrap: anywhere;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+// Positioning only - appearance comes from <CloseButton />.
+.closebtn {
+  flex: none;
+}
+
+/* --------------------------------------------------------------- team block */
+
+.teamCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-0);
+}
+
+.teamFields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.fieldLabel {
+  flex: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.fieldValue {
+  min-width: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.teamCode {
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  min-height: 36px;
+  padding-inline: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+/* ---------------------------------------------------------------- networks */
+
+.shareLabel {
+  margin: 20px 0 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.networks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.network {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 4px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+.networkLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+/* ----------------------------------------------------------------- message */
+
+.message {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.messageLink {
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* -------------------------------------------------------------- responsive */
+
+@media (min-width: 560px) {
+  .overlay {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .panel {
+    max-height: calc(100vh - 48px);
+    padding: 24px;
+    border-radius: var(--radius-xl);
+  }
+}

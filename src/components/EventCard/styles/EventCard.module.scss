@@ -1,0 +1,451 @@
+// Event card.
+//
+// One surface, one hairline border, one image. Depth comes from an inset bevel
+// rather than motion, so hover only lifts the fill - nothing scales and no
+// border shifts colour underneath the content.
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+/* ------------------------------------------------------------------- media */
+
+.media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background-color: var(--surface-3);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.mediaPlaceholder {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 200ms var(--ease);
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-inline: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: rgba(0, 0, 0, 0.72);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+
+  &[data-tone="open"] {
+    color: var(--positive);
+    border-color: rgba(63, 191, 103, 0.4);
+  }
+
+  &[data-tone="soon"] {
+    color: var(--accent);
+    border-color: rgba(255, 138, 0, 0.4);
+  }
+
+  &[data-tone="closed"] {
+    color: var(--text-tertiary);
+  }
+}
+
+/* -------------------------------------------------------------------- body */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 14px 14px 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.metaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background-color: currentColor;
+  opacity: 0.6;
+}
+
+.metaPrice {
+  color: var(--text-secondary);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.titleLink {
+  color: inherit;
+  text-decoration: none;
+
+  // Stretches the link over the whole card so the title is the accessible name
+  // for the card's main target, while the footer controls sit above it.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.extra {
+  position: relative;
+  z-index: 1;
+  padding: 12px 14px 0;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding-inline: 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+
+  &[data-inert="true"] {
+    background-color: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: var(--surface-2);
+    }
+  }
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 40px;
+  padding-inline: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+.tools {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-3);
+  }
+}
+
+/* ------------------------------------------------------------------- admin */
+
+.adminBar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background-color: rgba(0, 0, 0, 0.82);
+}
+
+.adminBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding-inline: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+/* ---------------------------------------------------------------- featured */
+
+// The spotlight card for the next event people can act on. Below 900px it is
+// deliberately identical to a normal card - a two-column split at phone width
+// would only shrink the image and the type.
+
+.techPattern {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    min-height: 320px;
+  }
+
+  // Schematic line work sits behind the copy on the right - blueprint grid,
+  // construction diagonals, corner brackets and a dashed accent rail. Masked
+  // so it densifies toward the edge and stays out of the way of the type.
+  .featured .techPattern {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(52%, 380px);
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.14);
+    mask-image: linear-gradient(
+      to left,
+      #000 0%,
+      rgba(0, 0, 0, 0.85) 35%,
+      transparent 92%
+    );
+  }
+
+  .techSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .techAccent {
+    stroke: var(--accent);
+    opacity: 0.5;
+  }
+
+  // The row is sized by the text column, so the artwork is taken out of flow
+  // entirely - otherwise a portrait poster would stretch the whole card.
+  .featured .media {
+    grid-row: 1 / -1;
+    aspect-ratio: auto;
+    border-bottom: 0;
+    border-right: 1px solid var(--border);
+    z-index: 1;
+  }
+
+  .featured .image {
+    position: absolute;
+    inset: 0;
+  }
+
+  .featured .body {
+    position: relative;
+    z-index: 1;
+    padding: 28px 28px 0;
+    justify-content: center;
+  }
+
+  .featured .meta {
+    margin-bottom: 14px;
+  }
+
+  .featured .title {
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .featured .description {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    margin-top: 10px;
+    font-size: 0.875rem;
+  }
+
+  .featured .footer {
+    position: relative;
+    z-index: 1;
+    margin-top: 22px;
+    padding: 16px 28px 26px;
+    border-top: 0;
+  }
+
+  .featured .cta {
+    flex: 0 1 auto;
+    min-width: 180px;
+  }
+}
+
+/* ---------------------------------------------------------------- skeleton */
+
+.skeleton {
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  overflow: hidden;
+  animation: cardPulse 1.6s var(--ease) infinite;
+}
+
+.skeletonMedia {
+  aspect-ratio: 16 / 9;
+  background-color: var(--surface-3);
+}
+
+.skeletonBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+
+.skeletonLine {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-3);
+}
+
+@keyframes cardPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (min-width: 768px) {
+  .body {
+    padding: 20px 20px 0;
+  }
+
+  .footer {
+    padding: 16px 20px;
+  }
+}

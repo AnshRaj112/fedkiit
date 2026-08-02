@@ -1,0 +1,246 @@
+// Profile details.
+//
+// A key/value table rather than a card grid, so the only work here is the
+// heading (was a gradient text-clip), the edit affordance (was a bare icon with
+// no hit target) and the two "Open Sans" declarations that never resolved.
+
+#profile {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+  padding-top: 35px;
+  padding-bottom: 27px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.proHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 50px;
+}
+
+.headInnerText {
+  margin: 0;
+  margin-left: 10rem;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  span {
+    margin-right: 6px;
+    color: var(--accent);
+  }
+}
+
+.details {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  margin-left: 10rem;
+}
+
+.profileTable {
+  table-layout: fixed;
+  width: 70%;
+}
+
+.vals {
+  padding-bottom: 27px;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+
+  &.highlight {
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.highlight:hover {
+    overflow: scroll;
+    text-overflow: clip;
+  }
+
+  &.highlight::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.link {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+.dets {
+  width: 35%;
+  padding-right: 100px;
+  padding-bottom: 27px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.editbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: 13rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .details {
+    width: 90%;
+    margin-left: 5rem;
+  }
+
+  .headInnerText {
+    margin-left: 5rem;
+  }
+
+  .editbtn {
+    margin-right: 5rem;
+  }
+}
+
+@media screen and (max-width: 867px) {
+  .details {
+    width: 90%;
+    margin-left: 2rem;
+  }
+
+  .headInnerText {
+    margin-left: 2rem;
+  }
+
+  .editbtn {
+    margin-right: 2rem;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .proHeading {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+  }
+
+  .headInnerText {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
+    margin-left: 0px;
+  }
+
+  .editbtn {
+    margin-right: 0rem;
+    margin-left: 20%;
+  }
+
+  .details {
+    justify-content: center;
+    width: 95%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .dets {
+    width: 50%;
+    padding-left: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #profile {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .proHeading {
+    display: grid;
+    grid-template-columns: 12.5% 65% 10% 12.5%;
+    margin-left: -1.1rem;
+  }
+
+  .headInnerText {
+    font-size: 1.5rem;
+    text-align: start;
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+
+  .editbtn {
+    grid-column-start: 3;
+    grid-column-end: 4;
+  }
+
+  .dets {
+    padding-right: 50px;
+  }
+
+  .profileTable {
+    width: 100%;
+    margin-left: -2%;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .dets,
+  .vals {
+    font-size: 0.8125rem;
+  }
+
+  .proHeading {
+    display: grid;
+    grid-template-columns: 7.5% 70% 15% 7.5%;
+    margin-left: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .dets {
+    padding-right: 30px;
+  }
+
+  .proHeading {
+    display: grid;
+    grid-template-columns: 5% 80% 15%;
+    margin-left: 10px;
+  }
+
+  .profileTable {
+    margin-left: -20px;
+  }
+}

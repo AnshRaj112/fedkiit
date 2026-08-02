@@ -1,0 +1,433 @@
+// Blog composer + uploaded-blog list - admin.
+//
+// Every control here used to carry the brand gradient: the heading was a
+// text-clip, and edit/view/read/delete were four gradient pills that read as
+// four different actions of equal weight. They are now one accent primary, one
+// neutral secondary and one destructive, all on the flat surface ramp.
+
+/* ------------------------------------------------------------------ header */
+
+.formHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 1.6em;
+  width: 86%;
+  height: fit-content;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.headInnerText {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  span {
+    margin-right: 6px;
+    color: var(--accent);
+  }
+}
+
+.settingsIcon {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+
+  &[data-active="true"] {
+    color: var(--accent);
+  }
+}
+
+/* ------------------------------------------------------------------ toggles */
+
+.settings {
+  width: 86%;
+  margin: 0.5em 0 1em;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+}
+
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.settingsLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-secondary);
+}
+
+.settingsOn {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.settingsOff {
+  color: var(--text-tertiary);
+}
+
+.visibilityHint {
+  margin: 0 0 0.5em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ------------------------------------------------------------------- fields */
+
+.formInput {
+  width: 90% !important;
+  margin-bottom: 1.4em;
+}
+
+.formInputTxtArea {
+  width: 90% !important;
+  height: 31vh !important;
+}
+
+.formFieldContainer {
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  transition: background-color 0.2s ease;
+}
+
+.formFieldContainer:hover {
+  background-color: var(--surface-2);
+}
+
+.mainFieldForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.fieldInput {
+  width: 90% !important;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.attachButton {
+  position: absolute;
+  right: 4.5rem;
+  top: 55%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.previewLabel {
+  margin: 5px 0;
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+.previewImage {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------- blog list */
+
+.blogListSection {
+  width: 86%;
+  margin-top: 40px;
+  margin-bottom: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.searchContainer {
+  width: 100%;
+}
+
+.visibilityFilterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.filterLabel {
+  margin-bottom: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.visibilitySelect {
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-0);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--surface-2);
+    box-shadow: 0 0 0 3px var(--accent-quiet);
+  }
+}
+
+.blogListContainer {
+  height: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+.emptyState {
+  padding: 44px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+.blogsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.blogItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+// Reads as metadata, not as an action - hence the hairline chip rather than
+// the filled gradient it replaced.
+.visibilityBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-inline: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------------- actions */
+
+.customButtonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.editButton,
+.viewButton,
+.readButton,
+.deleteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding-inline: 18px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+.editButton {
+  border: 1px solid transparent;
+  background-color: var(--accent);
+  color: var(--text-inverse);
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+}
+
+.viewButton,
+.readButton {
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+.deleteButton {
+  border: 1px solid rgba(244, 82, 59, 0.4);
+  background-color: var(--surface-2);
+  color: var(--negative);
+
+  &:hover {
+    background-color: rgba(244, 82, 59, 0.12);
+  }
+}
+
+/* ------------------------------------------------------------ gemini input */
+
+.mediumLinkWrapper,
+.descriptionWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.4em;
+
+  input,
+  textarea {
+    width: 100%;
+    padding-right: 42px;
+  }
+}
+
+.geminiButtonM,
+.geminiButtonD {
+  position: absolute;
+  top: 40px;
+  right: 37px;
+  transform: translateY(-50%);
+  padding: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.animateDescription,
+.animateMediumLink {
+  animation: pulse 0.4s ease-in-out;
+}
+
+// Fires once on click as feedback for the AI fill - not a hover affordance,
+// so it does not fall under the no-hover-transform rule.
+@keyframes pulse {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  40% {
+    transform: translateY(-50%) scale(1.4);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}

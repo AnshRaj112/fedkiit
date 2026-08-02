@@ -1,0 +1,244 @@
+// Participated / timeline events table.
+//
+// The heading was a gradient text-clip, the table rule was `2px solid grey` and
+// the row actions had no class at all - `.viewButton` was referenced from the
+// JSX but never defined, so they rendered as browser default buttons with an
+// inline `color: orange`. They are pills now.
+
+.participatedEvents {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+  padding-top: 35px;
+  padding-bottom: 27px;
+  height: auto;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--text-primary);
+
+  .error {
+    padding: 30px 70px;
+    z-index: 1;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  .proHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+  .headInnerText {
+    margin: 0;
+    margin-left: 10.5rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+
+    span {
+      margin-right: 6px;
+      color: var(--accent);
+    }
+  }
+
+  .tables {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 60%;
+    margin-left: 10.5rem;
+  }
+
+  .eventsTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      padding-bottom: 10px;
+      padding-top: 5px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    td {
+      padding: 10px 0;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+    }
+
+    th,
+    td {
+      text-align: center;
+      width: 34%;
+    }
+  }
+
+  .eventsTable thead,
+  .eventsTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .eventsTable tbody {
+    display: block;
+    max-height: 360px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    width: 100%;
+  }
+
+  .mobilewidth {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .noEvents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 44px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-1);
+    box-shadow: var(--depth);
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding-inline: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .participatedEvents .tables {
+    margin-left: 5rem;
+  }
+
+  .participatedEvents .headInnerText {
+    margin-left: 5rem;
+  }
+}
+
+@media screen and (max-width: 867px) {
+  .participatedEvents .tables {
+    margin-left: 2rem;
+  }
+
+  .participatedEvents .headInnerText {
+    margin-left: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .participatedEvents .headInnerText {
+    text-align: center;
+    width: 100%;
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+
+  .participatedEvents .eventsTable tbody {
+    max-height: 250px;
+  }
+
+  .participatedEvents .proHeading {
+    margin-bottom: 20px;
+  }
+
+  .participatedEvents .eventsTable {
+    margin-left: 3vw;
+    margin-right: 3vw;
+  }
+
+  .participatedEvents .error {
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.875rem;
+  }
+
+  .participatedEvents .tables {
+    width: 100%;
+    margin-left: 0rem;
+  }
+
+  .participatedEvents .noEvents {
+    font-size: 1rem;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 515px) {
+  .participatedEvents .headInnerText {
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .participatedEvents .headInnerText {
+    font-size: 1.5rem;
+  }
+
+  .participatedEvents .eventsTable th {
+    font-size: 0.6875rem;
+  }
+}

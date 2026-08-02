@@ -1,0 +1,248 @@
+// Public certificate verification.
+//
+// The old sheet carried its own mini palette ($accent-color, $secondary-color,
+// $bg-blur) plus a 24px drop shadow and a 2px accent frame around the artwork.
+// Depth now comes from the same hairline border and bevel as every other panel,
+// and the local variables - including the sass:color import they needed - are
+// gone in favour of tokens.
+
+.container {
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--text-primary);
+
+  span {
+    color: var(--accent);
+  }
+
+  &::after {
+    content: "Digital Certificate Verification";
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--text-secondary);
+  }
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    max-width: 95%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--depth);
+
+    @media (max-width: 390px) {
+      padding: 0.1rem;
+      width: 85%;
+    }
+  }
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 390px) {
+    padding: 1rem 0.75rem;
+    width: 95%;
+    margin-left: 9px;
+    margin-top: 2rem;
+  }
+}
+
+.detailsTable {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  th,
+  td {
+    padding: 0.95rem;
+    text-align: left;
+  }
+
+  th {
+    width: 40%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  td {
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+    color: var(--text-primary);
+  }
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.verifiedTag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--positive);
+
+  @media (max-width: 390px) {
+    padding: 0.1rem;
+    margin-left: 2px;
+  }
+
+  svg {
+    font-size: 1.25rem;
+  }
+}
+
+.verifiedText {
+  color: var(--text-primary);
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+.shareBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+.loadingContainer,
+.errorContainer {
+  padding: 44px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+
+  p {
+    margin-bottom: 2rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  .shareIcon {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

@@ -1,0 +1,311 @@
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 48px;
+  padding: 56px 28px 0;
+  border-top: 1px solid var(--border);
+  background-color: var(--surface-1);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------------ top */
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
+  gap: 48px 64px;
+  padding-bottom: 40px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 340px;
+}
+
+.brandLockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  width: fit-content;
+}
+
+.brandLogo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: var(--depth);
+  color: #ffffff;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &[data-network="linkedin"] {
+    background-color: #0a66c2;
+  }
+
+  &[data-network="instagram"] {
+    background: linear-gradient(
+      45deg,
+      #f58529 0%,
+      #dd2a7b 50%,
+      #8134af 100%
+    );
+  }
+
+  &[data-network="x"] {
+    background-color: #111111;
+    border-color: var(--border-strong);
+  }
+
+  &[data-network="youtube"] {
+    background-color: #ff0000;
+  }
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+/* --------------------------------------------------------------- columns */
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 24px;
+}
+
+.column {
+  min-width: 0;
+}
+
+.columnTitle {
+  margin: 0 0 14px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.columnList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link {
+  display: inline-block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+/* ---------------------------------------------------------------- bottom */
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0 28px;
+  border-top: 1px solid var(--border);
+}
+
+.copy,
+.built {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+.built {
+  flex: none;
+}
+
+/* --------------------------------------------------------------- marquee */
+// Large low-opacity brand strip - Reticle-style watermark, animated so the
+// mark keeps moving under the legal row without competing with the links.
+
+.marquee {
+  position: relative;
+  z-index: 0;
+  height: clamp(88px, 14vw, 148px);
+  margin: 0 -28px;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 28%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.marqueeTrack {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  width: max-content;
+  height: 100%;
+  padding-bottom: 8px;
+  animation: footerMarquee 48s linear infinite;
+  will-change: transform;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 22px);
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: var(--text-primary);
+  opacity: 0.07;
+  white-space: nowrap;
+  user-select: none;
+
+  img {
+    width: clamp(40px, 6vw, 72px);
+    height: clamp(40px, 6vw, 72px);
+    object-fit: contain;
+    opacity: 0.9;
+  }
+}
+
+@keyframes footerMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------- omega */
+
+.omegaLink:hover {
+  color: #38ccff;
+}
+
+.omegaSocialLink:hover {
+  color: #38ccff;
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .brand {
+    max-width: none;
+  }
+
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer {
+    padding: 40px 20px 0;
+  }
+
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-bottom: 20px;
+  }
+
+  .marquee {
+    height: 72px;
+    margin: 0 -20px;
+  }
+
+  .social {
+    width: 36px;
+    height: 36px;
+  }
+}
