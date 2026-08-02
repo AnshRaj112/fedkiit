@@ -49,6 +49,10 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(self), microphone=(), geolocation=()",
           },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-src 'self' https://www.instagram.com https://www.linkedin.com;",
+          },
         ],
       },
     ];
