@@ -134,7 +134,7 @@ export function otpEmail(input: {
       This code expires in <strong>${input.validityMinutes} minutes</strong>.
     </p>
     <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7280;">
-      If you did not request this, you can safely ignore this email — nobody can
+      If you did not request this, you can safely ignore this email - nobody can
       access your account without the code.
     </p>`;
 
@@ -162,7 +162,7 @@ export function welcomeEmail(input: { name: string }): {
       registrations and download certificates from your profile.
     </p>
     <p style="${P}">
-      FED is the student entrepreneurship body of KIIT TBI — we run events,
+      FED is the student entrepreneurship body of KIIT TBI - we run events,
       workshops and competitions, and help student founders get their ideas off
       the ground.
     </p>`;

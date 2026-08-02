@@ -4,7 +4,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * POST /api/certificate/dummyCertificate
- * Port of controllers/certificate/testNameController.js — preview data for the
+ * Port of controllers/certificate/testNameController.js - preview data for the
  * admin certificate designer.
  */
 export async function POST(request: Request) {

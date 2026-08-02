@@ -108,7 +108,7 @@ export async function issueOtp(input: {
   const result = await sendMail({ to: email, subject, html });
 
   if (!result.sent) {
-    // The row exists but the code never reached anyone — remove it so the user
+    // The row exists but the code never reached anyone - remove it so the user
     // can immediately request another instead of hitting the retry throttle.
     await prisma.otp
       .delete({ where: { email_for: { email, for: input.purpose } } })
@@ -122,7 +122,7 @@ export async function issueOtp(input: {
 /**
  * Verifies a submitted code.
  *
- * `consume` deletes the row on success — callers that still need it (register,
+ * `consume` deletes the row on success - callers that still need it (register,
  * which creates the user first) can pass `false` and call `consumeOtp` after.
  */
 export async function verifyOtp(input: {

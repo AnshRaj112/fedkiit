@@ -1,46 +1,47 @@
-@use "../../../assets/styles/Global.scss" as *;
-// Global Colors
-$dark-bg-primary: #121212;
-$dark-bg-secondary: #1e1e1e;
-$accent-color: #ff8000;
-$text-color: #ffffff;
-$card-radius: 16px;
-
 // Search & Filter Row
 .searchWrapper {
   width: 100%;
   display: flex;
-  justify-content: fixed;
+  justify-content: center;
   margin: 1.5rem 0;
 }
 
 .searchBar {
   width: 100%;
   max-width: 100%; // matches blog card layout width
-  display: fixed;
+  display: flex;
   align-items: center;
-  background-color: #353434;
-  border-radius: 50px;
   padding: 0.6rem 1.2rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-  position: fixed;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  position: relative;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--accent);
+    background-color: var(--surface-2);
+  }
 }
 
 .searchIcon {
-  color: #ff8000;
+  color: var(--text-tertiary);
   margin-right: 0.75rem;
 }
 
 .searchInput {
   flex: 1;
+  min-width: 0;
   background-color: transparent;
   border: none;
   outline: none;
-  color: white;
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9375rem;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--text-tertiary);
   }
 }
 
@@ -49,9 +50,9 @@ $card-radius: 16px;
   align-items: center;
 
   .filterButton {
-    background: none;
+    background-color: transparent;
     border: none;
-    color: #ff8000;
+    color: var(--accent);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -62,51 +63,42 @@ $card-radius: 16px;
     position: absolute;
     top: 110%;
     right: 0;
-    background-color: #2d2d2d;
-    border: 1px solid rgba(255, 138, 0, 0.3);
-    border-radius: 4px;
-    padding: 0.5rem 0;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-2);
+    box-shadow: var(--depth);
     list-style: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 20;
 
     .dropdownItem {
       padding: 0.5rem 1.2rem;
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      color: white;
-      transition: background 0.2s ease;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
 
       &:hover {
-        background: rgba(255, 138, 0, 0.2);
+        background-color: var(--surface-3);
+        color: var(--text-primary);
       }
     }
 
     .activeItem {
-      background: rgba(255, 138, 0, 0.4);
-      color: #fff;
+      background-color: var(--surface-3);
+      color: var(--accent);
       font-weight: 600;
     }
   }
 }
 
-
-// Blog Sections Layout
-// .blogSections {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 3rem;
-//   width: 100%;
-// }
-
 // Responsive Two-column Layout
 .topSection {
   display: flex;
   justify-content: space-between;
-  align-items: stretch; 
+  align-items: stretch;
   gap: 2rem;
   margin-bottom: 2rem;
-
-
 
   @media (max-width: 900px) {
     display: flex;
@@ -115,17 +107,17 @@ $card-radius: 16px;
   }
 }
 
-
-
 // Trending Blogs
 .trendingBlogs {
   width: 100%;
 
   h3 {
-    color: $accent-color;
-    margin-bottom: 1rem;
+    color: var(--accent);
+    font-family: var(--font-display);
     font-size: 1.2rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
   }
 
   .trendingGrid {
@@ -135,24 +127,25 @@ $card-radius: 16px;
   }
 
   .blogCard {
-    background: $dark-bg-secondary;
-    border-radius: $card-radius;
     padding: 1rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-1);
+    box-shadow: var(--depth);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.2s ease;
 
     &:hover {
-      transform: translateY(-3px) scale(1.02);
+      background-color: var(--surface-2);
     }
 
     img {
       width: 100%;
       height: 100px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       margin-bottom: 0.6rem;
-      background: $dark-bg-primary;
+      background-color: var(--surface-2);
     }
 
     .cardContent {
@@ -160,19 +153,19 @@ $card-radius: 16px;
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 0.2rem;
-        color: $text-color;
+        color: var(--text-primary);
       }
 
       .blogMeta {
         font-size: 0.85rem;
-        color: $accent-color;
+        color: var(--accent);
         margin-bottom: 0.2rem;
         font-weight: 600;
       }
 
       .blogDesc {
         font-size: 0.88rem;
-        color: #ccc;
+        color: var(--text-secondary);
         line-height: 1.2;
       }
     }
@@ -184,10 +177,12 @@ $card-radius: 16px;
   width: 100%;
 
   h3 {
-    color: $accent-color;
-    margin-bottom: 1rem;
+    color: var(--accent);
+    font-family: var(--font-display);
     font-size: 1.2rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
   }
 
   .featuredGrid {
@@ -197,24 +192,25 @@ $card-radius: 16px;
   }
 
   .blogCard {
-    background: $dark-bg-secondary;
-    border-radius: $card-radius;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 1.2rem;
-    transition: transform 0.2s;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-1);
+    box-shadow: var(--depth);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover {
-      transform: translateY(-4px);
+      background-color: var(--surface-2);
     }
 
     img {
       width: 100%;
       height: 120px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       margin-bottom: 0.8rem;
-      background: $dark-bg-primary;
+      background-color: var(--surface-2);
     }
 
     .cardContent {
@@ -222,22 +218,36 @@ $card-radius: 16px;
         font-size: 1.05rem;
         font-weight: 700;
         margin-bottom: 0.2rem;
-        color: $text-color;
+        color: var(--text-primary);
       }
 
       .blogMeta {
         font-size: 0.9rem;
-        color: $accent-color;
+        color: var(--accent);
         margin-bottom: 0.2rem;
         font-weight: 600;
       }
 
       .blogDesc {
         font-size: 0.95rem;
-        color: #ccc;
+        color: var(--text-secondary);
         line-height: 1.3;
       }
     }
+  }
+}
+
+// Recently Added
+.recentlyAdded {
+  width: 100%;
+
+  h3 {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
   }
 }
 
@@ -250,19 +260,46 @@ $card-radius: 16px;
 }
 
 .seeAllButton {
-  background: linear-gradient(135deg, $accent-color, #ff4500);
-  color: #fff;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-inverse);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: scale(1.05);
+    background-color: var(--accent-hover);
   }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+// Loading & error states
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  width: 100%;
+}
+
+.errorMessage {
+  color: var(--negative);
+  font-size: 1rem;
 }
 
 // Responsive Padding

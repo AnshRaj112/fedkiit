@@ -111,7 +111,14 @@ const Profile = ({ editmodal }) => {
                         <tr  key={index}>
                           <td className={styles.dets}>{detail.label}</td>
                           <td className={`${styles.vals} ${detail.value ? styles.highlight : ""}`}>
-                          <a href={detail.value} target="_blank" style={{color: "white" , fontWeight: "500"}}>{detail.value}</a>
+                          <a
+                            href={detail.value}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.link}
+                          >
+                            {detail.value}
+                          </a>
                           </td>
                         </tr>
                       ) : (

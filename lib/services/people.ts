@@ -12,7 +12,7 @@ import { prisma } from "@/lib/db";
  * endpoints selected `email` and returned it to anonymous callers, publishing
  * every office-bearer's address to anyone who hit the API. Email is dropped from
  * the public projection here. They also 404'd on an empty result, which made a
- * legitimately empty roster look like a broken route — this returns `[]`.
+ * legitimately empty roster look like a broken route - this returns `[]`.
  */
 
 export type TeamMember = {
@@ -117,7 +117,7 @@ function toMember(row: Row): TeamMember {
   };
 }
 
-/** Public projection — no email, no password, no contact numbers. */
+/** Public projection - no email, no password, no contact numbers. */
 const PUBLIC_SELECT = {
   id: true,
   name: true,
@@ -165,7 +165,7 @@ const cachedAlumni = unstable_cache(loadAlumni, ["alumni-roster"], {
 /**
  * Roster reads that degrade to an empty list when the database is unreachable,
  * so a Mongo outage cannot fail `next build`. The catch sits outside
- * `unstable_cache`, so a failure is never cached as "no members" — the next
+ * `unstable_cache`, so a failure is never cached as "no members" - the next
  * request retries the database.
  */
 export async function getTeam(): Promise<TeamMember[]> {

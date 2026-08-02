@@ -4,7 +4,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * POST /api/certificate/addCertificateTemplate
- * Port of controllers/certificate/certificateController.js — admin only.
+ * Port of controllers/certificate/certificateController.js - admin only.
  */
 export async function POST(request: Request) {
   return handle(async () => {

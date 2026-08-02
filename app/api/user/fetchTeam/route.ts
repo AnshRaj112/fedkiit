@@ -5,7 +5,7 @@ import { expressError, handle, json } from "@/lib/api/express";
  * GET /api/user/fetchTeam
  *
  * Port of controllers/userController/user/getTeam.js. The projection matches the original
- * exactly — Team.jsx sorts on `member.year`, which the Express endpoint never
+ * exactly - Team.jsx sorts on `member.year`, which the Express endpoint never
  * selected, so adding it here would silently reorder the roster.
  */
 export async function GET() {

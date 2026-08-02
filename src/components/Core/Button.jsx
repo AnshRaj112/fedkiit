@@ -13,9 +13,12 @@ const Button = ({
   ...rest
 }) => {
   const combinedStyle = {
-    color: variant === "primary" ? "#FF8A00" : "#fff",
-    backgroundColor: variant === "primary" ? "#2D2D2D" : "transparent",
-    borderColor: variant === "primary" ? "#2D2D2D" : "#fff",
+    color:
+      variant === "primary" ? "var(--text-inverse)" : "var(--text-primary)",
+    backgroundColor:
+      variant === "primary" ? "var(--accent)" : "var(--surface-2)",
+    borderColor:
+      variant === "primary" ? "transparent" : "var(--border-strong)",
     opacity: disabled || isLoading ? 0.5 : 1,
     cursor: disabled || isLoading ? "not-allowed" : "pointer",
     ...style,

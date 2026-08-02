@@ -232,7 +232,7 @@ export async function removeTeamMember(input: {
     orderBy: { id: "asc" },
   });
 
-  // The leader is whoever created the team — the earliest row on the code.
+  // The leader is whoever created the team - the earliest row on the code.
   if (members[0]?.userId !== input.user.id) {
     throw new ApiError(403, "Only the team leader can remove members");
   }

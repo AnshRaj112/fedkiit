@@ -162,8 +162,6 @@ function Hero({ ongoingEvents, isRegisteredInRelatedEvents, eventName }) {
 
   return (
     <div className={styles.hero}>
-      <div className={styles.circle}></div>
-      <div className={styles.circle2}></div>
       <Element name="p">
         <motion.div
           initial={{ opacity: 0, y: -10, scale: 0.5 }}

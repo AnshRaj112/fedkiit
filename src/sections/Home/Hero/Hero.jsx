@@ -56,7 +56,7 @@ function Hero() {
         <div className={styles.heroTextContainer}>
           <AnimatedBox direction="left">
             <div className={styles.largeContent}>
-              <p>
+              <div className={styles.largeText}>
                 Nurturing Using Innovative & Creative strategies{" "}
                 <span
                   className={styles.dynamicText}
@@ -68,7 +68,7 @@ function Hero() {
                 >
                   <h3 className={styles.typing}>{currentTitle}</h3>
                 </span>{" "}
-              </p>
+              </div>
             </div>
             <div className={styles.smallContainer}>
               <div className={styles.smallContent}>
@@ -93,7 +93,6 @@ function Hero() {
         <div className={styles.heroCarousel}>
           <Carousel images={CarouselImg} />
         </div>
-        <div className={styles.circle}></div>
       </div>
     </div>
   );

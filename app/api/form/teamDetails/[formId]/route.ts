@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/auth/access";
  * GET /api/form/teamDetails/:formId
  * Port of controllers/registration/getTeamDetails.js.
  *
- * Returns only the caller's own registration for the form — the original looked
+ * Returns only the caller's own registration for the form - the original looked
  * the record up by form alone in places, which exposed other teams' member
  * lists.
  */

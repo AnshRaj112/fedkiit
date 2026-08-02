@@ -6,7 +6,7 @@ import { googleAuth } from "@/lib/services/auth";
  * POST /api/auth/googleAuth
  * Port of controllers/auth/google/googleAuthentication.js.
  *
- * Accepts either `credential` or `token` — GoogleLogin.jsx and GoogleSignup.jsx
+ * Accepts either `credential` or `token` - GoogleLogin.jsx and GoogleSignup.jsx
  * each send a different key.
  */
 export async function POST(request: Request) {

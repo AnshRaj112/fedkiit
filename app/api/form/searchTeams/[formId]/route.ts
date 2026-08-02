@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth/access";
 
 /**
  * GET /api/form/searchTeams/:formId?q=
- * Port of controllers/registration/searchTeams.js — teams with room left.
+ * Port of controllers/registration/searchTeams.js - teams with room left.
  */
 export async function GET(
   request: Request,

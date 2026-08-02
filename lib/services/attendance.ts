@@ -17,7 +17,7 @@ import type { EventInfo } from "@/lib/types/event";
  * bundle, and sidesteps the SheetJS advisories entirely.
  */
 
-/** RFC 4180 escaping — quotes doubled, fields with delimiters quoted. */
+/** RFC 4180 escaping - quotes doubled, fields with delimiters quoted. */
 function csvCell(value: unknown): string {
   if (value === null || value === undefined) return "";
   const text =
@@ -36,7 +36,7 @@ export function toCsv(rows: Array<Record<string, unknown>>): string {
   return "﻿" + lines.join("\r\n");
 }
 
-/** The caller's attendance token for an event — encoded into their QR code. */
+/** The caller's attendance token for an event - encoded into their QR code. */
 export async function getAttendanceCode(formId: string, user: SafeUser) {
   if (!/^[a-f\d]{24}$/i.test(formId)) throw new ApiError(404, "Form not found");
 
@@ -83,7 +83,7 @@ export async function getAttendanceCode(formId: string, user: SafeUser) {
 /**
  * Marks a scanned attendance record present.
  *
- * Requires a club member — the original mounted this with its access check
+ * Requires a club member - the original mounted this with its access check
  * commented out, so any signed-in user could mark anyone present.
  */
 export async function markAttendance(input: { attendanceId: string }) {

@@ -5,11 +5,11 @@ import { v2 as cloudinary } from "cloudinary";
 import { getEnv } from "@/lib/env";
 
 /**
- * Cloudinary uploads — port of utils/image/uploadImage.js.
+ * Cloudinary uploads - port of utils/image/uploadImage.js.
  *
  * The Express version wrote the multipart file to disk with multer first and
  * uploaded from a path. Route handlers receive a `File` directly, so the bytes
- * go straight to Cloudinary and nothing touches the filesystem — which also
+ * go straight to Cloudinary and nothing touches the filesystem - which also
  * means this works on a read-only serverless filesystem, where the original
  * `uploads/` directory approach would fail.
  */

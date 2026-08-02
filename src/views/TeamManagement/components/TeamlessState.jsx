@@ -68,7 +68,7 @@ const TeamlessState = ({ formId, eventTitle, maxTeamSize, onTeamJoined }) => {
                         });
                         // Refresh parent to show team view
                         setTimeout(() => onTeamJoined(), 1500);
-                        return; // Stop processing — page will re-render
+                        return; // Stop processing - page will re-render
                     case "REJECTED":
                         Alert({
                             type: "error",
@@ -93,7 +93,7 @@ const TeamlessState = ({ formId, eventTitle, maxTeamSize, onTeamJoined }) => {
             // Refresh team list to update pending statuses
             fetchTeams(searchQuery);
         } catch (err) {
-            // Silent fail — polling shouldn't break the UI
+            // Silent fail - polling shouldn't break the UI
             console.error("Error checking join request updates:", err);
         }
     }, [formId, fetchTeams, searchQuery, onTeamJoined]);

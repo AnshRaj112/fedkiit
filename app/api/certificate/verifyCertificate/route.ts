@@ -6,7 +6,7 @@ import { body, expressError, handle, json } from "@/lib/api/express";
  * Port of controllers/certificate/certificateController.js.
  *
  * Public: this backs the shareable /verify/certificate page. It returns only
- * what a verifier needs — the recipient name, the event and the image — never
+ * what a verifier needs - the recipient name, the event and the image - never
  * the wider issued list.
  */
 export async function POST(request: Request) {

@@ -10,7 +10,7 @@
  * `?next=` is new: `proxy.ts` appends it when it turns an anonymous request for
  * a protected route away, which is the server-side equivalent of the
  * `prevPage` that the original's `ProtectedRoute` stashed. Both mean the same
- * thing — the page the visitor was actually trying to reach — so either is
+ * thing - the page the visitor was actually trying to reach - so either is
  * accepted, the proxy's first because it is the more recent intent.
  *
  * The return path is read from the URL, so unlike the original it is

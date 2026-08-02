@@ -2,7 +2,7 @@
 
 import { ColorRing } from "react-loader-spinner";
 
-/** Inline button spinner — ported from microInteraction/Load/MicroLoad.jsx. */
+/** Inline button spinner - ported from microInteraction/Load/MicroLoad.jsx. */
 export default function MicroLoading({
   color = "white",
   style = {},

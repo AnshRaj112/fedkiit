@@ -4,7 +4,7 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #1c1c1c; 
+    background-color: var(--surface-0); 
   }
 
 
@@ -26,8 +26,15 @@
 
 
   .innerBox1:hover{
-    border: 1px solid #ffffff70;
     box-shadow: 2px 3px #94949470;
+  }
+
+  // Positioning only - appearance comes from <CloseButton />.
+  .closeOtp {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1;
   }
 
   .innerBox2{
@@ -194,46 +201,6 @@
   background-clip: text;
   font-size: 1.2rem;
 }
-
-
-
-.circle {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  filter: blur(100px);
-  position: absolute;
-  top: 20%;
-  left: -12%;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 0;
-}
-.circleMid {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  filter: blur(100px);
-  position: absolute;
-  top: 10%;
-  left: 40%;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.circle1 {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  position: absolute;
-
-  top: 5%;
-  right: -5%;
-  border-radius: 50%;
-  filter: blur(100px);
-}
-
 
 
 

@@ -4,7 +4,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * GET /api/form/download/:id
- * Port of controllers/registration/downloadRegistration.js — admin only.
+ * Port of controllers/registration/downloadRegistration.js - admin only.
  *
  * Streams CSV rather than the original's ExcelJS .xlsx: it opens identically in
  * Excel and Sheets, and avoids pulling a spreadsheet writer into the bundle.

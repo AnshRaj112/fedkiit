@@ -3,7 +3,7 @@ import { clearSessionCookie } from "@/lib/auth/session";
 
 /**
  * POST /api/auth/logout
- * Port of controllers/auth/logoutController.js — clears the session cookie.
+ * Port of controllers/auth/logoutController.js - clears the session cookie.
  */
 export async function POST() {
   return handle(async () => {

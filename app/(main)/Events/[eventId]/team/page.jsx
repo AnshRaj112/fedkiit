@@ -7,7 +7,7 @@ import ProtectedRoute from "@/src/components/ProtectedRoute";
 import { Loading } from "@/src/microInteraction";
 
 /**
- * /Events/:eventId/team — team management, behind the auth guard.
+ * /Events/:eventId/team - team management, behind the auth guard.
  * Suspense is required: TeamManagement and ProtectedRoute read search params.
  */
 export default function Page() {

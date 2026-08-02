@@ -5,7 +5,7 @@
  * of JSON files, so the nav and footer drifted out of sync. Both now read from
  * here, and so do the sitemap and the JSON-LD structured data.
  *
- * Safe to import from client components — no secrets, no `server-only`.
+ * Safe to import from client components - no secrets, no `server-only`.
  */
 
 export const SITE = {
@@ -85,13 +85,13 @@ export const FOOTER_LINKS = {
 
 /**
  * Questions the site should be able to answer directly. Rendered as visible
- * copy *and* as FAQPage structured data — answer engines need both.
+ * copy *and* as FAQPage structured data - answer engines need both.
  */
 export const FAQS = [
   {
     question: "What is FED KIIT?",
     answer:
-      "FED KIIT — the Federation of Entrepreneurship Development — is the student entrepreneurship body of KIIT Technology Business Incubator (KIIT TBI). It brings student ideas and potential startups under one umbrella, and runs events, workshops and competitions around entrepreneurship.",
+      "FED KIIT - the Federation of Entrepreneurship Development - is the student entrepreneurship body of KIIT Technology Business Incubator (KIIT TBI). It brings student ideas and potential startups under one umbrella, and runs events, workshops and competitions around entrepreneurship.",
   },
   {
     question: "Who can join FED KIIT?",

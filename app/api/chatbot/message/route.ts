@@ -6,7 +6,7 @@ import { generateChatReply, type ChatMessage } from "@/lib/services/chatbot";
  * POST /api/chatbot/message
  * Port of controllers/chatbot/chatbotController.js.
  *
- * Returns `{ success, response }` — chatbotService.js reads `response.success`
+ * Returns `{ success, response }` - chatbotService.js reads `response.success`
  * and `response.response`.
  *
  * Rate limited: the original was open and unthrottled, so a script could burn

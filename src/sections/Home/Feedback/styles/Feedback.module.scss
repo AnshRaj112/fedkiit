@@ -1,5 +1,5 @@
 .feedbackContainer {
-  background-color: #1C1C1C;
+  background-color: var(--surface-0);
   color: #ffffff;
   text-align: center;
   position: relative;
@@ -85,8 +85,7 @@
 .feedbackCard {
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.40);
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(7.5px);
+  background: var(--surface-1);
   padding: 20px;
   margin: 10px;
   min-width: 300px;

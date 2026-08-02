@@ -1,4 +1,4 @@
-// Route entry — renders the component ported from
+// Route entry - renders the component ported from
 // FED-Frontend/src/sections/Profile/Admin/Form/BlogForm/AddBlogForm.jsx
 "use client";
 

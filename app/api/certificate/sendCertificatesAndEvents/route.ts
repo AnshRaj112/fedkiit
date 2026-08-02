@@ -4,7 +4,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * POST /api/certificate/sendCertificatesAndEvents
- * Port of controllers/certificate/eventCertificateController.js — admin only.
+ * Port of controllers/certificate/eventCertificateController.js - admin only.
  *
  * Recipients who already hold a certificate for the event are skipped rather
  * than issued a duplicate, so re-running after a partial failure is safe.

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /**
- * API client — ported from FED-Frontend/src/services/client/axiosClient.js.
+ * API client - ported from FED-Frontend/src/services/client/axiosClient.js.
  *
  * `baseURL` is now empty: the Express backend lived on a separate origin
  * (VITE_API_URL = http://localhost:5000), but the route handlers are same-origin

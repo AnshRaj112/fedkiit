@@ -9,7 +9,7 @@ import { getCurrentUser, isAdmin, toSafeUser } from "@/lib/auth/access";
  * A user may only edit their own profile; admins may edit anyone by passing an
  * `email`. The original took the target email straight from the request body
  * with no ownership check, so any authenticated user could rewrite another
- * member's profile — including their access level.
+ * member's profile - including their access level.
  */
 export async function PUT(request: Request) {
   return handle(async () => {

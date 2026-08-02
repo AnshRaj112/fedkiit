@@ -14,7 +14,7 @@ import "./globals.scss";
  *
  * Fonts are loaded through the `@import url(...)` rules in globals.scss exactly
  * as the Vite app did, rather than `next/font`. `next/font` self-hosts and
- * subsets the files, which shifts glyph metrics slightly — visible as different
+ * subsets the files, which shifts glyph metrics slightly - visible as different
  * line wrapping against the original.
  *
  * Head metadata is expanded from the original index.html (same title,
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c1c1c",
+  themeColor: "#000000",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -73,9 +73,15 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/*
+          Inter carries body copy and Space Grotesk the headings: a neutral
+          workhorse under a geometric display face, which is the pairing the
+          orange line-art artwork is drawn in. The legacy families stay listed
+          because individual sections still name them directly.
+        */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
         />
       </head>
       <body>

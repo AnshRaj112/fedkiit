@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "../styles/TeamManagement.module.scss";
+import styles from "./styles/ConfirmDialog.module.scss";
 
 const ConfirmDialog = ({ isOpen, title, message, confirmText, onConfirm, onCancel }) => {
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,13 @@ const ConfirmDialog = ({ isOpen, title, message, confirmText, onConfirm, onCance
     };
 
     return (
-        <div className={styles.dialogOverlay} onClick={onCancel}>
+        <div
+            className={styles.dialogOverlay}
+            role="dialog"
+            aria-modal="true"
+            aria-label={title}
+            onClick={onCancel}
+        >
             <div className={styles.dialogContent} onClick={(e) => e.stopPropagation()}>
                 <h3 className={styles.dialogTitle}>{title}</h3>
                 <p className={styles.dialogMessage}>{message}</p>

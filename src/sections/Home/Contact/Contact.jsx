@@ -124,14 +124,11 @@ const ContactForm = () => {
 
           {!isMobile && (
             <div className={styles.imageSection}>
-              <div className={styles.backCircle}></div>
               <AnimatedBox direction="right">
                 <img src={contactImg.src} alt="Contact" />
               </AnimatedBox>
-              <div className={styles.circle}></div>
             </div>
           )}
-          <div className={styles.circle}></div>
         </div>
       </div>
       <Alert />

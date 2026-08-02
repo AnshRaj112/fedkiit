@@ -12,7 +12,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #1c1c1c; /* Semi-transparent background */
+  background-color: var(--surface-0); /* Semi-transparent background */
 }
 
 @media (max-width: 768px) {

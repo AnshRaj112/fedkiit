@@ -7,7 +7,7 @@ import AuthContext from "../context/AuthContext";
 import { Alert, Loading } from "../microInteraction";
 
 /**
- * Auth guard — ported from the `ProtectedRoute` wrapper in App.jsx.
+ * Auth guard - ported from the `ProtectedRoute` wrapper in App.jsx.
  *
  * Same behaviour: stash the intended destination, show the "Please log in
  * first" toast, and send the visitor to /Login. The redirect now happens in an

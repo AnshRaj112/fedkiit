@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./styles/LiveEventPopup.module.scss";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import { api } from "../../../../services";
 
 const LiveEventPopup = () => {
@@ -72,9 +73,11 @@ const LiveEventPopup = () => {
       {isEventOngoing && (
         <div className={`${styles.popup} ${isVisible ? styles.fadeIn : ""}`}>
           <div className={styles.popupContent}>
-            <button className={styles.closeButton} onClick={closePopup}>
-              ×
-            </button>
+            <CloseButton
+              onClick={closePopup}
+              label="Close event announcement"
+              className={styles.closeButton}
+            />
             <a href="/Events">
               <img src={eventImage} alt="Event" className={styles.popupContent} />
             </a>

@@ -4,7 +4,7 @@ import { getCurrentUser, isMember } from "@/lib/auth/access";
 
 /**
  * GET /api/form/export-attendance/:id
- * Port of controllers/registration/exportAttendance — club members only.
+ * Port of controllers/registration/exportAttendance - club members only.
  */
 export async function GET(
   _request: Request,

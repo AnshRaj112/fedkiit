@@ -13,7 +13,7 @@ import type { EventInfo, FedEvent, FormSection } from "@/lib/types/event";
  * Replaces `controllers/forms/getForm.js`. Two things change beyond the
  * framework: the `info` JSON is normalised into a typed `FedEvent` at the
  * boundary so pages never touch raw JSON, and public listings are filtered
- * server-side. The old `getAllForms` returned *every* form to *every* caller —
+ * server-side. The old `getAllForms` returned *every* form to *every* caller -
  * including unpublished drafts and the full `sections` array of each form, which
  * leaked the question set of unreleased events.
  */
@@ -48,7 +48,7 @@ export function normalizeEvent(record: Pick<form, "id" | "info">): FedEvent {
   //
   // The date deliberately wins over an `isEventPast: false` flag. In the live
   // database 35 of 52 events carry `isEventPast: false` alongside a date that
-  // has long passed — the flag is set once at creation and rarely updated. The
+  // has long passed - the flag is set once at creation and rarely updated. The
   // old site trusted the flag alone, so its "upcoming" list filled up with
   // events from previous years. Comparing against the start of today keeps an
   // event that is happening *today* in the upcoming list.
@@ -102,7 +102,7 @@ function byPriorityThenDate(a: FedEvent, b: FedEvent): number {
 /**
  * Cached raw form rows.
  *
- * Only the database read is cached — deliberately *not* the normalised
+ * Only the database read is cached - deliberately *not* the normalised
  * `FedEvent`. Two reasons:
  *
  *  1. `unstable_cache` round-trips its value through JSON, which turns the

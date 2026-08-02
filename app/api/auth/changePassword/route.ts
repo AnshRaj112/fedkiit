@@ -6,7 +6,7 @@ import { verifyOtp } from "@/lib/services/otp";
 
 /**
  * POST /api/auth/changePassword
- * Port of controllers/auth/changePassword.js — completes the reset flow.
+ * Port of controllers/auth/changePassword.js - completes the reset flow.
  */
 export async function POST(request: Request) {
   return handle(async () => {

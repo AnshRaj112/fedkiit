@@ -55,7 +55,7 @@ export async function requireUser(): Promise<SafeUser> {
 }
 
 /**
- * `MEMBER` is not a real `AccessTypes` value — the Express `checkAccess`
+ * `MEMBER` is not a real `AccessTypes` value - the Express `checkAccess`
  * middleware treated it as "any access level other than USER". Preserved here
  * so route-level checks read the same as they did before.
  */

@@ -1,71 +1,140 @@
+// Certificate management table.
+//
+// Nothing imports this module today - the send/manage screen is drawn from
+// inline styles. It is kept, and converted off the light-theme palette it was
+// written against (#007bff actions, #ccc rules, Arial), so that wiring it up
+// later does not reintroduce the old look.
+
 .container {
-    width: 90%;
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
+  width: 90%;
+  margin: 20px auto;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+}
+
+.heading {
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.eventSelector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.select {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-0);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--surface-2);
+    box-shadow: 0 0 0 3px var(--accent-quiet);
   }
-  
-  .heading {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+}
+
+.participantsSection {
+  margin-top: 20px;
+}
+
+.subHeading {
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 0.9375rem;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.table th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.table td {
+  color: var(--text-primary);
+}
+
+.sendButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--accent-hover);
   }
-  
-  .eventSelector {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+
+  &:active {
+    box-shadow: var(--depth-strong);
   }
-  
-  .label {
-    font-weight: bold;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
-  
-  .select {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .participantsSection {
-    margin-top: 20px;
-  }
-  
-  .subHeading {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .table th,
-  .table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .sendButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .sendButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .noParticipants {
-    text-align: center;
-    font-size: 16px;
-    color: #999;
-  }
-  
+}
+
+.noParticipants {
+  padding: 44px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}

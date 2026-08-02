@@ -5,7 +5,7 @@ import { Commet } from "react-loading-indicators";
 
 import styles from "./styles/load.module.scss";
 
-/** Full-page loader — ported from microInteraction/Load/Load.jsx. */
+/** Full-page loader - ported from microInteraction/Load/Load.jsx. */
 export default function Loading() {
   useEffect(() => {
     document.body.classList.add(styles.noScroll!);

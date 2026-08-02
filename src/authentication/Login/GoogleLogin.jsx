@@ -130,17 +130,7 @@ export default function GoogleLogin() {
   return (
     <>
       <button
-        style={{
-          backgroundColor: "transparent",
-          color: "#fff",
-          height: "40px",
-          marginTop: "20px",
-          fontSize: ".77rem",
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        type="button"
         className={style.google_btn}
         onClick={login}
       >
@@ -154,7 +144,7 @@ export default function GoogleLogin() {
               style={{
                 width: "18px",
                 height: "18px",
-                marginRight: "6px",
+                marginRight: "15px",
               }}
             />
             <span>Login with Google</span>

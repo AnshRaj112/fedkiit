@@ -45,7 +45,7 @@ export function fail(
  *
  * Replaces the Express `errorHandler` middleware. Route handlers wrap their body
  * in `handleRoute` rather than each one repeating try/catch and inventing its
- * own status codes — which is how the old controllers ended up returning 500s
+ * own status codes - which is how the old controllers ended up returning 500s
  * for missing fields.
  */
 export function toErrorResponse(error: unknown): NextResponse {

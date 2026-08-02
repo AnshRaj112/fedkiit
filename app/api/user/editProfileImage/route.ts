@@ -16,7 +16,7 @@ const AVATAR = 512;
  * the request body, so any authenticated caller could overwrite another
  * member's avatar.
  *
- * Returns `{ url }` — EditImage.jsx reads `response.data.url`.
+ * Returns `{ url }` - EditImage.jsx reads `response.data.url`.
  */
 export async function POST(request: Request) {
   return handle(async () => {

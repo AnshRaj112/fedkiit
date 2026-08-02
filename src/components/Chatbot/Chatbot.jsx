@@ -11,14 +11,20 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import ReactMarkdown from 'react-markdown';
 import DOMPurify from 'dompurify';
 import styles from './Chatbot.module.scss';
-import { IoCloseOutline, IoSend, IoMic, IoMicOff } from 'react-icons/io5';
-import { BiSolidMessageSquareDetail } from 'react-icons/bi';
+import { IoSend, IoMic, IoMicOff } from 'react-icons/io5';
 import { IoSparkles } from 'react-icons/io5';
 import { FiLogIn } from 'react-icons/fi';
 import { chatbotService } from '../../services/chatbot';
 import AuthContext from '../../context/AuthContext';
-import FedLogo from '../../assets/images/FedLogo.png';
+import CloseButton from '../CloseButton/CloseButton';
 import { useRouter, usePathname } from "next/navigation";
+
+const FEDRICK_SRC = "/assets/fedrick.png";
+const TIP_LINES = [
+    "Hey, need any help?",
+    "Stuck? Ask me anything.",
+    "Looking for an event?",
+];
 
 const Chatbot = () => {
     const chatbotName = process.env.NEXT_PUBLIC_CHATBOT_NAME || 'AskFED';
@@ -52,6 +58,8 @@ const Chatbot = () => {
     const [showAuthPrompt, setShowAuthPrompt] = useState(false);
     const [conversationHistory, setConversationHistory] = useState([]); // Track conversation for context
     const [isWaitingForEmailContent, setIsWaitingForEmailContent] = useState(false); // Email flow state
+    const [showTip, setShowTip] = useState(false);
+    const [tipIndex, setTipIndex] = useState(0);
     const messagesEndRef = useRef(null);
     const chatboxRef = useRef(null);
     const recognitionRef = useRef(null);
@@ -86,6 +94,36 @@ const Chatbot = () => {
         '[NAV:/pastEvents]': '/pastEvents',
         '[NAV:/alumni]': '/Alumni',
     };
+
+    // Pop the tip bubble on a gentle loop while the launcher is idle.
+    useEffect(() => {
+        if (isOpen) {
+            setShowTip(false);
+            return undefined;
+        }
+
+        let hideTimer;
+        let firstTimer;
+        let loopTimer;
+
+        const show = () => {
+            setShowTip(true);
+            window.clearTimeout(hideTimer);
+            hideTimer = window.setTimeout(() => setShowTip(false), 4200);
+        };
+
+        firstTimer = window.setTimeout(show, 1400);
+        loopTimer = window.setInterval(() => {
+            setTipIndex((i) => (i + 1) % TIP_LINES.length);
+            show();
+        }, 12000);
+
+        return () => {
+            window.clearTimeout(firstTimer);
+            window.clearTimeout(hideTimer);
+            window.clearInterval(loopTimer);
+        };
+    }, [isOpen]);
 
     // Auto-scroll to bottom
     const scrollToBottom = () => {
@@ -360,7 +398,6 @@ const Chatbot = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                    color: '#ffffff',
                     textDecoration: 'underline',
                     fontWeight: 600
                 }}
@@ -374,14 +411,24 @@ const Chatbot = () => {
         <>
             {/* Toggle Button */}
             {!isOpen && (
-                <button
-                    className={styles.chatbotToggle}
-                    onClick={toggleChatbot}
-                    aria-label="Open Chat"
-                >
-                    <BiSolidMessageSquareDetail size={38} />
-                    <div className={styles.pulseRing}></div>
-                </button>
+                <div className={styles.launcher}>
+                    {showTip && (
+                        <div className={styles.tip} role="status">
+                            <span className={styles.tipText}>{TIP_LINES[tipIndex]}</span>
+                        </div>
+                    )}
+                    <button
+                        className={styles.chatbotToggle}
+                        onClick={toggleChatbot}
+                        aria-label="Open Chat"
+                    >
+                        <img
+                            src={FEDRICK_SRC}
+                            alt=""
+                            className={styles.toggleAvatar}
+                        />
+                    </button>
+                </div>
             )}
 
             {/* Backdrop Overlay */}
@@ -397,8 +444,8 @@ const Chatbot = () => {
                         <div className={styles.headerContent}>
                             <div className={styles.avatarContainer}>
                                 <img
-                                    src={FedLogo.src}
-                                    alt="FED Logo"
+                                    src={FEDRICK_SRC}
+                                    alt="Fedrick"
                                     className={styles.avatar}
                                 />
                                 <div className={styles.statusIndicator}></div>
@@ -410,13 +457,7 @@ const Chatbot = () => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            className={styles.closeButton}
-                            onClick={toggleChatbot}
-                            aria-label="Close Chat"
-                        >
-                            <IoCloseOutline size={26} />
-                        </button>
+                        <CloseButton onClick={toggleChatbot} label="Close chat" />
                     </header>
 
                     {/* Messages Area */}
@@ -428,7 +469,7 @@ const Chatbot = () => {
                             >
                                 {!message.isUser && (
                                     <div className={styles.messageAvatar}>
-                                        <img src={FedLogo.src} alt="Bot" />
+                                        <img src={FEDRICK_SRC} alt="Bot" />
                                     </div>
                                 )}
                                 <div className={styles.messageContent}>
@@ -462,7 +503,7 @@ const Chatbot = () => {
                         {isTyping && (
                             <div className={`${styles.messageWrapper} ${styles.botWrapper}`}>
                                 <div className={styles.messageAvatar}>
-                                    <img src={FedLogo.src} alt="Bot" />
+                                    <img src={FEDRICK_SRC} alt="Bot" />
                                 </div>
                                 <div className={styles.typingIndicator}>
                                     <span></span>

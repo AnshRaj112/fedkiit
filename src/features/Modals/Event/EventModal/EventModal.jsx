@@ -2,26 +2,13 @@
 
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import EventCardModal from "./styles/EventModal.module.scss";
-import groupIcon from "../../../../assets/images/groups.svg";
-import rupeeIcon from "../../../../assets/images/rupeeIcon.svg";
-import { X } from "lucide-react";
 
-// import eventData from "../../../../data/eventData.json";
-import FormData from "../../../../data/FormData.json";
-import shareOutline from "../../../../assets/images/shareOutline.svg";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import Share from "../../../../features/Modals/Event/ShareModal/ShareModal";
-// import AOS from "aos";
-// import "aos/dist/aos.css";
-import { MdGroups } from "react-icons/md";
-import { FaUser, FaRupeeSign } from "react-icons/fa";
-import { CiLock } from "react-icons/ci";
 import { PiClockCountdownDuotone } from "react-icons/pi";
 import AuthContext from "../../../../context/AuthContext";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { SkeletonTheme } from "react-loading-skeleton";
 import { IoIosLock } from "react-icons/io";
 import { Blurhash } from "react-blurhash";
 import {
@@ -30,8 +17,7 @@ import {
   ComponentLoading,
 } from "../../../../microInteraction";
 import { api } from "../../../../services";
-import { parse, differenceInMilliseconds, formatDistanceToNow } from "date-fns";
-import eventDefaultImg from "../../../../assets/images/defaultEventModal.png";
+import { parse, differenceInMilliseconds } from "date-fns";
 import { useRouter, useParams } from "next/navigation";
 
 const EventModal = (props) => {
@@ -305,7 +291,7 @@ const EventModal = (props) => {
   const [isOpen, setOpen] = useState(false);
 
   const handleShare = () => {
-    setOpen(!isOpen);
+    setOpen(true);
   };
 
   const handleForm = () => {
@@ -355,258 +341,175 @@ const EventModal = (props) => {
     }
   };
 
-  const url = window.location.href;
+  const url = typeof window === "undefined" ? "" : window.location.href;
+
+  const status = info?.isEventPast
+    ? { label: "Completed", tone: "neutral" }
+    : info?.isRegistrationClosed
+      ? { label: "Registration closed", tone: "closed" }
+      : remainingTime
+        ? { label: "Opening soon", tone: "soon" }
+        : { label: "Open", tone: "open" };
+
+  const isCtaDisabled =
+    btnTxt === "Closed" ||
+    btnTxt === "Already Registered" ||
+    btnTxt === "Already Member" ||
+    btnTxt === "Locked" ||
+    btnTxt === `${remainingTime}`;
+
+  const ctaContent = () => {
+    if (btnTxt === "Closed") {
+      return (
+        <>
+          <IoIosLock aria-hidden="true" />
+          Registration closed
+        </>
+      );
+    }
+    if (btnTxt === "Already Registered") return "Already registered";
+    if (btnTxt === "Locked") {
+      return (
+        <>
+          <IoIosLock aria-hidden="true" />
+          Locked
+        </>
+      );
+    }
+    if (isMicroLoading) return <MicroLoading />;
+    if (remainingTime) {
+      return (
+        <>
+          <PiClockCountdownDuotone aria-hidden="true" />
+          {btnTxt}
+        </>
+      );
+    }
+    if (btnTxt === "Already Member") return "Already a member";
+    return "Register now";
+  };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        width: "100%",
-        height: "100%",
-
-        zIndex: "10",
-
-        left: "0",
-        top: "0",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: "0",
-          left: "0",
-          width: "100%",
-          height: "100%",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(4px)",
-          zIndex: "5",
-          display: "flex",
-          justifyContent: "center",
-        }}
+    <div className={EventCardModal.overlay}>
+      <article
+        className={EventCardModal.sheet}
+        role="dialog"
+        aria-modal="true"
+        aria-label={info?.eventTitle || "Event details"}
       >
-        <div
-          style={{
-            zIndex: "10",
-            borderRadius: "10px",
-            padding: "2rem",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: ".3rem",
-          }}
-        >
-          {data && (
-            <>
-              <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-                <Skeleton height={180} style={{ marginBottom: "1rem" }} />
-                <Skeleton
-                  count={3}
-                  height={20}
-                  width="100%"
-                  style={{ marginBottom: "0.5rem" }}
-                />
-              </SkeletonTheme>
-              <div className={EventCardModal.card}>
-                {isLoading ? (
-                  <ComponentLoading
-                    customStyles={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      position: "relative",
-                    }}
-                  >
-                    <button
-                      className={EventCardModal.closeModal}
-                      onClick={handleModalClose}
-                    >
-                      <X />
-                    </button>
-                    <div className={EventCardModal.backimg}>
-                      {/* {!info.eventImg===null? <img
-                        src=  {info.eventImg}
-                        className={EventCardModal.img}
-                        alt="Event"
-                      />:<img
-                      src=  {eventDefaultImg}
-                      className={EventCardModal.img}
-                      alt="Event"
-                    />} */}
+        <CloseButton
+          onClick={handleModalClose}
+          label="Close event details"
+          className={EventCardModal.close}
+        />
 
-                      {!imageLoaded && (
-                        <Blurhash
-                          style={{ borderRadius: "10px" }}
-                          hash="LEG8_%els7NgM{M{RiNI*0IVog%L"
-                          width={"100%"}
-                          height={250}
-                          resolutionX={32}
-                          resolutionY={32}
-                          punch={1}
-                        />
-                      )}
-                      <img
-                        srcSet={info.eventImg}
-                        className={EventCardModal.img}
-                        style={{
-                          display: imageLoaded ? "block" : "none",
-                        }}
-                        alt="Event"
-                        onLoad={() => setImageLoaded(true)}
-                      />
-                      <div className={EventCardModal.date}>{formattedDate}</div>
-                      {info.ongoingEvent && (
-                        <div
-                          className={EventCardModal.share}
-                          onClick={handleShare}
-                        >
-                          <img
-                            className={EventCardModal.shareIcon}
-                            src={shareOutline.src}
-                            alt="Share"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className={EventCardModal.backbtn}>
-                      <div className={EventCardModal.eventname}>
-                        {info.eventTitle}
-                        <p>
-                          {info.participationType === "Team" ? (
-                            <>
-                              <MdGroups color="#f97507" size={25} />
-                              <span
-                                style={{
-                                  color: "white",
-                                  paddingRight: "2px",
-                                  paddingLeft: "3px",
-                                }}
-                              >
-                                {" "}
-                                Team size:
-                              </span>{" "}
-                              {info.minTeamSize} - {info.maxTeamSize} {" | "}
-                            </>
-                          ) : (
-                            <>
-                              <FaUser color="#f97507" size={13} />
-                              <span
-                                style={{
-                                  color: "white",
-                                  paddingRight: "2px",
-                                  paddingLeft: "3px",
-                                }}
-                              >
-                                Individual
-                              </span>
-                              {" | "}
-                            </>
-                          )}
-                          <div className={EventCardModal.price}>
-                            {info.eventAmount ? (
-                              <p style={{ font: "2rem" }}>
-                                <FaRupeeSign color="#f97507" size={15} />
-                                {info.eventAmount}
-                              </p>
-                            ) : (
-                              <p style={{ color: "white", marginTop: "-1px" }}>
-                                Free
-                              </p>
-                            )}
-                          </div>
-                        </p>
-                      </div>
-                      <div className={EventCardModal.registerbtn}>
-                        <button
-                          className={EventCardModal.registerbtn}
-                          style={{
-                            cursor:
-                              btnTxt === "Register Now"
-                                ? "pointer"
-                                : "not-allowed",
-                          }}
-                          onClick={handleForm}
-                          disabled={
-                            btnTxt === "Closed" ||
-                            btnTxt === "Already Registered" ||
-                            btnTxt === "Already Member" ||
-                            btnTxt === "Locked" ||
-                            btnTxt === `${remainingTime}`
-                          }
-                        >
-                          {btnTxt === "Closed" ? (
-                            <>
-                              <div style={{ fontSize: "0.85rem" }}>Closed</div>{" "}
-                              <IoIosLock
-                                alt=""
-                                style={{
-                                  marginLeft: "0px",
-                                  fontSize: "1.2rem",
-                                }}
-                              />
-                            </>
-                          ) : btnTxt === "Already Registered" ? (
-                            <>
-                              <div style={{ fontSize: "0.85rem" }}>
-                                Already Registered
-                              </div>{" "}
-                            </>
-                          ) : btnTxt === "Locked" ? (
-                            <>
-                              <div style={{ fontSize: "0.9rem" }}>Locked</div>{" "}
-                              <IoIosLock
-                                alt=""
-                                style={{ marginLeft: "0px", fontSize: "1rem" }}
-                              />
-                            </>
-                          ) : isMicroLoading ? (
-                            <div style={{ fontSize: "0.9rem" }}>
-                              <MicroLoading />
-                            </div>
-                          ) : (
-                            <>
-                              {remainingTime ? (
-                                <>
-                                  <PiClockCountdownDuotone /> {btnTxt}
-                                </>
-                              ) : btnTxt === "Already Member" ? (
-                                <>
-                                  <div style={{ fontSize: "0.9rem" }}>
-                                    Already Member
-                                  </div>{" "}
-                                </>
-                              ) : (
-                                "Register Now"
-                              )}
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                    <div className={EventCardModal.backtxt}>
-                      {info.eventdescription.split("\n").map((line, index) => (
-                        <React.Fragment key={index}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {isOpen && <Share onClose={handleShare} urlpath={url} />}
-            </>
-          )}
-        </div>
-        {/* </div> */}
-      </div>
+        {isLoading ? (
+          <div className={EventCardModal.loading}>
+            <ComponentLoading
+              customStyles={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            <div className={EventCardModal.hero}>
+              {!imageLoaded && (
+                <div className={EventCardModal.heroPlaceholder}>
+                  <Blurhash
+                    hash="LEG8_%els7NgM{M{RiNI*0IVog%L"
+                    width="100%"
+                    height="100%"
+                    resolutionX={32}
+                    resolutionY={32}
+                    punch={1}
+                  />
+                </div>
+              )}
+              <img
+                src={info?.eventImg}
+                className={EventCardModal.heroImg}
+                style={{ opacity: imageLoaded ? 1 : 0 }}
+                alt=""
+                onLoad={() => setImageLoaded(true)}
+              />
+              <span className={EventCardModal.badge} data-tone={status.tone}>
+                {status.label}
+              </span>
+            </div>
+
+            <div className={EventCardModal.content}>
+              <p className={EventCardModal.date}>{formattedDate}</p>
+              <h1 className={EventCardModal.title}>{info?.eventTitle}</h1>
+
+              <ul className={EventCardModal.facts}>
+                <li className={EventCardModal.fact}>
+                  <span className={EventCardModal.factLabel}>Format</span>
+                  <span className={EventCardModal.factValue}>
+                    {info?.participationType === "Team"
+                      ? `Team of ${info.minTeamSize}\u2013${info.maxTeamSize}`
+                      : "Individual"}
+                  </span>
+                </li>
+                <li className={EventCardModal.fact}>
+                  <span className={EventCardModal.factLabel}>Entry</span>
+                  <span className={EventCardModal.factValue}>
+                    {info?.eventAmount ? `\u20b9${info.eventAmount}` : "Free"}
+                  </span>
+                </li>
+                <li className={EventCardModal.fact}>
+                  <span className={EventCardModal.factLabel}>Registration</span>
+                  <span className={EventCardModal.factValue}>
+                    {info?.isEventPast
+                      ? "Closed"
+                      : remainingTime
+                        ? `Opens in ${remainingTime}`
+                        : info?.isRegistrationClosed
+                          ? "Closed"
+                          : "Open now"}
+                  </span>
+                </li>
+              </ul>
+
+              {info?.eventdescription && (
+                <div className={EventCardModal.prose}>
+                  {info.eventdescription
+                    .split("\n")
+                    .filter((line) => line.trim())
+                    .map((line, index) => (
+                      <p key={index}>{line}</p>
+                    ))}
+                </div>
+              )}
+            </div>
+
+            <div className={EventCardModal.actions}>
+              {!info?.isEventPast && (
+                <button
+                  type="button"
+                  className={EventCardModal.primary}
+                  onClick={handleForm}
+                  disabled={isCtaDisabled}
+                >
+                  {ctaContent()}
+                </button>
+              )}
+              <button
+                type="button"
+                className={EventCardModal.secondary}
+                onClick={handleShare}
+              >
+                Share
+              </button>
+            </div>
+          </>
+        )}
+
+        {isOpen && <Share onClose={() => setOpen(false)} urlpath={url} />}
+      </article>
+
       <Alert />
     </div>
   );

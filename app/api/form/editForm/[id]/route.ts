@@ -9,7 +9,7 @@ import type { EventInfo } from "@/lib/types/event";
 
 /**
  * PUT /api/form/editForm/:id
- * Port of controllers/forms/editForm.js — admin only.
+ * Port of controllers/forms/editForm.js - admin only.
  *
  * Merges submitted fields into the existing `info` blob rather than replacing
  * it, so a partial edit cannot silently blank out fields the form did not post.

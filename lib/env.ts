@@ -71,7 +71,7 @@ export function getEnv(): Env {
   return cached;
 }
 
-/** Canonical origin, no trailing slash — used for metadata, sitemap and email links. */
+/** Canonical origin, no trailing slash - used for metadata, sitemap and email links. */
 export function siteUrl(): string {
   return getEnv().NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
 }

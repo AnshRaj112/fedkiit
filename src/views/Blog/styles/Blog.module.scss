@@ -1,17 +1,8 @@
-@use "../../../assets/styles/Global.scss" as *;
-
-// theme variables
-$dark-bg-primary: #121212;
-$dark-bg-secondary: #1e1e1e;
-$accent-color: #D44509;
-$text-color: #ffffff;
-$card-radius: 16px;
-
 // layout wrapper
 .pageWrapper {
   width: 90%;
   min-height: 100vh;
-  color: $text-color;
+  color: var(--text-primary);
   padding: 0;
   margin: 0 auto;
   box-sizing: border-box;
@@ -38,19 +29,26 @@ $card-radius: 16px;
 .searchBar {
   width: 100%;
   max-width: 700px;
-  height: 50px;
+  min-height: 50px;
   display: flex;
   align-items: center;
-  background-color: #353434;
-  border-radius: 50px;
   padding: 0.6rem 1.2rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
   position: relative;
   box-sizing: border-box;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--accent);
+    background-color: var(--surface-2);
+  }
 }
 
 .searchIcon {
-  color: #ff8000;
+  color: var(--text-tertiary);
   margin-right: 0.75rem;
   flex-shrink: 0;
 }
@@ -60,16 +58,16 @@ $card-radius: 16px;
   width: 100%;
   min-width: 0;
   padding: 0.5rem 0.75rem;
-  background: transparent;
+  background-color: transparent;
   border: none;
   outline: none;
-  color: #fff;
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
   font-family: inherit;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--text-tertiary);
   }
 }
 
@@ -80,8 +78,9 @@ $card-radius: 16px;
   flex-shrink: 0;
 
   .filterButton {
-    background: none;
+    background-color: transparent;
     border: none;
+    color: var(--accent);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -92,12 +91,12 @@ $card-radius: 16px;
     position: absolute;
     top: 110%;
     right: 0;
-    background: #fff;
-    border: 1px solid rgba(255, 138, 0, 0.3);
-    border-radius: 4px;
-    padding: 0.5rem 0;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-2);
+    box-shadow: var(--depth);
     list-style: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 20;
 
     .dropdownItem,
@@ -105,28 +104,26 @@ $card-radius: 16px;
       padding: 0.5rem 1.2rem;
       cursor: pointer;
       width: 99%;
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       font-size: 14px;
       font-weight: 500;
-      transition: all 0.3s ease-in-out;
+      transition: all 0.2s ease;
     }
 
     .dropdownItem {
-      color: #2d2d2d;
+      color: var(--text-secondary);
 
       &:hover,
       &:active {
-        background: #2d2d2d;
-        color: #ff8a00;
-        margin: 2px auto;
+        background-color: var(--surface-3);
+        color: var(--text-primary);
       }
     }
 
     .activeItem {
-      background: #2d2d2d;
-      color: #ff8a00;
+      background-color: var(--surface-3);
+      color: var(--accent);
       font-weight: 600;
-      margin: 2px auto;
     }
   }
 }
@@ -151,26 +148,30 @@ $card-radius: 16px;
   width: 100%;
 }
 
+// section headings
+.recentlyAdded h3,
+.trendingBlogs h3,
+.featuredBlogs h3 {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.2rem;
+}
+
 // recently added section
 .recentlyAdded {
   flex: 1.5 1 0;
   max-width: 60%;
 
-  h3 {
-    color: $accent-color;
-    margin-bottom: 1.2rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
   .img {
     width: 100%;
     max-height: 400px;
     object-fit: contain;
-    border-radius: 0.7rem;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
-    background: $dark-bg-primary;
+    background-color: var(--surface-2);
   }
 
   .blogCard {
@@ -183,21 +184,14 @@ $card-radius: 16px;
 .trendingBlogs {
   flex: 1.2 1 0;
   max-width: 400px;
-  h3 {
-    color: $accent-color;
-    margin-bottom: 1.2rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
 
   .img {
     width: 100%;
     max-height: 200px;
     object-fit: contain;
-    border-radius: 0.7rem;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
-    background: $dark-bg-primary;
+    background-color: var(--surface-2);
   }
 
   .trendingCard {
@@ -210,7 +204,7 @@ $card-radius: 16px;
 
   .blogDesc {
     font-size: 0.9rem;
-    color: #ccc;
+    color: var(--text-secondary);
     line-height: 1.3;
     margin-top: 0.5rem;
     flex-grow: 1;
@@ -242,9 +236,9 @@ $card-radius: 16px;
     width: 100%;
     max-height: 350px;
     object-fit: contain;
-    border-radius: 0.7rem;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
-    background: $dark-bg-primary;
+    background-color: var(--surface-2);
   }
 }
 
@@ -254,19 +248,19 @@ $card-radius: 16px;
     font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
-    color: $text-color;
+    color: var(--text-primary);
   }
 
   .blogMeta {
     font-size: 0.95rem;
-    color: $accent-color;
+    color: var(--accent);
     margin-bottom: 0.3rem;
     font-weight: 600;
   }
 
   .blogDesc {
     font-size: 1rem;
-    color: #ccc;
+    color: var(--text-secondary);
     line-height: 1.4;
     margin-bottom: 0.5rem;
     overflow: hidden;
@@ -283,11 +277,6 @@ $card-radius: 16px;
   width: 100%;
   padding-top: 2rem;
   margin: 0 auto 0 0;
-
-  h3 {
-    color: $accent-color;
-    margin-bottom: 1.2rem;
-  }
 }
 
 .featuredCard {
@@ -300,9 +289,9 @@ $card-radius: 16px;
     width: 100%;
     max-height: 350px;
     object-fit: contain;
-    border-radius: 0.7rem;
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
-    background: $dark-bg-primary;
+    background-color: var(--surface-2);
   }
 }
 
@@ -326,18 +315,30 @@ $card-radius: 16px;
 }
 
 .seeAllButton {
-  background: linear-gradient(135deg, $accent-color, #ff4500);
-  color: #fff;
-  border: none;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-inverse);
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: scale(1.05);
+    background-color: var(--accent-hover);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
   }
 }
 
@@ -346,7 +347,7 @@ $card-radius: 16px;
   text-align: center;
   padding: 40px;
   font-size: 1.5rem;
-  color: #888;
+  color: var(--text-tertiary);
 }
 
 // responsive adjustments

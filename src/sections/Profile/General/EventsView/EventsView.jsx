@@ -7,7 +7,6 @@ import AuthContext from "../../../../context/AuthContext";
 
 import { api } from "../../../../services";
 import { ComponentLoading, MicroLoading } from "../../../../microInteraction";
-import { accessOrCreateEventByFormId } from "../../Admin/Form/CertificatesForm/tools/certificateTools";
 import Link from "next/link";
 
 const Events = () => {
@@ -88,7 +87,7 @@ const Events = () => {
     const fetchCertificates = async () => {
       try {
         const response = await api.post(
-          "/api/certificate/sendCertificatesAndEvents",
+          "/api/certificate/myCertificates",
           {
             email: authCtx.user.email,
           },
@@ -108,11 +107,11 @@ const Events = () => {
     fetchCertificates();
   }, [authCtx.user.email]);
 
-  const getCertificateForEvent = async (eventId) => {
-    const eid = await accessOrCreateEventByFormId(eventId, authCtx.token);
-    // console.log(eid, certificates[0].cert.eventId);
-    const found = certificates.find((item) => item.cert.eventId == eid.id);
-    // console.log(found);
+  // Each row from /myCertificates carries its event, and an event's `formId` is
+  // the id of the form listed in this table - so the two are matched here rather
+  // than by asking the server to resolve every form id in turn.
+  const getCertificateForEvent = (formId) => {
+    const found = certificates.find((item) => item.event?.formId === formId);
     return found ? found.cert : null;
   };
 
@@ -130,26 +129,18 @@ const Events = () => {
   };
 
   useEffect(() => {
-    const fetchAllCerts = async () => {
-      setLoadingCerts(true); // Start loading
+    if (events.length > 0 && certificates.length > 0) {
       const map = {};
-      if (events.length > 0) {
-        for (const event of events) {
-          const cert = await getCertificateForEvent(event.id, authCtx.token);
-          if (cert) {
-            const link = `/verify/certificate?id=${cert.id}`;
-            map[event.id] = link;
-          }
+      for (const event of events) {
+        const cert = getCertificateForEvent(event.id);
+        if (cert) {
+          map[event.id] = `/verify/certificate?id=${cert.id}`;
         }
       }
       setCertMap(map);
-      setLoadingCerts(false); // End loading
-    };
-
-    if (events.length > 0 && certificates.length > 0) {
-      fetchAllCerts();
+      setLoadingCerts(false);
     } else if (events.length > 0 && !isLoading) {
-      // If events are loaded but no certificates found
+      // Events loaded, but this user holds no certificates.
       setLoadingCerts(false);
     }
   }, [events, certificates]);
@@ -213,17 +204,7 @@ const Events = () => {
                       {/* View Event Details - accessible to all */}
                       <td className={styles.mobilewidthtd}>
                         <Link href={`${viewPath}/${event.id}`}>
-                          <button
-                            className={styles.viewButton}
-                            style={{
-                              marginLeft: "auto",
-                              whiteSpace: "nowrap",
-                              height: "fit-content",
-                              color: "orange",
-                            }}
-                          >
-                            View
-                          </button>
+                          <button className={styles.viewButton}>View</button>
                         </Link>
                       </td>
 
@@ -261,17 +242,7 @@ const Events = () => {
                         authCtx.user.email === "srex@fedkiit.com") && (
                         <td className={styles.mobilewidthtd}>
                           <Link href={`${analyticsPath}/${event.id}`}>
-                            <button
-                              className={styles.viewButton}
-                              style={{
-                                marginLeft: "auto",
-                                whiteSpace: "nowrap",
-                                height: "fit-content",
-                                color: "orange",
-                              }}
-                            >
-                              View
-                            </button>
+                            <button className={styles.viewButton}>View</button>
                           </Link>
                         </td>
                       )}

@@ -9,7 +9,7 @@ import { jwtVerify } from "jose";
  *
  * URLs deliberately keep the original React Router casing (/Events, /Team,
  * /Login, /PrivacyPolicy …) so the replica is indistinguishable from the old
- * site — including in the address bar. Lowercase variants are redirected to the
+ * site - including in the address bar. Lowercase variants are redirected to the
  * canonical casing so hand-typed URLs still resolve.
  *
  * Pages authorise independently; this is a fast gate, not the authority.
@@ -68,7 +68,7 @@ export async function proxy(request: NextRequest) {
 
   // 1. Normalise casing. The comparison is explicit rather than a redirect rule
   //    in next.config.ts, because Next matches redirect `source` patterns
-  //    case-insensitively — "/Events" -> "/events" would also match "/events"
+  //    case-insensitively - "/Events" -> "/events" would also match "/events"
   //    and loop forever.
   const canonical = CANONICAL.get(pathname.toLowerCase());
   if (canonical && canonical !== pathname) {

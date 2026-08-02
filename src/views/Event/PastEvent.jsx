@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import style from "./styles/PastEvent.module.scss";
+import style from "./styles/Event.module.scss";
 import { EventCard } from "../../components";
 import { api } from "../../services";
 import FormData from "../../data/FormData.json";
-import { ComponentLoading } from "../../microInteraction";
+import { ErrorArt, NoEventsArt } from "./components/Artwork";
 import Link from "next/link";
 
 const PastEvent = () => {
@@ -20,36 +19,37 @@ const PastEvent = () => {
     window.scrollTo(0, 0);
 
     const fetchPastEvents = async () => {
+      const fallback = () =>
+        events
+          .filter((event) => event.info.isEventPast)
+          .sort(
+            (a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate)
+          );
+
       try {
         const response = await api.get("/api/form/getAllForms");
         if (response.status === 200) {
-          const allEvents = response.data.events;
-          // Filter and sort past events
-          const sortedPastEvents = allEvents
+          const sortedPastEvents = response.data.events
             .filter((event) => event.info.isEventPast)
-            .sort((a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate));
+            .sort(
+              (a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate)
+            );
           setPastEvents(sortedPastEvents);
         } else {
           setError({
-            message: "Sorry for the inconvenience, we are having issues fetching our Events",
+            message:
+              "Sorry for the inconvenience, we are having issues fetching our Events",
           });
           console.error("Error fetching events:", response.data.message);
-
-          const sortedPastEvents = events
-            .filter((event) => event.info.isEventPast)
-            .sort((a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate));
-          setPastEvents(sortedPastEvents);
+          setPastEvents(fallback());
         }
       } catch (error) {
         setError({
-          message: "Sorry for the inconvenience, we are having issues fetching our Events",
+          message:
+            "Sorry for the inconvenience, we are having issues fetching our Events",
         });
         console.error("Error fetching events:", error);
-        // Fallback to local JSON data
-        const sortedPastEvents = events
-          .filter((event) => event.info.isEventPast)
-          .sort((a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate));
-        setPastEvents(sortedPastEvents);
+        setPastEvents(fallback());
       } finally {
         setIsLoading(false);
       }
@@ -58,79 +58,94 @@ const PastEvent = () => {
     fetchPastEvents();
   }, [events]);
 
-  const customStyles = {
-    eventname: {
-      fontSize: "1.2rem",
-    },
-    registerbtn: {
-      width: "8rem",
-      fontSize: ".721rem",
-    },
-    eventnamep: {
-      fontSize: "0.7rem",
-    },
-  };
+  const publicEvents = pastEvents.filter((event) => event.info.isPublic);
 
   return (
-    <>
-      <div className={style.main}>
-        <Link href={"/Events"}>
-          <div className={style.ArrowBackIcon}>
-            <ArrowBackIcon />
-          </div>
+    <main className={style.page}>
+      <div className={style.shell}>
+        <Link href="/Events" className={style.backLink}>
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M10 3.5 5.5 8l4.5 4.5" />
+          </svg>
+          All events
         </Link>
-        <div className={style.whole}>
-          <div className={style.eventwhole}>
-            {isLoading ? (
-              <ComponentLoading
-                customStyles={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  marginTop: "10rem",
-                  marginBottom: "10rem",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-            ) : error ? (
-              <div className={style.error}>{error.message}</div>
-            ) : (
-              <div className={style.pasteventCard}>
-                <div className={style.name}>
-                  <span className={style.w1}>Past</span>
-                  <span className={style.w2}>Events</span>
-                </div>
-                <div className={style.Outcard}>
-                  <div className={style.cardone}>
-                    {pastEvents.map((event, index) => (
-                      event.info.isPublic ? (
-                        <div
-                          style={{ height: "auto", width: "22rem" }}
-                          key={index}
-                        >
-                          <EventCard
-                            data={event}
-                            type="past"
-                            customStyles={customStyles}
-                            modalpath="/pastEvents/"
-                            aosDisable={false}
-                          />
-                        </div>
-                      ) : null
-                    ))}
+
+        <header className={style.masthead}>
+          <div className={style.mastheadText}>
+            <p className={style.eyebrow}>Archive</p>
+            <h1 className={style.title}>Past events</h1>
+            <p className={style.lede}>
+              Everything we&rsquo;ve hosted so far, newest first.
+            </p>
+          </div>
+          <div className={style.mastheadArt} aria-hidden="true">
+            <img src="/assets/design-2.png" alt="" />
+          </div>
+        </header>
+
+        {isLoading ? (
+          <section className={style.group} aria-busy="true">
+            <div className={style.grid}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className={style.skeleton}>
+                  <div className={style.skeletonMedia} />
+                  <div className={style.skeletonBody}>
+                    <span className={style.skeletonLine} />
+                    <span
+                      className={style.skeletonLine}
+                      style={{ width: "60%" }}
+                    />
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
+            <span className={style.srOnly}>Loading events</span>
+          </section>
+        ) : error && publicEvents.length === 0 ? (
+          <div className={style.state} role="alert">
+            <ErrorArt className={style.stateArt} />
+            <h2 className={style.stateTitle}>We couldn&rsquo;t load events</h2>
+            <p className={style.stateBody}>{error.message}</p>
           </div>
-          <div className={style.circle}></div>
-          <div className={style.circleone}></div>
-          <div className={style.circletwo}></div>
-          <div className={style.circlethree}></div>
-        </div>
+        ) : publicEvents.length > 0 ? (
+          <section className={style.group}>
+            <div className={style.groupHead}>
+              <h2 className={style.groupTitle}>Archive</h2>
+              <span className={style.count}>{publicEvents.length}</span>
+            </div>
+            <div className={style.grid}>
+              {publicEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  data={event}
+                  type="past"
+                  modalpath="/pastEvents/"
+                  isLoading={false}
+                />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <div className={style.state}>
+            <NoEventsArt className={style.stateArt} />
+            <h2 className={style.stateTitle}>No past events yet</h2>
+            <p className={style.stateBody}>
+              Once an event wraps up it will show here.
+            </p>
+          </div>
+        )}
       </div>
-    </>
+    </main>
   );
 };
 

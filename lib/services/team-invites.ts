@@ -66,7 +66,7 @@ async function originUrl(): Promise<string> {
   return siteUrl();
 }
 
-/** GET /api/form/inviteLink/:formId — leader only. */
+/** GET /api/form/inviteLink/:formId - leader only. */
 export async function getTeamInviteLink(formId: string, user: SafeUser) {
   const registration = await myRegistration(formId, user);
 
@@ -90,7 +90,7 @@ export async function getTeamInviteLink(formId: string, user: SafeUser) {
   };
 }
 
-/** POST /api/form/inviteTeamMember — emails an invite. Leader only. */
+/** POST /api/form/inviteTeamMember - emails an invite. Leader only. */
 export async function inviteTeamMember(input: {
   user: SafeUser;
   formId: string;
@@ -163,7 +163,7 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** POST /api/form/sendJoinRequest — asks a team's leader for admission. */
+/** POST /api/form/sendJoinRequest - asks a team's leader for admission. */
 export async function sendJoinRequest(input: {
   user: SafeUser;
   formId: string;
@@ -267,7 +267,7 @@ async function expireStale(where: Record<string, unknown>) {
   });
 }
 
-/** GET /api/form/joinRequestUpdates/:formId — unseen outcomes for one event. */
+/** GET /api/form/joinRequestUpdates/:formId - unseen outcomes for one event. */
 export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
   await expireStale({ formId, requesterEmail: user.email });
 
@@ -291,7 +291,7 @@ export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
   return { updates };
 }
 
-/** GET /api/form/allJoinRequestUpdates — unseen outcomes across every event. */
+/** GET /api/form/allJoinRequestUpdates - unseen outcomes across every event. */
 export async function checkAllJoinRequestUpdates(user: SafeUser) {
   await expireStale({ requesterEmail: user.email });
 
@@ -319,7 +319,7 @@ export async function checkAllJoinRequestUpdates(user: SafeUser) {
  *
  * Public, because the leader clicks it straight from an email. The request id
  * is an unguessable ObjectId and each one can only be acted on once, which is
- * what stands in for authentication here — matching the original design.
+ * what stands in for authentication here - matching the original design.
  */
 export async function respondJoinRequest(input: {
   id: string;

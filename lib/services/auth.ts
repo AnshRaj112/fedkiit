@@ -34,7 +34,7 @@ import type {
  *     user by the posted email and threw a distinct 404 "User not found" before
  *     any password check. That turns the login form into an account-enumeration
  *     oracle. Both branches now return the same generic message.
- *  2. Password hashing happened in the browser. It happens here now — see
+ *  2. Password hashing happened in the browser. It happens here now - see
  *     `lib/auth/password.ts` for why this does not invalidate stored hashes.
  */
 
@@ -55,7 +55,7 @@ export async function login(
     where: { email: input.email },
   });
 
-  // Same error for "no such account" and "wrong password" — do not leak which.
+  // Same error for "no such account" and "wrong password" - do not leak which.
   const invalid = new ApiError(401, "Incorrect email or password");
   if (!record) throw invalid;
 
@@ -174,7 +174,7 @@ export async function logout(): Promise<void> {
 /**
  * Google sign-in.
  *
- * Verifies the ID token against Google's certs and the configured client id —
+ * Verifies the ID token against Google's certs and the configured client id -
  * the token is attacker-controlled input, so decoding it without verification
  * would let anyone sign in as anyone.
  */

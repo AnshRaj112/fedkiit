@@ -1,0 +1,223 @@
+﻿{
+    "id":  "66b29f57c5dc0fdd3773ded8",
+    "info":  {
+                 "eventTitle":  "Omega4.0",
+                 "eventdescription":  "Omega is the Flagship Event of Fed. Explore various domains and participate in various fun events by registering.",
+                 "eventDate":  "Sun Aug 6 2024 00:00:00 GMT+0530 (India Standard Time)",
+                 "eventType":  "Paid",
+                 "eventAmount":  "149",
+                 "eventMaxReg":  "1000",
+                 "relatedEvent":  "null",
+                 "participationType":  "Individual",
+                 "maxTeamSize":  "",
+                 "minTeamSize":  "",
+                 "regDateAndTime":  "August 6th 2024, 12:00:00 am",
+                 "eventPriority":  "0",
+                 "successMessage":  "You have successfully registered the Omega 4.0 form.\r\n\r\nhttps://www.youtube.com/watch?v=amprODy8MdE",
+                 "isPublic":  false,
+                 "isRegistrationClosed":  true,
+                 "isEventPast":  true,
+                 "receiverDetails":  {
+                                         "upi":  "8279420073@okicici",
+                                         "media":  "https://res.cloudinary.com/dyrq6vtvw/image/upload/v1722982231/QRMediaImages/wioxhas83p1nxzrejhhn.png"
+                                     },
+                 "eventImg":  "https://res.cloudinary.com/dyrq6vtvw/image/upload/v1723476052/FormImages/swlufm1zfcmjoctyjpod.png"
+             },
+    "sections":  [
+                     {
+                         "_id":  "F6SINu_xLDANJds9Yrxv-",
+                         "name":  "Basic Details",
+                         "description":  "Enter your basic details here",
+                         "isDisabled":  false,
+                         "validations":  [
+                                             {
+                                                 "_id":  "8gfbaU2Bq5J-V1qk_qlLR",
+                                                 "field_id":  null,
+                                                 "onNext":  "n4HLn1-zYmn9UMEA2dAVe",
+                                                 "onBack":  null,
+                                                 "values":  null
+                                             }
+                                         ],
+                         "fields":  [
+                                        {
+                                            "_id":  "SkojqTk9SiwVLsrV3Zs1_",
+                                            "name":  "Name",
+                                            "type":  "text",
+                                            "value":  "Enter Your Name",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "9bHTK2Y00s3Y1wsHNPFEk",
+                                                                    "type":  "length",
+                                                                    "value":  50,
+                                                                    "operator":  "\u003c=",
+                                                                    "message":  "Name should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "gd_bDrZNpHcWcFHSwUVu_",
+                                            "name":  "Roll Number",
+                                            "type":  "text",
+                                            "value":  "Enter Your Roll Number",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "odQIZelHnHn6Q0u-RCWZL",
+                                                                    "type":  "length",
+                                                                    "value":  50,
+                                                                    "operator":  "\u003c=",
+                                                                    "message":  "Roll Number should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "wr_yC8DrXtBSQzw4uzgku",
+                                            "name":  "Contact Number",
+                                            "type":  "number",
+                                            "value":  "Enter your Contact Number",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "Jl7jTcjuJjMUrGd2U-ir2",
+                                                                    "type":  "length",
+                                                                    "value":  "10",
+                                                                    "operator":  "===",
+                                                                    "message":  "Contact Number should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "o3PMP-lpQ2RdFqVn11M64",
+                                            "name":  "Email",
+                                            "type":  "text",
+                                            "value":  "Enter Your registered Email Id",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "2b4B77ebHa9WncoyXs45p",
+                                                                    "type":  "length",
+                                                                    "value":  50,
+                                                                    "operator":  "\u003c=",
+                                                                    "message":  "Email should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        }
+                                    ]
+                     },
+                     {
+                         "name":  "Self Declaration",
+                         "_id":  "n4HLn1-zYmn9UMEA2dAVe",
+                         "description":  "Complete the self declaration for the form",
+                         "isDisabled":  false,
+                         "validations":  [
+                                             {
+                                                 "_id":  "C5vb939MQ0C42b2TcCCPA",
+                                                 "field_id":  null,
+                                                 "onNext":  "XCffBMSVwyK_Fndxl5Htm",
+                                                 "onBack":  "F6SINu_xLDANJds9Yrxv-",
+                                                 "values":  null
+                                             }
+                                         ],
+                         "fields":  [
+                                        {
+                                            "_id":  "-gUSyXUllhFVDieKsR-VN",
+                                            "name":  "Terms\u0026Conditions",
+                                            "type":  "checkbox",
+                                            "value":  "I accept FEDs terms and conditoins while filling this form",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "KWgCNLoizpyn6Uz931epZ",
+                                                                    "type":  "length",
+                                                                    "value":  50,
+                                                                    "operator":  "\u003c=",
+                                                                    "message":  "Terms\u0026Conditions should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "s_UtIKZaBH9tOAZoQzEND",
+                                            "name":  "Verification",
+                                            "type":  "checkbox",
+                                            "value":  "I verify that the details filled are correct to the best of my knowledge and cannot be changes later",
+                                            "isRequired":  true,
+                                            "validations":  [
+                                                                {
+                                                                    "_id":  "PwRpFAkOkxdZl_fRKJzQB",
+                                                                    "type":  "length",
+                                                                    "value":  50,
+                                                                    "operator":  "\u003c=",
+                                                                    "message":  "Verification should be less than 200 characters long"
+                                                                }
+                                                            ]
+                                        }
+                                    ]
+                     },
+                     {
+                         "_id":  "XCffBMSVwyK_Fndxl5Htm",
+                         "name":  "Payment Details",
+                         "description":  "Make the payment to attached UPI ID or Scan the QR code. In the end, Share the complete detailes with us!",
+                         "isDisabled":  true,
+                         "validations":  [
+                                             {
+                                                 "_id":  "gXEoHVXoK7Hu1PB0SU5ps",
+                                                 "field_id":  null,
+                                                 "onNext":  null,
+                                                 "onBack":  null,
+                                                 "values":  null
+                                             }
+                                         ],
+                         "fields":  [
+                                        {
+                                            "_id":  "TID7_UHolBut-9Fc100KB",
+                                            "name":  "Enter UPI ID",
+                                            "type":  "text",
+                                            "value":  "Enter UPI ID",
+                                            "isRequired":  true,
+                                            "validations":  [
+
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "o61xN3ASA69-xB3SIo5bo",
+                                            "name":  "Paid Amount",
+                                            "type":  "number",
+                                            "value":  "Enter Amount Paid",
+                                            "isRequired":  true,
+                                            "validations":  [
+
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "H_-kKQjYEGvNNzJiRVYAr",
+                                            "name":  "Transaction ID",
+                                            "type":  "text",
+                                            "value":  "Last 4 digits of Transaction ID",
+                                            "isRequired":  true,
+                                            "validations":  [
+
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "KMpCb7x4ruSqsMDvNnvGZ",
+                                            "name":  "Payment Screenshot",
+                                            "type":  "image",
+                                            "value":  "Upload Payment Screenshot",
+                                            "isRequired":  true,
+                                            "validations":  [
+
+                                                            ]
+                                        },
+                                        {
+                                            "_id":  "iKv2ScW5Fljvu9VHvPeW1",
+                                            "name":  "T\u0026C Acceptance",
+                                            "type":  "checkbox",
+                                            "value":  "Accept Terms \u0026 Conditions",
+                                            "isRequired":  true
+                                        }
+                                    ]
+                     }
+                 ],
+    "extra":  null
+}

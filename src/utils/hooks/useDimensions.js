@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 const useDimensions = () => {
-  // Starts at 0 and is filled in on mount — see useWindowWidth.
+  // Starts at 0 and is filled in on mount - see useWindowWidth.
   const [viewportWidth, setViewportWidth] = useState(0);
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * DELETE /api/user/deleteMember/:id
- * Port of controllers/userController/member/deleteMember.js — admin only.
+ * Port of controllers/userController/member/deleteMember.js - admin only.
  *
  * Demotes to USER rather than deleting the row. The original hard-deleted the
  * user, which orphaned every `formRegistration` pointing at them and broke the

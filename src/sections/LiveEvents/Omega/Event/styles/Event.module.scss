@@ -45,8 +45,7 @@
     display: flex;
     width: 550px;
     height: 300px;
-    backdrop-filter: blur(10px);
-    background: #0b0b0b11;
+    background: var(--surface-1);
     border: solid;
     border-color: white;
     border-width: 1px;

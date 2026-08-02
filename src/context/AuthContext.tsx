@@ -9,7 +9,7 @@ import React, {
 } from "react";
 
 /**
- * Auth context — ported from FED-Frontend/src/context/AuthContext.jsx.
+ * Auth context - ported from FED-Frontend/src/context/AuthContext.jsx.
  *
  * The API surface (token, isLoggedIn, user, login(), logout(), update(),
  * settarget()) is preserved exactly so every ported component works unchanged.
@@ -175,7 +175,7 @@ export const AuthContextProvider = (props: { children: React.ReactNode }) => {
 
   const logoutHandler = useCallback(async () => {
     try {
-      // Same-origin now — the Next.js route handler clears the httpOnly cookie.
+      // Same-origin now - the Next.js route handler clears the httpOnly cookie.
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
@@ -298,7 +298,7 @@ export const AuthContextProvider = (props: { children: React.ReactNode }) => {
     setIsAdmin(access === "ADMIN");
   }, []);
 
-  // Restore the stored session after mount — never during render, so the server
+  // Restore the stored session after mount - never during render, so the server
   // and client agree on the first paint.
   useEffect(() => {
     const tokenData = retrieveStoredToken();

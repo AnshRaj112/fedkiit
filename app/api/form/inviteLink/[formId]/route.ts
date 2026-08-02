@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth/access";
 
 /**
  * GET /api/form/inviteLink/:formId
- * Port of controllers/registration/getTeamInviteLink.js — leader only.
+ * Port of controllers/registration/getTeamInviteLink.js - leader only.
  */
 export async function GET(
   _request: Request,

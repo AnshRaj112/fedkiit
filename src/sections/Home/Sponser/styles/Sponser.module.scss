@@ -18,8 +18,7 @@
 .sponser_div{
   border-radius: 2.77rem;
   border: 0.88px solid rgba(255, 255, 255, 0.40);
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(6.7px);
+  background: var(--surface-1);
   width: 65rem;
   height: 25rem;
   display: flex;

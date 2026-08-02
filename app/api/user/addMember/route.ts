@@ -7,7 +7,7 @@ import { hashPassword } from "@/lib/auth/password";
 
 /**
  * POST /api/user/addMember
- * Port of controllers/userController/member/addMember.js — admin only.
+ * Port of controllers/userController/member/addMember.js - admin only.
  *
  * Creates the account if the email is new, otherwise promotes the existing
  * user to the given access level (the original `createOrUpdateUser` behaviour).
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
     // A member added by an admin has no password yet. Store an unusable
     // placeholder rather than an empty string, so bcrypt.compare can never
-    // succeed against it — they must use "forgot password" to set one.
+    // succeed against it - they must use "forgot password" to set one.
     const created = await prisma.user.create({
       data: {
         email: address,

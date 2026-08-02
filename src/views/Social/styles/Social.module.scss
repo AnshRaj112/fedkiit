@@ -52,61 +52,6 @@
   margin-bottom: 3rem;
 }
 
-.backcircle{
-  width: 20rem;
-  height: 10rem;
-  flex-shrink: 0;
-  margin-top: 4rem;
-  z-index: 1;
-  padding-left: 40px;
-  border-radius: 32.99306rem;
-  opacity: 0.4;
-  background: rgba(255, 153, 0, 0.977);
-  mix-blend-mode: color-dodge;
-  filter: blur(110.9010238647461px);
-  position: absolute;
-  right: 20px;
-  top: 10px;
-}
-
-.circle{
-    height: 50vh;
-    width: 30vh;
-    background-color: rgba(255, 92, 0, 0.69);
-    position: absolute;
-   
-    top: 85%;
-    left: -8%;
-    border-radius: 50%;
-    filter: blur(100px);
-    z-index: -1;
-}
-
-.circleCenter{
-  height: 30rem;
-  width: 30rem;
-  margin-top: 16px;
-  position:absolute;
-  left: 38%;
-  border-radius: 50%;
-  filter: blur(100px);
-  top: 10%;
-  background-color: rgba(255, 92, 0, 0.19);
-}
-
-.circle1{
-  height: 50vh;
-  width: 30vh;
-  background-color: rgba(255, 92, 0, 0.19);
-  position: absolute;
-  z-index: -1;
- 
-  top: 30%;
-  right: -5%;
-  border-radius: 50%;
-  filter: blur(100px);
-}
-
 .socialMcontainer{
   height: auto;
   width: auto;
@@ -178,11 +123,6 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .post img:hover, .middleColumn img:hover, .rightColumn img:hover {
-    transform: scale(1.05);
   }
 
 
@@ -219,48 +159,6 @@
     align-content: center;
     transform: rotateX(180deg);
     background-clip: text;
-  }
-  
-  .backcircle{
-    width: 20rem;
-    height: 10rem;
-    flex-shrink: 0;
-    margin-top: 4rem;
-    z-index: 1;
-    padding-left: 40px;
-    border-radius: 32.99306rem;
-    opacity: 0.4;
-    background: rgba(255, 153, 0, 0.977);
-    mix-blend-mode: color-dodge;
-    filter: blur(110.9010238647461px);
-    position: absolute;
-    right: 20px;
-    top: 10px;
-  }
-  
-  .circle{
-      height: 50vh;
-      width: 30vh;
-      background-color: rgba(255, 92, 0, 0.19);
-      position: absolute;
-     
-      top: 85%;
-      left: -8%;
-      border-radius: 50%;
-      filter: blur(100px);
-  }
-  
-  .circle1{
-    height: 50vh;
-    width: 30vh;
-    background-color: rgba(255, 92, 0, 0.19);
-    position: absolute;
-   
-    top: 30%;
-    right: -5%;
-    border-radius: 50%;
-    filter: blur(100px);
-    // overflow: hidden;
   }
   
   .socialMcontainer{
@@ -338,11 +236,6 @@
       width: 100%;
       height: auto;
       border-radius: 8px;
-      transition: transform 0.3s ease-in-out;
-    }
-    
-    .post img:hover, .middleColumn img:hover, .rightColumn img:hover {
-      transform: scale(1.05);
     }
   
 }
@@ -405,11 +298,6 @@
   }
 
 
-  .post img:hover, .middleColumn img:hover, .rightColumn img:hover {
-    transform: scale(1.05);
-  }
-
-
   .text p {
     font-size: 40px;
     text-align: center;
@@ -467,20 +355,6 @@
     margin-top: -4.6rem;
     margin-right: -0.74rem;
     margin-bottom: 3rem;
-  }
-  
-  
-  .circle1{
-    height: 50vh;
-    width: 4rem;
-    background-color: #ff5e00;
-    position: absolute;
-    top: 30%;
-    right: 3%;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: -5;
-    overflow: hidden;
   }
 
 }
@@ -589,36 +463,6 @@
   }
 
 
-  .post img:hover, .middleColumn img:hover, .rightColumn img:hover {
-    transform: scale(1.05);
-  }
-
-
-  .circleCenter{
-    height: 30rem;
-    width: 30rem;
-    margin-top: 29px;
-    position:absolute;
-    left: 32%;
-    border-radius: 50%;
-    filter: blur(100px);
-    top: 10%;
-    z-index: 0;
-    background-color: rgba(255, 92, 0, 0.19);
-  }
-
-  .circle1{
-    height: 50vh;
-    width: 4rem;
-    background-color: #ff5e00;
-    position: absolute;
-    top: 390%;
-    right: 3%;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: -5;
-  }
-
 }
 
 @media (max-width: 435px) {
@@ -718,36 +562,6 @@
     margin-top: 13rem;
   }
 
-  .circle{
-    top: 29%;
-    background-color: rgba(255, 92, 0, 0.59);
-  }
-
-  .circleCenter{
-    height: 13rem;
-    width: 13rem;
-    margin-top: 29px;
-    position:absolute;
-    left: 28%;
-    border-radius: 50%;
-    filter: blur(100px);
-    top: 47%;
-    z-index: 0;
-    background-color: rgba(255, 94, 0, 0.59);
-  }
-
-  .circle1{
-    height: 50vh;
-    width: 4rem;
-    background-color: #ff5e00;
-    position: absolute;
-    top: 180%;
-    right: 3%;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: -5;
-    background-color: rgba(255, 92, 0, 0.59);
-  }
 }
 
 @media (max-width:390px) { 

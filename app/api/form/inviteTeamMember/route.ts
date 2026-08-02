@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/auth/access";
 
 /**
  * POST /api/form/inviteTeamMember
- * Port of controllers/registration/inviteTeamMember.js — leader only.
+ * Port of controllers/registration/inviteTeamMember.js - leader only.
  *
  * Rate limited: it sends mail to an address supplied in the request body, so
  * without a limit it doubles as an open relay.

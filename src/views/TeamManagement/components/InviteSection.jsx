@@ -14,7 +14,7 @@ const InviteSection = ({ onInviteEmail, onGetInviteLink, teamCode }) => {
     const [linkLoading, setLinkLoading] = useState(false);
     const [linkCopied, setLinkCopied] = useState(false);
 
-    // [v2] Team Code tab commented out — users now join via browse/request flow
+    // [v2] Team Code tab commented out - users now join via browse/request flow
     // const [codeCopied, setCodeCopied] = useState(false);
 
     const handleSendEmail = async (e) => {
@@ -72,7 +72,7 @@ const InviteSection = ({ onInviteEmail, onGetInviteLink, teamCode }) => {
     const tabs = [
         { id: "email", label: "Email Invite", icon: <IoMailOutline /> },
         { id: "link", label: "Share Link", icon: <IoLinkOutline /> },
-        // [v2] Team Code tab removed — users join via browse/request flow
+        // [v2] Team Code tab removed - users join via browse/request flow
         // { id: "code", label: "Team Code", icon: <IoKeyOutline /> },
     ];
 
@@ -157,7 +157,7 @@ const InviteSection = ({ onInviteEmail, onGetInviteLink, teamCode }) => {
                     </div>
                 )}
 
-                {/* [v2] Code Tab commented out — users join via browse/request flow
+                {/* [v2] Code Tab commented out - users join via browse/request flow
                 {activeTab === "code" && (
                     <div className={styles.codeContent}>
                         <p className={styles.codeLabel}>

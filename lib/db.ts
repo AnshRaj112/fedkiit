@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
  *
  * The Express codebase called `new PrismaClient()` at the top of nearly every
  * controller, which opened a fresh connection pool per module. Next.js hot
- * reloads modules in dev, so that pattern exhausts Mongo connections fast —
+ * reloads modules in dev, so that pattern exhausts Mongo connections fast -
  * hence the global cache.
  */
 const globalForPrisma = globalThis as unknown as {

@@ -12,7 +12,7 @@ import { getEnv } from "@/lib/env";
  * password and the server ran `bcrypt.compare`. The stored value was therefore
  * always a standard bcrypt hash of the plaintext.
  *
- * That means hashing can move server-side — where it belongs — without
+ * That means hashing can move server-side - where it belongs - without
  * invalidating a single existing password: the stored format is unchanged, and
  * `verifyPassword` still compares plaintext against it.
  */

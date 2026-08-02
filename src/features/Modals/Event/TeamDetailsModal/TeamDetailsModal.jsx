@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { MdClose, MdGroups, MdPerson, MdEmail, MdSchool, MdCalendarToday } from "react-icons/md";
+import { MdGroups, MdPerson, MdEmail, MdSchool, MdCalendarToday } from "react-icons/md";
 import { FaCopy, FaCheck } from "react-icons/fa";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import { api } from "../../../../services";
 import { Alert, MicroLoading } from "../../../../microInteraction";
 import styles from "./style/TeamDetailsModal.module.scss";
@@ -89,9 +90,7 @@ const TeamDetailsModal = ({ isOpen, onClose, formId, eventTitle }) => {
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h2>Team Details</h2>
-          <button className={styles.closeButton} onClick={onClose}>
-            <MdClose size={24} />
-          </button>
+          <CloseButton onClick={onClose} label="Close team details" />
         </div>
 
         <div className={styles.modalContent}>
@@ -108,7 +107,7 @@ const TeamDetailsModal = ({ isOpen, onClose, formId, eventTitle }) => {
 
               <div className={styles.teamInfo}>
                 <div className={styles.teamHeader}>
-                  <MdGroups size={24} color="#f97507" />
+                  <MdGroups size={20} color="var(--accent)" />
                   <h4>Team Information</h4>
                 </div>
                 
@@ -143,7 +142,7 @@ const TeamDetailsModal = ({ isOpen, onClose, formId, eventTitle }) => {
 
               <div className={styles.membersSection}>
                 <div className={styles.membersHeader}>
-                  <MdPerson size={24} color="#f97507" />
+                  <MdPerson size={20} color="var(--accent)" />
                   <h4>Team Members ({teamDetails.members.length})</h4>
                 </div>
                 

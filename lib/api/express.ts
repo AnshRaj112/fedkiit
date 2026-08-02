@@ -7,7 +7,7 @@ import { isApiError } from "@/lib/api/errors";
  *
  * The ported frontend reads `response.data.events`, `response.data.data`,
  * `response.data.user` and so on, so the envelope shapes must match
- * FED-Backend byte for byte — this is not a place to "improve" the API.
+ * FED-Backend byte for byte - this is not a place to "improve" the API.
  */
 
 /** Arbitrary JSON body, as the Express controllers returned. */

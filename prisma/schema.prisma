@@ -1,4 +1,4 @@
-// FED KIIT — Prisma schema
+// FED KIIT - Prisma schema
 //
 // Migrated from FED-Backend/prisma/schema/*.prisma (multi-file) into a single
 // schema. Every `@@map` and `@map` is preserved verbatim: this app points at the

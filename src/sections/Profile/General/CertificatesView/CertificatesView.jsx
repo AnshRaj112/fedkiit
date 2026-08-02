@@ -147,50 +147,20 @@ const Events = () => {
 
                       <td className={styles.mobilewidthtd}>
                         <Link href={`${viewCertificatesPath}/${event.id}`}>
-                          <button
-                            className={styles.viewButton}
-                            style={{
-                              marginLeft: "auto",
-                              whiteSpace: "nowrap",
-                              height: "fit-content",
-                              color: "orange",
-                            }}
-                          >
-                            View
-                          </button>
+                          <button className={styles.viewButton}>View</button>
                         </Link>
                       </td>
                       {(analyticsAccessRoles.includes(authCtx.user.access) || authCtx.user.email == "srex@fedkiit.com") && (
                         <td className={styles.mobilewidthtd}>
                           <Link href={`${SendCertificatePath}/${event.id}`}>
-                            <button
-                              className={styles.viewButton}
-                              style={{
-                                marginLeft: "auto",
-                                whiteSpace: "nowrap",
-                                height: "fit-content",
-                                color: "orange",
-                              }}
-                            >
-                              View
-                            </button>
+                            <button className={styles.viewButton}>View</button>
                           </Link>
                         </td>
                       )}
                       {(analyticsAccessRoles.includes(authCtx.user.access) || authCtx.user.email == "srex@fedkiit.com") && (
                         <td className={styles.mobilewidthtd}>
                           <Link href={`${createCertificatesPath}/${event.id}`}>
-                            <button
-                              className={styles.viewButton}
-                              style={{
-                                marginLeft: "auto",
-                                whiteSpace: "nowrap",
-                                height: "fit-content",
-                                color: "orange",
-                              }}
-                            >
-                              View
-                            </button>
+                            <button className={styles.viewButton}>View</button>
                           </Link>
                         </td>
                       )}

@@ -11,13 +11,13 @@ import { Loading } from "@/src/microInteraction";
 import style from "@/src/views/Profile/styles/Profile.module.scss";
 
 /**
- * Profile shell — ported from FED-Frontend/src/pages/Profile/Profile.jsx.
+ * Profile shell - ported from FED-Frontend/src/pages/Profile/Profile.jsx.
  *
  * React Router's `<Outlet />` becomes the layout's `children`, so the nested
  * profile routes render in exactly the same slot.
  *
  * The unauthenticated redirect that lived in App.jsx's `ProtectedRoute` runs
- * here as well as in `proxy.ts` — the proxy is a fast gate at the edge, this
+ * here as well as in `proxy.ts` - the proxy is a fast gate at the edge, this
  * covers client-side navigations.
  */
 export default function ProfileShell({

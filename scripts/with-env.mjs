@@ -56,7 +56,7 @@ function parseEnvFile(file) {
   return out;
 }
 
-// .env first, then .env.local on top — matching Next's own precedence.
+// .env first, then .env.local on top - matching Next's own precedence.
 const fileEnv = {
   ...parseEnvFile(resolve(root, ".env")),
   ...parseEnvFile(resolve(root, ".env.local")),

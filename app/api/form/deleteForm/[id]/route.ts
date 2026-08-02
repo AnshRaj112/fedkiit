@@ -6,7 +6,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * DELETE /api/form/deleteForm/:id
- * Port of controllers/forms/deleteForm.js — admin only.
+ * Port of controllers/forms/deleteForm.js - admin only.
  *
  * Registrations and the tracker are removed first: Mongo has no cascading
  * delete, and the original left both behind, so a deleted event kept its rows

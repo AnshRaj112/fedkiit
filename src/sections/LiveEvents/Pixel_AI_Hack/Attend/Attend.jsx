@@ -37,9 +37,6 @@ function Attend() {
           <Card title="Entrepreneurial Insights" />
         </div>
       </div>
-
-      <div className={style.circle1}></div>
-      <div className={style.circle2}></div>
     </>
   );
 }

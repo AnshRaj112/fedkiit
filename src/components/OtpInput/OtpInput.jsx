@@ -7,7 +7,7 @@ import Button from "../Core/Button";
 import Input from "../Core/Input";
 import style from "./style/otpinput.module.scss";
 
-import { X } from "lucide-react";
+import CloseButton from "../CloseButton/CloseButton";
 import { api } from "../../services";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { useRouter } from "next/navigation";
@@ -202,18 +202,11 @@ const OtpInput = (props) => {
       style={{ background: isSignUp ? "#1c1c1c" : "" }}
     >
       {isSignUp && (
-        <div
+        <CloseButton
           onClick={handleClose}
-          style={{
-            position: "absolute",
-            top: "1rem",
-            right: "1rem",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-        >
-          <X />
-        </div>
+          label="Close email verification"
+          className={style.closeOtp}
+        />
       )}
       <div className={style.innerBox2}>
         <div className={style.innerTitle}>

@@ -11,7 +11,7 @@ import logo from "../../assets/images/Logo/logo.svg";
 import defaultImg from "../../assets/images/defaultImg.jpg";
 
 /**
- * Navbar — ported 1:1 from FED-Frontend/src/layouts/Navbar/Navbar.jsx.
+ * Navbar - ported 1:1 from FED-Frontend/src/layouts/Navbar/Navbar.jsx.
  *
  * Markup, class names and the SCSS module are unchanged. Only the router is
  * swapped: `NavLink`/`useLocation`/`useNavigate` become `Link`/`usePathname`/

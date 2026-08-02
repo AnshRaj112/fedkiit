@@ -18,7 +18,6 @@ const Social = () => {
 
     <div className={styles.socialMcontainer}>
       <div className={styles.text}>
-        <div className={styles.circleCenter}></div>
         <p className={styles.content}>
           Welcome to the social media page of <br />
           <div className={styles.fed}>
@@ -57,7 +56,6 @@ const Social = () => {
               </div>
               <div className={styles.instagramfeed2}>
                 <SocialEmbed type="instagramBottomPost" />
-                <div className={styles.circle}></div>
               </div>
             </div>
           </div>
@@ -68,7 +66,6 @@ const Social = () => {
           </div>
           <div className={styles.rightColumn}>
             <div className={styles.linkedinfeed}>
-              <div className={styles.circle1}></div>
               <SocialEmbed type="linkedInPost" />
             </div>
           </div>

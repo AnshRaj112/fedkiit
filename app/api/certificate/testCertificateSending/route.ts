@@ -5,7 +5,7 @@ import { getCurrentUser, isAdmin } from "@/lib/auth/access";
 
 /**
  * POST /api/certificate/testCertificateSending
- * Port of controllers/certificate/testNameController.js — sends one test email
+ * Port of controllers/certificate/testNameController.js - sends one test email
  * without issuing a real certificate row.
  */
 export async function POST(request: Request) {

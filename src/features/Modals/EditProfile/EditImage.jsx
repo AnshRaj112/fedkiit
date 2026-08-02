@@ -6,7 +6,7 @@ import { FaUpload } from "react-icons/fa";
 import style from "./styles/editImage.module.scss";
 import AuthContext from "../../../context/AuthContext";
 import { Button } from "../../../components";
-import { X } from "lucide-react";
+import CloseButton from "../../../components/CloseButton/CloseButton";
 import { Alert, MicroLoading } from "../../../microInteraction";
 import { api } from "../../../services";
 import camera from "../../../assets/images/camera.svg";
@@ -179,93 +179,50 @@ const EditImage = (props) => {
 
   return (
     <div
-      style={{
-        position: "fixed",
-        width: "100%",
-        height: "100%",
-        zIndex: "10",
-        left: "0",
-        top: "0",
-      }}
+      className={style.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
     >
-      <div
-        style={{
-          position: "absolute",
-          top: "0",
-          left: "0",
-          width: "100%",
-          height: "100%",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(4px)",
-          zIndex: "5",
-        }}
-      >
-        <div
-          style={{
-            zIndex: "10",
-            borderRadius: "10px",
-            padding: "2rem",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: ".3rem",
-          }}
-        >
-          <div className={style.container}>
-            <button className={style.closeModal} onClick={closeModal}>
-              <X />
-            </button>
-            <span className={style.imageTitle}>Image preview</span>
-            <div
-              style={{ height: "15rem", width: "15rem", borderRadius: "20%" }}
+      <div className={style.container}>
+        <header className={style.header}>
+          <h2 className={style.imageTitle}>Image preview</h2>
+          <CloseButton
+            onClick={closeModal}
+            label="Close image preview"
+            className={style.closeModal}
+          />
+        </header>
+        <div className={style.imageFrame}>
+          <img
+            className={style.imagePreview}
+            src={URL.createObjectURL(selectedFile)}
+            alt=""
+          />
+        </div>
+        {errorMsg && (
+          <div className={style.errorRow}>
+            <span className={style.errMsg}>{errorMsg}</span>
+            <button
+              type="button"
+              className={style.repick}
+              aria-label="Choose another image"
+              onClick={(e) => {
+                e.stopPropagation();
+                imgRef.current?.click();
+              }}
             >
-              <img
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "cover",
-                  borderRadius: "10%",
-                }}
-                className={style.imagePreview}
-                src={URL.createObjectURL(selectedFile)}
-                alt=""
-              />
-            </div>
-            {errorMsg && (
-              <div
-                style={{
-                  width: "97%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "5px",
-                }}
-              >
-                <span className={style.errMsg}>{errorMsg}</span>
-                <div
-                  style={{ position: "absolute", right: "0", bottom: "0.1rem" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    imgRef.current?.click();
-                  }}
-                >
-                  <img src={camera.src} alt="camera" />
-                </div>
-                <input
-                  style={{
-                    display: "none",
-                  }}
-                  type="file"
-                  ref={imgRef}
-                  onChange={handleFileChange}
-                />
-              </div>
-            )}
-            {/* <AvatarEditor
+              <img src={camera.src} alt="" />
+            </button>
+            <input
+              className={style.fileInput}
+              type="file"
+              ref={imgRef}
+              onChange={handleFileChange}
+            />
+          </div>
+        )}
+        {/* <AvatarEditor
               ref={editorRef}
               image={selectedFile}
               width={150}
@@ -275,50 +232,45 @@ const EditImage = (props) => {
               borderRadius={125}
               // scale={scale}
             /> */}
-            {/* <div className={style.wrapper}> */}
-            {/* <input
-                className={style.rangeInput}
-                type="range"
-                value={scale}
-                min="1"
-                max="2"
-                step="0.01"
-                onChange={handleScaleChange}
-              /> */}
-            {/* </div> */}
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              {updatePfp ? (
-                <Button
-                  type="button"
-                  onClick={handleSave}
-                  className={style.submit}
-                >
-                  {isLoading ? (
-                    <MicroLoading />
-                  ) : (
-                    <>
-                      <FaUpload /> Update Image
-                    </>
-                  )}
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  onClick={handleUpload}
-                  className={style.submit}
-                >
-                  {isLoading ? (
-                    <MicroLoading />
-                  ) : (
-                    <>
-                      <FaUpload /> Upload Image
-                    </>
-                  )}
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
+        {updatePfp ? (
+          <Button
+            type="button"
+            onClick={handleSave}
+            className={style.submit}
+            style={{
+              backgroundColor: "var(--accent)",
+              borderColor: "transparent",
+              color: "var(--text-inverse)",
+            }}
+          >
+            {isLoading ? (
+              <MicroLoading />
+            ) : (
+              <>
+                <FaUpload /> Update image
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={handleUpload}
+            className={style.submit}
+            style={{
+              backgroundColor: "var(--accent)",
+              borderColor: "transparent",
+              color: "var(--text-inverse)",
+            }}
+          >
+            {isLoading ? (
+              <MicroLoading />
+            ) : (
+              <>
+                <FaUpload /> Upload image
+              </>
+            )}
+          </Button>
+        )}
       </div>
       <Alert />
     </div>

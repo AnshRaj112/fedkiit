@@ -6,40 +6,48 @@ import { api } from "../../../../../../services";
 
 // This function retrieves or creates an event based on the provided formId
 const accessOrCreateEventByFormId = async (formId, token) => {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+
   try {
-    let res = await api.post(
+    const res = await api.post(
       "/api/certificate/getEventByFormId",
       { formId },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      auth
     );
-
-    if (res.status !== 200) {
-      const form = await api.get("/api/form/getAllForms", {
-        params: { id: formId },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (form.status === 200) {
-        res = await api.post(
-          "/api/certificate/createOrganisationEvent",
-          {
-            name: form.data.events.info.eventTitle,
-            description: form.data.events.info.eventdescription,
-            organisationId: process.env.NEXT_PUBLIC_CERT_ORG,
-            formId: form.data.events.id,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      }
-    }
-
     return res.data;
   } catch (error) {
-    console.error("Error fetching event by form ID:", error);
+    // "No event yet" arrives as a 404, which axios rejects - so the create
+    // path has to live here rather than behind a status check on a resolved
+    // response, which could never run.
+    if (error.response?.status !== 404) {
+      console.error("Error fetching event by form ID:", error);
+      return undefined;
+    }
+  }
+
+  try {
+    const form = await api.get("/api/form/getAllForms", {
+      params: { id: formId },
+      ...auth,
+    });
+
+    const info = form.data?.events?.info;
+    if (!info) return undefined;
+
+    const created = await api.post(
+      "/api/certificate/createOrganisationEvent",
+      {
+        name: info.eventTitle,
+        description: info.eventdescription,
+        organisationId: process.env.NEXT_PUBLIC_CERT_ORG,
+        formId: form.data.events.id,
+      },
+      auth
+    );
+
+    return created.data;
+  } catch (error) {
+    console.error("Error creating event for form ID:", error);
   }
 };
 

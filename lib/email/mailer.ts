@@ -8,7 +8,7 @@ import { getEnv } from "@/lib/env";
  * Transactional email via Resend, with the two-domain fallback the Express
  * backend used: try the primary sender, fall back to the secondary if it fails.
  *
- * Clients are created lazily and memoised — constructing them at module scope
+ * Clients are created lazily and memoised - constructing them at module scope
  * (as `nodeMailer.js` did) throws during build when the keys are absent.
  */
 
@@ -52,7 +52,7 @@ function stripHtml(html: string): string {
 }
 
 /**
- * Sends an email. Never throws — returns a result the caller can decide about.
+ * Sends an email. Never throws - returns a result the caller can decide about.
  *
  * The old controllers let a mail failure reject the whole request, so a Resend
  * outage turned "your account was created" into a 500 even though the account
@@ -99,6 +99,6 @@ export async function sendMail(input: MailInput): Promise<MailResult> {
       ? failures.join("; ")
       : "No Resend API key configured (set RESEND_API_KEY)";
 
-  console.error("[email] delivery failed —", reason);
+  console.error("[email] delivery failed -", reason);
   return { sent: false, reason };
 }

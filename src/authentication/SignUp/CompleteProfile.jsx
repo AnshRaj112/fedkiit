@@ -156,17 +156,12 @@ function CompleteProfile() {
         <div className={styles.ArrowBackIcon} onClick={() => router.back()}>
           <ArrowBackIcon />
         </div>
-        <div className={styles.circle}></div>
-        <div className={styles.circle1}></div>
         <div className={styles.BackGround}>
           <div>
             <p
               className={styles.CreateProfile}
               style={{
-                background: "var(--primary)",
                 padding: "5px 0px 5px 0px",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
                 alignItems: "center",
               }}
             >
@@ -244,11 +239,16 @@ function CompleteProfile() {
               <Button
                 style={{
                   width: "102%",
-                  background: "var(--primary)",
-                  color: "#fff",
-                  height: "40px",
+                  backgroundColor: "var(--accent)",
+                  borderColor: "transparent",
+                  borderRadius: "var(--radius-pill)",
+                  boxShadow: "var(--depth)",
+                  color: "var(--text-inverse)",
+                  minHeight: "44px",
                   marginTop: "20px",
-                  fontSize: "1rem",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
                   cursor: "pointer",
                 }}
                 type="submit"

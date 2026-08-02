@@ -10,7 +10,7 @@ import { welcomeEmail } from "@/lib/email/templates";
 
 /**
  * POST /api/auth/register
- * Port of controllers/auth/registerController.js — step 2 of signup.
+ * Port of controllers/auth/registerController.js - step 2 of signup.
  *
  * Returns `{ message, user, token }` to match what SignUP.jsx reads.
  *
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
     });
     await setSessionCookie(token);
 
-    // Best effort — a mail failure must not fail an account that now exists.
+    // Best effort - a mail failure must not fail an account that now exists.
     const welcome = welcomeEmail({ name: newUser.name ?? "there" });
     void sendMail({ to: newUser.email, ...welcome });
 

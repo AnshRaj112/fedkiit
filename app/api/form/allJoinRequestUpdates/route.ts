@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/lib/auth/access";
  * Port of controllers/registration/checkAllJoinRequestUpdates.js.
  *
  * App.jsx polls this on login to surface accept/decline toasts, so an
- * unauthenticated caller gets an empty list rather than a 401 — a 401 here
+ * unauthenticated caller gets an empty list rather than a 401 - a 401 here
  * would log an error on every anonymous page load.
  */
 export async function GET() {

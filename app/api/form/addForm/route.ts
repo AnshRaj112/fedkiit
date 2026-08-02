@@ -8,7 +8,7 @@ import { uploadImage } from "@/lib/services/upload";
 
 /**
  * POST /api/form/addForm
- * Port of controllers/forms/addForm.js — admin only.
+ * Port of controllers/forms/addForm.js - admin only.
  *
  * Accepts multipart/form-data with `eventImg` and `media` files plus the event
  * fields, and assembles the same `info` blob the original wrote, so existing

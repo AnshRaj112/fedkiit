@@ -1,10 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+// Add event - admin.
+//
+// The Poppins @import that opened this file is gone: nothing here set the face,
+// so it only cost a blocking font request. Body copy now inherits --font-sans.
 
 .container {
-  background-color: transparent;
-  color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
 }
 
 .buttonContainer {
@@ -13,39 +17,47 @@
   gap: 0.658rem;
   margin-bottom: 2em;
 }
+
 .form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
+
 .eventList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
+
 .topSection {
   display: flex;
   flex-direction: row;
 }
+
 .topSectionInputContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
+
 .topSectionInputContainer:nth-child(1) {
   margin-right: 2em;
 }
+
 .EventInput {
   margin-bottom: 2.2em;
   width: 90%;
 }
+
 .EventInputArea {
   width: 90%;
   height: 32vh;
 }
+
+// A dashed well reads as "nothing here yet" without needing a fill, which is
+// what the old translucent grey block was doing.
 .posterPreview {
-  background-color: #55555562;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,11 +66,14 @@
   width: 96%;
   margin-top: 0.8em;
   z-index: 1;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
 }
 
 .posterPreview p {
-  font-size: 14px;
-  opacity: 0.5;
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
 }
 
 @media (max-width: 768px) {

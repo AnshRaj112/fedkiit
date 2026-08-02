@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth/access";
 
 /**
  * GET /api/form/attendanceCode/:id
- * Port of controllers/registration/getAttendanceCode — the value the
+ * Port of controllers/registration/getAttendanceCode - the value the
  * attendee's QR code encodes.
  */
 export async function GET(

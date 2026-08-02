@@ -8,7 +8,7 @@ import { getCurrentUser, toSafeUser } from "@/lib/auth/access";
  *
  * The profile returned is always the *session's* user. The Express version
  * took the email from the request body, so any authenticated caller could read
- * any other member's full record — including contact numbers — by posting a
+ * any other member's full record - including contact numbers - by posting a
  * different address.
  */
 export async function POST() {

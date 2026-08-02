@@ -13,12 +13,13 @@ import TeamlessState from "./components/TeamlessState";
 import styles from "./styles/TeamManagement.module.scss";
 import { IoArrowBack, IoCopyOutline, IoCheckmark } from "react-icons/io5";
 import { FiEdit2, FiCheck, FiX } from "react-icons/fi";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useParams, usePathname, useSearchParams } from "next/navigation";
 
 const TeamManagement = () => {
     const { eventId: formId } = useParams();
     const router = useRouter();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
     const authCtx = useContext(AuthContext);
 
     const [teamData, setTeamData] = useState(null);
@@ -47,6 +48,9 @@ const TeamManagement = () => {
     const isLeader = teamData?.leaderEmail === authCtx.user?.email;
     const isRegistrationOpen = !teamData?.isRegistrationClosed && !teamData?.isEventPast;
     const spotsRemaining = teamData ? teamData.maxTeamSize - teamData.teamSize : 0;
+    // Solo registrations come back without team limits, so the size/limit meta
+    // would otherwise render as a dangling "1/".
+    const isSoloEntry = Boolean(teamData) && !teamData.maxTeamSize;
 
     // [v2] Handle toast params from email action redirects
     useEffect(() => {
@@ -68,9 +72,11 @@ const TeamManagement = () => {
                 Alert({ type: t.type, message: t.message, position: "top-right" });
             }
             // Clean URL params after showing toast
-            searchParams.delete("toast");
-            searchParams.delete("name");
-            setSearchParams(searchParams, { replace: true });
+            const next = new URLSearchParams(searchParams);
+            next.delete("toast");
+            next.delete("name");
+            const query = next.toString();
+            router.replace(query ? `${pathname}?${query}` : pathname);
         }
     }, []); // Run once on mount
 
@@ -264,7 +270,7 @@ const TeamManagement = () => {
 
     if (!teamData && !isTeamless) return null;
 
-    // [v2] Teamless state — show create/browse UI
+    // [v2] Teamless state - show create/browse UI
     if (isTeamless && teamlessInfo) {
         return (
             <div className={styles.container}>
@@ -334,8 +340,12 @@ const TeamManagement = () => {
                             </div>
                         ) : (
                             <>
-                                <h2 className={styles.teamName}>Team: {teamData.teamName}</h2>
-                                {isLeader && isRegistrationOpen && (
+                                <h2 className={styles.teamName}>
+                                    {isSoloEntry
+                                        ? "Solo registration"
+                                        : `Team: ${teamData.teamName}`}
+                                </h2>
+                                {!isSoloEntry && isLeader && isRegistrationOpen && (
                                     <button
                                         className={styles.editButton}
                                         onClick={() => setIsEditing(true)}
@@ -350,7 +360,9 @@ const TeamManagement = () => {
 
                     <div className={styles.teamMeta}>
                         <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Team Code</span>
+                            <span className={styles.metaLabel}>
+                                {isSoloEntry ? "Registration code" : "Team code"}
+                            </span>
                             <button className={styles.codeBadge} onClick={handleCopyCode} title="Copy team code">
                                 <span>{teamData.teamCode}</span>
                                 {codeCopied ? <IoCheckmark /> : <IoCopyOutline />}
@@ -359,13 +371,17 @@ const TeamManagement = () => {
                         <div className={styles.metaItem}>
                             <span className={styles.metaLabel}>Members</span>
                             <span className={styles.metaValue}>
-                                {teamData.teamSize}/{teamData.maxTeamSize}
+                                {isSoloEntry
+                                    ? teamData.teamSize
+                                    : `${teamData.teamSize}/${teamData.maxTeamSize}`}
                             </span>
                         </div>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Min Required</span>
-                            <span className={styles.metaValue}>{teamData.minTeamSize}</span>
-                        </div>
+                        {!isSoloEntry && teamData.minTeamSize ? (
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Min required</span>
+                                <span className={styles.metaValue}>{teamData.minTeamSize}</span>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -390,7 +406,7 @@ const TeamManagement = () => {
                 </div>
             </div>
 
-            {/* Invite Section — Leader Only, Team Not Full, Registration Open */}
+            {/* Invite Section - Leader Only, Team Not Full, Registration Open */}
             {isLeader && spotsRemaining > 0 && isRegistrationOpen && (
                 <div className={styles.section}>
                     <h3 className={styles.sectionTitle}>
@@ -409,14 +425,14 @@ const TeamManagement = () => {
                 {/* Non-leader: Leave Team */}
                 {!isLeader && isRegistrationOpen && (
                     <button className={styles.dangerButton} onClick={handleLeaveTeam}>
-                        Leave Team
+                        Leave team
                     </button>
                 )}
 
                 {/* Leader, sole member: Dissolve Team */}
                 {isLeader && teamData.teamSize === 1 && isRegistrationOpen && (
                     <button className={styles.dangerButton} onClick={handleLeaveTeam}>
-                        Dissolve Team
+                        {isSoloEntry ? "Cancel registration" : "Dissolve team"}
                     </button>
                 )}
 

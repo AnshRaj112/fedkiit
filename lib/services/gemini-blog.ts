@@ -9,7 +9,7 @@ import { ApiError } from "@/lib/api/errors";
  * Blog authoring aids backed by Gemini.
  *
  * Ports controllers/blog/gemini.js. Metadata is read from the article's
- * OpenGraph tags with a small parser rather than `cheerio` — only a handful of
+ * OpenGraph tags with a small parser rather than `cheerio` - only a handful of
  * `<meta>` values are needed, which does not justify a DOM library on the
  * server.
  *
@@ -69,7 +69,7 @@ function assertUrl(link: string): string {
     throw new ApiError(400, "That does not look like a valid URL");
   }
 
-  // Only fetch public web pages — this endpoint takes a user-supplied URL and
+  // Only fetch public web pages - this endpoint takes a user-supplied URL and
   // fetches it server-side, so anything else is an SSRF vector into the
   // deployment's private network.
   if (url.protocol !== "https:" && url.protocol !== "http:") {
@@ -153,7 +153,7 @@ function textContent(html: string, limit = 12_000): string {
     .slice(0, limit);
 }
 
-/** POST /api/gemini/autofill — metadata for the blog form. */
+/** POST /api/gemini/autofill - metadata for the blog form. */
 export async function autofillFromLink(mediumLink: string) {
   const html = await fetchArticle(mediumLink);
 
@@ -188,7 +188,7 @@ export async function autofillFromLink(mediumLink: string) {
   };
 }
 
-/** POST /api/gemini/summary — a short meta description for the post. */
+/** POST /api/gemini/summary - a short meta description for the post. */
 export async function summariseLink(mediumLink: string) {
   const html = await fetchArticle(mediumLink);
   const article = textContent(html);
@@ -205,7 +205,7 @@ export async function summariseLink(mediumLink: string) {
 
 Rules:
 - One sentence, 140 characters or fewer.
-- Plain text only — no quotes, no markdown, no emoji.
+- Plain text only - no quotes, no markdown, no emoji.
 - Describe what the article covers; do not editorialise.
 - Output only the sentence.
 

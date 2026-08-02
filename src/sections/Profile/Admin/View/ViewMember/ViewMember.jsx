@@ -133,7 +133,7 @@ function ViewMember() {
           handleButtonClick(menu);
         }}
         style={{
-          borderRadius: menu !== "add member" ? "20px" : "10px",
+          borderRadius: "var(--radius-pill)",
           marginLeft: menu === "add member" ? "0px" : "0px",
         }}
       >

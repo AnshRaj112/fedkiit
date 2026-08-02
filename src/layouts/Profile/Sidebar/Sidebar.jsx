@@ -81,22 +81,9 @@ const Sidebar = ({ activepage, handleChange }) => {
       return (
         <div
           onClick={() => handleChange("Attendance")}
-          style={{
-            background:
-              activepage === "Attendance" ? "var(--primary)" : "transparent",
-            WebkitBackgroundClip:
-              activepage === "Attendance" ? "text" : "initial",
-            backgroundClip: activepage === "Attendance" ? "text" : "initial",
-            color: activepage === "Attendance" ? "transparent" : "inherit",
-          }}
+          className={activepage === "Attendance" ? styles.menuActive : undefined}
         >
-          <LuClipboardList
-            size={17}
-            style={{
-              color: activepage === "Attendance" ? "#FF8A00" : "white",
-              marginRight: "10px",
-            }}
-          />{" "}
+          <LuClipboardList size={17} style={{ marginRight: "10px" }} />{" "}
           <Link href={"/profile/attendance"}>Attendance</Link>
         </div>
       );
@@ -105,20 +92,9 @@ const Sidebar = ({ activepage, handleChange }) => {
     return (
       <div
         onClick={() => handleChange("Blogs")}
-        style={{
-          background: activepage === "Blogs" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip: activepage === "Blogs" ? "text" : "initial",
-          backgroundClip: activepage === "Blogs" ? "text" : "initial",
-          color: activepage === "Blogs" ? "transparent" : "inherit",
-        }}
+        className={activepage === "Blogs" ? styles.menuActive : undefined}
       >
-        <FaRegNewspaper
-          size={17}
-          style={{
-            color: activepage === "Blogs" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
+        <FaRegNewspaper size={17} style={{ marginRight: "10px" }} />{" "}
         <Link href={"/profile/BlogForm"}>Blogs</Link>
       </div>
     );
@@ -128,82 +104,35 @@ const Sidebar = ({ activepage, handleChange }) => {
     <>
       <div
         onClick={() => handleChange("Events")}
-        style={{
-          background: activepage === "Events" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip: activepage === "Events" ? "text" : "initial",
-          backgroundClip: activepage === "Events" ? "text" : "initial",
-          color: activepage === "Events" ? "transparent" : "inherit",
-        }}
+        className={activepage === "Events" ? styles.menuActive : undefined}
       >
-        <SlCalender
-          size={17}
-          style={{
-            color: activepage === "events" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
+        <SlCalender size={17} style={{ marginRight: "10px" }} />{" "}
         <Link href="/profile/events">Event</Link>
       </div>
 
       <div
         onClick={() => handleChange("Form")}
-        style={{
-          background: activepage === "Form" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip: activepage === "Form" ? "text" : "initial",
-          backgroundClip: activepage === "Form" ? "text" : "initial",
-          color: activepage === "Form" ? "transparent" : "inherit",
-        }}
+        className={activepage === "Form" ? styles.menuActive : undefined}
       >
-        <SiReacthookform
-          size={17}
-          style={{
-            color: activepage === "Form" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
+        <SiReacthookform size={17} style={{ marginRight: "10px" }} />{" "}
         <Link href={"/profile/Form"}>Form</Link>
       </div>
 
       <div
         onClick={() => handleChange("Members")}
-        style={{
-          background:
-            activepage === "Members" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip: activepage === "Members" ? "text" : "initial",
-          backgroundClip: activepage === "Members" ? "text" : "initial",
-          color: activepage === "Members" ? "transparent" : "inherit",
-          marginLeft: "-6px",
-        }}
+        className={activepage === "Members" ? styles.menuActive : undefined}
+        style={{ marginLeft: "-6px" }}
       >
-        <TbUserEdit
-          size={17}
-          style={{
-            color: activepage === "Members" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
+        <TbUserEdit size={17} style={{ marginRight: "10px" }} />{" "}
         <Link href={"/profile/members"}> Members</Link>
       </div>
 
       <div
         onClick={() => handleChange("Attendance")}
-        style={{
-          background:
-            activepage === "Attendance" ? "var(--primary)" : "transparent",
-          WebkitBackgroundClip:
-            activepage === "Attendance" ? "text" : "initial",
-          backgroundClip: activepage === "Attendance" ? "text" : "initial",
-          color: activepage === "Attendance" ? "transparent" : "inherit",
-          marginLeft: "-6px",
-        }}
+        className={activepage === "Attendance" ? styles.menuActive : undefined}
+        style={{ marginLeft: "-6px" }}
       >
-        <LuClipboardList
-          size={17}
-          style={{
-            color: activepage === "Attendance" ? "#FF8A00" : "white",
-            marginRight: "10px",
-          }}
-        />{" "}
+        <LuClipboardList size={17} style={{ marginRight: "10px" }} />{" "}
         <Link href={"/profile/attendance"}> Attendance</Link>
       </div>
     </>
@@ -213,20 +142,9 @@ const Sidebar = ({ activepage, handleChange }) => {
   const renderAttendanceOnlyMenu = () => (
     <div
       onClick={() => handleChange("Attendance")}
-      style={{
-        background: activepage === "Attendance" ? "var(--primary)" : "transparent",
-        WebkitBackgroundClip: activepage === "Attendance" ? "text" : "initial",
-        backgroundClip: activepage === "Attendance" ? "text" : "initial",
-        color: activepage === "Attendance" ? "transparent" : "inherit",
-      }}
+      className={activepage === "Attendance" ? styles.menuActive : undefined}
     >
-      <LuClipboardList
-        size={17}
-        style={{
-          color: activepage === "Attendance" ? "#FF8A00" : "white",
-          marginRight: "10px",
-        }}
-      />{" "}
+      <LuClipboardList size={17} style={{ marginRight: "10px" }} />{" "}
       <Link href={"/profile/attendance"}>Attendance</Link>
     </div>
   );
@@ -234,20 +152,9 @@ const Sidebar = ({ activepage, handleChange }) => {
   const renderCertificateMenu = () => (
     <div
       onClick={() => handleChange("Certificates")}
-      style={{
-        background: activepage === "Certificates" ? "var(--primary)" : "transparent",
-        WebkitBackgroundClip: activepage === "Certificates" ? "text" : "initial",
-        backgroundClip: activepage === "Certificates" ? "text" : "initial",
-        color: activepage === "Certificates" ? "transparent" : "inherit",
-      }}
+      className={activepage === "Certificates" ? styles.menuActive : undefined}
     >
-      <FaCertificate
-        size={17}
-        style={{
-          color: activepage === "Certificates" ? "#FF8A00" : "white",
-          marginRight: "10px",
-        }}
-      />{" "}
+      <FaCertificate size={17} style={{ marginRight: "10px" }} />{" "}
       <Link href={"/profile/certificates"}>Certificates</Link>
     </div>
   );
@@ -322,7 +229,9 @@ const Sidebar = ({ activepage, handleChange }) => {
               {designation !== "Admin" && (
                 <div
                   onClick={() => handleChange("events")}
-                  style={{ color: activepage === "events" ? "#FF8A00" : "white" }}
+                  className={
+                    activepage === "events" ? styles.menuActive : undefined
+                  }
                 >
                   <Link href={"/profile/events"}>
                     <SlCalender size={17} style={{ marginRight: "10px" }} /> Event
@@ -336,7 +245,7 @@ const Sidebar = ({ activepage, handleChange }) => {
           {/* Logout is always available for all users */}
           <div
             onClick={handleLogout}
-            style={{ color: activepage === "Logout" ? "#FF8A00" : "white" }}
+            className={activepage === "Logout" ? styles.menuActive : undefined}
           >
             <MdLogout size={17} style={{ marginRight: "9px" }} /> Logout
           </div>

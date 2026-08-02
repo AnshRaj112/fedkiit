@@ -23,7 +23,7 @@ import type { EventInfo } from "@/lib/types/event";
  * Fixes over the original:
  *  - The registration, tracker and user updates run in one transaction. The
  *    original wrote them in sequence, so a mid-flight failure left a
- *    registration the tracker did not know about — and the duplicate check then
+ *    registration the tracker did not know about - and the duplicate check then
  *    blocked the user from retrying.
  *  - The capacity check runs inside the transaction; before, two concurrent
  *    requests could both pass it and oversubscribe an event.
@@ -215,7 +215,7 @@ export async function POST(request: Request) {
       throw error;
     });
 
-    // Best effort — a mail failure must not undo a valid registration.
+    // Best effort - a mail failure must not undo a valid registration.
     const mail = registrationEmail({
       name: user.name ?? "there",
       eventTitle: info.eventTitle ?? "the event",
