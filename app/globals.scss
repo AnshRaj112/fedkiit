@@ -17,6 +17,7 @@
 // shorter than the original.
 
 @import "react-datepicker/dist/react-datepicker.css";
+@import "./globals.css";
 
 // The brand gradient. Lived in Global.scss on the original site; it moved here
 // because Global.scss is now injected into every CSS Module, and a `:root`
@@ -140,7 +141,8 @@ body {
   align-items: center;
   background-color: $page-color;
   overflow: hidden;
-  margin-top: 90px;
+  margin-top: 0;
+  padding-top: 90px;
 }
 
 .page.omega-page {

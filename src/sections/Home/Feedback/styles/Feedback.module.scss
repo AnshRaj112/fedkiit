@@ -1,5 +1,5 @@
 .feedbackContainer {
-  background-color: var(--surface-0);
+  background-color: transparent;
   color: #ffffff;
   text-align: center;
   position: relative;
@@ -7,10 +7,10 @@
   padding-bottom: 60px;
 }
 .FeedbackMsg{
-  width: 260px;
-  height: 132px;
-  margin-bottom: 8px;
-  overflow-y: scroll;
+  width: 100%;
+  min-height: 90px;
+  margin-bottom: 12px;
+  overflow-y: auto;
 }
 :global(::-webkit-scrollbar) {
   visibility: hidden;
@@ -75,27 +75,33 @@
 
 .feedbacks {
   display: flex;
-  animation: scroll 20s linear infinite;
+  animation: scroll 45s linear infinite;
   margin-left: 1300px;
-  
 }
 
-
-
 .feedbackCard {
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  background: var(--surface-1);
-  padding: 20px;
-  margin: 10px;
-  min-width: 300px;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px 28px;
+  margin: 12px;
+  min-width: 440px;
+  max-width: 480px;
   text-align: left;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
   height: auto;
-  
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(249, 115, 22, 0.4);
+  }
 }
 
 @keyframes scroll {
@@ -194,10 +200,9 @@
 
   .feedbacks {
     display: flex;
-    animation: scroll 17s linear infinite;
+    animation: scroll 35s linear infinite;
     margin-left: -1500px;
     margin-right: -2000px;
-  
   }
 
   .feedbackContainer .upQuote,

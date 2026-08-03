@@ -57,6 +57,7 @@
     "react-social-media-embed": "^2.5.18",
     "react-switch": "^7.1.0",
     "resend": "^6.18.1",
+    "saas": "^1.0.0",
     "sass": "^1.102.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",

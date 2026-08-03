@@ -8,7 +8,6 @@ import { SITE_URL } from "@/lib/seo/metadata";
 import { organizationSchema, websiteSchema } from "@/lib/seo/structured-data";
 
 import "./globals.scss";
-import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -33,10 +32,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/fedkiit-logo.svg", type: "image/svg+xml" },
+      { url: "/fedkiit-logo.png", type: "image/png" },
     ],
-    shortcut: "/fedkiit-logo.svg",
-    apple: "/fedkiit-logo.svg",
+    shortcut: "/fedkiit-logo.png",
+    apple: "/fedkiit-logo.png",
   },
   other: {
     "facebook-domain-verification": "j4kyebnva8sowmo539jn3julvtgvqq",

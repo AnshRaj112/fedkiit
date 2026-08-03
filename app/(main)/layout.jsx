@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import Navbar from "@/src/layouts/Navbar/Navbar";
+import Navbar from "@/app/components/Navbar";
 import Footer from "@/src/layouts/Footer/Footer";
 import Chatbot from "@/src/components/Chatbot/Chatbot";
 

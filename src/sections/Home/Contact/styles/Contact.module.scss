@@ -5,7 +5,7 @@
   justify-content: center;
   flex-direction: column;
   padding: 20px;
-  background-color: var(--surface-0);
+  background-color: transparent;
   color: white;
   margin-top: 1rem;
   width: 100%;
@@ -54,12 +54,21 @@
 .formGroup input,
 .formGroup textarea {
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px 16px;
+  border-radius: 12px;
   font-size: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  background: var(--surface-1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
   color: white;
+  transition: all 0.25s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #ff5500;
+    box-shadow: 0 0 16px rgba(255, 85, 0, 0.25);
+    background: rgba(255, 255, 255, 0.07);
+  }
 }
 
 .formGroup textarea::-webkit-scrollbar {
@@ -125,6 +134,7 @@
     padding-right: 10px;
     width: 100%;
   }
+
   .formSection {
     display: flex;
     align-items: center;
@@ -132,13 +142,16 @@
     flex-direction: column;
     z-index: 0;
   }
+
   .formGroup input,
   .formGroup textarea {
     width: 100%;
   }
+
   :global(form button) {
     width: 100%;
   }
+
   .imageSection {
     margin-left: 3rem;
   }
@@ -149,15 +162,18 @@
     flex-direction: column;
     align-items: center;
   }
+
   .contactForm {
     width: 150%;
     // padding: 0 20px;
   }
+
   .imageSection {
     width: 100%;
     text-align: center;
     margin-top: 20px;
   }
+
   .contactFormContainer img {
     width: 60%;
     height: auto;
@@ -169,42 +185,44 @@
   .contactFormContainer h2 {
     font-size: 30px;
   }
-  .bottomLine{
+
+  .bottomLine {
     width: 6rem;
   }
-  
-  .contactForm{
+
+  .contactForm {
     width: 150%;
   }
-  .imageSection{
+
+  .imageSection {
     width: 100%;
     margin-top: 40px;
   }
 
-  .form-section{
+  .form-section {
     margin-top: -3rem;
   }
 
-  .form-group{
+  .form-group {
     width: 110%;
     margin-left: -2rem;
   }
 
-  .submitbutton{
+  .submitbutton {
     margin-left: -2rem;
     width: 100%;
   }
 
 }
 
-@media (max-width: 430px){
-  .contactForm{
-    width: 150%;
-  }
-}
-@media (max-width: 400px){
-  .contactForm{
+@media (max-width: 430px) {
+  .contactForm {
     width: 150%;
   }
 }
 
+@media (max-width: 400px) {
+  .contactForm {
+    width: 150%;
+  }
+}
