@@ -48,7 +48,7 @@ const QRCodeModal = ({ onClose, eventId, onAttendanceMarked }) => {
       });
 
       if (response.status === 200) {
-        setQrCodeData(response.data.attendanceToken);
+        setQrCodeData(response.data.data.attendanceId);
       } else {
         throw new Error('Failed to fetch attendance code');
       }
