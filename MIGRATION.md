@@ -554,6 +554,33 @@ public, registration-closed and past regardless of the toggles. `editForm`
 already used `isPublic === "true"`. The port uses the `editForm` form in both, so
 the three switches actually work. Restoring byte-parity here would re-break them.
 
+## OTP length — a hardening change that broke the screen
+
+The password-reset email carried a **6-digit** code while every OTP screen in the
+app renders **4 boxes**, so the code could not be typed in at all. Both the
+reset flow and signup share `components/OtpInput`, and both were affected.
+
+The UI was not at fault — it is 4 boxes in the original too, character for
+character. The mismatch came from this port raising `OTP_LENGTH` from 4 to 6 as
+a hardening measure, without a consumer that could accept six.
+
+Reverted to 4, matching `generateOtp(4, false, false, false)`. The reasoning
+behind 6 does not survive contact with the rest of this codebase: 10,000
+combinations really are brute-forceable against the Express backend, which had
+no throttling whatsoever, but `RATE_LIMITS.passwordReset` allows 6 attempts per
+15 minutes and a code expires after 15 — so an attacker gets at most 6 guesses
+out of 10,000 before the code they are hunting stops existing. The other OTP
+hardening stays: codes are stored as a SHA-256 digest, compared in constant
+time, single-use, and expiry is derived from `createdAt` rather than a
+`setTimeout` that never fires on a serverless host.
+
+One caveat carried over from `lib/api/rate-limit.ts`: the limiter is
+in-process, so a horizontally scaled deploy multiplies the effective limit by
+the instance count. A shared store is the follow-up if the app is scaled out.
+
+Codes already issued before this change are 6 digits and cannot be entered;
+they expire on their own within 15 minutes.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
