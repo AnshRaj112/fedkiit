@@ -18,7 +18,12 @@ import { useRouter, useParams, useSearchParams } from "next/navigation";
 const TeamManagement = () => {
     const { eventId: formId } = useParams();
     const router = useRouter();
-    const [searchParams, setSearchParams] = useSearchParams();
+    // Not `const [searchParams] = useSearchParams()`: that is React Router's
+    // shape. Next returns a ReadonlyURLSearchParams directly, and because it is
+    // iterable the array destructuring silently took the first [key, value]
+    // entry — `undefined` when the URL has no query string, hence
+    // "Cannot read properties of undefined (reading 'get')".
+    const searchParams = useSearchParams();
     const authCtx = useContext(AuthContext);
 
     const [teamData, setTeamData] = useState(null);
@@ -67,11 +72,23 @@ const TeamManagement = () => {
             if (t) {
                 Alert({ type: t.type, message: t.message, position: "top-right" });
             }
-            // Clean URL params after showing toast
-            searchParams.delete("toast");
-            searchParams.delete("name");
-            setSearchParams(searchParams, { replace: true });
+            // Clean URL params after showing toast.
+            //
+            // The original mutated the params object and handed it back to
+            // React Router's setter. Next's is a *read-only* view with no
+            // setter, so the equivalent is a copy plus a replace — same result:
+            // the toast does not fire again on refresh, and no history entry is
+            // added.
+            const next = new URLSearchParams(searchParams.toString());
+            next.delete("toast");
+            next.delete("name");
+            const query = next.toString();
+            router.replace(
+                `${window.location.pathname}${query ? `?${query}` : ""}`,
+                { scroll: false },
+            );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Run once on mount
 
     const fetchTeamDetails = useCallback(async () => {

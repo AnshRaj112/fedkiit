@@ -770,6 +770,23 @@ this database holds real registrations, and running them would rewrite other
 people's teams. They are matched to the controllers line by line and typecheck
 clean, but they want a run-through on a scratch database before release.
 
+## The team page hit the same `useSearchParams` bug
+
+`TeamManagement.jsx` carried the React Router destructuring described above, so
+opening any team page crashed with *"Cannot read properties of undefined
+(reading 'get')"*.
+
+It also cleaned the URL after showing an email-redirect toast by mutating the
+params and calling the setter. Next's object is read-only and has no setter, so
+that is now a copy plus `router.replace(..., { scroll: false })` — same outcome:
+the toast does not re-fire on refresh and no history entry is added.
+
+Verified in the browser against live data: the team page renders in full for a
+non-leader member (team, code, 2/3 members with year and college, "You" marker,
+Leave Team) and for the leader (invite panel, share link, per-member remove),
+`?toast=joined&name=…` is consumed and stripped from the URL, and the console is
+clean on both.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
