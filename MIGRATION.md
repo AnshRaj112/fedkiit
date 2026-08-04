@@ -1037,6 +1037,63 @@ spawned; changed schema → detected and regenerated, both standalone and throug
 a real `npm run dev`, which then served `/api/health` 200. `npm install` still
 exits 0 with the new hook.
 
+## Google sign-in was rejecting every request
+
+Two defects stacked on top of each other, both introduced by this port.
+
+**The body field never matched.** `GoogleLogin.jsx` and `GoogleSignup.jsx` post
+`{ access_token }`, as they always did against Express. The route read
+`credential || token || tokenId`, matched none of them, and returned
+400 *"Google credential is required"* — before Google was contacted at all. So
+Google sign-in and sign-up failed for everyone, every time.
+
+**The token type was wrong underneath.** The route then handed the value to
+`OAuth2Client.verifyIdToken`, which expects an ID token (a JWT). Neither
+component ever produces one: both use `useGoogleLogin` without a `flow` option,
+which is the implicit flow, and its response carries an opaque **access token**.
+Verifying it locally is not possible — it is not a JWT and carries no claims.
+Handing it back to Google is what establishes whose it is, which is exactly what
+the controller does:
+
+```js
+`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+```
+
+Now matched, with one deliberate difference: the token goes in an
+`Authorization: Bearer` header instead of the query string. Same endpoint, same
+response, but a credential in a URL ends up in proxy and server logs.
+
+Also restored from the controller and previously missing: the display name is
+built from `given_name` + `family_name` before falling back to `name`, and a
+`hd === "kiit.ac.in"` account gets `college`, `rollNumber`, `year` and `school`
+derived from the roll number. That derivation was checked against the
+controller's inline version across six roll numbers spanning 1st year to
+Passout — identical output on all six.
+
+Error mapping: Google answering 401/403 becomes a 401 (the caller's token is
+bad, not a server fault), any other non-OK becomes 502, and a transport failure
+becomes 503 — where an unhandled throw would otherwise have surfaced as a 500.
+
+Status codes now follow the controller: 201 when the account was just created,
+200 otherwise, with the message `"LOGGED IN"` in both cases.
+
+Verified against the live Google endpoint: an empty body gives
+400 *"Missing fields: access_token"*; an invalid `access_token` gives **401**,
+proving the request now reaches Google instead of being turned away at the door.
+A full popup sign-in needs a browser and was not automated.
+
+### Google Cloud console
+
+The implicit flow validates **Authorized JavaScript origins**, not Authorized
+redirect URIs — those apply to the server-side auth-code flow, which no app on
+this client id uses (checked across FED-Backend, FED-Frontend and this repo: no
+`redirect_uri`, no auth-code flow, no OAuth callback route).
+
+So local development needs `http://localhost:3111` as a JavaScript **origin**
+— scheme, host and port, no path. `https://fedkiit.com` is not needed alongside
+`https://www.fedkiit.com`: the apex 308-redirects to `www`, so the browser is
+never on the apex origin.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

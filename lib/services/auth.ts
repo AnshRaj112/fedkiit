@@ -1,9 +1,6 @@
 import "server-only";
 
-import { OAuth2Client } from "google-auth-library";
-
 import { prisma } from "@/lib/db";
-import { getEnv } from "@/lib/env";
 import { ApiError } from "@/lib/api/errors";
 import { toSafeUser, type SafeUser } from "@/lib/auth/access";
 import {
@@ -171,37 +168,107 @@ export async function logout(): Promise<void> {
   await clearSessionCookie();
 }
 
+type GoogleUserInfo = {
+  email?: string;
+  email_verified?: boolean;
+  name?: string;
+  given_name?: string;
+  family_name?: string;
+  picture?: string;
+  hd?: string;
+};
+
+/** `1` -> "1st Year" … `5` -> "5th Year", anything else "Passout". */
+function ordinalYear(year: number): string {
+  switch (year) {
+    case 1:
+      return "1st Year";
+    case 2:
+      return "2nd Year";
+    case 3:
+      return "3rd Year";
+    case 4:
+      return "4th Year";
+    case 5:
+      return "5th Year";
+    default:
+      return "Passout";
+  }
+}
+
+/**
+ * A KIIT roll number encodes the intake year and the school, so a
+ * @kiit.ac.in sign-up can be pre-filled instead of asking for it again.
+ * `22052xxx` -> started 2022, school code "05".
+ */
+function kiitProfileFrom(email: string) {
+  const rollNumber = email.split("@")[0] ?? "";
+  const startYear = Number.parseInt(`20${rollNumber.substring(0, 2)}`, 10);
+  const currentYear = new Date().getFullYear();
+  // Capped at 5 so a stale roll number cannot invent a 9th year; anything
+  // outside 1-5 falls through to "Passout".
+  const yearOfStudy = Math.min(5, currentYear - startYear + 1);
+
+  const schoolCode = rollNumber.substring(2, 4);
+  const school =
+    schoolCode === "05" ? "Computer Science and Engineering" : null;
+
+  return {
+    college: "Kalinga Institute of Industrial Technology",
+    rollNumber,
+    year: ordinalYear(yearOfStudy),
+    school,
+  };
+}
+
 /**
  * Google sign-in.
  *
- * Verifies the ID token against Google's certs and the configured client id —
- * the token is attacker-controlled input, so decoding it without verification
- * would let anyone sign in as anyone.
+ * Takes the **access token** that `useGoogleLogin`'s implicit flow hands the
+ * browser, and exchanges it at Google's UserInfo endpoint — which is what the
+ * Express controller does, and what `GoogleLogin.jsx` / `GoogleSignup.jsx` have
+ * always posted as `access_token`.
+ *
+ * An earlier version of this port expected an ID token and called
+ * `OAuth2Client.verifyIdToken`. Nothing ever sends one: the components use the
+ * implicit flow, whose response carries an opaque access token, so sign-in
+ * failed for everyone. Verifying it locally is not an option either — an access
+ * token is not a JWT and carries no claims to verify. Handing it back to Google
+ * is what establishes who it belongs to.
  */
-let oauthClient: OAuth2Client | null = null;
-
-export async function googleAuth(credential: string): Promise<{
+export async function googleAuth(accessToken: string): Promise<{
   user: SafeUser;
   token: string;
   isNewUser: boolean;
   needsProfile: boolean;
 }> {
-  const clientId = getEnv().GOOGLE_CLIENT_ID;
-  if (!clientId) {
-    throw new ApiError(503, "Google sign-in is not configured");
-  }
-
-  oauthClient ??= new OAuth2Client(clientId);
-
-  let payload;
+  let payload: GoogleUserInfo;
   try {
-    const ticket = await oauthClient.verifyIdToken({
-      idToken: credential,
-      audience: clientId,
-    });
-    payload = ticket.getPayload();
-  } catch {
-    throw new ApiError(401, "Could not verify your Google sign-in");
+    // Sent as a Bearer header rather than the `?access_token=` query string the
+    // original used. Same endpoint and same response, but a credential in a URL
+    // ends up in proxy and server logs.
+    const response = await fetch(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) {
+      // 401 from Google means the token is bad or expired — the caller's
+      // problem, not a server fault, so it must not surface as a 500.
+      throw new ApiError(
+        response.status === 401 || response.status === 403 ? 401 : 502,
+        "Could not verify your Google sign-in",
+      );
+    }
+
+    payload = (await response.json()) as GoogleUserInfo;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    // fetch only rejects on a transport failure.
+    throw new ApiError(503, "No response from Google");
   }
 
   if (!payload?.email) {
@@ -234,17 +301,29 @@ export async function googleAuth(credential: string): Promise<{
     };
   }
 
+  // Built from the given/family parts first, exactly as the controller does,
+  // falling back to the display name when Google sends neither.
+  const composed = [payload.given_name, payload.family_name]
+    .filter(Boolean)
+    .join(" ");
+  const name = composed || payload.name || email.split("@")[0];
+
+  // `hd` is the Google Workspace domain, so this only fires for a real
+  // @kiit.ac.in account, not for anyone who types the address in.
+  const kiit = payload.hd === "kiit.ac.in" ? kiitProfileFrom(email) : null;
+
   // Google-only accounts have no password. Store an unusable placeholder rather
   // than an empty string so `bcrypt.compare` can never succeed against it.
   const created = await prisma.user.create({
     data: {
       email,
-      name: payload.name ?? email.split("@")[0],
+      name,
       img: payload.picture ?? null,
       password: `google-oauth:${crypto.randomUUID()}`,
       access: "USER",
       editProfileCount: 5,
       regForm: [],
+      ...(kiit ?? {}),
     },
   });
 
