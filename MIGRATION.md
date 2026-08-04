@@ -708,6 +708,68 @@ smoke test returns 200 and only a signed-in user ever reaches the crash.
 Swept the tree for the rest of the React Router surface (`useNavigate`,
 `useLocation`, `Outlet`, `Navigate`, `to=`): only comments remain.
 
+## Team management — rebuilt against the Express controllers
+
+The five components (`TeamManagement`, `MemberCard`, `InviteSection`,
+`TeamlessState`, `ConfirmDialog`) were already ported line for line. The backend
+behind them was not: it had been written against a **different data model**, so
+most of the page did not work.
+
+**The model.** A team is one `formRegistration` row. It holds every member's
+address in `regTeamMemEmails` and every member's form answers in `value`, and its
+`userId` is the leader. Leaving or being removed means lifting a person's entries
+out of that row and giving them their own `UNAFFILIATED` row, so they stay
+registered for the event and can join or start another team. The port had assumed
+a row per member sharing a `teamCode`, with the earliest row treated as leader.
+
+That single wrong assumption produced most of the faults:
+
+| Endpoint | Fault | Effect |
+|---|---|---|
+| `teamDetails/:formId` | looked the registration up by `userId` | **only the leader could load the page** — every other member got "no registration found". Confirmed against live data: the ownership query returns `NULL` for a real member of team "ABC", the membership query finds the team |
+| `teamDetails/:formId` | returned `registrationId, regTeamMemEmails, isLeader` | the UI reads `eventTitle`, `leaderEmail`, `maxTeamSize`, `minTeamSize`, `isRegistrationClosed`, `isEventPast` and `data.isTeamless`, none of which existed, and members lacked `college` and `year` |
+| `teamDetails/:formId` | no `UNAFFILIATED` branch | `TeamlessState` — the whole create/join flow — could never render |
+| `searchTeams/:formId` | returned a flat array of `{teamName, teamCode, size, maxSize, isFull}`, read `?q=` | the picker reads `data.data.teams` with `teamRegistrationId`, `teamSize`, `maxTeamSize`, `leaderName`, `spotsRemaining`, `hasPendingRequest`, and sends `?search=`. The list rendered empty and the search box filtered nothing |
+| `leaveTeam` | keyed on `userId`; no leader/member distinction | a member could not leave; nobody's answers were carried across; the tracker's `regTeamNames` was never released |
+| `removeTeamMember` | assumed row-per-member | removal did not work, and the removed member got no email |
+| `renameTeam` | read `teamName` | UI sends `newTeamName` — every rename failed |
+| `sendJoinRequest` | read `teamCode` | UI sends `teamRegistrationId` — every request rejected |
+
+Also restored: `leaveTeam` blocks a leader who still has members
+("You must remove all team members before leaving…"), the closed-registration
+guard compares the flags as the **strings** `"true"`/`"false"` the data actually
+stores, `joinTeam` returns `eventId` (falling back to `formId` when
+`relatedEvent` is absent or the literal string `"null"`),
+`joinRequestUpdates` returns `pendingCount`, and the removed-member email is
+sent, following `emailTemplates/removedMember.html`.
+
+Every success message now matches the original, because the components put
+`response.data.message` straight into a toast — `Team "X" created successfully!`,
+`Successfully joined team "X"!`,
+`Successfully dissolved|left the team "X". You can now create or join another team.`,
+`Successfully removed a@b.com from the team & informed through a@b.com`,
+`Invitation sent to a@b.com`.
+
+**Verified against the live database**, read paths only:
+
+```
+teamDetails as leader  -> team ABC, size 2, max/min 3/1, eventTitle,
+                          leaderEmail, members with year + college
+teamDetails as member  -> identical payload (previously: nothing)
+teamDetails teamless   -> isTeamless true, eventTitle, max/min 5/3
+searchTeams            -> data.teams[] with teamRegistrationId, leaderName,
+                          spotsRemaining, hasPendingRequest
+searchTeams?search=AB  -> filters to "ABC"
+inviteLink             -> inviteLink, teamCode, teamName, shareText
+joinRequestUpdates     -> { updates: [], pendingCount: 0 }
+```
+
+The mutations (`createTeam`, `joinTeam`, `leaveTeam`, `removeTeamMember`,
+`renameTeam`, `inviteTeamMember`, `sendJoinRequest`) are **not** exercised here:
+this database holds real registrations, and running them would rewrite other
+people's teams. They are matched to the controllers line by line and typecheck
+clean, but they want a run-through on a scratch database before release.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

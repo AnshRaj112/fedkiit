@@ -296,6 +296,12 @@ export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
     orderBy: { respondedAt: "desc" },
   });
 
+  // How many of this user's requests for the event are still outstanding —
+  // counted before the updates below are marked seen, as in the original.
+  const pendingCount = await prisma.teamJoinRequest.count({
+    where: { formId, requesterEmail: user.email, status: "PENDING" },
+  });
+
   if (updates.length > 0) {
     await prisma.teamJoinRequest.updateMany({
       where: { id: { in: updates.map((u) => u.id) } },
@@ -303,7 +309,7 @@ export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
     });
   }
 
-  return { updates };
+  return { updates, pendingCount };
 }
 
 /** GET /api/form/allJoinRequestUpdates — unseen outcomes across every event. */
