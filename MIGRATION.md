@@ -858,6 +858,45 @@ details and any payment are collected. The invite is carried through it —
 registration succeeds. Someone who is *already* registered skips all of that and
 joins on the spot, which is the flow shown above.
 
+## A failed auto-join no longer fails silently
+
+`PreviewForm` joins the invited team as soon as registration succeeds. When that
+join was rejected it did nothing but `console.error`, then fell through to
+`router.push("/Events")` — the person landed on the events listing, registered
+but teamless, with no indication that the invite had not been honoured. The same
+silent fall-through is in `FED-Frontend/src/features/Modals/Profile/Admin/
+PreviewForm.jsx:191-194`, so this is inherited rather than a port defect, but it
+is reachable in ordinary use: invite links get shared in group chats, and the
+last person to act on one finds the team full.
+
+Two paths were silent, not one. Besides the `catch`, a `200` carrying
+`success: false` also fell through untouched. Both now redirect to
+`/Events/<formId>/team?toast=join_failed&reason=<api message>`.
+
+That destination is deliberate. The person *is* registered at that point, just
+unaffiliated, so `TeamManagement` renders `TeamlessState` — the team search. They
+arrive on the screen that lets them fix the situation instead of the events
+listing.
+
+The reason is forwarded rather than hard-coded because the same path catches
+four different rejections from `joinTeam`:
+
+| API message | What happened |
+| --- | --- |
+| `This team is full` | filled up while they were registering |
+| `Invalid team code` | team disbanded or the link is stale |
+| `Registration is closed for this event` | deadline passed mid-flow |
+| `You are already in a team` | duplicate submit |
+
+`TeamManagement` appends "You can join another team below." and strips `reason`
+from the URL alongside `toast` and `name`, so the toast does not re-fire on
+refresh.
+
+Not exercised against the database: `joinTeam` is a mutation and the configured
+Atlas instance holds real registrations. The redirect and the toast are verified
+by build and by reading the path; the full-team rejection itself wants a scratch
+database.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

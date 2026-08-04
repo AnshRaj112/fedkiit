@@ -57,6 +57,7 @@ const TeamManagement = () => {
     useEffect(() => {
         const toast = searchParams.get("toast");
         const name = searchParams.get("name");
+        const reason = searchParams.get("reason");
         if (toast) {
             const toastMessages = {
                 joined: { type: "success", message: `${name || "User"} has been added to the team! 🎉` },
@@ -67,6 +68,16 @@ const TeamManagement = () => {
                 already_joined: { type: "info", message: `${name || "This user"} has already joined another team.` },
                 team_full: { type: "warning", message: `Team is full. ${name || "The user"} could not be added.` },
                 invalid: { type: "error", message: "Invalid request." },
+                // Set by PreviewForm when an invite link's auto-join fails after
+                // registration. `reason` is the API's own message ("This team is
+                // full", "Invalid team code", ...) so the user is told why they
+                // are looking at the team search instead of their invited team.
+                join_failed: {
+                    type: "warning",
+                    message: reason
+                        ? `${reason} You can join another team below.`
+                        : "Couldn't join that team. You can join another team below.",
+                },
             };
             const t = toastMessages[toast];
             if (t) {
@@ -82,6 +93,7 @@ const TeamManagement = () => {
             const next = new URLSearchParams(searchParams.toString());
             next.delete("toast");
             next.delete("name");
+            next.delete("reason");
             const query = next.toString();
             router.replace(
                 `${window.location.pathname}${query ? `?${query}` : ""}`,

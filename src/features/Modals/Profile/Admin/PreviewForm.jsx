@@ -174,6 +174,7 @@ const PreviewForm = ({
       const handleAutoClose = async () => {
         // [v2] If teamCode is present (invite link), auto-join the team after registration
         if (teamCode && participationType === "Team") {
+          let failureReason = null;
           try {
             const joinResponse = await api.post("/api/form/joinTeam", {
               formId: form.id,
@@ -186,16 +187,28 @@ const PreviewForm = ({
                 position: "bottom-right",
                 duration: 3000,
               });
-              const eventId = joinResponse.data.data?.eventId || form.id;
               setTimeout(() => {
                 router.replace(`/Events/${form.id}/team`);
               }, 1000);
               return;
             }
+            failureReason = joinResponse.data?.message;
           } catch (joinErr) {
             console.error("Auto-join failed:", joinErr);
-            // Fall through to normal flow if join fails
+            failureReason = joinErr?.response?.data?.message;
           }
+
+          // The invite could not be honoured — the team filled up before they
+          // finished registering, the code is stale, or registration closed.
+          // Registration itself succeeded, so send them to the team page (which
+          // renders the team search for an unaffiliated registrant) with the
+          // reason, instead of dropping them on /Events with no explanation.
+          setTimeout(() => {
+            const query = new URLSearchParams({ toast: "join_failed" });
+            if (failureReason) query.set("reason", failureReason);
+            router.replace(`/Events/${form.id}/team?${query.toString()}`);
+          }, 1000);
+          return;
         }
 
         setTimeout(() => {
