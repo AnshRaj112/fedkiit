@@ -816,6 +816,48 @@ a developer's copied link works on their machine. Anything else falls back to
 **`NEXT_PUBLIC_SITE_URL` must be set correctly in the production environment**;
 it is what every fallback resolves to.
 
+## Team invite links now survive signing in
+
+Clicking an invite while signed out sent you to the login page and then, after
+signing in, dropped you on the team-finding page instead of joining the team.
+
+The auto-join itself was never the problem — it was ported and works. The
+destination was being thrown away during authentication, in four places:
+
+| Where | What it did |
+|---|---|
+| `Login.jsx` — the "Sign Up" link | overwrote `prevPage` with `/Login`, discarding the invite `ProtectedRoute` had just saved |
+| `SignUP.jsx` | `router.push("/")` after signing up |
+| `GoogleSignup.jsx` | cleared `prevPage`, then resolved to `/profile` |
+| `CompleteProfile.jsx` | `router.push("/")` |
+
+So the very case an invite is for — someone without an account — lost it before
+signing up. All four now resolve through `postAuthRedirect()`, which takes a
+fallback so the signup screens still default to `/` as they always did.
+
+Measured through the real UI, with the login and join calls stubbed so nothing
+was written:
+
+```
+open invite signed out -> /Login
+                          prevPage = /Events/<id>/Form?teamCode=40-002-7161
+click "Sign Up"        -> prevPage unchanged   (previously: "/Login")
+sign in                -> POST /api/auth/login
+                          POST /api/form/joinTeam {formId, teamCode:"40-002-7161"}
+                       -> /Events/<id>/team
+```
+
+Both the email and WhatsApp links carry the same `?teamCode=`, so both behave
+identically.
+
+**A new account still has to fill in the event's registration form.** Team
+membership is a `formRegistration` row: there is nothing to move onto a team
+until the person has registered for the event, and that form is where required
+details and any payment are collected. The invite is carried through it —
+`EventForm` passes the code to `PreviewForm`, which joins the team the moment
+registration succeeds. Someone who is *already* registered skips all of that and
+joins on the spot, which is the flow shown above.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

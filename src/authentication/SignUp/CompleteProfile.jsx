@@ -12,6 +12,7 @@ import AuthContext from "../../context/AuthContext";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter, usePathname } from "next/navigation";
+import postAuthRedirect from "../../utils/postAuthRedirect";
 
 function CompleteProfile() {
   const [loadingEffect, setLoad] = useState(false);
@@ -125,7 +126,9 @@ function CompleteProfile() {
             "someToken",
             7200000
           );
-          router.push("/");
+          // Honours a pending destination — a team invite link, typically —
+          // falling back to "/" as the original always did.
+          router.push(postAuthRedirect("/"));
         }, 3000);
 
         

@@ -21,8 +21,13 @@
 const isSafeInternalPath = (path) =>
   typeof path === "string" && path.startsWith("/") && !path.startsWith("//");
 
-export default function postAuthRedirect() {
-  if (typeof window === "undefined") return "/profile";
+/**
+ * @param {string} fallback Where to go when nothing was pending. Login lands on
+ *   /profile as `LoginRedirect` did; the signup screens pass "/" because that is
+ *   where they always sent a brand-new account.
+ */
+export default function postAuthRedirect(fallback = "/profile") {
+  if (typeof window === "undefined") return fallback;
 
   const next = new URLSearchParams(window.location.search).get("next");
   const prevPage = sessionStorage.getItem("prevPage");
@@ -30,5 +35,5 @@ export default function postAuthRedirect() {
 
   if (isSafeInternalPath(next)) return next;
   if (isSafeInternalPath(prevPage)) return prevPage;
-  return "/profile";
+  return fallback;
 }

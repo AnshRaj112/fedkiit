@@ -18,6 +18,7 @@ import { api } from "../../services";
 import AuthContext from "../../context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import postAuthRedirect from "../../utils/postAuthRedirect";
 // import { validateData } from "../../utils/hooks/validation/validateSignupData";
 
 const SignUp = () => {
@@ -255,7 +256,10 @@ const SignUp = () => {
             10800000
           );
           // console.log(authCtx);
-          router.push("/");
+          // Return to whatever sent them here — a team invite link, typically —
+          // instead of always landing on the home page. Falls back to "/" when
+          // nothing is pending, which is where the original always went.
+          router.push(postAuthRedirect("/"));
         }
       } catch (error) {
         setAlert({

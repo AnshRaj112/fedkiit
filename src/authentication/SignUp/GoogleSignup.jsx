@@ -66,10 +66,10 @@ export default function GoogleSignup({ setAlert }) {
             position: "bottom-right",
             duration: 3000,
           });
-          sessionStorage.removeItem("prevPage"); // Clean up
-          // Order matters: App.jsx cleared prevPage here and only then rendered
-          // <LoginRedirect />, which therefore fell through to /profile.
-          setNavigatePath(postAuthRedirect());
+          // `prevPage` is deliberately *not* cleared first. The original wiped
+          // it here, so a Google sign-up begun from a team invite link lost the
+          // invite and landed on the profile page instead of joining.
+          setNavigatePath(postAuthRedirect("/"));
 
           setTimeout(() => {
             localStorage.setItem("token",response.data.token);
