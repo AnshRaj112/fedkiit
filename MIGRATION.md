@@ -683,6 +683,31 @@ deliberate architectural deviation (images composite client-side instead of
 through `canvas`/`puppeteer`), so completing it is a design decision rather than
 a translation.
 
+## `useSearchParams` has a different shape in Next
+
+React Router returns `[params, setParams]`; Next returns the params object
+itself. Components that kept the array destructuring crash:
+
+```jsx
+const [searchParams] = useSearchParams();   // wrong under Next
+const searchParams = useSearchParams();     // correct
+```
+
+`ReadonlyURLSearchParams` is iterable, so destructuring it as an array does not
+throw — it quietly yields the first `[key, value]` entry, or `undefined` when the
+URL has no query string. The next `.get()` then fails with "Cannot read
+properties of undefined (reading 'get')".
+
+Fixed here in `EventForm.jsx` (the event registration form) and
+`VerifyCertificate.jsx` (certificate verification).
+
+`EventForm` is the one that hid. It reads `searchParams.get("teamCode")` during
+render, but `ProtectedRoute` redirects signed-out visitors first, so an anonymous
+smoke test returns 200 and only a signed-in user ever reaches the crash.
+
+Swept the tree for the rest of the React Router surface (`useNavigate`,
+`useLocation`, `Outlet`, `Navigate`, `to=`): only comments remain.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
