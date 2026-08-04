@@ -410,7 +410,32 @@ export async function respondJoinRequest(input: {
     return { status: "REJECTED", message: "Request declined." };
   }
 
-  // Accept: move the requester onto the team, re-checking capacity first.
+  // Accept. Same merge-and-delete shape as `joinTeam`: `formRegistration` is one
+  // row per *team*, under `@@unique([formId, teamCode])`. An earlier version
+  // stamped the team's code onto the requester's own row, which collides with
+  // the team row on that constraint — accepting always failed with a P2002 and
+  // the leader saw only the generic error page.
+
+  // The requester may have joined elsewhere between asking and the leader
+  // clicking; that makes this request moot rather than an error.
+  const userRegistration = await prisma.formRegistration.findFirst({
+    where: {
+      formId: request.formId,
+      regTeamMemEmails: { has: request.requesterEmail },
+    },
+  });
+
+  if (!userRegistration || userRegistration.teamName !== UNAFFILIATED) {
+    await prisma.teamJoinRequest.update({
+      where: { id: request.id },
+      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
+    });
+    return {
+      status: "AUTO_EXPIRED",
+      message: "That person has already joined another team.",
+    };
+  }
+
   const team = await prisma.formRegistration.findUnique({
     where: { id: request.teamRegistrationId },
     include: { form: { select: { info: true } } },
@@ -418,47 +443,48 @@ export async function respondJoinRequest(input: {
   if (!team) throw new ApiError(404, "That team no longer exists");
 
   const info = (team.form.info ?? {}) as EventInfo;
-  const max = Number.parseInt(String(info.maxTeamSize ?? ""), 10);
+  const max = Number.parseInt(String(info.maxTeamSize ?? ""), 10) || 1;
 
-  const requester = await prisma.user.findUnique({
-    where: { email: request.requesterEmail },
-    select: { id: true },
-  });
-  if (!requester) throw new ApiError(404, "That user no longer exists");
+  if (team.teamSize >= max) {
+    await prisma.teamJoinRequest.update({
+      where: { id: request.id },
+      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
+    });
+    return { status: "TEAM_FULL", message: "This team is now full." };
+  }
+
+  const userValue = userRegistration.value?.[0] ?? null;
 
   await prisma.$transaction(async (tx) => {
-    const members = await tx.formRegistration.findMany({
-      where: { formId: request.formId, teamCode: team.teamCode },
-    });
-
-    if (Number.isFinite(max) && max > 0 && members.length >= max) {
-      throw new ApiError(400, "This team is now full");
-    }
-
-    const emails = [
-      ...new Set([
-        ...members.flatMap((m) => m.regTeamMemEmails),
-        request.requesterEmail,
-      ]),
-    ];
-
-    await tx.formRegistration.updateMany({
-      where: { formId: request.formId, userId: requester.id },
+    await tx.formRegistration.update({
+      where: { id: team.id },
       data: {
-        teamCode: team.teamCode,
-        teamName: team.teamName,
-        regTeamMemEmails: emails,
+        regTeamMemEmails: { push: request.requesterEmail },
+        teamSize: { increment: 1 },
+        ...(userValue ? { value: { push: userValue } } : {}),
       },
     });
 
-    await tx.formRegistration.updateMany({
-      where: { formId: request.formId, teamCode: team.teamCode },
-      data: { regTeamMemEmails: emails, teamSize: emails.length },
-    });
+    await tx.formRegistration.delete({ where: { id: userRegistration.id } });
 
     await tx.teamJoinRequest.update({
       where: { id: request.id },
-      data: { status: "ACCEPTED", respondedAt: new Date(), seenByRequester: false },
+      data: {
+        status: "ACCEPTED",
+        respondedAt: new Date(),
+        seenByRequester: false,
+      },
+    });
+
+    // Any other team they asked to join is moot now.
+    await tx.teamJoinRequest.updateMany({
+      where: {
+        formId: request.formId,
+        requesterEmail: request.requesterEmail,
+        status: "PENDING",
+        id: { not: request.id },
+      },
+      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
     });
   });
 

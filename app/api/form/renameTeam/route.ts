@@ -26,10 +26,14 @@ export async function PATCH(request: Request) {
       teamName: b.newTeamName,
     });
 
+    // The controller answers 200 "Team name unchanged" when the submitted name
+    // matches the current one, rather than treating it as a duplicate.
     return json({
       success: true,
-      message: `Team renamed to "${data.teamName}"`,
-      data,
+      message: data.unchanged
+        ? "Team name unchanged"
+        : `Team renamed to "${data.teamName}"`,
+      data: { teamName: data.teamName },
     });
   });
 }

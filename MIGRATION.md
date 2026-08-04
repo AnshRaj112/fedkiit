@@ -897,6 +897,76 @@ Atlas instance holds real registrations. The redirect and the toast are verified
 by build and by reading the path; the full-team rejection itself wants a scratch
 database.
 
+## Team mutations — exercised against the database, and four defects found
+
+Previously only the read paths were verified; the mutations were matched to the
+controllers by eye and explicitly flagged as unrun. Running them end to end with
+two real accounts on the "Team Test" event found four defects that reading had
+missed.
+
+**1. `joinTeam` failed outright (500).** `formRegistration` carries
+`@@unique([formId, teamCode])` — the model is **one row per team**, with the
+whole roster in `regTeamMemEmails`, not one row per member. The port stamped the
+team's code onto the joiner's own row, which collides with the team row on that
+constraint. Every join died with a Prisma P2002 surfaced as a 500. Joining is a
+*merge*: the joiner's email and their `value` entry move onto the team row and
+their solo row is deleted.
+
+This is the mutation the entire invite-link flow depends on, so the flow could
+not have worked in production.
+
+**2. `respondJoinRequest` failed the same way**, for the same reason, so a leader
+accepting from their email got the generic error page and the request stayed
+PENDING for ever.
+
+**3. `renameTeam` had no leader check at all.** Any member could rename the team.
+The controller looks the row up by membership and compares its owner to the
+caller; the port loaded the caller's own row and compared nothing. It was also
+missing the registration-closed check, the "name unchanged" no-op, and the
+tracker's name swap — so a rename left the old name reserved for ever.
+
+**4. Team codes were generated in the wrong shape.** The controller builds
+`<2-letter event code>-<3-digit index>-<4 digits>` (`AR-003-8793`); the port
+built a slug of the *team* name (`CLAUDETE-7130`). Every code already in the
+database uses the first shape, and people share these by hand — a second shape
+makes a valid code look fake.
+
+Two message mismatches went with them: `createTeam` used a **commented-out v1
+string** from `addRegistration.js` rather than the live one, and `renameTeam`
+invented its own.
+
+One deliberate deviation was kept. The controller lets a teamless registrant
+rename their own `UNAFFILIATED` placeholder, which produces a named "team"
+carrying a `SOLO-<userId>-<n>` code and absent from the tracker — a row nothing
+else expects. That is guarded here.
+
+### What was run
+
+Event "Team Test", two accounts belonging to the repo owner, restored to their
+original state afterwards. No team containing anyone else was touched — every
+event both accounts share has a third party in one of their teams, so account A
+was registered for "Team Test" to get two free accounts in one event.
+
+```
+createTeam · duplicate name · searchTeams · joinTeam (valid, invalid code,
+already-on-a-team) · renameTeam (leader, non-leader 403, unchanged no-op) ·
+inviteTeamMember · removeTeamMember (leader, non-leader) · leaveTeam (member,
+leader-last) · sendJoinRequest (new, duplicate) · respondJoinRequest (accept,
+replay) · teamDetails after every step
+```
+
+20/20 asserted steps pass; both accounts end `TEAMLESS` with no leftover PENDING
+requests.
+
+`checkJoinRequestUpdates` filtering on `requesterEmail` is **correct**, not a
+bug: it is the requester's view of their own requests. Leaders are notified by
+email only, so a leader legitimately sees `pendingCount: 0`.
+
+Still unverified: a PENDING request survives the dissolution of the team it
+points at. It becomes acceptable again if that leader later creates a new team,
+because the registration row id is stable across dissolve/create. Matches the
+controller; worth a decision rather than a silent change.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
