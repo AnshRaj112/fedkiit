@@ -634,6 +634,55 @@ inside `Providers` since it reads `AuthContext`. Confirmed present in the
 server-rendered HTML for all six routes checked, and the toggle now measures
 `72x72` on `/Login` in both apps.
 
+## Request-body field names — audited
+
+`/otp` rejected a correct code with "Email, otp and password are required".
+`OtpInput.jsx` posts `{ newPassword, confirmPassword, otp, email }`, matching
+Express; this port's handler destructured `password`, so the check failed before
+the code was ever looked at. Fixed, along with the rest of that controller's
+contract, which had also been simplified away:
+
+- 400 `"Missing fields."` when any of the four is absent
+- 409 `"Conflict : New Password and confirm Password did not match!!"`
+- 404 `"User not found!"` — Express's `checkAccess` looks the account up by the
+  body's `email`, which is also why the endpoint works without a session
+- 400 `"New password cannot be same as the old password ! Instead try login"`
+- 200 `{ status: "OK", message: "Password has been changed successfully !!" }`
+
+This was the third contract break found by report rather than by testing, so
+`npm run audit:contracts` now walks every `api.*()` call in the components,
+resolves it to its Route Handler, and flags payload keys the handler never
+reads. It found two more live ones:
+
+| Endpoint | UI sends | Handler read | Effect |
+|---|---|---|---|
+| `renameTeam` | `newTeamName` | `teamName` | every rename failed on an empty name |
+| `sendJoinRequest` | `teamRegistrationId` | `teamCode` | every join request rejected |
+
+Both now match Express, including `sendJoinRequest` identifying the target by
+registration row id — the value `searchTeams` already returns to the UI as
+`teamRegistrationId` — rather than by team code, with the explicit
+`team.formId !== formId` check that a global row id makes necessary.
+
+## Certificate endpoints are largely unimplemented
+
+The audit also showed the admin certificate tooling calling endpoints that do
+not exist here. Express exposes **15** certificate routes; this port has 5, and
+one of those (`addCertificateTemplate`) has no counterpart upstream at all.
+
+Five of the missing ones are called by
+`CertificatesForm/tools/certificateTools.js` and so are reachable from the admin
+panel today: `getEvent`, `getEventByFormId`, `createOrganisationEvent`,
+`sendBatchMails`, `sendCertViaEmail`. The remainder — `getCertificateTest`,
+`getOrganisationEvents`, `addAttendee`, `createEvent`, `getCertificate`,
+`testNamePosition` — are unreferenced by the UI.
+
+This is a gap, not a regression: it was never built. It is called out here
+rather than fixed in passing because the certificate flow already carries a
+deliberate architectural deviation (images composite client-side instead of
+through `canvas`/`puppeteer`), so completing it is a design decision rather than
+a translation.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

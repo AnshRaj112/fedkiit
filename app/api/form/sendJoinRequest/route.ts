@@ -6,6 +6,10 @@ import { getCurrentUser } from "@/lib/auth/access";
 /**
  * POST /api/form/sendJoinRequest
  * Port of controllers/registration/sendJoinRequest.js.
+ *
+ * Body is `{ formId, teamRegistrationId }` — the id `searchTeams` returns for
+ * each team. This route previously looked for `teamCode`, which the UI never
+ * sends, so every join request was rejected.
  */
 export async function POST(request: Request) {
   return handle(async () => {
@@ -14,13 +18,24 @@ export async function POST(request: Request) {
 
     await enforceRateLimit({ ...RATE_LIMITS.registration, subject: user.id });
 
-    const b = await body<Record<string, string>>(request);
+    const b = await body<{ formId?: string; teamRegistrationId?: string }>(
+      request,
+    );
+    if (!b.formId || !b.teamRegistrationId) {
+      return expressError(400, "Form ID and team registration ID are required");
+    }
+
     const data = await sendJoinRequest({
       user,
-      formId: b.formId ?? b._id ?? "",
-      teamCode: b.teamCode ?? "",
+      formId: b.formId,
+      teamRegistrationId: b.teamRegistrationId,
     });
 
-    return json({ success: true, message: "Join request sent", data });
+    return json({
+      success: true,
+      message:
+        "Join request sent to the team leader. They will receive an email with your request.",
+      data,
+    });
   });
 }

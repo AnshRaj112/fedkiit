@@ -164,27 +164,42 @@ function escapeHtml(value: string): string {
 }
 
 /** POST /api/form/sendJoinRequest — asks a team's leader for admission. */
+/**
+ * Identifies the target team by the **registration row id**, not a team code —
+ * `teamRegistrationId` is what `searchTeams` hands the UI and what
+ * `TeamlessState.jsx` posts back. This took a `teamCode` at first, which the UI
+ * never sends, so every join request failed with "Team code is required".
+ */
 export async function sendJoinRequest(input: {
   user: SafeUser;
   formId: string;
-  teamCode: string;
+  teamRegistrationId: string;
 }) {
-  const code = input.teamCode.trim();
-  if (!code) throw new ApiError(400, "Team code is required");
+  const targetId = input.teamRegistrationId.trim();
+  if (!targetId) {
+    throw new ApiError(400, "Form ID and team registration ID are required");
+  }
 
   const mine = await prisma.formRegistration.findFirst({
     where: { formId: input.formId, userId: input.user.id },
   });
   if (!mine) throw new ApiError(400, "You are not registered for this event");
   if (mine.teamName !== UNAFFILIATED) {
-    throw new ApiError(400, "You are already in a team");
+    throw new ApiError(400, "You are already on a team.");
   }
 
-  const team = await prisma.formRegistration.findFirst({
-    where: { formId: input.formId, teamCode: code },
+  const team = await prisma.formRegistration.findUnique({
+    where: { id: targetId },
     include: { form: { select: { info: true } } },
   });
-  if (!team) throw new ApiError(404, "Invalid team code");
+  if (!team) throw new ApiError(404, "Team not found");
+  // A row id is global, so the form has to be checked explicitly.
+  if (team.formId !== input.formId) {
+    throw new ApiError(400, "Team does not belong to this form");
+  }
+  if (team.teamName === UNAFFILIATED) {
+    throw new ApiError(400, "Cannot request to join a teamless registration");
+  }
 
   const info = (team.form.info ?? {}) as EventInfo;
   assertOpen(info);

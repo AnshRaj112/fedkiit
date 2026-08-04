@@ -8,7 +8,8 @@
     "start": "node scripts/with-env.mjs start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "audit:nesting": "node scripts/audit-nesting.mjs"
+    "audit:nesting": "node scripts/audit-nesting.mjs",
+    "audit:contracts": "node scripts/audit-api-contracts.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
