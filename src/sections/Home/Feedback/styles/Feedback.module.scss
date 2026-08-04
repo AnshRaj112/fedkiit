@@ -96,11 +96,12 @@
   flex-direction: column;
   height: auto;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    border-color: rgba(249, 115, 22, 0.4);
+    transform: translateY(-3px);
+    border-color: rgba(249, 115, 22, 0.55);
+    box-shadow: 0 0 24px rgba(249, 115, 22, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -135,6 +136,21 @@
   white-space: normal;
 }
 
+@keyframes mobileFirstGlow {
+  0% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+  35% {
+    box-shadow: 0 0 24px rgba(249, 115, 22, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border-color: rgba(249, 115, 22, 0.7);
+  }
+  100% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .feedbackContainer h2 {
@@ -148,6 +164,7 @@
   .feedbackCard {
     min-width: 250px;
     padding: 15px;
+    animation: mobileFirstGlow 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s 1 forwards;
   }
 
   .feedbackContainer .upQuote,

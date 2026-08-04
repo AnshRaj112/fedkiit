@@ -96,7 +96,7 @@ function Column({ title, links, isOmega }) {
 function MarqueeMark() {
   return (
     <span className={styles.marqueeItem}>
-      <img src={logo.src} alt="" />
+      <img src="/fedkiit-logo.png" alt="" />
       <span>FED KIIT</span>
     </span>
   );
@@ -115,7 +115,7 @@ export default function Footer() {
             <Link href="/" className={styles.brandLockup}>
               <img
                 className={styles.brandLogo}
-                src={logo.src}
+                src="/fedkiit-logo.png"
                 alt="FED KIIT"
               />
               <span className={styles.brandName}>FED KIIT</span>

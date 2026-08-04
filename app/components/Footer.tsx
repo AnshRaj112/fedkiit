@@ -90,7 +90,7 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center gap-3 group" style={{ marginBottom: "1.25rem" }}>
               <div className="fed-logo-badge group-hover:scale-105 transition-transform duration-300">
                 <Image
-                  src="/fedkiit-mascot.png"
+                  src="/fedkiit-logo.png"
                   alt="FED KIIT Logo"
                   width={44}
                   height={44}
