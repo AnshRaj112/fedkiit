@@ -3,6 +3,7 @@ import "server-only";
 import { v2 as cloudinary } from "cloudinary";
 
 import { getEnv } from "@/lib/env";
+import { IMAGE_SIZES, type ImageFolder } from "@/lib/config/images";
 
 /**
  * Cloudinary uploads — port of utils/image/uploadImage.js.
@@ -37,16 +38,24 @@ function configure(): boolean {
 export type UploadResult = { secure_url: string; public_id: string } | null;
 
 /**
- * Uploads a file to a Cloudinary folder, optionally resizing.
+ * Uploads a file to a Cloudinary folder, resized to the bounds that folder
+ * declares in `lib/config/images.ts`.
+ *
+ * Dimensions are deliberately *not* parameters. They used to be, and the two
+ * form routes passed the same pair in opposite orders — `addForm` uploading QR
+ * media at 150x400 while `editForm` used 400x150. Looking them up from the
+ * folder removes the argument entirely, so there is nothing left to get
+ * backwards, and `ImageFolder` makes an unknown folder a compile error.
+ *
  * Returns null when Cloudinary is not configured or the upload fails, matching
  * the original's tolerance for a missing image.
  */
 export async function uploadImage(
   file: File,
-  folder: string,
-  width?: number,
-  height?: number,
+  folder: ImageFolder,
 ): Promise<UploadResult> {
+  const { width, height } = IMAGE_SIZES[folder];
+
   if (!configure()) {
     console.error("[upload] Cloudinary is not configured");
     return null;

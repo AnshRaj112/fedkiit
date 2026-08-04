@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import { expressError, handle, json } from "@/lib/api/express";
 import { getCurrentUser } from "@/lib/auth/access";
+import { can } from "@/lib/auth/permissions";
+import { envList, getEnv } from "@/lib/env";
 
 /**
  * GET /api/form/getFormAnalytics/:id
@@ -11,29 +13,6 @@ import { getCurrentUser } from "@/lib/auth/access";
  * `response.data.form.info` and `response.data.yearCounts` directly.
  */
 
-/**
- * The allowlist the Express controller carried, verbatim. It is *not* the
- * route's `checkAccess` — this endpoint is mounted with only `verifyToken`, and
- * the controller does its own check, so this list is the whole story.
- *
- * `DIRECTOR_SPONSORSHIP` is not a member of the `AccessTypes` enum and so can
- * never match. It is kept because removing it would be a behaviour change, not
- * a fix; it is simply dead.
- */
-const ALLOWED_ACCESS = new Set([
-  "ADMIN",
-  "PRESIDENT",
-  "VICEPRESIDENT",
-  "DIRECTOR_CREATIVE",
-  "DIRECTOR_TECHNICAL",
-  "DIRECTOR_MARKETING",
-  "DIRECTOR_OPERATIONS",
-  "DIRECTOR_SPONSORSHIP",
-]);
-
-/** Escape hatch the original allowed alongside the allowlist. */
-const ALLOWED_EMAIL = "srex@fedkiit.com";
-
 export async function GET(
   _request: Request,
   ctx: RouteContext<"/api/form/getFormAnalytics/[id]">,
@@ -42,8 +21,18 @@ export async function GET(
     const user = await getCurrentUser();
     if (!user) return expressError(401, "Token is required");
 
+    // Role list lives in `lib/auth/permissions.ts`; the address allowlist that
+    // sits beside it is `FORM_ANALYTICS_ALLOWED_EMAILS` in the environment,
+    // both previously hardcoded here.
+    const allowedEmails = envList(getEnv().FORM_ANALYTICS_ALLOWED_EMAILS).map(
+      (entry) => entry.toLowerCase(),
+    );
+
     // 401 rather than 403, matching `ApiError(status.UNAUTHORIZED, ...)`.
-    if (!ALLOWED_ACCESS.has(user.access) && user.email !== ALLOWED_EMAIL) {
+    if (
+      !can(user, "FORM_ANALYTICS_VIEW") &&
+      !allowedEmails.includes(user.email.toLowerCase())
+    ) {
       return expressError(401, "Access Denied");
     }
 

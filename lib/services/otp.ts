@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api/errors";
 import { sendMail } from "@/lib/email/mailer";
 import { otpEmail } from "@/lib/email/templates";
+import { getEnv } from "@/lib/env";
 
 /**
  * One-time passcodes for email verification and password reset.
@@ -35,14 +36,19 @@ import { otpEmail } from "@/lib/email/templates";
  * to a shared store is the follow-up noted in `lib/api/rate-limit.ts`.)
  */
 
-const DEFAULT_VALIDITY_MINUTES = 15;
-
-/** Four digits, as `utils/otp/generateOTP.js` produced. See the note above. */
-const OTP_LENGTH = 4;
+/**
+ * Both of these are `OTP_VALIDITY_MINUTES` / `OTP_LENGTH` in the environment,
+ * defaulting to the values the Express backend used (15 minutes, 4 digits).
+ * Read per call rather than at module load so a deployment can change them
+ * without a rebuild — and so `OTPInput` stays in step, since the number of
+ * boxes it renders has to match the number of digits sent.
+ */
+const validityMinutes = () => getEnv().OTP_VALIDITY_MINUTES;
 
 function generateCode(): string {
+  const length = getEnv().NEXT_PUBLIC_OTP_LENGTH;
   let code = "";
-  for (let i = 0; i < OTP_LENGTH; i++) code += randomInt(0, 10).toString();
+  for (let i = 0; i < length; i++) code += randomInt(0, 10).toString();
   return code;
 }
 
@@ -76,7 +82,7 @@ export async function issueOtp(input: {
   allowRetry?: boolean;
 }): Promise<{ delivered: boolean }> {
   const email = input.email.trim().toLowerCase();
-  const validity = input.validityMinutes ?? DEFAULT_VALIDITY_MINUTES;
+  const validity = input.validityMinutes ?? validityMinutes();
   const allowRetry = input.allowRetry ?? true;
 
   const existing = await prisma.otp.findUnique({

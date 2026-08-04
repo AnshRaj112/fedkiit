@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api/errors";
 import type { SafeUser } from "@/lib/auth/access";
 import { sendMail } from "@/lib/email/mailer";
-import { siteUrl } from "@/lib/env";
+import { envList, getEnv, siteUrl } from "@/lib/env";
 import type { EventInfo } from "@/lib/types/event";
 import { UNAFFILIATED } from "@/lib/services/teams";
 
@@ -63,11 +63,25 @@ function assertOpen(info: EventInfo) {
  * Localhost stays allowed so a developer copying an invite link gets a link
  * that works on their machine.
  */
+function trustedHosts(): Set<string> {
+  return new Set([
+    // The canonical site is always trusted and never needs listing.
+    new URL(siteUrl()).host,
+    "localhost",
+    "127.0.0.1",
+    // Staging, preview deployments and any future domain, added in the
+    // environment rather than in this file.
+    ...envList(getEnv().TRUSTED_ORIGIN_HOSTS),
+  ]);
+}
+
 function isTrustedOrigin(candidate: string): boolean {
   try {
-    const url = new URL(candidate);
-    if (url.host === new URL(siteUrl()).host) return true;
-    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+    const { host, hostname } = new URL(candidate);
+    const trusted = trustedHosts();
+    // `host` carries the port, `hostname` does not — checking both means an
+    // entry can pin a port ("localhost:3111") or allow any ("localhost").
+    return trusted.has(host) || trusted.has(hostname);
   } catch {
     return false;
   }

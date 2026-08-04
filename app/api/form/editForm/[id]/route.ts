@@ -76,19 +76,13 @@ export async function PUT(
 
     const eventImg = form.get("eventImg");
     if (eventImg instanceof File && eventImg.size > 0) {
-      // FormImageWidth 196.37 / FormImageHeight 350.67, as in the Express
-      // controller. Its `uploadImage` took (height, width); ours takes
-      // (width, height), so the pair is transposed here to send the same values.
-      const result = await uploadImage(eventImg, "FormImages", 196.37, 350.67);
+      const result = await uploadImage(eventImg, "FormImages");
       if (result) info.eventImg = result.secure_url;
     }
 
     const media = form.get("media");
     if (media instanceof File && media.size > 0) {
-      // editForm passed (QrImageHeight 150, QrImageWidth 400) — the opposite
-      // order to addForm, which passed (QrImageWidth, QrImageHeight). Each call
-      // site is reproduced as written rather than reconciled.
-      const result = await uploadImage(media, "QRMediaImages", 400, 150);
+      const result = await uploadImage(media, "QRMediaImages");
       if (result) {
         info.receiverDetails = {
           ...(info.receiverDetails ?? {}),

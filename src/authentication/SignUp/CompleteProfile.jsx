@@ -13,6 +13,7 @@ import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter, usePathname } from "next/navigation";
 import postAuthRedirect from "../../utils/postAuthRedirect";
+import { YEAR_OPTIONS } from "../../data/yearOptions";
 
 function CompleteProfile() {
   const [loadingEffect, setLoad] = useState(false);
@@ -28,7 +29,6 @@ function CompleteProfile() {
     college: "",
     contactNo: "",
     img: "",
-    year: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -49,15 +49,6 @@ function CompleteProfile() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-  const options = [
-    { value: "1st", text: "1st year" },
-    { value: "2nd", text: "2nd year" },
-    { value: "3rd", text: "3rd year" },
-    { value: "4th", text: "4th year" },
-    { value: "5th", text: "5th year" },
-    { value: "Passout", text: "Passout" },
-  ];
 
   useEffect(() => {
     setAlert({
@@ -190,12 +181,14 @@ function CompleteProfile() {
               error={errors.rollNumber}
             />
 
+            {/* Chosen, not derived from the roll number: a lateral-entry
+                student admitted in 2025 is in 2nd year with the 2024 batch. */}
             <Input
               type="select"
               placeholder="Select Year"
               label="Year"
               name="year"
-              options={options.map(option => ({ label: option.text, value: option.value }))}
+              options={YEAR_OPTIONS}
               value={year}
               onChange={(value) => setYear(value)}
               required

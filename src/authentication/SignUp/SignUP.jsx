@@ -19,6 +19,7 @@ import AuthContext from "../../context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import postAuthRedirect from "../../utils/postAuthRedirect";
+import { YEAR_OPTIONS } from "../../data/yearOptions";
 // import { validateData } from "../../utils/hooks/validation/validateSignupData";
 
 const SignUp = () => {
@@ -43,8 +44,8 @@ const SignUp = () => {
     rollNumber: "",
     school: "",
     college: "",
-    contactNo: "+91",
     year: "",
+    contactNo: "+91",
   });
 
   useEffect(() => {
@@ -431,19 +432,15 @@ const SignUp = () => {
                 }}
               >
                 <div style={{ width: "46%" }}>
+                  {/* Chosen, not derived from the roll number: a lateral-entry
+                      student admitted in 2025 is in 2nd year with the 2024
+                      batch. */}
                   <Input
                     type="select"
                     placeholder="Select year"
                     label="Year"
                     name="year"
-                    options={[
-                      { value: "1st", label: "1st year" },
-                      { value: "2nd", label: "2nd year" },
-                      { value: "3rd", label: "3rd year" },
-                      { value: "4th", label: "4th year" },
-                      { value: "5th", label: "5th year" },
-                      { value: "Passout", label: "Passout" },
-                    ]}
+                    options={YEAR_OPTIONS}
                     value={showUser.year}
                     onChange={(value) => DataInp("year", value)}
                     required

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { prisma } from "@/lib/db";
+import { yearFromRollNumber, schoolFromRollNumber } from "@/lib/academic";
 import { ApiError } from "@/lib/api/errors";
 import { toSafeUser, type SafeUser } from "@/lib/auth/access";
 import {
@@ -178,46 +179,20 @@ type GoogleUserInfo = {
   hd?: string;
 };
 
-/** `1` -> "1st Year" … `5` -> "5th Year", anything else "Passout". */
-function ordinalYear(year: number): string {
-  switch (year) {
-    case 1:
-      return "1st Year";
-    case 2:
-      return "2nd Year";
-    case 3:
-      return "3rd Year";
-    case 4:
-      return "4th Year";
-    case 5:
-      return "5th Year";
-    default:
-      return "Passout";
-  }
-}
-
 /**
  * A KIIT roll number encodes the intake year and the school, so a
  * @kiit.ac.in sign-up can be pre-filled instead of asking for it again.
- * `22052xxx` -> started 2022, school code "05".
+ * The derivation itself lives in `lib/academic.ts`, shared with registration
+ * and profile edits so all three agree.
  */
 function kiitProfileFrom(email: string) {
   const rollNumber = email.split("@")[0] ?? "";
-  const startYear = Number.parseInt(`20${rollNumber.substring(0, 2)}`, 10);
-  const currentYear = new Date().getFullYear();
-  // Capped at 5 so a stale roll number cannot invent a 9th year; anything
-  // outside 1-5 falls through to "Passout".
-  const yearOfStudy = Math.min(5, currentYear - startYear + 1);
-
-  const schoolCode = rollNumber.substring(2, 4);
-  const school =
-    schoolCode === "05" ? "Computer Science and Engineering" : null;
 
   return {
     college: "Kalinga Institute of Industrial Technology",
     rollNumber,
-    year: ordinalYear(yearOfStudy),
-    school,
+    year: yearFromRollNumber(rollNumber),
+    school: schoolFromRollNumber(rollNumber),
   };
 }
 
