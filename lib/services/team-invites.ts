@@ -261,6 +261,8 @@ export async function sendJoinRequest(input: {
       requesterName: input.user.name ?? input.user.email,
       teamRegistrationId: team.id,
       teamName: team.teamName,
+      // Pinned so acceptance can tell a rename from a disband-and-recreate.
+      teamCode: team.teamCode,
       leaderEmail: leader?.email ?? "",
       status: "PENDING",
       seenByRequester: false,
@@ -441,6 +443,32 @@ export async function respondJoinRequest(input: {
     include: { form: { select: { info: true } } },
   });
   if (!team) throw new ApiError(404, "That team no longer exists");
+
+  // Renaming a team and disbanding one to start another are different things,
+  // and `teamRegistrationId` cannot tell them apart — the registration row is
+  // reused, so its id survives both. Without this check, a leader who disbanded
+  // "ABC" and created "BCD" would find the old request still live, and the
+  // requester would land in a team they never asked to join.
+  //
+  // The code is the discriminator: a rename leaves it alone, while disbanding
+  // resets it to a SOLO- code and the next createTeam mints a fresh one. So a
+  // pending request survives a rename and dies with a disband, which is the
+  // intended behaviour in both directions.
+  //
+  // A request without a pinned code predates this field and cannot be verified;
+  // there were no pending ones when it shipped, so treating that as stale costs
+  // nothing and fails closed.
+  if (request.teamCode !== team.teamCode) {
+    await prisma.teamJoinRequest.update({
+      where: { id: request.id },
+      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
+    });
+    return {
+      status: "AUTO_EXPIRED",
+      message:
+        "That team was disbanded after this request was sent, so it can no longer be accepted. Ask them to request again.",
+    };
+  }
 
   const info = (team.form.info ?? {}) as EventInfo;
   const max = Number.parseInt(String(info.maxTeamSize ?? ""), 10) || 1;

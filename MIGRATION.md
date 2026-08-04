@@ -962,10 +962,43 @@ requests.
 bug: it is the requester's view of their own requests. Leaders are notified by
 email only, so a leader legitimately sees `pendingCount: 0`.
 
-Still unverified: a PENDING request survives the dissolution of the team it
-points at. It becomes acceptable again if that leader later creates a new team,
-because the registration row id is stable across dissolve/create. Matches the
-controller; worth a decision rather than a silent change.
+### Renaming a team and replacing one are different things
+
+A pending request used to survive the dissolution of the team it pointed at, and
+became live again the moment that leader created their next team. A leader could
+disband "ABC", create "BCD", and the person who had asked to join ABC would be
+pulled into BCD without ever agreeing to it.
+
+`teamRegistrationId` cannot tell the two apart — the registration row is reused,
+so its id survives a rename *and* a disband. Verified rather than assumed: after
+a disband and a fresh createTeam, the request's `teamRegistrationId` still equals
+the new team's row id.
+
+**`teamCode` is the discriminator.** A rename leaves it untouched; disbanding
+resets it to a `SOLO-…` code and the next `createTeam` mints a fresh one. So
+`teamJoinRequest` now pins the code at the time of asking, and acceptance
+compares it:
+
+| Leader does | Team code | Pending request | Invite link |
+| --- | --- | --- | --- |
+| renames ABC → BCD | unchanged | **still accepted** | **still works** |
+| disbands ABC, creates BCD | new | **auto-expired** | **404** |
+
+The invite-link path already behaved correctly — those links carry
+`?teamCode=`, so a rename keeps them valid and a disband invalidates them — but
+it was confirmed against the database rather than taken on trust.
+
+`teamCode` on `teamJoinRequest` is optional: rows written before it existed do
+not carry one, and a request that cannot be verified is treated as stale. There
+were 45 requests in the database when this shipped and **none** of them pending,
+so nothing was grandfathered. MongoDB needs no migration for an optional scalar
+with no index — `prisma generate` is enough, no `db push` against production.
+
+Proven end to end on the live database, 9/9 assertions: rename keeps the code and
+the request is accepted into the renamed team; disband-and-recreate changes the
+code, the row id is demonstrably reused, the requester is *not* pulled in, and
+the request lands in `AUTO_EXPIRED`; the invite link survives the rename and dies
+on the disband.
 
 ## Known issues
 
