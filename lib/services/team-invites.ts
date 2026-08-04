@@ -49,16 +49,43 @@ function assertOpen(info: EventInfo) {
   }
 }
 
+/**
+ * Is this a request origin we are willing to put inside a link?
+ *
+ * `Origin` and `Host` are set by the caller, and the URLs built from them go
+ * into **email** — the team invitation, and the accept/reject buttons sent to a
+ * team leader. Reflecting them unchecked lets anyone who can create a team have
+ * FED KIIT send a message, from its own address, containing a link to a domain
+ * they chose. The Express controller did exactly that
+ * (`req.headers.origin || process.env.FRONTEND_URL || "https://fedkiit.com"`);
+ * this is the one place the port deliberately does not follow it.
+ *
+ * Localhost stays allowed so a developer copying an invite link gets a link
+ * that works on their machine.
+ */
+function isTrustedOrigin(candidate: string): boolean {
+  try {
+    const url = new URL(candidate);
+    if (url.host === new URL(siteUrl()).host) return true;
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
 /** Origin of the current request, falling back to the configured site URL. */
 async function originUrl(): Promise<string> {
   try {
     const h = await headers();
+
     const origin = h.get("origin");
-    if (origin) return origin.replace(/\/$/, "");
+    if (origin && isTrustedOrigin(origin)) return origin.replace(/\/$/, "");
+
     const host = h.get("host");
     if (host) {
       const proto = h.get("x-forwarded-proto") ?? "https";
-      return `${proto}://${host}`;
+      const candidate = `${proto}://${host}`;
+      if (isTrustedOrigin(candidate)) return candidate;
     }
   } catch {
     // headers() is unavailable outside a request scope.

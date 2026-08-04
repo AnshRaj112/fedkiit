@@ -787,6 +787,35 @@ Leave Team) and for the leader (invite panel, share link, per-member remove),
 `?toast=joined&name=…` is consumed and stripped from the URL, and the console is
 clean on both.
 
+## Invite links resolve to the deployed domain
+
+`inviteLink` is built from the request, not hardcoded, so a browser on
+production produces a production URL. The localhost you see in development is
+development's own origin.
+
+The origin is now checked against an allowlist before being used. `Origin` and
+`Host` are set by the caller, and these URLs go into **email** — the team
+invitation, and the accept/reject buttons sent to a team leader. Reflected
+unchecked, anyone able to create a team could have FED KIIT send a message, from
+its own address, containing a link to a domain of their choosing. The Express
+controller did reflect them
+(`req.headers.origin || process.env.FRONTEND_URL || "https://fedkiit.com"`);
+this is the one place the port deliberately does not follow it.
+
+An origin is trusted when it matches `NEXT_PUBLIC_SITE_URL`, or is localhost so
+a developer's copied link works on their machine. Anything else falls back to
+`NEXT_PUBLIC_SITE_URL`. Measured:
+
+| Request | Link produced |
+|---|---|
+| `Origin: https://www.fedkiit.com` | `https://www.fedkiit.com/Events/…` |
+| `Origin: http://localhost:3999` | `http://localhost:3999/Events/…` |
+| `Origin: https://evil.example` | falls back to the real host — attacker domain dropped |
+| `Host: evil.example` | `https://www.fedkiit.com/Events/…` |
+
+**`NEXT_PUBLIC_SITE_URL` must be set correctly in the production environment**;
+it is what every fallback resolves to.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
