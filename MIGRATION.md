@@ -581,6 +581,59 @@ the instance count. A shared store is the follow-up if the app is scaled out.
 Codes already issued before this change are 6 digits and cannot be entered;
 they expire on their own within 15 minutes.
 
+## Vite bundles all CSS; Next splits it per route
+
+The disabled "Resend OTP" button on `/otp` rendered with a grey box around it.
+Measured against the original running side by side:
+
+| | Original (Vite) | Port (before) |
+|---|---|---|
+| `background-color` | `rgba(0, 0, 0, 0)` | `rgba(19, 1, 1, 0.3)` |
+| `border` | `0px none` | `2px outset rgba(195,195,195,0.3)` |
+
+That is the user-agent's disabled-button chrome showing through. The cause is
+structural rather than a mistranslation. `TeamCard.module.scss` contains a
+**top-level bare `button { }`** rule — Vite does not hash element selectors in
+CSS Modules, and it bundles every module into one stylesheet for the SPA, so
+that rule was live on every page of the original site. Next code-splits CSS per
+route, so once ported it only loaded where `TeamCard` did: `/Team` and
+`/profile/members`. Everywhere else, buttons lost their reset.
+
+The rule is now declared in `app/globals.scss`, which reproduces the original
+cascade. At specificity 0-0-1 every component's own class rules still win, so
+nothing else moves — verified by diffing all three buttons on `/Login` between
+the two apps: identical background, font-size, margins and box sizes.
+
+**The same trap applies to ten other rules.** These are top-level `:global(...)`
+selectors inside CSS Modules — app-wide under Vite, route-scoped here:
+
+```
+src/views/Event/styles/Event.module.scss:1                :global(*)
+src/views/Event/styles/PastEvent.module.scss:1            :global(*)
+src/views/TermsAndConditions/styles/T&C.module.scss:2     :global(*)
+src/components/EventCard/styles/EventCard.module.scss:261 :global(a)
+src/layouts/Blog/TabBar/styles/TabBar.module.scss:24      :global(ul)
+src/sections/Home/Feedback/styles/Feedback.module.scss:15 :global(::-webkit-scrollbar)
+src/sections/LiveEvents/Omega/Attend/styles/Attend.module.scss:77 :global(img)
+src/components/Core/styles/Core.module.scss:103-104       :global(input[type="number"]::-webkit-*-spin-button)
+src/authentication/Login/ForgotPassword/styles/forgotPassword.module.scss:1 :global(:root)
+```
+
+Only the `button` one is fixed here, because it had a visible, reported symptom
+and a verified before/after. The `:global(*)` rules in particular would change
+layout on every page and need reviewing one at a time rather than hoisting
+wholesale. The `:root` entry is already harmless — it only defines `--primary`,
+which `globals.scss` also defines.
+
+## The Chatbot was missing from every auth screen
+
+App.jsx renders `<Chatbot />` above `<Routes>`, so it appears on every route.
+The port mounted it in the `(main)` layout, which hid it on `/Login`, `/SignUp`,
+`/otp`, `/ForgotPassword` and `/completeProfile`. Moved to the root layout,
+inside `Providers` since it reads `AuthContext`. Confirmed present in the
+server-rendered HTML for all six routes checked, and the toggle now measures
+`72x72` on `/Login` in both apps.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no
