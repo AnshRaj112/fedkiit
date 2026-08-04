@@ -1000,6 +1000,43 @@ code, the row id is demonstrably reused, the requester is *not* pulled in, and
 the request lands in `AUTO_EXPIRED`; the invite link survives the rename and dies
 on the disband.
 
+## Pulling a schema change does not break anyone
+
+The generated Prisma client lives in `node_modules/.prisma/client`, which is
+gitignored, so it never travels with a commit. `@prisma/client` has its own
+postinstall hook, but npm only fires that during an install — and a schema change
+on its own does not touch `package.json`, so nobody has a reason to reinstall.
+
+That combination is the trap: pulling a branch that changed `schema.prisma`
+leaves a client that no longer matches it, the app starts perfectly, and the
+mismatch only surfaces as `Unknown argument …` on whichever request happens to
+touch the new field. `npm run build` and `npm run typecheck` do fail loudly, but
+`npm run dev` does not type-check up front, so the usual workflow hides it.
+
+`scripts/ensure-prisma.mjs` runs the check where it cannot be skipped —
+`with-env.mjs` calls it, and `dev`, `build` and `start` all go through that.
+
+It regenerates **only when the schema has actually changed**, comparing a
+SHA-256 of `schema.prisma` against a stamp written beside the generated client.
+Generating unconditionally would add seconds to every dev start; hashing one file
+is imperceptible, so the common case is free. The stamp lives inside the client
+directory deliberately: deleting `node_modules` takes it along, so a wiped
+install can never look up to date. It is written only after a successful
+generate, so a failure retries rather than marking a client that was never
+produced as current.
+
+`postinstall` runs the same script with `--optional`, which tolerates a missing
+CLI: `prisma` is a devDependency, so `npm install --omit=dev` on a deploy host
+legitimately has none, and failing there would break the install. Running a dev
+server without one is not legitimate, so that path leaves the flag off and fails.
+
+`npm run prisma:generate` is the manual escape hatch.
+
+Verified: no stamp → generates; unchanged schema → silent, no `prisma generate`
+spawned; changed schema → detected and regenerated, both standalone and through
+a real `npm run dev`, which then served `/api/health` 200. `npm install` still
+exits 0 with the new hook.
+
 ## Known issues
 
 - **`/ForgotPassword` reloads instead of submitting.** Its `<form>` has no

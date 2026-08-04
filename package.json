@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "audit:nesting": "node scripts/audit-nesting.mjs",
-    "audit:contracts": "node scripts/audit-api-contracts.mjs"
+    "audit:contracts": "node scripts/audit-api-contracts.mjs",
+    "postinstall": "node scripts/ensure-prisma.mjs --optional",
+    "prisma:generate": "node scripts/ensure-prisma.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
