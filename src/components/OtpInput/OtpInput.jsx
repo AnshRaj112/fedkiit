@@ -12,10 +12,20 @@ import { api } from "../../services";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { useRouter } from "next/navigation";
 
+// `NEXT_PUBLIC_OTP_LENGTH` is the same variable `lib/services/otp.ts` generates
+// codes from. Next inlines it at build time, so it must be referenced by its
+// full literal name rather than looked up dynamically.
+const OTP_LENGTH = Number(process.env.NEXT_PUBLIC_OTP_LENGTH) || 4;
+
 const OtpInput = (props) => {
   const { email } = useContext(RecoveryContext);
   const [timerCount, setTimer] = useState(60);
-  const [OTPinput, setOTPinput] = useState(["", "", "", ""]);
+  // Driven by the same variable the server generates codes from, so the number
+  // of boxes always matches the number of digits emailed. Hardcoding four here
+  // is what let a six-digit code arrive at a four-box screen.
+  const [OTPinput, setOTPinput] = useState(() =>
+    Array(OTP_LENGTH).fill(""),
+  );
   const [disable, setDisable] = useState(true);
   const inputRefs = useRef([]);
   const router = useRouter();

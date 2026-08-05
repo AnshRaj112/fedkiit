@@ -13,7 +13,8 @@
 }
 
 
-.text p {
+.text p,
+.text .content {
   font-size: 33.45px;
   text-align: center;
   //font-family: "Poppins", sans-serif;
@@ -195,7 +196,8 @@
     justify-content: center;
   }
   
-  .text p {
+  .text p,
+  .text .content {
     font-size: 40px;
     text-align: center;
     //font-family: Poppins;
@@ -410,7 +412,8 @@
   }
 
 
-  .text p {
+  .text p,
+  .text .content {
     font-size: 40px;
     text-align: center;
     //font-family: Poppins;
@@ -494,7 +497,8 @@
     max-width: 780px;
   }
 
-  .text p{
+  .text p,
+  .text .content {
     font-size: 30px;
   }
 
@@ -642,7 +646,8 @@
   }
 
   
-  .text p {
+  .text p,
+  .text .content {
     margin-top: 1.5rem;
     font-size: 20px;
     text-align: center;
@@ -764,7 +769,8 @@
     max-width: 370px;
   }
 
-  .text p {
+  .text p,
+  .text .content {
     max-width: 350px;
     font-size: 17px;
     text-align: center;

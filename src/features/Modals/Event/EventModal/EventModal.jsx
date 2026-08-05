@@ -478,7 +478,13 @@ const EventModal = (props) => {
                     <div className={EventCardModal.backbtn}>
                       <div className={EventCardModal.eventname}>
                         {info.eventTitle}
-                        <p>
+                        {/*
+                          A <div>, not a <p> — it contains `div.price`, which
+                          contains a <p>. Same parser-reparenting hydration
+                          mismatch EventCard had; `.meta` is listed alongside
+                          `.eventname p` so the styling is unchanged.
+                        */}
+                        <div className={EventCardModal.meta}>
                           {info.participationType === "Team" ? (
                             <>
                               <MdGroups color="#f97507" size={25} />
@@ -521,7 +527,7 @@ const EventModal = (props) => {
                               </p>
                             )}
                           </div>
-                        </p>
+                        </div>
                       </div>
                       <div className={EventCardModal.registerbtn}>
                         <button

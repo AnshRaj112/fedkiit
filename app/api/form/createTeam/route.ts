@@ -11,9 +11,22 @@ export async function POST(request: Request) {
     const user = await getCurrentUser();
     if (!user) return expressError(401, "Token is required");
 
-    const b = await body<Record<string, string>>(request);
-    const data = await createTeam({ user, formId: b.formId ?? b._id, teamName: b.teamName ?? '' });
+    const b = await body<{ formId?: string; teamName?: string }>(request);
+    if (!b.formId || !b.teamName) {
+      return expressError(400, "Form ID and team name are required");
+    }
 
-    return json({ success: true, message: "Team created successfully", data });
+    const data = await createTeam({
+      user,
+      formId: b.formId,
+      teamName: b.teamName,
+    });
+
+    // TeamlessState.jsx shows this verbatim, so it names the team as before.
+    return json({
+      success: true,
+      message: `Team "${data.teamName}" created successfully!`,
+      data,
+    });
   });
 }

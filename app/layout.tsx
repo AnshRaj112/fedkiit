@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import Providers from "@/src/context/Providers";
+import Chatbot from "@/src/components/Chatbot/Chatbot";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo/metadata";
@@ -59,7 +60,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // `data-scroll-behavior="smooth"` acknowledges the `scroll-behavior: smooth`
+    // that globals.scss sets on <html>. Without it Next warns, because it has to
+    // decide whether a route change should animate the scroll to the top — with
+    // the attribute present it keeps the smooth scroll the original had.
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/*
           The exact font families and weights the original SCSS pulled in.
@@ -80,7 +85,17 @@ export default function RootLayout({
       </head>
       <body>
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        <Providers>{children}</Providers>
+        <Providers>
+          {/*
+            App.jsx renders <Chatbot /> above <Routes>, so it is present on
+            every route — the auth screens included. Mounting it in the (main)
+            layout instead hid it on /Login, /SignUp, /otp, /ForgotPassword and
+            /completeProfile. It sits inside Providers because it reads
+            AuthContext to attach the signed-in user to a conversation.
+          */}
+          <Chatbot />
+          {children}
+        </Providers>
 
         {/* Razorpay checkout, loaded in index.html on the original site. */}
         <Script

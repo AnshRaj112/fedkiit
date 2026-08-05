@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { body, expressError, handle, json } from "@/lib/api/express";
 import { getCurrentUser, isAdmin, toSafeUser } from "@/lib/auth/access";
+import { normalizeYear } from "@/lib/academic";
 
 /**
  * PUT /api/user/editDetails
@@ -54,7 +55,11 @@ export async function PUT(request: Request) {
         college: data.college ?? target.college,
         contactNo: data.contactNo ?? target.contactNo,
         whatsappNo: data.whatsappNo ?? target.whatsappNo,
-        year: data.year ?? target.year,
+        // Editable, and never recomputed behind the user's back: a
+        // lateral-entry student sets a year their roll number does not imply,
+        // and re-deriving on save would silently undo it every time. Only
+        // normalised, so the stored spelling stays consistent.
+        year: normalizeYear(data.year) ?? target.year,
         img: data.img ?? target.img,
         extra,
         // Access is never taken from the request body unless an admin sets it.

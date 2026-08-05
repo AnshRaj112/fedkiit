@@ -441,8 +441,18 @@ const EventCard = (props) => {
                 : info.eventTitle || "No title available"}
             </span>
 
+            {/*
+              A <div>, not the <p> the original used. This element contains
+              `div.price`, which itself contains a <p> — nesting the HTML parser
+              rejects. Client-rendered under Vite that was invisible, because
+              React builds the DOM node by node and nothing reparents it. Server
+              -rendered it is real markup, so the parser closed the <p> early and
+              `div.price` came out a sibling instead of a child, which React then
+              flagged as a hydration mismatch. `.meta` carries the styling the
+              `.eventname p` rules gave it, so the result is unchanged.
+            */}
             {type === "ongoing" && (
-              <p>
+              <div className={style.meta}>
                 {info.participationType === "Team" ? (
                   <>
                     <MdGroups color="#f97507" size={25} />
@@ -484,7 +494,7 @@ const EventCard = (props) => {
                     <p style={{ color: "white", marginTop: "-1px" }}>Free</p>
                   )}
                 </div>
-              </p>
+              </div>
             )}
           </div>
           {type === "ongoing" && showRegisterButton && (

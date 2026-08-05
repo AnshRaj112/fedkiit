@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../../../../../assets/styles/Global.scss" as *;
 $primary-color: #1C1C1C;
 $secondary-color: #1DB954;
@@ -151,7 +152,7 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: darken($accent-color, 10%);
+      background-color: color.adjust($accent-color, $lightness: -10%);
       transform: scale(1.05);
     }
   }
@@ -206,7 +207,7 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   font-size: smaller;
 
   &:hover {
-    background-color: darken($accent-color, 10%);
+    background-color: color.adjust($accent-color, $lightness: -10%);
     transform: scale(1.05);
   }
 }

@@ -38,7 +38,8 @@
   background-clip: text;
 }
 
-.largeContent p {
+.largeContent p,
+.largeContent .tagline {
   font-weight: 700;
   font-size: 2.45rem;
   color: #FFFFFF;
@@ -125,7 +126,8 @@
 
 
 @media (max-width: 1025px) {
-.largeContent p{
+.largeContent p,
+.largeContent .tagline {
   font-size: 1.3rem;
 }
 
@@ -161,7 +163,8 @@
 
 @media screen and (max-width: 480px) {
 
-  .largeContent p{
+  .largeContent p,
+.largeContent .tagline {
     font-size: 1.2rem;
     text-align: center;
     

@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     let image = text("image");
     const file = form.get("image");
     if (file instanceof File && file.size > 0) {
-      const result = await uploadImage(file, "BlogImages", 1200, 800);
+      const result = await uploadImage(file, "BlogImages");
       image = result?.secure_url ?? image;
     }
 
