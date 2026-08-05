@@ -57,7 +57,10 @@ const stripLiterals = (s) =>
   s
     // `<` and `>` are deliberately absent: with them, the `/` of a closing tag
     // like `</span>` reads as the start of a regex and eats the tags after it.
-    .replace(/(^|[=(,:[!&|?{};\n])(\s*)\/(?![/*])((?:\\.|\[(?:\\.|[^\]])*\]|[^/\\\n])+)\/[gimsuyv]*/g,
+    // Character classes are kept disjoint so the alternation cannot match the
+    // same text two ways — CodeQL flagged the earlier form as a polynomial
+    // ReDoS. Upstream autofix, kept verbatim.
+    .replace(/(^|[=(,:[!&|?{};\n])(\s*)\/(?![/*])((?:\\.|\[(?:\\.|[^\]\\\n])*\]|[^/\\\[\n])+)\/[gimsuyv]*/g,
       (m, pre, ws, body) => pre + ws + blank("/" + body + "/"))
     .replace(/'(?:\\.|[^'\\\n])*'/g, blank)
     .replace(/`(?:\\.|[^`\\])*`/g, blank);
