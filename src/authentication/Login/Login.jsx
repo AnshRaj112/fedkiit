@@ -254,8 +254,19 @@ const Login = () => {
               Don't have an account?{" "}
               <Link
                 href="/signup"
-                onClick={(e) => {
-                  sessionStorage.setItem("prevPage", window.location.pathname);
+                onClick={() => {
+                  // Only remember this page if nothing is already pending.
+                  // Overwriting unconditionally — as the original did — threw
+                  // away the destination `ProtectedRoute` had just stored, so
+                  // someone arriving on a team invite link and choosing "Sign
+                  // Up" lost the invite before signing up. `/Login` is never a
+                  // useful place to return to anyway.
+                  if (!sessionStorage.getItem("prevPage")) {
+                    sessionStorage.setItem(
+                      "prevPage",
+                      window.location.pathname,
+                    );
+                  }
                 }}
                 style={{
                   background: "var(--primary)",

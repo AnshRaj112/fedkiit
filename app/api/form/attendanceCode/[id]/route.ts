@@ -3,12 +3,16 @@ import { expressError, handle, json } from "@/lib/api/express";
 import { getCurrentUser } from "@/lib/auth/access";
 
 /**
- * GET /api/form/attendanceCode/:id
- * Port of controllers/registration/getAttendanceCode — the value the
- * attendee's QR code encodes.
+ * GET /api/form/attendanceCode/:id?teamCode=
+ * Port of controllers/registration/getAttendanceCode.
+ *
+ * Responds `{ message, attendanceToken }` at the top level: QRCodeModal reads
+ * `response.data.attendanceToken` and encodes it straight into the QR image.
+ * `attendanceToken` is a signed JWT expiring in 20 minutes, not the attendance
+ * record's id.
  */
 export async function GET(
-  _request: Request,
+  request: Request,
   ctx: RouteContext<"/api/form/attendanceCode/[id]">,
 ) {
   return handle(async () => {
@@ -16,8 +20,8 @@ export async function GET(
     if (!user) return expressError(401, "Token is required");
 
     const { id } = await ctx.params;
-    const data = await getAttendanceCode(id, user);
+    const teamCode = new URL(request.url).searchParams.get("teamCode");
 
-    return json({ success: true, data });
+    return json(await getAttendanceCode(id, user, teamCode));
   });
 }

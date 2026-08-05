@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { api } from "../../../services";
 import styles from "./styles/Contact.module.scss";
 import contactImg from "../../../assets/images/contact.png";
-import { Button } from "../../../components";
+import Button from "../../../components/Core/Button";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 import { Alert, MicroLoading } from "../../../microInteraction";
 

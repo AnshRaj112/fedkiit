@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api/errors";
 import { sendMail } from "@/lib/email/mailer";
 import { otpEmail } from "@/lib/email/templates";
+import { getEnv } from "@/lib/env";
 
 /**
  * One-time passcodes for email verification and password reset.
@@ -20,17 +21,34 @@ import { otpEmail } from "@/lib/email/templates";
  *  - Expiry is enforced purely by reading `createdAt + age`. The old code also
  *    scheduled a `setTimeout` to delete the row, which never fires reliably on a
  *    serverless host and silently leaked rows.
- *  - Codes are 6 digits rather than 4. A 4-digit numeric code is 10,000
- *    possibilities, which is brute-forceable against an endpoint with no
- *    attempt limit.
+ *
+ * Length stays at 4, matching `generateOtp(4, false, false, false)` in the
+ * original. It was briefly raised to 6 on the grounds that 10,000 combinations
+ * are brute-forceable — true of the Express backend, which had no throttling at
+ * all, but not of this one. `RATE_LIMITS.passwordReset` allows 6 attempts per
+ * 15 minutes and a code expires after 15, so an attacker gets at most 6 guesses
+ * out of 10,000 before the code they are hunting no longer exists. The extra
+ * digits bought very little and cost a great deal: every OTP screen in the app
+ * renders exactly four boxes, so a 6-digit code could not be typed in at all.
+ *
+ * (One caveat on that reasoning: the limiter is in-process, so a horizontally
+ * scaled deploy multiplies the effective limit by the instance count. Moving it
+ * to a shared store is the follow-up noted in `lib/api/rate-limit.ts`.)
  */
 
-const DEFAULT_VALIDITY_MINUTES = 15;
-const OTP_LENGTH = 6;
+/**
+ * Both of these are `OTP_VALIDITY_MINUTES` / `OTP_LENGTH` in the environment,
+ * defaulting to the values the Express backend used (15 minutes, 4 digits).
+ * Read per call rather than at module load so a deployment can change them
+ * without a rebuild — and so `OTPInput` stays in step, since the number of
+ * boxes it renders has to match the number of digits sent.
+ */
+const validityMinutes = () => getEnv().OTP_VALIDITY_MINUTES;
 
 function generateCode(): string {
+  const length = getEnv().NEXT_PUBLIC_OTP_LENGTH;
   let code = "";
-  for (let i = 0; i < OTP_LENGTH; i++) code += randomInt(0, 10).toString();
+  for (let i = 0; i < length; i++) code += randomInt(0, 10).toString();
   return code;
 }
 
@@ -64,7 +82,7 @@ export async function issueOtp(input: {
   allowRetry?: boolean;
 }): Promise<{ delivered: boolean }> {
   const email = input.email.trim().toLowerCase();
-  const validity = input.validityMinutes ?? DEFAULT_VALIDITY_MINUTES;
+  const validity = input.validityMinutes ?? validityMinutes();
   const allowRetry = input.allowRetry ?? true;
 
   const existing = await prisma.otp.findUnique({

@@ -17,13 +17,21 @@ export async function POST(request: Request) {
 
     await enforceRateLimit({ ...RATE_LIMITS.otpRequest, subject: user.id });
 
-    const b = await body<Record<string, string>>(request);
+    const b = await body<{ formId?: string; inviteeEmail?: string }>(request);
+    if (!b.formId || !b.inviteeEmail) {
+      return expressError(400, "Form ID and invitee email are required");
+    }
+
     const data = await inviteTeamMember({
       user,
-      formId: b.formId ?? b._id ?? "",
-      inviteeEmail: b.inviteeEmail ?? b.email ?? "",
+      formId: b.formId,
+      inviteeEmail: b.inviteeEmail,
     });
 
-    return json({ success: true, message: "Invitation sent", data });
+    return json({
+      success: true,
+      message: `Invitation sent to ${b.inviteeEmail.trim().toLowerCase()}`,
+      data,
+    });
   });
 }

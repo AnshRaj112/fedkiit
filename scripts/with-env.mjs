@@ -25,6 +25,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { ensurePrismaClient } from "./ensure-prisma.mjs";
+
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
 
@@ -71,6 +73,13 @@ if (args.length === 0) {
   console.error("usage: node scripts/with-env.mjs <dev|build|start> [args]");
   process.exit(1);
 }
+
+// Before Next starts, not after: the generated Prisma client is gitignored, so
+// pulling a branch that changed schema.prisma otherwise leaves a client that no
+// longer matches it — and the mismatch only shows up as a runtime error on
+// whichever request touches the new field. Costs a file hash when the schema is
+// unchanged, which is almost always.
+if (!ensurePrismaClient(env)) process.exit(1);
 
 const nextBin = resolve(root, "node_modules", "next", "dist", "bin", "next");
 

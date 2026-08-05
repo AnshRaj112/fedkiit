@@ -9,6 +9,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { Alert, MicroLoading } from "../../../microInteraction";
 import { api } from "../../../services";
+import { YEAR_OPTIONS } from "../../../data/yearOptions";
 
 const EditProfile = ({ handleModalClose }) => {
   const authCtx = useContext(AuthContext);
@@ -222,6 +223,9 @@ const EditProfile = ({ handleModalClose }) => {
                           }
                         />
                       </div>
+                      {/* Editable, and never recomputed on save: a lateral-entry
+                          student's year does not follow from their roll number,
+                          and anyone repeating a year can correct it here. */}
                       <div className={styles.table}>
                         <h6 className={styles.dets}>Year</h6>
                         <Input
@@ -231,16 +235,9 @@ const EditProfile = ({ handleModalClose }) => {
                             fontSize: "15px",
                           }}
                           type="select"
-                          name={data.year}
+                          name="year"
                           className={styles.vals}
-                          options={[
-                            { label: "1st Year", value: "1st" },
-                            { label: "2nd Year", value: "2nd" },
-                            { label: "3rd Year", value: "3rd" },
-                            { label: "4th Year", value: "4th" },
-                            { label: "5th Year", value: "5th" },
-                            { label: "Passout", value: "Passout" },
-                          ]}
+                          options={YEAR_OPTIONS}
                           value={data.year}
                           onChange={(value) =>
                             setData({ ...data, year: value })

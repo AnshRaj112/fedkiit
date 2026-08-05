@@ -1,10 +1,33 @@
 "use client";
 
 import PropTypes from 'prop-types';
-import { InstagramEmbed, LinkedInEmbed } from 'react-social-media-embed';
+import dynamic from 'next/dynamic';
 import useDimensions from '../../utils/hooks/useDimensions';
 import AnimatedBox from '../../assets/animations/socialPageAnimation';
 import socialLinks from '../../data/SocialLink.json';
+
+/**
+ * Client-only, because these cannot survive hydration.
+ *
+ * `react-social-media-embed` mints a fresh UUID per render and writes it into
+ * both `id` and `className`, so the server's markup never matches the client's.
+ * The sizes are the second half of the problem: they come from `useDimensions()`,
+ * which reads `window` and so measures 0 on the server.
+ *
+ * Nothing is lost by skipping SSR — the visible post is drawn by Instagram's and
+ * LinkedIn's own scripts after mount, so the server-rendered markup was only ever
+ * an invisible placeholder.
+ */
+// `{ ssr: false }` is written out at both call sites on purpose: next/dynamic is
+// a compile-time transform and rejects a shared options variable.
+const InstagramEmbed = dynamic(
+  () => import('react-social-media-embed').then((m) => m.InstagramEmbed),
+  { ssr: false },
+);
+const LinkedInEmbed = dynamic(
+  () => import('react-social-media-embed').then((m) => m.LinkedInEmbed),
+  { ssr: false },
+);
 
 const SocialEmbed = ({ type }) => {
   const {
