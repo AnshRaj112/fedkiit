@@ -6,6 +6,9 @@ import { api } from "../../../services";
 import FormData from "../../../data/FormData.json";
 import styles from "./styles/EventsSection.module.scss";
 
+/** Shown when an event carries no image of its own. */
+const EVENT_BANNER_FALLBACK = "/fedkiit-logo.png";
+
 export default function HomeEventsSection() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,7 +79,11 @@ export default function HomeEventsSection() {
         }
 
         const tag = info.participationType || info.eventType || info.relatedEvent || "Event";
-        const banner = info.eventImg || info.bannerImage || "https://cdn.builder.io/api/v1/image/assets/TEMP/d12862ae94db7f4c1a27971143bd81d9a7fb60f50f4151f6f4b2ed8c1ee3eb23?apiKey=4aa0ae1a0e814437847f3f8ff6c4ef38&width=800";
+        // Local asset on purpose. This fell back to a cdn.builder.io URL that
+        // carried an `apiKey` query parameter belonging to a third-party
+        // Builder.io account — GitGuardian flags it as a hardcoded secret, and
+        // the host is not in `next.config.ts` remotePatterns either.
+        const banner = info.eventImg || info.bannerImage || EVENT_BANNER_FALLBACK;
 
         return {
           id: ev._id || info._id,
