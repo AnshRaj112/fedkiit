@@ -6,7 +6,6 @@ import { api } from "../../services";
 import style from "./styles/Event.module.scss";
 import AuthContext from "../../context/AuthContext";
 import { EventCard } from "../../components";
-import FormData from "../../data/FormData.json";
 import { ErrorArt, NoEventsArt } from "./components/Artwork";
 import Disclosure from "./components/Disclosure";
 import { RecoveryContext } from "../../context/RecoveryContext";
@@ -23,7 +22,6 @@ const Event = () => {
   const authCtx = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { events } = FormData;
   const [isOpen, setOpenModal] = useState(false);
   const [pastEvents, setPastEvents] = useState([]);
   const [ongoingEvents, setOngoingEvents] = useState([]);
@@ -128,8 +126,13 @@ const Event = () => {
   useEffect(() => {
     const registeredEventIds = authCtx.user.regForm || [];
 
+    // Looked up against the events actually fetched from the API. This used to
+    // search the bundled FormData.json sample, so the count reflected mock
+    // records rather than what the member is really registered for.
+    const allEvents = [...ongoingEvents, ...pastEvents];
+
     const parentEvents = registeredEventIds
-      .map((id) => events.find((event) => event.id === id))
+      .map((id) => allEvents.find((event) => event.id === id))
       .filter(
         (event) =>
           event?.info?.relatedEvent == null ||
@@ -153,7 +156,7 @@ const Event = () => {
     if (registeredInRelated) {
       setIsRegisteredInRelatedEvents(true);
     }
-  }, [ongoingEvents, authCtx.user.regForm]);
+  }, [ongoingEvents, pastEvents, authCtx.user.regForm]);
 
   const teamCodeAndName = {
     teamCode: recoveryCtx.teamCode,

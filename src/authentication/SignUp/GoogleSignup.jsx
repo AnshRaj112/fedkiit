@@ -8,7 +8,6 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import google from "../../assets/images/google.png";
-import users from "../../data/user.json";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter } from "next/navigation";

@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles/EventsView.module.scss";
 import AuthContext from "../../../../context/AuthContext";
-// import eventsData from "../../../../data/FormData.json";
 
 import { api } from "../../../../services";
 import { ComponentLoading, MicroLoading } from "../../../../microInteraction";

@@ -9,7 +9,6 @@ import rupeeIcon from "../../../../assets/images/rupeeIcon.svg";
 import { X } from "lucide-react";
 
 // import eventData from "../../../../data/eventData.json";
-import FormData from "../../../../data/FormData.json";
 import shareOutline from "../../../../assets/images/shareOutline.svg";
 import Share from "../../../../features/Modals/Event/ShareModal/ShareModal";
 // import AOS from "aos";

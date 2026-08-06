@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { api } from "../../../services";
-import FormData from "../../../data/FormData.json";
 import styles from "./styles/EventsSection.module.scss";
 
 /** Shown when an event carries no image of its own. */
@@ -23,13 +22,13 @@ export default function HomeEventsSection() {
           eventList = response.data.events;
         }
       } catch (err) {
-        console.log("Fetching from local FormData store", err);
+        console.error("Error fetching events:", err);
       }
 
-      // Fallback directly to FormData.json (the exact data source used by Events Page)
-      if (!eventList || eventList.length === 0) {
-        eventList = FormData.events || [];
-      }
+      // No local fallback. This used to drop back to the bundled FormData.json
+      // sample, so an API failure put test records on the home page. When there
+      // is nothing to show, the section renders its empty state instead.
+      eventList = eventList || [];
 
       // Separate upcoming/live vs past events
       const liveOrUpcoming = eventList.filter((ev) => !ev.info?.isEventPast);

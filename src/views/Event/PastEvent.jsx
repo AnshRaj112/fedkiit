@@ -6,7 +6,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import style from "./styles/PastEvent.module.scss";
 import { EventCard } from "../../components";
 import { api } from "../../services";
-import FormData from "../../data/FormData.json";
 import { ComponentLoading } from "../../microInteraction";
 import Link from "next/link";
 
@@ -14,7 +13,6 @@ const PastEvent = () => {
   const [pastEvents, setPastEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { events } = FormData;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,28 +33,29 @@ const PastEvent = () => {
           });
           console.error("Error fetching events:", response.data.message);
 
-          const sortedPastEvents = events
-            .filter((event) => event.info.isEventPast)
-            .sort((a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate));
-          setPastEvents(sortedPastEvents);
+          // No local fallback. Both failure branches used to load the bundled
+          // FormData.json sample, so a backend outage silently replaced the real
+          // archive with test records — "Test Payment 3", "QR TEST" and the like
+          // — under an error banner. Showing nothing is honest; showing
+          // fabricated events is not.
+          setPastEvents([]);
         }
       } catch (error) {
         setError({
           message: "Sorry for the inconvenience, we are having issues fetching our Events",
         });
         console.error("Error fetching events:", error);
-        // Fallback to local JSON data
-        const sortedPastEvents = events
-          .filter((event) => event.info.isEventPast)
-          .sort((a, b) => new Date(b.info.eventDate) - new Date(a.info.eventDate));
-        setPastEvents(sortedPastEvents);
+        setPastEvents([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPastEvents();
-  }, [events]);
+    // Fetched once on mount. The dependency used to be the bundled sample
+    // array, which never changed, so this is the same behaviour without the
+    // reference to data that no longer exists.
+  }, []);
 
   const customStyles = {
     eventname: {

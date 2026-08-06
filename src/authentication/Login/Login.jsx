@@ -8,7 +8,6 @@ import style from "./styles/Login.module.scss";
 import Input from "../../components/Core/Input";
 import Button from "../../components/Core/Button";
 import Text from "../../components/Core/Text";
-import users from "../../data/user.json";
 import { api } from "../../services";
 import AuthContext from "../../context/AuthContext";
 import { RecoveryContext } from "../../context/RecoveryContext";

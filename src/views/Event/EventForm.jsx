@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useContext, useCallback } from "react";
 
-import FormData from "../../data/FormData.json";
 import PreviewForm from "../../features/Modals/Profile/Admin/PreviewForm";
 import AuthContext from "../../context/AuthContext";
 import { api } from "../../services";

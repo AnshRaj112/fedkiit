@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from "react";
 import styles from "./styles/ViewEvent.module.scss";
 import { EventCard } from "../../../../../components";
 import { ComponentLoading } from "../../../../../microInteraction";
-import FormData from "../../../../../data/FormData.json";
 import { api } from "../../../../../services";
 import AuthContext from "../../../../../context/AuthContext";
 import { useRouter } from "next/navigation";
