@@ -30,7 +30,7 @@
    * edge is ~82px down the viewport. Pages whose first element is a heading
    * need to clear that or the text renders behind the pill. Declared once
    * here so the two numbers cannot drift apart. */
-  --fed-navbar-offset: 7.5rem;
+  --fed-navbar-offset: 5.5rem;
 }
 
 /* ─── Base ───────────────────────────────────────────────────────── */
@@ -1205,4 +1205,53 @@ main>div {
 .animate-delay-500 {
   animation-delay: 0.5s;
   opacity: 0;
+}
+/* ─── Signed-in avatar in the navbar ────────────────────────────────
+ * Replaces the Login pill once a session is restored, matching what the
+ * previous navbar did. Sized to the pill's height so swapping between the
+ * two does not change the bar's layout. */
+.fed-avatar-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fed-avatar-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 2px rgba(255, 85, 0, 0.55);
+}
+
+.fed-avatar {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--fed-surface-2);
+}
+
+.fed-avatar--sm {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+/* Mobile menu: avatar plus name, above the Logout button. */
+.fed-mobile-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0 0.75rem;
+  color: var(--fed-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Reserves the fixed navbar's height on every page that does not open with a
+ * full-bleed hero. Needs `!important` only because the `body, .page, main`
+ * rule above sets `margin-top: 0 !important`; declared after it so it wins. */
+.page--nav-offset {
+  margin-top: var(--fed-navbar-offset) !important;
 }

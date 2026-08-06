@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { MdOutlineLogout } from "react-icons/md";
+
+import AuthContext from "@/src/context/AuthContext";
+import defaultImg from "@/src/assets/images/defaultImg.jpg";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -14,6 +18,7 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const authCtx = useContext(AuthContext);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -150,9 +155,28 @@ export default function Navbar() {
 
             {/* Desktop Right Action */}
             <div className="fed-desktop-action">
-              <Link href="/login" className="fed-btn-orange">
-                Login
-              </Link>
+              {/* While the session is still being restored `isLoading` is true
+                  on both the server and the first client render, so showing the
+                  signed-out state here keeps hydration consistent and avoids a
+                  flash of the wrong control. */}
+              {!authCtx.isLoading && authCtx.isLoggedIn ? (
+                <Link
+                  href="/profile"
+                  className="fed-avatar-link"
+                  aria-label="Your profile"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={authCtx.user.img || defaultImg.src}
+                    alt="Profile"
+                    className="fed-avatar"
+                  />
+                </Link>
+              ) : (
+                <Link href="/Login" className="fed-btn-orange">
+                  Login
+                </Link>
+              )}
             </div>
 
             {/* Mobile Hamburger Toggle */}
@@ -191,9 +215,37 @@ export default function Navbar() {
               })}
 
               <div className="fed-mobile-login-wrapper">
-                <Link href="/login" className="fed-btn-orange fed-btn-orange--full">
-                  Login →
-                </Link>
+                {!authCtx.isLoading && authCtx.isLoggedIn ? (
+                  <>
+                    <Link
+                      href="/profile"
+                      className="fed-mobile-profile"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={authCtx.user.img || defaultImg.src}
+                        alt=""
+                        className="fed-avatar fed-avatar--sm"
+                      />
+                      <span>{authCtx.user.name || "Profile"}</span>
+                    </Link>
+                    <button
+                      type="button"
+                      className="fed-btn-orange fed-btn-orange--full"
+                      onClick={() => {
+                        setMobileOpen(false);
+                        authCtx.logout();
+                      }}
+                    >
+                      Logout <MdOutlineLogout size={18} />
+                    </button>
+                  </>
+                ) : (
+                  <Link href="/Login" className="fed-btn-orange fed-btn-orange--full">
+                    Login →
+                  </Link>
+                )}
               </div>
             </div>
           </div>
