@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Hero.module.scss";
 import CarouselImg from "../../../data/Carousel.json";
-import { Carousel } from "../../../components";
+import HeroGallery from "../../../components/HeroGallery/HeroGallery";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 
 const titles = [
@@ -28,7 +28,7 @@ function Hero() {
 
   useEffect(() => {
     const title = titles[titleIndex];
-    const typingSpeed = isDeleting ? 50 : 150;
+    const typingSpeed = isDeleting ? 40 : 110;
 
     const interval = setInterval(() => {
       if (isDeleting) {
@@ -51,50 +51,34 @@ function Hero() {
   }, [charIndex, isDeleting, titleIndex]);
 
   return (
-    <div className={styles.main}>
+    <section className={styles.main} aria-label="Hero">
       <div className={styles.hero}>
         <div className={styles.heroTextContainer}>
+          <div className={styles.textBackdrop} aria-hidden="true">
+            <img src="/assets/design-3.png" alt="" />
+          </div>
           <AnimatedBox direction="left">
-            <div className={styles.largeContent}>
-              <div className={styles.largeText}>
-                Nurturing Using Innovative & Creative strategies{" "}
-                <span
-                  className={styles.dynamicText}
-                  style={{
-                    background: "var(--primary)",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  <h3 className={styles.typing}>{currentTitle}</h3>
-                </span>{" "}
-              </div>
-            </div>
-            <div className={styles.smallContainer}>
-              <div className={styles.smallContent}>
-                <p>
-                  Inspiring{" "}
-                  <span
-                    style={{
-                      background: "var(--primary)",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
-                    }}
-                  >
-                    visionaries
-                  </span>{" "}
-                  towards cultivating excellence and enrouting future
-                  generations towards growth.
-                </p>
-              </div>
+            <div className={styles.textContent}>
+              <p className={styles.eyebrow}>Forum for Entrepreneurship Development</p>
+              <h1 className={styles.largeText}>
+                Nurturing using innovative &amp; creative strategies
+                <span className={styles.dynamicText}>
+                  <span className={styles.typing}>{currentTitle}</span>
+                </span>
+              </h1>
+              <p className={styles.lede}>
+                Inspiring{" "}
+                <span className={styles.accent}>visionaries</span> towards cultivating
+                excellence and guiding future generations toward growth.
+              </p>
             </div>
           </AnimatedBox>
         </div>
         <div className={styles.heroCarousel}>
-          <Carousel images={CarouselImg} />
+          <HeroGallery images={CarouselImg} />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

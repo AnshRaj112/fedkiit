@@ -88,17 +88,17 @@
   margin: 0 1rem;
 }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-    justify-content: center;
-    padding: 10px 20px;
-    padding-right: 0;
-    max-height: min(70vh, 720px);
-    overflow: auto;
-    scrollbar-width: thin;
-  }
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  justify-content: center;
+  padding: 10px 20px;
+  padding-right: 0;
+  max-height: min(70vh, 720px);
+  overflow: auto;
+  scrollbar-width: thin;
+}
 
 @media (max-width: 1024px) {
   .teamGrid {
@@ -108,9 +108,27 @@
 }
 
 @media (max-width: 768px) {
+  .mainMember {
+    padding: 1.25rem 1rem;
+  }
+
   .teamGrid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     padding: 0;
+    max-height: none;
+  }
+
+  .searchContainer {
+    width: 100%;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

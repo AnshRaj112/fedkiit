@@ -77,6 +77,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
+  // Profile analytics lives under lowercase /profile/events/... (sibling of the
+  // existing events page). Capitalised deep links from EventCard must redirect.
+  if (pathname.startsWith("/profile/Events/")) {
+    const url = new URL(
+      pathname.replace(/^\/profile\/Events\b/, "/profile/events") + search,
+      request.url,
+    );
+    return NextResponse.redirect(url, 308);
+  }
+
   // 2. Route protection.
   const isProtected = PROTECTED_PREFIXES.some(
     (prefix) =>

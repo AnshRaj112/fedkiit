@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 
 const getBoxVariant = (direction) => {
   return {
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-    hidden: { opacity: 0, x: direction === 'left' ? -100 : 100 }
+    visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: [0.2, 0, 0, 1] } },
+    hidden: { opacity: 0, x: direction === 'left' ? -48 : 48 }
   };
 };
 
@@ -15,7 +15,7 @@ export const AnimatedBox = ({ children, direction }) => {
   const control = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.3,
+    threshold: 0.15,
   });
 
   useEffect(() => {

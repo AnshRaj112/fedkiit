@@ -187,12 +187,6 @@ function ViewMember() {
     return filteredMembers;
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, [searchQuery]);
-
   const customStyles = {
     teamMember: styles.teamMemberCustom,
     teamMemberBackh5: styles.teamMemberBackh5Custom,
@@ -249,7 +243,6 @@ function ViewMember() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  setLoading(true); // Show loading when searching
                 }}
                 className={styles.searchInput}
               />

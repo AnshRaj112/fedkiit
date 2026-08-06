@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect} from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./styles/Feedback.module.scss";
 import feedbackData from "../../../data/Feedback.json";
 import quoteImg from "../../../assets/images/quote.png";
@@ -10,70 +10,77 @@ const Feedback = () => {
 
   const FeedbackCard = ({ quote }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-
-    const toggleExpand = () => {
-      setIsExpanded(!isExpanded);
-    };
-
-    const truncatedQuote = quote.quote.length > 200 
-      ? `${quote.quote.substring(0, 160)}...` 
+    const long = quote.quote.length > 160;
+    const truncatedQuote = long
+      ? `${quote.quote.substring(0, 150)}…`
       : quote.quote;
 
     return (
-      <div className={styles.feedbackCard}>
-        <div className={styles.FeedbackMsg} onClick={toggleExpand}>
+      <article className={styles.feedbackCard}>
+        <button
+          type="button"
+          className={styles.FeedbackMsg}
+          onClick={() => long && setIsExpanded(!isExpanded)}
+          aria-expanded={long ? isExpanded : undefined}
+        >
           <p className={styles.feedbackText}>
-            {isExpanded ? quote.quote : truncatedQuote}
-            {quote.quote.length > 160 && !isExpanded && (
-              <span className={styles.readMore} style={{fontWeight:"550", cursor:"pointer", color:"whitesmoke"}}>read more</span>
+            {isExpanded || !long ? quote.quote : truncatedQuote}
+            {long && !isExpanded && (
+              <span className={styles.readMore}> read more</span>
             )}
           </p>
-        </div>
+        </button>
 
-        <div>
+        <div className={styles.meta}>
           <p className={styles.feedbackAuthor}>{quote.title}</p>
           <p className={styles.feedbackEv}>{quote.post}</p>
         </div>
-      </div>
+      </article>
     );
   };
 
   useEffect(() => {
-    const feedbacksContainer = feedbacksRef.current;
-    const handleMouseEnter = () => {
-      feedbacksContainer.style.animationPlayState = "paused";
+    const el = feedbacksRef.current;
+    if (!el) return undefined;
+
+    const pause = () => {
+      el.style.animationPlayState = "paused";
     };
-    const handleMouseLeave = () => {
-      feedbacksContainer.style.animationPlayState = "running";
+    const play = () => {
+      el.style.animationPlayState = "running";
     };
 
-    feedbacksContainer.addEventListener("mouseenter", handleMouseEnter);
-    feedbacksContainer.addEventListener("mouseleave", handleMouseLeave);
+    el.addEventListener("mouseenter", pause);
+    el.addEventListener("mouseleave", play);
+    el.addEventListener("focusin", pause);
+    el.addEventListener("focusout", play);
 
     return () => {
-      feedbacksContainer.removeEventListener("mouseenter", handleMouseEnter);
-      feedbacksContainer.removeEventListener("mouseleave", handleMouseLeave);
+      el.removeEventListener("mouseenter", pause);
+      el.removeEventListener("mouseleave", play);
+      el.removeEventListener("focusin", pause);
+      el.removeEventListener("focusout", play);
     };
   }, []);
 
   return (
-    <div className={styles.feedbackContainer}>
-      <img className={styles.upQuote} src={quoteImg.src} alt="Up Quote" />
-      <div className={styles.heading}>
-        <h2>
+    <section className={styles.feedbackContainer} aria-labelledby="testimonials-heading">
+      <img className={styles.upQuote} src={quoteImg.src} alt="" aria-hidden="true" />
+      <header className={styles.heading}>
+        <h2 id="testimonials-heading">
           TESTIMO<span>NIALS</span>
         </h2>
-        <div className={styles.bottomLine}></div>
-      </div>
+        <div className={styles.bottomLine} aria-hidden="true" />
+      </header>
       <div className={styles.feedbacksContainer}>
         <div className={styles.feedbacks} ref={feedbacksRef}>
           {feedbackData.concat(feedbackData).map((quote, index) => (
-            <FeedbackCard key={index} quote={quote} />
+            <FeedbackCard key={`${quote.title}-${index}`} quote={quote} />
           ))}
         </div>
       </div>
-      <img className={styles.downQuote} src={quoteImg.src} alt="Down Quote" />
-    </div>
+      <img className={styles.downQuote} src={quoteImg.src} alt="" aria-hidden="true" />
+    </section>
   );
 };
 

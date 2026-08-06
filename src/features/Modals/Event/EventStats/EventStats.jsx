@@ -1,48 +1,48 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
-
-import Skeleton from "react-loading-skeleton";
-import { SkeletonTheme } from "react-loading-skeleton";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { FaDownload } from "react-icons/fa";
-import "react-loading-skeleton/dist/skeleton.css";
 import { Alert, ComponentLoading } from "../../../../microInteraction";
 import CloseButton from "../../../../components/CloseButton/CloseButton";
-import Text from "../../../../components/Core/Text";
 import defaultImg from "../../../../assets/images/defaultImg.jpg";
 import { api } from "../../../../services";
-import styles from "../EventModal/styles/EventModal.module.scss";
+import styles from "./styles/EventStats.module.scss";
 import AuthContext from "../../../../context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 
-const EventStats = ({ onClosePath }) => {
+const EventStats = ({ onClosePath = "/profile/events" }) => {
   const router = useRouter();
   const authCtx = useContext(AuthContext);
-  const { eventId } = useParams();
+  const params = useParams();
+  const eventId = params?.eventId;
+
   const [info, setInfo] = useState({});
-  const [data, setData] = useState({});
-  const [year, setYear] = useState({});
+  const [analytics, setAnalytics] = useState(null);
+  const [yearCounts, setYearCounts] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
   const [viewTeams, setViewTeams] = useState(false);
 
   useEffect(() => {
+    if (!eventId) return undefined;
+
     const fetchEvent = async () => {
+      setIsLoading(true);
       try {
-        const response = await api.get(
-          `/api/form/getFormAnalytics/${eventId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get(`/api/form/getFormAnalytics/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        });
+
         if (response.status === 200) {
-          setData(response.data.form.formAnalytics);
-          setInfo(response.data.form.info);
-          setYear(response.data.yearCounts);
+          const body = response.data;
+          const formAnalytics =
+            body?.form?.formAnalytics?.[0] || body?.data || null;
+          setAnalytics(formAnalytics);
+          setInfo(body?.form?.info || body?.data?.info || {});
+          setYearCounts(body?.yearCounts || body?.data?.yearCounts || {});
         } else {
           setAlert({
             type: "error",
@@ -51,14 +51,13 @@ const EventStats = ({ onClosePath }) => {
             position: "bottom-right",
             duration: 3000,
           });
-          throw new Error(response.data.message || "Error fetching event");
         }
       } catch (error) {
         console.error("Error fetching event:", error);
         setAlert({
           type: "error",
           message:
-            error.response.data.message ||
+            error?.response?.data?.message ||
             "There was an error fetching event details. Please try again.",
           position: "bottom-right",
           duration: 3000,
@@ -75,22 +74,9 @@ const EventStats = ({ onClosePath }) => {
     if (alert) {
       const { type, message, position, duration } = alert;
       Alert({ type, message, position, duration });
-      setAlert(null); // Reset alert after displaying it
+      setAlert(null);
     }
   }, [alert]);
-
-  useEffect(() => {
-    if (searchQuery) {
-      setIsSearching(true);
-      const timer = setTimeout(() => {
-        setIsSearching(false);
-      }, 500);
-
-      return () => clearTimeout(timer);
-    } else {
-      setIsSearching(false);
-    }
-  }, [searchQuery]);
 
   const handleModalClose = () => {
     router.push(onClosePath);
@@ -112,15 +98,17 @@ const EventStats = ({ onClosePath }) => {
           position: "bottom-right",
           duration: 3000,
         });
-        const blob = new Blob([response.data], { type: response.data.type });
+        const blob = new Blob([response.data], {
+          type: response.headers?.["content-type"] || "text/csv",
+        });
         const url = window.URL.createObjectURL(blob);
-
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", `registration_data_${eventId}.xlsx`);
+        link.setAttribute("download", `registration_data_${eventId}.csv`);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
       } else {
         setAlert({
           type: "error",
@@ -128,14 +116,13 @@ const EventStats = ({ onClosePath }) => {
           position: "bottom-right",
           duration: 3000,
         });
-        throw new Error(response.data.message || "Error downloading the file");
       }
     } catch (error) {
       console.error("Error downloading the file", error);
       setAlert({
         type: "error",
         message:
-          error.response.data.message ||
+          error?.response?.data?.message ||
           "There was an error downloading the file. Please try again.",
         position: "bottom-right",
         duration: 3000,
@@ -143,324 +130,134 @@ const EventStats = ({ onClosePath }) => {
     }
   };
 
-  const filteredUsers = data[0]?.regUserEmails?.filter((user) =>
-    user.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredUsers = useMemo(() => {
+    const emails = analytics?.regUserEmails || [];
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return emails;
+    return emails.filter((user) => user.toLowerCase().includes(query));
+  }, [analytics, searchQuery]);
 
-  const filteredTeams = data[0]?.regTeamNames?.filter((team) =>
-    team.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredTeams = useMemo(() => {
+    const teams = analytics?.regTeamNames || [];
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return teams;
+    return teams.filter((team) => team.toLowerCase().includes(query));
+  }, [analytics, searchQuery]);
 
-  const yearCounts = year || {};
+  const totalCount = viewTeams
+    ? analytics?.regTeamNames?.length || 0
+    : analytics?.totalRegistrationCount ||
+      analytics?.regUserEmails?.length ||
+      0;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        width: "100%",
-        height: "100%",
-        zIndex: "10",
-        left: 0,
-        top: 0,
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.72)",
-          zIndex: "5",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            zIndex: "10",
-            borderRadius: "10px",
-            padding: "2rem",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: ".3rem",
-          }}
-        >
-          {data && (
-            <>
-              <SkeletonTheme baseColor="var(--surface-2)" highlightColor="var(--surface-3)">
-                <Skeleton height={180} style={{ marginBottom: "1rem" }} />
-                <Skeleton
-                  count={3}
-                  height={20}
-                  width="100%"
-                  style={{ marginBottom: "0.5rem" }}
-                />
-              </SkeletonTheme>
-              <div
-                style={{
-                  overflowY: "auto",
-                }}
-                className={styles.card}
-              >
-                {isLoading ? (
-                  <ComponentLoading
-                    customStyles={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      position: "relative",
-                    }}
-                  >
-                    <CloseButton
-                      onClick={handleModalClose}
-                      label="Close event stats"
-                      className={styles.close}
-                    />
-
-                    <div className={styles.backbtn}>
-                      <div
-                        className={styles.eventname}
-                        style={{ paddingTop: "15px" }}
-                      >
-                        {info.eventTitle}
-                      </div>
-                      {authCtx.user.access === "ADMIN" && (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginTop: "1rem",
-                            padding: "0.5rem",
-                            borderRadius: "0.5rem",
-                            cursor: "pointer",
-                          }}
-                          onClick={handleDownload}
-                        >
-                          <FaDownload
-                            size={18}
-                            style={{
-                              marginRight: "2rem",
-                              color: "var(--accent)",
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "left" }}>
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          gap: "1rem",
-                          alignItems: "left",
-                          textAlign: "left",
-                        }}
-                      >
-                        {/* First column for the toggle switch and total count */}
-                        <div
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <div
-                            className={styles.toggleSwitchContainer}
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              marginBottom: "1rem",
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: "var(--text-primary)",
-                                fontSize: "1rem",
-                                fontWeight: "500",
-                                marginLeft: "2rem",
-                                marginTop: "0.5rem",
-                              }}
-                            >
-                              {viewTeams ? "Back to Users" : "Switch to Teams"}
-                            </Text>
-                            <label className={styles.switch}>
-                              <input
-                                type="checkbox"
-                                checked={viewTeams}
-                                onChange={() => setViewTeams(!viewTeams)}
-                              />
-                              <span className={styles.slider}></span>
-                            </label>
-                          </div>
-
-                          <Text
-                            style={{
-                              color: "var(--text-primary)",
-                              fontSize: "1rem",
-                              fontWeight: "500",
-                              textAlign: "left",
-                              marginBottom: "1rem",
-                              marginLeft: "2rem",
-                            }}
-                          >
-                            Total{" "}
-                            {viewTeams
-                              ? "Registered Teams"
-                              : "Registered Users"}{" "}
-                            :{" "}
-                            <span
-                              style={{
-                                color: "var(--accent)",
-                              }}
-                            >
-                              {viewTeams
-                                ? data[0]?.regTeamNames?.length || 0
-                                : data[0]?.totalRegistrationCount || 0}
-                            </span>
-                          </Text>
-                        </div>
-
-                        {/* Second column for year counts and download */}
-                        <Text
-                          style={{
-                            color: "var(--text-primary)",
-                            fontSize: "1rem",
-                            fontWeight: "500",
-                            textAlign: "left",
-                            marginBottom: "1rem",
-                            marginLeft: "1.5rem",
-                            marginTop: "0.5rem",
-                          }}
-                        >
-                          Year Counts:
-                          <div
-                            style={{
-                              display: "grid",
-                              gridTemplateColumns: "repeat(5, 1fr)",
-                              gap: "0.5rem",
-                              marginTop: "0.5rem",
-                            }}
-                          >
-                            {Object.keys(yearCounts).length > 0 ? (
-                              Object.entries(yearCounts).map(
-                                ([year, count]) => (
-                                  <div
-                                    key={year}
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      color: "var(--accent)",
-                                    }}
-                                  >
-                                    <span
-                                      style={{
-                                        color: "var(--text-primary)",
-                                        fontWeight: "bold",
-                                        marginRight: "0.3rem",
-                                      }}
-                                    >
-                                      {year}:
-                                    </span>{" "}
-                                    {count}
-                                  </div>
-                                )
-                              )
-                            ) : (
-                              <span>No data available</span>
-                            )}
-                          </div>
-                        </Text>
-                      </div>
-                    </div>
-
-                    <input
-                      type="text"
-                      placeholder={`Search by ${viewTeams ? "team" : "email"}`}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className={styles.searchInput}
-                    />
-
-                    <div className={styles.eventEmails}>
-                      {isSearching ? (
-                        <ComponentLoading
-                          customStyles={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: "-0.4rem",
-                          }}
-                        />
-                      ) : viewTeams ? (
-                        filteredTeams && filteredTeams.length > 0 ? (
-                          filteredTeams.map((team, index) => (
-                            <div key={index} className={styles.userCard}>
-                              <img
-                                src={defaultImg.src}
-                                alt="Team"
-                                className={styles.userImg}
-                              />
-                              <div className={styles.userEmail}>{team}</div>
-                            </div>
-                          ))
-                        ) : (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              marginLeft: "25%",
-                            }}
-                          >
-                            <p style={{ fontSize: "1.0625rem", margin: 0, color: "var(--text-secondary)" }}>
-                              No teams found
-                            </p>
-                          </div>
-                        )
-                      ) : filteredUsers && filteredUsers.length > 0 ? (
-                        filteredUsers.map((user, index) => (
-                          <div key={index} className={styles.userCard}>
-                            <img
-                              src={defaultImg.src}
-                              alt="User"
-                              className={styles.userImg}
-                            />
-                            <div className={styles.userEmail}>{user}</div>
-                          </div>
-                        ))
-                      ) : (
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginLeft: "25%",
-                          }}
-                        >
-                          <p style={{ fontSize: "1.0625rem", margin: 0, color: "var(--text-secondary)" }}>
-                            No users found
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
+    <div className={styles.page}>
+      <div className={styles.toolbar}>
+        <div>
+          <p className={styles.eyebrow}>Event analytics</p>
+          <h1 className={styles.title}>
+            {info?.eventTitle || "Registration stats"}
+          </h1>
+        </div>
+        <div className={styles.toolbarActions}>
+          {authCtx.user.access === "ADMIN" && (
+            <button
+              type="button"
+              className={styles.downloadBtn}
+              onClick={handleDownload}
+            >
+              <FaDownload size={14} aria-hidden="true" />
+              Download CSV
+            </button>
           )}
+          <CloseButton
+            onClick={handleModalClose}
+            label="Back to events"
+            className={styles.close}
+          />
         </div>
       </div>
+
+      {isLoading ? (
+        <div className={styles.loading}>
+          <ComponentLoading />
+        </div>
+      ) : (
+        <div className={styles.card}>
+          <div className={styles.metaRow}>
+            <div className={styles.toggleBlock}>
+              <label className={styles.switchLabel}>
+                <span>{viewTeams ? "Showing teams" : "Showing users"}</span>
+                <span className={styles.switch}>
+                  <input
+                    type="checkbox"
+                    checked={viewTeams}
+                    onChange={() => setViewTeams((v) => !v)}
+                  />
+                  <span className={styles.slider} />
+                </span>
+              </label>
+              <p className={styles.total}>
+                Total {viewTeams ? "registered teams" : "registered users"}:{" "}
+                <span>{totalCount}</span>
+              </p>
+            </div>
+
+            <div className={styles.yearBlock}>
+              <p className={styles.yearHeading}>Year counts</p>
+              <div className={styles.yearGrid}>
+                {Object.keys(yearCounts).length > 0 ? (
+                  Object.entries(yearCounts).map(([year, count]) => (
+                    <div key={year} className={styles.yearItem}>
+                      <span className={styles.yearLabel}>{year}</span>
+                      <span className={styles.yearValue}>{count}</span>
+                    </div>
+                  ))
+                ) : (
+                  <span className={styles.emptyMeta}>No year data</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <input
+            type="search"
+            placeholder={`Search by ${viewTeams ? "team" : "email"}`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+
+          <div className={styles.list}>
+            {viewTeams ? (
+              filteredTeams.length > 0 ? (
+                filteredTeams.map((team, index) => (
+                  <div key={`${team}-${index}`} className={styles.userCard}>
+                    <img
+                      src={defaultImg.src}
+                      alt=""
+                      className={styles.userImg}
+                    />
+                    <div className={styles.userEmail}>{team}</div>
+                  </div>
+                ))
+              ) : (
+                <p className={styles.empty}>No teams found</p>
+              )
+            ) : filteredUsers.length > 0 ? (
+              filteredUsers.map((user, index) => (
+                <div key={`${user}-${index}`} className={styles.userCard}>
+                  <img src={defaultImg.src} alt="" className={styles.userImg} />
+                  <div className={styles.userEmail}>{user}</div>
+                </div>
+              ))
+            ) : (
+              <p className={styles.empty}>No users found</p>
+            )}
+          </div>
+        </div>
+      )}
+
       <Alert />
     </div>
   );

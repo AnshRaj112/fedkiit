@@ -1,714 +1,193 @@
-// @import "../../../../assets/styles/Global.scss";
-
-
-
-
-.container{
-    overflow: hidden;
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 3.5rem;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
 }
 
-
-.head{
-    font-weight: 700;
-    font-size: 50px;
-    // position: relative;
-    text-align: center;
-    margin-top: 2rem;
-    // margin-bottom: -3rem;
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-.boxflex{
-    margin-top: -3rem;
+.head {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
+.accent {
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+}
 
 .bottomLine {
-    width: 12rem;
-    height: 0.3125rem;
-    background: var(--primary);
-    color: transparent;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+  width: 5.5rem;
+  height: 3px;
+  margin-top: 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+}
+
+.subhead {
+  margin: 0.85rem 0 0;
+  max-width: 44ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.85fr) minmax(0, 1.15fr);
+  gap: 1.5rem 2.25rem;
+  align-items: center;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  box-shadow: var(--depth);
+  transition:
+    border-color var(--dur) var(--ease),
+    transform 0.35s var(--ease);
+}
+
+.row:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.rowReverse {
+  grid-template-columns: minmax(0, 1.15fr) minmax(10rem, 0.85fr);
+}
+
+.rowReverse .media {
+  order: 2;
+}
+
+.rowReverse .copy {
+  order: 1;
+  text-align: right;
+}
+
+.rowReverse .index {
+  margin-left: auto;
+}
+
+.media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 13rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 50% 70%, rgba(255, 138, 0, 0.1), transparent 65%);
+}
+
+.media img {
+  width: auto;
+  max-width: min(100%, 15rem);
+  height: auto;
+  max-height: 13rem;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4));
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.boxhead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.body {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 3.75rem 1rem 2.75rem;
   }
 
-.heading{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  .row,
+  .rowReverse {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    padding: 1.25rem 1.15rem 1.4rem;
+    text-align: center;
+  }
+
+  .rowReverse .media,
+  .rowReverse .copy {
+    order: unset;
+    text-align: center;
+  }
+
+  .rowReverse .index,
+  .index {
+    margin: 0 auto;
+  }
+
+  .media {
+    min-height: 10rem;
+  }
+
+  .media img {
+    max-height: 10.5rem;
+    max-width: 12rem;
+  }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
 
-
-.box{
-    // height: 14rem;
-    height : 35vh ;
-    width: 65%;
-    padding: 2rem;
-    background: transparent;
-    font-size: 1.85rem;
-    border: 2px solid white;
-    border-radius: 20px;
-}
-
-// .whatfed{    
-//     padding: 1.5rem 2rem 1.5rem 2rem;
-// }
-
-.howfed{
-    text-align: right;
-}
-
-.boxhead{
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-
-.boxinnertext {
-    font-size: 1.4rem;
-}
-
-.boxflex{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.box1{
-    align-items: center;
-    width: 1500px;
-}
-
-.box2{
-    padding-top: 2rem;
-}
-
-.box3{
-    padding-top: 2rem;
-    // padding-bottom: -9rem;
-}
-
-.whyfed{
-    order: 1;
-    margin-top: 80px;
-    position: relative;
-    left: 100px;
-    z-index: 0;
-}
-
-.whyfedimg{
-    order: 2;
-    background: none;
-    position: relative;
-    right: 80px;
-    z-index: 0;
-}
-
-.howfed{
-    position: relative;
-    right: 60px;
-    z-index: 0;
-}
-
-.howfedimg{
-    background: none;
-    position: relative;
-    left: 70px;
-    z-index:1;
-    height: 350px;
-}
-
-.whatfed{
-    order: 1;
-    position: relative;
-    left: 100px;
-    z-index: 0;
-}
-
-.whatfedimg{
-    order: 2;
-    background: none;
-    position: relative;
-    right: 90px;
-    z-index: 0;
-    height: 353px;
-}
-
-
-@media screen and (max-width: 1046px){
-    .head{
-        font-size: 60.8px;
-    }
-
-    .box1{
-        align-items: center;
-    }
-    
-    .box2{
-        padding-top: 3rem;
-    }
-    
-    .box3{
-        padding-top: 3rem;
-    
-    }
-
-    .box{
-        width: 55%;
-        font-size: 1.65rem;
-    }
-}
-
-@media screen and (max-width: 976px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1.3rem;
-        // height: 9rem;
-        width: 55%;
-    }
-
-.howfed, .whatfed,.whyfed{
-    height: 10rem;
-}
-
-    .box1{
-        align-items: center;
-        padding-top: 1rem;
-    }
-    
-    .box2{
-        padding-top: -1rem;
-        margin-top: -5rem;
-    }
-    
-    .box3{
-        padding-top: -1rem;
-        margin-top: -5rem;
-    }
-
-    .whatfed{
-        // height: 9.5rem;
-    }
-}
-
-@media screen and (max-width: 914px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1rem;
-        height: 14rem;
-        width: 55%;
-        padding: 2rem;
-        background: transparent;
-        font-size: 1.85rem;
-        border: 2px solid white;
-        border-radius: 20px;
-    }
-
-    
-}
-
-@media screen and (max-width: 875px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.5rem;
-        height: 17rem;
-        width: 45%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 30px;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 200px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        top: 0px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 300px;
-        padding-top: 9.5rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 350px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 7rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 353px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: -20rem;
-    }
-}
-
-@media screen and (max-width: 714px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.45rem;
-        height: 17rem;
-        width: 45%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 30px;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 200px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        left: 100px;
-        top: 0px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 300px;
-        padding-top: 9.5rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 350px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 7rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 353px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: -3rem;
-    }
-    
-}
-
-@media screen and (max-width: 642px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.05rem;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 590px){
-    .head{
-        font-size: 45px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.15rem;
-        height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 180px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        top: 0px;
-        z-index: 1;
-        height: 397px;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 275px;
-        padding-top: 8rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        z-index: 1;
-        height: 300px;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 6rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 150px;
-        padding-top: -3rem;
-        z-index: 1;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 1.18rem;
-    }
-}
-
-@media screen and (max-width: 443px){
-    .head{
-        font-size: 35px;
-    }
-    .box{
-        font-size: 1.15rem;
-        // height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-
-    .bottomLine{
-        
-        width: 6rem;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 5rem;
-        order: 2;
-        position: relative;
-        z-index: 0;
-        bottom: 160px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        right: -100;
-        top: 0px;
-        height: 347px;
-        margin-right: 9.9rem;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 1.18rem;
-    }
-
-    .boxhead{
-        margin-top: 19px;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: 1rem;
-    }
-}
-
-@media (max-width: 380px){
-    .howfed{
-        padding-top: 5rem;
-    }
-}
-
-@media screen and (max-width: 338px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1.1rem;
-        height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 5rem;
-        order: 2;
-        position: relative;
-        z-index: 0;
-        bottom: 160px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        top: 0px;
-        height: 347px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-        z-index: 1;
-    }
-
-    .boxinnertext p{
-        font-size: 1.15rem;
-    }
-}
-
-@media screen and (max-width: 306px){
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-        height: 20rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 0.8rem;
-    }
-}
-
-@media screen and (min-width: 1680px){
-    .box{
-        width: 80%;
-        font-size: 2.3rem;
-    }
-
-    .howfed, .whyfed, .whatfed{
-        height: 15rem;
-    }
-}
-
-@media screen and (min-width: 2496px){
-    .box{
-        font-size: 2.3rem;
-    }
-}
-
-@media screen and (min-width: 1256px){
-    .box{
-        font-size: 2.3rem;
-    }
-    .howfed, .whyfed, .whatfed{
-        height: 15rem;
-    }
+  .row:hover {
+    transform: none;
+  }
 }

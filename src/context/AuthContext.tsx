@@ -169,6 +169,18 @@ export const AuthContextProvider = (props: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Edit handoff bag. Call sites assign `authCtx.eventData = …` synchronously
+  // before navigating; a ref keeps those writes durable across context refreshes.
+  const editBag = useRef<{
+    eventData: unknown;
+    memberData: unknown;
+    croppedImageFile: unknown;
+  }>({
+    eventData: null,
+    memberData: null,
+    croppedImageFile: null,
+  });
+
   const logoutTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const targetHandler = useCallback((t: string) => setTarget(t), []);
@@ -328,9 +340,24 @@ export const AuthContextProvider = (props: { children: React.ReactNode }) => {
       logout: logoutHandler,
       settarget: targetHandler,
       update: updateHandler,
-      eventData: null,
-      memberData: null,
-      croppedImageFile: null,
+      get eventData() {
+        return editBag.current.eventData;
+      },
+      set eventData(value: unknown) {
+        editBag.current.eventData = value;
+      },
+      get memberData() {
+        return editBag.current.memberData;
+      },
+      set memberData(value: unknown) {
+        editBag.current.memberData = value;
+      },
+      get croppedImageFile() {
+        return editBag.current.croppedImageFile;
+      },
+      set croppedImageFile(value: unknown) {
+        editBag.current.croppedImageFile = value;
+      },
     }),
     [
       token,

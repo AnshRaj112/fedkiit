@@ -216,8 +216,21 @@ const Event = () => {
 
           {isLoading ? (
             <section className={style.group} aria-busy="true">
-              <div className={style.grid}>
-                {Array.from({ length: 6 }).map((_, i) => (
+              <div className={style.groupHead}>
+                <h2 className={style.groupTitle}>Happening next</h2>
+              </div>
+              <div className={`${style.skeleton} ${style.skeletonFeatured}`}>
+                <div className={style.skeletonMedia} />
+                <div className={style.skeletonBody}>
+                  <span className={style.skeletonLine} style={{ width: "35%" }} />
+                  <span className={style.skeletonLine} style={{ width: "55%" }} />
+                  <span className={style.skeletonLine} style={{ width: "70%" }} />
+                  <span className={style.skeletonLine} style={{ width: "90%" }} />
+                  <span className={style.skeletonCta} />
+                </div>
+              </div>
+              <div className={style.grid} style={{ marginTop: "1.5rem" }}>
+                {Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className={style.skeleton}>
                     <div className={style.skeletonMedia} />
                     <div className={style.skeletonBody}>
