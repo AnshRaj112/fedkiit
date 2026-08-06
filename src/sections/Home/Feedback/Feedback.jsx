@@ -68,7 +68,7 @@ const Feedback = () => {
       <div className={styles.feedbacksContainer}>
         <div className={styles.feedbacks} ref={feedbacksRef}>
           {feedbackData.concat(feedbackData).map((quote, index) => (
-            <FeedbackCard key={index} quote={quote} />
+            <FeedbackCard key={`${quote.title || 'quote'}-${index}`} quote={quote} />
           ))}
         </div>
       </div>

@@ -8,7 +8,7 @@ import ProtectedRoute from "@/src/components/ProtectedRoute";
 import { Loading } from "@/src/microInteraction";
 
 /**
- * /Events/:eventId/Form — the registration form, behind the auth guard.
+ * /Events/:eventId/Form - the registration form, behind the auth guard.
  *
  * Suspense is required: both EventForm and ProtectedRoute read
  * `useSearchParams()`. It is declared per-page rather than in the layout, since

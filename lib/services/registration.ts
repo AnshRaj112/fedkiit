@@ -204,7 +204,7 @@ export async function registerForEvent(input: {
     return registration.id;
   });
 
-  // Best-effort confirmation — a mail failure must not undo a valid registration.
+  // Best-effort confirmation - a mail failure must not undo a valid registration.
   const mail = registrationEmail({
     name: user.name ?? "there",
     eventTitle: event.title,

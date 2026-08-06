@@ -38,7 +38,7 @@ const Text = (props) => {
   };
 
   const inlineStyle = {
-    color: variant === "primary" ? "#fff" : "#FF8A00",
+    color: variant === "primary" ? "var(--text-primary)" : "var(--accent)",
     ...style,
   };
 

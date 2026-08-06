@@ -97,7 +97,7 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
   title: "Terms &",
   titleAccent: "Conditions",
   intro:
-    "Welcome to the Federation of Entrepreneurship Development at Kalinga Institute of Industrial Technology. We are excited to have you join our community of aspiring entrepreneurs. Please read the following Terms and Conditions carefully — they outline the rules and guidelines governing your participation in the society.",
+    "Welcome to the Federation of Entrepreneurship Development at Kalinga Institute of Industrial Technology. We are excited to have you join our community of aspiring entrepreneurs. Please read the following Terms and Conditions carefully - they outline the rules and guidelines governing your participation in the society.",
   lastUpdated: "2026-07-30",
   clauses: [
     {

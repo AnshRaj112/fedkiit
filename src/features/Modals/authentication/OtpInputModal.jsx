@@ -2,7 +2,6 @@
 
 import React from "react";
 import OtpInput from "../../../components/OtpInput/OtpInput";
-import { X } from "lucide-react";
 
 const OtpInputModal = (props) => {
   const { onVerify, handleClose } = props;
@@ -26,8 +25,7 @@ const OtpInputModal = (props) => {
           left: "0",
           width: "100%",
           height: "100%",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(4px)",
+          backgroundColor: "rgba(0, 0, 0, 0.72)",
           zIndex: "5",
           display: "flex",
           justifyContent: "center",

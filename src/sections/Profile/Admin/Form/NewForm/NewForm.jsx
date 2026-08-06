@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useContext } from "react";
-import { Button, Input, Text, Section } from "../../../../../components";
+import { Button, Input, Section } from "../../../../../components";
 import { IoSettingsOutline, IoSettingsSharp } from "react-icons/io5";
 import AuthContext from "../../../../../context/AuthContext";
 import { PreviewForm } from "../../../../../features";
@@ -885,15 +885,16 @@ function NewForm() {
             {isVisibility ? (
               <IoSettingsSharp
                 size={20}
-                color="#FF8A00"
-                style={{ cursor: "pointer", marginTop: "10px" }}
+                className={styles.settingsIcon}
+                data-active="true"
+                style={{ marginTop: "10px" }}
                 onClick={() => setisVisibility(!isVisibility)}
               />
             ) : (
               <IoSettingsOutline
                 size={20}
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                color="#fff"
+                className={styles.settingsIcon}
+                style={{ marginTop: "10px" }}
                 onClick={() => setisVisibility(!isVisibility)}
               />
             )}
@@ -914,38 +915,15 @@ function NewForm() {
         </div>
       </div>
       {isVisibility && (
-        <div
-          style={{
-            backgroundColor: "rgba(128, 127, 126, 0.066)",
-            width: "86%",
-            margin: ".5em 0",
-            padding: "1.6em",
-            borderRadius: "8px",
-            marginBottom: "1em",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <label
-              style={{
-                color: "#fff",
-                margin: "4px 0",
-                fontSize: ".8em",
-                opacity: data.isPublic ? "1" : ".6",
-                transition: "all .4s",
-              }}
-            >
+        <div className={styles.settings}>
+          <div className={styles.settingsRow}>
+            <label className={styles.settingsLabel}>
               Event Form Privacy (
-              <span style={{ color: !data.isPublic ? "#FF8A00" : "white" }}>
+              <span className={!data.isPublic ? styles.settingsOn : styles.settingsOff}>
                 Private
               </span>
               /
-              <span style={{ color: data.isPublic ? "#FF8A00" : "white" }}>
+              <span className={data.isPublic ? styles.settingsOn : styles.settingsOff}>
                 Public
               </span>
               )
@@ -968,36 +946,25 @@ function NewForm() {
             />
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              margin: "1em 0",
-            }}
-          >
-            <label
-              style={{
-                color: "#fff",
-                margin: "4px 0",
-                fontSize: ".8em",
-                opacity: data.isRegistrationClosed ? "1" : ".6",
-                transition: "all .4s",
-              }}
-            >
+          <div className={styles.settingsRow}>
+            <label className={styles.settingsLabel}>
               Event Form Registration (
               <span
-                style={{
-                  color: !data.isRegistrationClosed ? "#FF8A00" : "white",
-                }}
+                className={
+                  !data.isRegistrationClosed
+                    ? styles.settingsOn
+                    : styles.settingsOff
+                }
               >
                 Open
               </span>
               /
               <span
-                style={{
-                  color: data.isRegistrationClosed ? "#FF8A00" : "white",
-                }}
+                className={
+                  data.isRegistrationClosed
+                    ? styles.settingsOn
+                    : styles.settingsOff
+                }
               >
                 Close
               </span>
@@ -1021,35 +988,21 @@ function NewForm() {
             />
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <label
-              style={{
-                color: "#fff",
-                margin: "4px 0",
-                fontSize: ".8em",
-                opacity: data.isEventPast ? "1" : ".6",
-                transition: "all .4s",
-              }}
-            >
+          <div className={styles.settingsRow}>
+            <label className={styles.settingsLabel}>
               Event Form Status (
               <span
-                style={{
-                  color: !data.isEventPast ? "#FF8A00" : "white",
-                }}
+                className={
+                  !data.isEventPast ? styles.settingsOn : styles.settingsOff
+                }
               >
                 Ongoing
               </span>
               /
               <span
-                style={{
-                  color: data.isEventPast ? "#FF8A00" : "white",
-                }}
+                className={
+                  data.isEventPast ? styles.settingsOn : styles.settingsOff
+                }
               >
                 Past
               </span>
@@ -1306,23 +1259,8 @@ function NewForm() {
           </div>
         </div>
         {sections && sections !== undefined ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "86%",
-              marginBottom: "12px",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: "14px",
-                margin: "auto 6px",
-                marginRight: "auto",
-              }}
-            >
-              Sections
-            </Text>
+          <div className={styles.sectionsBar}>
+            <span className={styles.sectionsLabel}>Sections</span>
             <Button
               variant="secondary"
               style={{ marginLeft: "auto" }}

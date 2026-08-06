@@ -24,18 +24,12 @@ const Blog = () => {
   const [showAllBlogs, setShowAllBlogs] = useState(false);
 
   // filter icon
-  const GradientFilterIcon = () => (
+  const FilterIcon = () => (
     <svg width="36" height="28" viewBox="0 0 512 512" fill="none">
-      <defs>
-        <linearGradient id="filterGradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#F44336" />
-          <stop offset="100%" stopColor="#FFC107" />
-        </linearGradient>
-      </defs>
       <path
         d="M96 96h320L288 288v128l-64 32V288L96 96z"
         fill="none"
-        stroke="url(#filterGradient)"
+        stroke="currentColor"
         strokeWidth="35"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -193,7 +187,7 @@ const Blog = () => {
               onClick={() => setShowFilter(!showFilter)}
               className={styles.filterButton}
             >
-              <GradientFilterIcon />
+              <FilterIcon />
             </button>
 
             {showFilter && (

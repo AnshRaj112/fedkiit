@@ -6,7 +6,7 @@ import { Button } from "../../components/Core";
 import AuthContext from "../../context/AuthContext";
 import { api } from "../../services";
 import styles from "./styles/AttendancePage.module.scss";
-import { IoClose } from "react-icons/io5";
+import CloseButton from "../../components/CloseButton/CloseButton";
 import { FaDownload } from "react-icons/fa";
 import { Alert, ComponentLoading } from "../../microInteraction";
 import { Html5QrcodeScanner, Html5QrcodeScanType } from "html5-qrcode";
@@ -312,8 +312,9 @@ const AttendancePage = () => {
       {showScanner && (
         <div className={styles.scannerModal}>
           <div className={styles.scannerContent}>
-            <button
+            <CloseButton
               className={styles.closeButton}
+              label="Close scanner"
               onClick={() => {
                 if (scanner) {
                   try {
@@ -325,9 +326,7 @@ const AttendancePage = () => {
                 setShowScanner(false);
                 setScanner(null);
               }}
-            >
-              <IoClose />
-            </button>
+            />
             <h3 className={styles.scannerTitle}>Scan QR Code</h3>
             <div className={styles.scannerArea}>
               {isScanning && (
@@ -345,12 +344,11 @@ const AttendancePage = () => {
       {showSuccessModal && attendedUser && (
         <div className={styles.scannerModal}>
           <div className={styles.scannerContent}>
-            <button
+            <CloseButton
               className={styles.closeButton}
+              label="Close confirmation"
               onClick={handleCloseSuccessModal}
-            >
-              <IoClose />
-            </button>
+            />
             <div className={styles.successContent}>
               <div className={styles.successIcon}>✓</div>
               <h3 className={styles.successTitle}>Attendance Marked Successfully!</h3>

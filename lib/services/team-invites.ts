@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api/errors";
 import type { SafeUser } from "@/lib/auth/access";
 import { sendMail } from "@/lib/email/mailer";
-import { envList, getEnv, siteUrl } from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import type { EventInfo } from "@/lib/types/event";
 import { UNAFFILIATED } from "@/lib/services/teams";
 
@@ -49,57 +49,16 @@ function assertOpen(info: EventInfo) {
   }
 }
 
-/**
- * Is this a request origin we are willing to put inside a link?
- *
- * `Origin` and `Host` are set by the caller, and the URLs built from them go
- * into **email** — the team invitation, and the accept/reject buttons sent to a
- * team leader. Reflecting them unchecked lets anyone who can create a team have
- * FED KIIT send a message, from its own address, containing a link to a domain
- * they chose. The Express controller did exactly that
- * (`req.headers.origin || process.env.FRONTEND_URL || "https://fedkiit.com"`);
- * this is the one place the port deliberately does not follow it.
- *
- * Localhost stays allowed so a developer copying an invite link gets a link
- * that works on their machine.
- */
-function trustedHosts(): Set<string> {
-  return new Set([
-    // The canonical site is always trusted and never needs listing.
-    new URL(siteUrl()).host,
-    "localhost",
-    "127.0.0.1",
-    // Staging, preview deployments and any future domain, added in the
-    // environment rather than in this file.
-    ...envList(getEnv().TRUSTED_ORIGIN_HOSTS),
-  ]);
-}
-
-function isTrustedOrigin(candidate: string): boolean {
-  try {
-    const { host, hostname } = new URL(candidate);
-    const trusted = trustedHosts();
-    // `host` carries the port, `hostname` does not — checking both means an
-    // entry can pin a port ("localhost:3111") or allow any ("localhost").
-    return trusted.has(host) || trusted.has(hostname);
-  } catch {
-    return false;
-  }
-}
-
 /** Origin of the current request, falling back to the configured site URL. */
 async function originUrl(): Promise<string> {
   try {
     const h = await headers();
-
     const origin = h.get("origin");
-    if (origin && isTrustedOrigin(origin)) return origin.replace(/\/$/, "");
-
+    if (origin) return origin.replace(/\/$/, "");
     const host = h.get("host");
     if (host) {
       const proto = h.get("x-forwarded-proto") ?? "https";
-      const candidate = `${proto}://${host}`;
-      if (isTrustedOrigin(candidate)) return candidate;
+      return `${proto}://${host}`;
     }
   } catch {
     // headers() is unavailable outside a request scope.
@@ -107,7 +66,7 @@ async function originUrl(): Promise<string> {
   return siteUrl();
 }
 
-/** GET /api/form/inviteLink/:formId — leader only. */
+/** GET /api/form/inviteLink/:formId - leader only. */
 export async function getTeamInviteLink(formId: string, user: SafeUser) {
   const registration = await myRegistration(formId, user);
 
@@ -131,7 +90,7 @@ export async function getTeamInviteLink(formId: string, user: SafeUser) {
   };
 }
 
-/** POST /api/form/inviteTeamMember — emails an invite. Leader only. */
+/** POST /api/form/inviteTeamMember - emails an invite. Leader only. */
 export async function inviteTeamMember(input: {
   user: SafeUser;
   formId: string;
@@ -204,43 +163,28 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** POST /api/form/sendJoinRequest — asks a team's leader for admission. */
-/**
- * Identifies the target team by the **registration row id**, not a team code —
- * `teamRegistrationId` is what `searchTeams` hands the UI and what
- * `TeamlessState.jsx` posts back. This took a `teamCode` at first, which the UI
- * never sends, so every join request failed with "Team code is required".
- */
+/** POST /api/form/sendJoinRequest - asks a team's leader for admission. */
 export async function sendJoinRequest(input: {
   user: SafeUser;
   formId: string;
-  teamRegistrationId: string;
+  teamCode: string;
 }) {
-  const targetId = input.teamRegistrationId.trim();
-  if (!targetId) {
-    throw new ApiError(400, "Form ID and team registration ID are required");
-  }
+  const code = input.teamCode.trim();
+  if (!code) throw new ApiError(400, "Team code is required");
 
   const mine = await prisma.formRegistration.findFirst({
     where: { formId: input.formId, userId: input.user.id },
   });
   if (!mine) throw new ApiError(400, "You are not registered for this event");
   if (mine.teamName !== UNAFFILIATED) {
-    throw new ApiError(400, "You are already on a team.");
+    throw new ApiError(400, "You are already in a team");
   }
 
-  const team = await prisma.formRegistration.findUnique({
-    where: { id: targetId },
+  const team = await prisma.formRegistration.findFirst({
+    where: { formId: input.formId, teamCode: code },
     include: { form: { select: { info: true } } },
   });
-  if (!team) throw new ApiError(404, "Team not found");
-  // A row id is global, so the form has to be checked explicitly.
-  if (team.formId !== input.formId) {
-    throw new ApiError(400, "Team does not belong to this form");
-  }
-  if (team.teamName === UNAFFILIATED) {
-    throw new ApiError(400, "Cannot request to join a teamless registration");
-  }
+  if (!team) throw new ApiError(404, "Invalid team code");
 
   const info = (team.form.info ?? {}) as EventInfo;
   assertOpen(info);
@@ -275,8 +219,6 @@ export async function sendJoinRequest(input: {
       requesterName: input.user.name ?? input.user.email,
       teamRegistrationId: team.id,
       teamName: team.teamName,
-      // Pinned so acceptance can tell a rename from a disband-and-recreate.
-      teamCode: team.teamCode,
       leaderEmail: leader?.email ?? "",
       status: "PENDING",
       seenByRequester: false,
@@ -325,7 +267,7 @@ async function expireStale(where: Record<string, unknown>) {
   });
 }
 
-/** GET /api/form/joinRequestUpdates/:formId — unseen outcomes for one event. */
+/** GET /api/form/joinRequestUpdates/:formId - unseen outcomes for one event. */
 export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
   await expireStale({ formId, requesterEmail: user.email });
 
@@ -339,12 +281,6 @@ export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
     orderBy: { respondedAt: "desc" },
   });
 
-  // How many of this user's requests for the event are still outstanding —
-  // counted before the updates below are marked seen, as in the original.
-  const pendingCount = await prisma.teamJoinRequest.count({
-    where: { formId, requesterEmail: user.email, status: "PENDING" },
-  });
-
   if (updates.length > 0) {
     await prisma.teamJoinRequest.updateMany({
       where: { id: { in: updates.map((u) => u.id) } },
@@ -352,10 +288,10 @@ export async function checkJoinRequestUpdates(formId: string, user: SafeUser) {
     });
   }
 
-  return { updates, pendingCount };
+  return { updates };
 }
 
-/** GET /api/form/allJoinRequestUpdates — unseen outcomes across every event. */
+/** GET /api/form/allJoinRequestUpdates - unseen outcomes across every event. */
 export async function checkAllJoinRequestUpdates(user: SafeUser) {
   await expireStale({ requesterEmail: user.email });
 
@@ -383,7 +319,7 @@ export async function checkAllJoinRequestUpdates(user: SafeUser) {
  *
  * Public, because the leader clicks it straight from an email. The request id
  * is an unguessable ObjectId and each one can only be acted on once, which is
- * what stands in for authentication here — matching the original design.
+ * what stands in for authentication here - matching the original design.
  */
 export async function respondJoinRequest(input: {
   id: string;
@@ -426,107 +362,55 @@ export async function respondJoinRequest(input: {
     return { status: "REJECTED", message: "Request declined." };
   }
 
-  // Accept. Same merge-and-delete shape as `joinTeam`: `formRegistration` is one
-  // row per *team*, under `@@unique([formId, teamCode])`. An earlier version
-  // stamped the team's code onto the requester's own row, which collides with
-  // the team row on that constraint — accepting always failed with a P2002 and
-  // the leader saw only the generic error page.
-
-  // The requester may have joined elsewhere between asking and the leader
-  // clicking; that makes this request moot rather than an error.
-  const userRegistration = await prisma.formRegistration.findFirst({
-    where: {
-      formId: request.formId,
-      regTeamMemEmails: { has: request.requesterEmail },
-    },
-  });
-
-  if (!userRegistration || userRegistration.teamName !== UNAFFILIATED) {
-    await prisma.teamJoinRequest.update({
-      where: { id: request.id },
-      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
-    });
-    return {
-      status: "AUTO_EXPIRED",
-      message: "That person has already joined another team.",
-    };
-  }
-
+  // Accept: move the requester onto the team, re-checking capacity first.
   const team = await prisma.formRegistration.findUnique({
     where: { id: request.teamRegistrationId },
     include: { form: { select: { info: true } } },
   });
   if (!team) throw new ApiError(404, "That team no longer exists");
 
-  // Renaming a team and disbanding one to start another are different things,
-  // and `teamRegistrationId` cannot tell them apart — the registration row is
-  // reused, so its id survives both. Without this check, a leader who disbanded
-  // "ABC" and created "BCD" would find the old request still live, and the
-  // requester would land in a team they never asked to join.
-  //
-  // The code is the discriminator: a rename leaves it alone, while disbanding
-  // resets it to a SOLO- code and the next createTeam mints a fresh one. So a
-  // pending request survives a rename and dies with a disband, which is the
-  // intended behaviour in both directions.
-  //
-  // A request without a pinned code predates this field and cannot be verified;
-  // there were no pending ones when it shipped, so treating that as stale costs
-  // nothing and fails closed.
-  if (request.teamCode !== team.teamCode) {
-    await prisma.teamJoinRequest.update({
-      where: { id: request.id },
-      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
-    });
-    return {
-      status: "AUTO_EXPIRED",
-      message:
-        "That team was disbanded after this request was sent, so it can no longer be accepted. Ask them to request again.",
-    };
-  }
-
   const info = (team.form.info ?? {}) as EventInfo;
-  const max = Number.parseInt(String(info.maxTeamSize ?? ""), 10) || 1;
+  const max = Number.parseInt(String(info.maxTeamSize ?? ""), 10);
 
-  if (team.teamSize >= max) {
-    await prisma.teamJoinRequest.update({
-      where: { id: request.id },
-      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
-    });
-    return { status: "TEAM_FULL", message: "This team is now full." };
-  }
-
-  const userValue = userRegistration.value?.[0] ?? null;
+  const requester = await prisma.user.findUnique({
+    where: { email: request.requesterEmail },
+    select: { id: true },
+  });
+  if (!requester) throw new ApiError(404, "That user no longer exists");
 
   await prisma.$transaction(async (tx) => {
-    await tx.formRegistration.update({
-      where: { id: team.id },
+    const members = await tx.formRegistration.findMany({
+      where: { formId: request.formId, teamCode: team.teamCode },
+    });
+
+    if (Number.isFinite(max) && max > 0 && members.length >= max) {
+      throw new ApiError(400, "This team is now full");
+    }
+
+    const emails = [
+      ...new Set([
+        ...members.flatMap((m) => m.regTeamMemEmails),
+        request.requesterEmail,
+      ]),
+    ];
+
+    await tx.formRegistration.updateMany({
+      where: { formId: request.formId, userId: requester.id },
       data: {
-        regTeamMemEmails: { push: request.requesterEmail },
-        teamSize: { increment: 1 },
-        ...(userValue ? { value: { push: userValue } } : {}),
+        teamCode: team.teamCode,
+        teamName: team.teamName,
+        regTeamMemEmails: emails,
       },
     });
 
-    await tx.formRegistration.delete({ where: { id: userRegistration.id } });
+    await tx.formRegistration.updateMany({
+      where: { formId: request.formId, teamCode: team.teamCode },
+      data: { regTeamMemEmails: emails, teamSize: emails.length },
+    });
 
     await tx.teamJoinRequest.update({
       where: { id: request.id },
-      data: {
-        status: "ACCEPTED",
-        respondedAt: new Date(),
-        seenByRequester: false,
-      },
-    });
-
-    // Any other team they asked to join is moot now.
-    await tx.teamJoinRequest.updateMany({
-      where: {
-        formId: request.formId,
-        requesterEmail: request.requesterEmail,
-        status: "PENDING",
-        id: { not: request.id },
-      },
-      data: { status: "AUTO_EXPIRED", respondedAt: new Date() },
+      data: { status: "ACCEPTED", respondedAt: new Date(), seenByRequester: false },
     });
   });
 

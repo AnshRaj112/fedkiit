@@ -12,9 +12,9 @@ import { getTeam, humanizeAccess } from "@/lib/services/people";
 /**
  * The FED chatbot, ported from `controllers/chatbot/*`.
  *
- * Keeps the two useful ideas from the original — rotating through
+ * Keeps the two useful ideas from the original - rotating through
  * `GEMINI_API_KEY_1..10` when one hits its rate limit, and injecting live team
- * and event data into the system prompt — while dropping the module-level
+ * and event data into the system prompt - while dropping the module-level
  * mutable `currentKeyIndex`, which behaved unpredictably across serverless
  * instances.
  */
@@ -33,10 +33,10 @@ function buildSystemPrompt(context: string): string {
 FED stands for Federation of Entrepreneurship Development, the student entrepreneurship body of KIIT TBI at KIIT University, Bhubaneswar.
 
 YOUR SCOPE
-Answer questions about FED KIIT: the organisation, its team, its events, its blog posts and how to get involved. If a question is unrelated to FED or KIIT, say so briefly and offer to help with something FED-related instead. Never invent facts about people, dates or events — if the context below does not contain the answer, say you do not have that information and point the user at the relevant page.
+Answer questions about FED KIIT: the organisation, its team, its events, its blog posts and how to get involved. If a question is unrelated to FED or KIIT, say so briefly and offer to help with something FED-related instead. Never invent facts about people, dates or events - if the context below does not contain the answer, say you do not have that information and point the user at the relevant page.
 
 FORMATTING RULES
-Use Markdown only. Never emit HTML tags. Links must use [label](url) syntax — never a bare URL and never an <a> tag.
+Use Markdown only. Never emit HTML tags. Links must use [label](url) syntax - never a bare URL and never an <a> tag.
 Keep answers short: two or three sentences for simple questions. Use a bulleted list when enumerating events or people.
 Translate role codes into readable titles, for example DIRECTOR_TECHNICAL becomes "Director of Technical".
 
@@ -51,7 +51,7 @@ ${context}`;
  * Assembles the live data the model is allowed to draw on.
  *
  * Only public projections are used: `getTeam` omits email addresses, so the
- * chatbot cannot be talked into reciting members' contact details — something
+ * chatbot cannot be talked into reciting members' contact details - something
  * the old prompt risked, since it injected the raw team payload including email.
  */
 async function buildContext(): Promise<string> {
@@ -70,7 +70,7 @@ async function buildContext(): Promise<string> {
       ]
         .filter(Boolean)
         .join(", ");
-      return `- ${m.name} — ${m.title || humanizeAccess(m.access)}${
+      return `- ${m.name} - ${m.title || humanizeAccess(m.access)}${
         m.year ? ` (year ${m.year})` : ""
       }${links ? ` [${links}]` : ""}`;
     })
@@ -81,7 +81,7 @@ async function buildContext(): Promise<string> {
         .slice(0, 12)
         .map(
           (e) =>
-            `- ${e.title}${e.dateLabel ? ` on ${e.dateLabel}` : ""} — ${
+            `- ${e.title}${e.dateLabel ? ` on ${e.dateLabel}` : ""} - ${
               e.isPaid ? `paid, Rs ${e.amount}` : "free"
             }, ${e.participationType.toLowerCase()} entry, ${
               e.isRegistrationOpen ? "registration open" : "registration closed"
@@ -91,7 +91,7 @@ async function buildContext(): Promise<string> {
     : "- No upcoming events are published right now.";
 
   const postLines = posts.length
-    ? posts.map((p) => `- ${p.title} (${p.dateLabel}) — ${p.link}`).join("\n")
+    ? posts.map((p) => `- ${p.title} (${p.dateLabel}) - ${p.link}`).join("\n")
     : "- No published blog posts.";
 
   const faqLines = FAQS.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join("\n");

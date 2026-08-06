@@ -7,11 +7,10 @@ import { createSessionToken, setSessionCookie } from "@/lib/auth/session";
 import { consumeOtp, verifyOtp } from "@/lib/services/otp";
 import { sendMail } from "@/lib/email/mailer";
 import { welcomeEmail } from "@/lib/email/templates";
-import { normalizeYear } from "@/lib/academic";
 
 /**
  * POST /api/auth/register
- * Port of controllers/auth/registerController.js — step 2 of signup.
+ * Port of controllers/auth/registerController.js - step 2 of signup.
  *
  * Returns `{ message, user, token }` to match what SignUP.jsx reads.
  *
@@ -60,16 +59,7 @@ export async function POST(request: Request) {
         rollNumber: data.rollNumber || null,
         school: data.school || null,
         college: data.college || null,
-        // Exactly what the user selected — never inferred. Anyone can sign up
-        // with a personal address, so the roll number beside this field is not
-        // guaranteed to be a KIIT one, and guessing from it would quietly stamp
-        // a wrong year on the account. Lateral entry breaks the inference even
-        // when the roll number *is* real: a 2025 LE student sits in 2nd year
-        // with the 2024 batch.
-        //
-        // `normalizeYear` only folds spelling ("3rd Year" -> "3rd"); it never
-        // invents a value.
-        year: normalizeYear(data.year),
+        year: data.year || null,
         contactNo: data.contactNo || null,
         whatsappNo: data.whatsappNo || null,
         img: data.img || null,
@@ -88,7 +78,7 @@ export async function POST(request: Request) {
     });
     await setSessionCookie(token);
 
-    // Best effort — a mail failure must not fail an account that now exists.
+    // Best effort - a mail failure must not fail an account that now exists.
     const welcome = welcomeEmail({ name: newUser.name ?? "there" });
     void sendMail({ to: newUser.email, ...welcome });
 

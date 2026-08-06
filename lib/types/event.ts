@@ -3,7 +3,7 @@
  *
  * In this data model an "event" is a `form` row whose `info` column holds the
  * event's presentation fields. The blob is untyped JSON in Mongo, so every field
- * is optional here and normalised through `lib/services/events.ts` — the old
+ * is optional here and normalised through `lib/services/events.ts` - the old
  * frontend read `info.eventTitle` directly and blew up on older rows that
  * predated a field.
  *

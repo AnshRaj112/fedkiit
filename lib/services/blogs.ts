@@ -8,7 +8,7 @@ import { prisma } from "@/lib/db";
  * Blog reads.
  *
  * Replaces `controllers/blog/getBlogs.js`, which returned *all* blog rows
- * regardless of the `visibility` column — so unpublished drafts were served to
+ * regardless of the `visibility` column - so unpublished drafts were served to
  * the public. Visibility is enforced here.
  *
  * Posts link out to Medium (`blogLink`); the old in-app FullBlog route was

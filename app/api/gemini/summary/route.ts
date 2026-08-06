@@ -5,7 +5,7 @@ import { canManageBlogs, getCurrentUser } from "@/lib/auth/access";
 
 /**
  * POST /api/gemini/summary
- * Port of controllers/blog/gemini.js — generates the blog card summary.
+ * Port of controllers/blog/gemini.js - generates the blog card summary.
  */
 export async function POST(request: Request) {
   return handle(async () => {

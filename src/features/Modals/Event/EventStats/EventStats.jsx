@@ -7,7 +7,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { FaDownload } from "react-icons/fa";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Alert, ComponentLoading } from "../../../../microInteraction";
-import { X } from "lucide-react";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import Text from "../../../../components/Core/Text";
 import defaultImg from "../../../../assets/images/defaultImg.jpg";
 import { api } from "../../../../services";
@@ -171,8 +171,7 @@ const EventStats = ({ onClosePath }) => {
           left: 0,
           width: "100%",
           height: "100%",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(4px)",
+          backgroundColor: "rgba(0, 0, 0, 0.72)",
           zIndex: "5",
           display: "flex",
           justifyContent: "center",
@@ -192,7 +191,7 @@ const EventStats = ({ onClosePath }) => {
         >
           {data && (
             <>
-              <SkeletonTheme baseColor="#313131" highlightColor="#525252">
+              <SkeletonTheme baseColor="var(--surface-2)" highlightColor="var(--surface-3)">
                 <Skeleton height={180} style={{ marginBottom: "1rem" }} />
                 <Skeleton
                   count={3}
@@ -223,13 +222,11 @@ const EventStats = ({ onClosePath }) => {
                       position: "relative",
                     }}
                   >
-                    <button
-                      className={styles.closeModal}
+                    <CloseButton
                       onClick={handleModalClose}
-                      style={{ paddingTop: "42px", paddingRight: "20px" }}
-                    >
-                      <X />
-                    </button>
+                      label="Close event stats"
+                      className={styles.close}
+                    />
 
                     <div className={styles.backbtn}>
                       <div
@@ -254,7 +251,7 @@ const EventStats = ({ onClosePath }) => {
                             size={18}
                             style={{
                               marginRight: "2rem",
-                              color: "#FF8A00",
+                              color: "var(--accent)",
                             }}
                           />
                         </div>
@@ -286,7 +283,7 @@ const EventStats = ({ onClosePath }) => {
                           >
                             <Text
                               style={{
-                                color: "#fff",
+                                color: "var(--text-primary)",
                                 fontSize: "1rem",
                                 fontWeight: "500",
                                 marginLeft: "2rem",
@@ -307,7 +304,7 @@ const EventStats = ({ onClosePath }) => {
 
                           <Text
                             style={{
-                              color: "#fff",
+                              color: "var(--text-primary)",
                               fontSize: "1rem",
                               fontWeight: "500",
                               textAlign: "left",
@@ -322,7 +319,7 @@ const EventStats = ({ onClosePath }) => {
                             :{" "}
                             <span
                               style={{
-                                color: "#FF8A00",
+                                color: "var(--accent)",
                               }}
                             >
                               {viewTeams
@@ -335,7 +332,7 @@ const EventStats = ({ onClosePath }) => {
                         {/* Second column for year counts and download */}
                         <Text
                           style={{
-                            color: "#fff",
+                            color: "var(--text-primary)",
                             fontSize: "1rem",
                             fontWeight: "500",
                             textAlign: "left",
@@ -361,12 +358,12 @@ const EventStats = ({ onClosePath }) => {
                                     style={{
                                       display: "flex",
                                       alignItems: "center",
-                                      color: "#FF8A00",
+                                      color: "var(--accent)",
                                     }}
                                   >
                                     <span
                                       style={{
-                                        color: "#fff",
+                                        color: "var(--text-primary)",
                                         fontWeight: "bold",
                                         marginRight: "0.3rem",
                                       }}
@@ -426,9 +423,9 @@ const EventStats = ({ onClosePath }) => {
                               marginLeft: "25%",
                             }}
                           >
-                            <text style={{ fontSize: "20px" }}>
-                              No Teams found
-                            </text>
+                            <p style={{ fontSize: "1.0625rem", margin: 0, color: "var(--text-secondary)" }}>
+                              No teams found
+                            </p>
                           </div>
                         )
                       ) : filteredUsers && filteredUsers.length > 0 ? (
@@ -451,9 +448,9 @@ const EventStats = ({ onClosePath }) => {
                             marginLeft: "25%",
                           }}
                         >
-                          <text style={{ fontSize: "20px" }}>
-                            No Users found
-                          </text>
+                          <p style={{ fontSize: "1.0625rem", margin: 0, color: "var(--text-secondary)" }}>
+                            No users found
+                          </p>
                         </div>
                       )}
                     </div>

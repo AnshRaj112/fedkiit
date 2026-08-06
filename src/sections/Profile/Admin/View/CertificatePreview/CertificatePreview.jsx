@@ -89,108 +89,46 @@ const CertificatesPreview = () => {
   };
 
   return (
-    <div
-      style={{
-        padding: "20px",
-        maxWidth: "800px",
-        margin: "0 auto",
-        border: "1px solid #ccc",
-        borderRadius: "10px",
-        overflowY: "auto",
-        height: "90vh",
-      }}
-    >
-      <h1 style={{ textAlign: "center" }}>
-        {eventTitle || "Event Name"} Certificate{" "}
-        <span style={{ color: "#FF8A00" }}>Preview</span>
+    <div className={styles.page}>
+      <h1 className={styles.title}>
+        {eventTitle || "Event Name"} Certificate <span>Preview</span>
       </h1>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      >
+      <div className={styles.body}>
         {previewLoading ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop: "20px",
-              width: "100%",
-              height: "450px",
-              border: "1px solid #ccc",
-              borderRadius: "10px",
-              position: "relative",
-              justifyContent: "center",
-            }}
-          >
+          <div className={styles.previewLoading}>
             <MicroLoading />
           </div>
         ) : (
           <img
             src={certificatePreview}
             alt="Certificate Preview"
-            style={{ width: "100%", height: "auto", borderRadius: 10 }}
+            className={styles.previewImage}
           />
         )}
 
-        <div style={{ width: "100%", marginBottom: "20px" }}>
-          <label
-            style={{
-              display: "block",
-              fontWeight: "bold",
-              marginTop: "20px",
-              marginLeft: "6px",
-            }}
-          >
-            Recipient Name:
-          </label>
+        <div className={styles.form}>
+          <label className={styles.label}>Recipient Name:</label>
           <Input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className={styles.control}
             style={{ width: "100%", marginBottom: "20px", marginTop: "-10px" }}
           />
 
-          <label
-            style={{
-              display: "block",
-              fontWeight: "bold",
-              marginTop: "20px",
-              marginLeft: "6px",
-            }}
-          >
-            Subject:
-          </label>
+          <label className={styles.label}>Subject:</label>
           <Input
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
+            className={styles.control}
             style={{ width: "100%", marginBottom: "20px", marginTop: "-10px" }}
           />
 
-          <div
-            className={styles.info}
-            style={{
-              justifyContent: "center",
-              width: "100%",
-              marginTop: "20px",
-            }}
-          >
+          <div className={styles.info}>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontWeight: "bold",
-                  marginLeft: "6px",
-                }}
-              >
-                Description:
-              </label>
+              <label className={styles.label}>Description:</label>
               <Input
                 type="text"
                 value={description}
@@ -203,24 +141,13 @@ const CertificatesPreview = () => {
               />
             </div>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontWeight: "bold",
-                  marginLeft: "6px",
-                }}
-              >
-                Recipient’s Email ID:
-              </label>
+              <label className={styles.label}>Recipient’s Email ID:</label>
               <Input
                 type="email"
                 value={recipientEmail}
                 onChange={(e) => setRecipientEmail(e.target.value)}
                 style={{
                   width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "5px",
                   marginTop: "-10px",
                 }}
               />
@@ -230,11 +157,8 @@ const CertificatesPreview = () => {
 
         <Button
           onClick={handleSendTestMail}
-          style={{
-            padding: "10px 20px",
-            borderRadius: "5px",
-            marginTop: "-10px",
-          }}
+          className={styles.submit}
+          style={{ marginTop: "-10px" }}
           disabled={loading}
         >
           {loading ? "Sending..." : "Send Test Mail"}

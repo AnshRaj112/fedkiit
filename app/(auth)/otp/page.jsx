@@ -1,4 +1,4 @@
-// Route entry — renders the component ported from
+// Route entry - renders the component ported from
 // FED-Frontend/src/authentication/Login/ForgotPassword/OTPInput.jsx
 "use client";
 

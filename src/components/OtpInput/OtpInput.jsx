@@ -7,25 +7,15 @@ import Button from "../Core/Button";
 import Input from "../Core/Input";
 import style from "./style/otpinput.module.scss";
 
-import { X } from "lucide-react";
+import CloseButton from "../CloseButton/CloseButton";
 import { api } from "../../services";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { useRouter } from "next/navigation";
 
-// `NEXT_PUBLIC_OTP_LENGTH` is the same variable `lib/services/otp.ts` generates
-// codes from. Next inlines it at build time, so it must be referenced by its
-// full literal name rather than looked up dynamically.
-const OTP_LENGTH = Number(process.env.NEXT_PUBLIC_OTP_LENGTH) || 4;
-
 const OtpInput = (props) => {
   const { email } = useContext(RecoveryContext);
   const [timerCount, setTimer] = useState(60);
-  // Driven by the same variable the server generates codes from, so the number
-  // of boxes always matches the number of digits emailed. Hardcoding four here
-  // is what let a six-digit code arrive at a four-box screen.
-  const [OTPinput, setOTPinput] = useState(() =>
-    Array(OTP_LENGTH).fill(""),
-  );
+  const [OTPinput, setOTPinput] = useState(["", "", "", ""]);
   const [disable, setDisable] = useState(true);
   const inputRefs = useRef([]);
   const router = useRouter();
@@ -212,18 +202,11 @@ const OtpInput = (props) => {
       style={{ background: isSignUp ? "#1c1c1c" : "" }}
     >
       {isSignUp && (
-        <div
+        <CloseButton
           onClick={handleClose}
-          style={{
-            position: "absolute",
-            top: "1rem",
-            right: "1rem",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-        >
-          <X />
-        </div>
+          label="Close email verification"
+          className={style.closeOtp}
+        />
       )}
       <div className={style.innerBox2}>
         <div className={style.innerTitle}>

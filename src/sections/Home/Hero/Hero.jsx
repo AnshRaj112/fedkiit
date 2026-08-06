@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Hero.module.scss";
 import CarouselImg from "../../../data/Carousel.json";
-import Carousel from "../../../components/Carousel/Carousel";
+import { Carousel } from "../../../components";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 
 const titles = [
@@ -56,15 +56,7 @@ function Hero() {
         <div className={styles.heroTextContainer}>
           <AnimatedBox direction="left">
             <div className={styles.largeContent}>
-              {/*
-                A <div>, not the <p> the original used: it contains the animated
-                <h3>, which the HTML parser will not keep inside a <p>. That was
-                harmless client-rendered and a hydration mismatch once
-                server-rendered. `.tagline` is listed alongside `.largeContent p`
-                in the stylesheet, so the text is styled exactly as before, and
-                the <h3> stays an <h3> rather than being downgraded to a span.
-              */}
-              <div className={styles.tagline}>
+              <div className={styles.largeText}>
                 Nurturing Using Innovative & Creative strategies{" "}
                 <span
                   className={styles.dynamicText}
@@ -101,7 +93,6 @@ function Hero() {
         <div className={styles.heroCarousel}>
           <Carousel images={CarouselImg} />
         </div>
-        <div className={styles.circle}></div>
       </div>
     </div>
   );

@@ -1,0 +1,52 @@
+{
+  "sponsors": [
+    {
+      "tier": "TITLE SPONSOR",
+      "tierColor": "#f97316",
+      "name": "Blume Ventures",
+      "website": "https://blume.vc"
+    },
+    {
+      "tier": "PLATINUM",
+      "tierColor": "#e2e8f0",
+      "name": "Razorpay",
+      "website": "https://razorpay.com"
+    },
+    {
+      "tier": "PLATINUM",
+      "tierColor": "#e2e8f0",
+      "name": "Zerodha",
+      "website": "https://zerodha.com"
+    },
+    {
+      "tier": "GOLD",
+      "tierColor": "#f59e0b",
+      "name": "Y Combinator",
+      "website": "https://ycombinator.com"
+    },
+    {
+      "tier": "GOLD",
+      "tierColor": "#f59e0b",
+      "name": "Sequoia",
+      "website": "https://sequoiacap.com"
+    },
+    {
+      "tier": "SILVER",
+      "tierColor": "#94a3b8",
+      "name": "Antler",
+      "website": "https://antler.co"
+    },
+    {
+      "tier": "SILVER",
+      "tierColor": "#94a3b8",
+      "name": "Notion",
+      "website": "https://notion.so"
+    },
+    {
+      "tier": "SILVER",
+      "tierColor": "#94a3b8",
+      "name": "Figma",
+      "website": "https://figma.com"
+    }
+  ]
+}

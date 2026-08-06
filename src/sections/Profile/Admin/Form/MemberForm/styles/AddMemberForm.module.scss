@@ -1,7 +1,13 @@
+// Add / update member - admin.
+//
+// Pure layout: the controls are the shared <Input>, so the only visual decision
+// left here is the avatar thumbnail, which now takes the radius token and a
+// hairline border instead of a bare 10px corner.
+
 .main {
   margin-top: 0em;
-  // margin-left: 2rem;
 }
+
 .formHead {
   display: flex;
   flex-direction: row;
@@ -10,37 +16,30 @@
   margin-right: 2vw;
   margin-bottom: 1vw;
 }
-.memberInput {
-  width: 90% !important;
-}
+
 .imageInputContainer {
   display: flex;
   align-items: center;
-  // justify-content: center;
   width: 100%;
 }
 
 .imagePreview {
-  // flex-shrink: 0;
-  width:40px ; /* Set to match the input field width */
-  height: 40px; /* Adjust height as needed */
-  margin-right: 10px; /* Space between image and input field */
-  overflow: hidden;
+  width: 40px;
+  height: 40px;
   margin-top: 15px;
-  // margin-bottom: auto;
+  margin-right: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-2);
+  overflow: hidden;
 }
 
 .imagePreview img {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  object-fit: cover; /* Ensures image covers the container */
+  object-fit: cover;
 }
 
 .memberInput {
-  width: 80%; /* Adjust width as needed */
+  width: 90% !important;
 }
-
-
-
-

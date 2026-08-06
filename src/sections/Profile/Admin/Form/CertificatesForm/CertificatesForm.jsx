@@ -15,6 +15,7 @@ import { Alert, MicroLoading } from "../../../../../microInteraction";
 import AuthContext from "../../../../../context/AuthContext";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import styles from "./styles/CertificatesForm.module.scss";
 
 const CertificatesForm = () => {
   const authCtx = useContext(AuthContext);
@@ -238,94 +239,50 @@ const CertificatesForm = () => {
   };
 
   return (
-    <div style={{ padding: "10px", marginRight: "30px" }}>
-      <h1>
-        Create <span style={{ color: "#FF8A00" }}>Certificate</span>
+    <div className={styles.page}>
+      <h1 className={styles.title}>
+        Create <span>Certificate</span>
       </h1>
-      <p>for Event: {eventId}</p>
-      <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
+      <p className={styles.subtitle}>for Event: {eventId}</p>
+      <div className={styles.layout}>
         <div
+          className={styles.canvas}
           style={{
-            width: "70%",
-            height: "400px",
-            border: "1px solid #ccc",
             backgroundImage: responseImg
               ? `url(${responseImg})`
               : certificate
               ? `url(${certificate})`
               : "none",
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            position: "relative",
           }}
         >
           {loading && (
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                padding: "20px",
-                borderRadius: "5px",
-              }}
-            >
+            <div className={styles.canvasLoading}>
               <MicroLoading />
             </div>
           )}
         </div>
 
-        <div style={{ width: "30%" }}>
+        <div className={styles.panel}>
           <input
             type="file"
             onChange={handleCertificateChange}
             accept="image/*"
-            style={{ color: "#FF8A00" }}
+            className={styles.fileInput}
           />
           <Button onClick={addField}>+ Add Field</Button>
 
-          <div
-            style={{
-              maxHeight: "300px",
-              overflowY: "auto",
-              border: "1px solid #ccc",
-              padding: "10px",
-              borderRadius: "5px",
-            }}
-          >
+          <div className={styles.fieldList}>
             {fields.map((field, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "10px",
-                  marginTop: "10px",
-                  borderRadius: "5px",
-                  marginLeft: "20px",
-                  marginRight: "20px",
-                  backgroundColor: "rgba(128, 127, 126, 0.066)",
-                  marginBottom: "20px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <strong>{field.fieldName || `Field ${index + 1}`}</strong>
+              <div key={index} className={styles.field}>
+                <div className={styles.fieldHead}>
+                  <strong className={styles.fieldName}>
+                    {field.fieldName || `Field ${index + 1}`}
+                  </strong>
                   <button
                     onClick={() =>
                       handleFieldChange(index, "minimized", !field.minimized)
                     }
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
+                    className={styles.fieldToggle}
                   >
                     {field.minimized ? "Open" : "✖"}
                   </button>
@@ -380,9 +337,11 @@ const CertificatesForm = () => {
                 )}
                 <Button
                   onClick={() => removeField(index)}
+                  className={styles.removeField}
                   style={{
-                    backgroundColor: "red",
-                    color: "white",
+                    backgroundColor: "var(--surface-2)",
+                    borderColor: "rgba(244, 82, 59, 0.4)",
+                    color: "var(--negative)",
                     marginTop: "10px",
                   }}
                 >
@@ -392,7 +351,7 @@ const CertificatesForm = () => {
             ))}
           </div>
 
-          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+          <div className={styles.actions}>
             <Button
               onClick={handleRefresh}
               disabled={previewLoading || saveLoading}
@@ -402,15 +361,22 @@ const CertificatesForm = () => {
             <Button
               onClick={handleSave}
               disabled={previewLoading || saveLoading}
-              style={{ backgroundColor: "#FF8A00", color: "white" }}
+              className={styles.primaryAction}
+              style={{
+                backgroundColor: "var(--accent)",
+                borderColor: "transparent",
+                color: "var(--text-inverse)",
+              }}
             >
               {saveLoading ? <MicroLoading /> : "Save Certificate"}
             </Button>
             <Link href={`${SendCertificatePath}/${eventId}`}>
               <Button
+                className={styles.primaryAction}
                 style={{
-                  backgroundColor: "#FF8A00",
-                  color: "white",
+                  backgroundColor: "var(--accent)",
+                  borderColor: "transparent",
+                  color: "var(--text-inverse)",
                   whiteSpace: "nowrap",
                   height: "fit-content",
                 }}

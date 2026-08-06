@@ -33,7 +33,7 @@ const CustomInput = forwardRef(
         {value || placeholder}
       </p>
       <FaRegCalendarAlt
-        color="#fff"
+        color="var(--text-primary)"
         size={18}
         style={{
           position: "absolute",
@@ -59,52 +59,58 @@ const customStyles = {
     display: "flex",
     outline: "none",
     width: "99.5%",
-    fontSize: "12px",
-    backgroundColor: "transparent",
-    borderRadius: "4px",
-    color: "#fff",
+    minHeight: "44px",
+    fontSize: "0.9375rem",
+    backgroundColor: "var(--surface-0)",
+    borderRadius: "var(--radius-md)",
+    color: "var(--text-primary)",
     marginBottom: "0",
-    maxHeight: "40px",
     marginLeft: "8px",
     marginRight: "8px",
     marginTop: "4px",
     position: "relative",
-    border: "1px solid rgba(211, 211, 211, 0.5)",
+    border: "1px solid var(--border)",
     boxShadow: "none",
     "&:hover": {
-      borderColor: "#fff !important",
+      borderColor: "var(--border)",
     },
   }),
   menu: (provided) => ({
     ...provided,
     width: "99.5%",
     marginLeft: "8px",
+    backgroundColor: "var(--surface-2)",
+    border: "1px solid var(--border-strong)",
+    borderRadius: "var(--radius-md)",
+    boxShadow: "var(--depth)",
+    overflow: "hidden",
+    zIndex: 1200,
   }),
-  menuPortal: (provided) => ({ ...provided, zIndex: 111 }),
+  menuPortal: (provided) => ({ ...provided, zIndex: 1200 }),
   placeholder: (provided) => ({
     ...provided,
     display: "flex",
     alignItems: "center",
-    marginTop: "-7px",
+    color: "var(--text-tertiary)",
   }),
   option: (provided, state) => ({
     ...provided,
-    color: state.isSelected ? "#FF8A00" : "#2D2D2D",
-    backgroundColor: state.isSelected ? "#2D2D2D" : "#fff",
+    color: state.isSelected ? "var(--accent)" : "var(--text-primary)",
+    backgroundColor: state.isSelected
+      ? "var(--accent-quiet)"
+      : "var(--surface-2)",
     cursor: "pointer",
-    width: "99%",
+    width: "100%",
     border: "none",
-    margin: "0 auto",
-    borderRadius: "4px",
+    margin: "0",
+    borderRadius: "0",
     "&:hover": {
-      transition: "ease-in-out 0.3s",
-      backgroundColor: "#2D2D2D",
-      color: "#FF8A00",
-      margin: "2px auto",
+      backgroundColor: "var(--surface-3)",
+      color: "var(--text-primary)",
     },
     "&:active": {
-      backgroundColor: "#2D2D2D",
-      color: "#FF8A00",
+      backgroundColor: "var(--surface-3)",
+      color: "var(--accent)",
     },
   }),
   indicatorSeparator: (provided) => ({
@@ -113,11 +119,10 @@ const customStyles = {
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: "#fff",
+    color: "var(--text-primary)",
     display: "flex",
     alignItems: "center",
-    marginTop: "-7px",
-    fontSize:"larger"
+    fontSize: "0.9375rem"
   }),
 };
 
@@ -125,7 +130,7 @@ const DropdownIndicator = (props) => {
   return (
     <components.DropdownIndicator {...props}>
       <AiOutlineDown
-        color="#fff"
+        color="var(--text-secondary)"
         size={20}
         style={{
           position: "absolute",

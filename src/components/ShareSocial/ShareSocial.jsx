@@ -25,8 +25,8 @@ import {
  * installed with --legacy-peer-deps) and bundles an ancient jest toolchain that
  * accounted for roughly half of this project's high-severity npm advisories.
  *
- * The props and the `style` object are kept identical — `{ root, copyContainer,
- * copyUrl, title }` — so ShareModal only had to change its import, and the
+ * The props and the `style` object are kept identical - `{ root, copyContainer,
+ * copyUrl, title }` - so ShareModal only had to change its import, and the
  * rendered panel keeps the same dark card, orange accent and round social
  * icons the original produced.
  */

@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/db";
 import { body, expressError, handle, json } from "@/lib/api/express";
 import { getCurrentUser, isAdmin, toSafeUser } from "@/lib/auth/access";
-import { normalizeYear } from "@/lib/academic";
 
 /**
  * PUT /api/user/editDetails
@@ -10,7 +9,7 @@ import { normalizeYear } from "@/lib/academic";
  * A user may only edit their own profile; admins may edit anyone by passing an
  * `email`. The original took the target email straight from the request body
  * with no ownership check, so any authenticated user could rewrite another
- * member's profile — including their access level.
+ * member's profile - including their access level.
  */
 export async function PUT(request: Request) {
   return handle(async () => {
@@ -55,11 +54,7 @@ export async function PUT(request: Request) {
         college: data.college ?? target.college,
         contactNo: data.contactNo ?? target.contactNo,
         whatsappNo: data.whatsappNo ?? target.whatsappNo,
-        // Editable, and never recomputed behind the user's back: a
-        // lateral-entry student sets a year their roll number does not imply,
-        // and re-deriving on save would silently undo it every time. Only
-        // normalised, so the stored spelling stays consistent.
-        year: normalizeYear(data.year) ?? target.year,
+        year: data.year ?? target.year,
         img: data.img ?? target.img,
         extra,
         // Access is never taken from the request body unless an admin sets it.

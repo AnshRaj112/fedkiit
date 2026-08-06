@@ -11,8 +11,6 @@ import shareOutline from "../../../../../assets/images/shareOutline.svg";
 import { useParams, useSearchParams } from "next/navigation";
 
 const VerifyCertificate = () => {
-  // Next returns the params object itself, not React Router's [params, setter]
-  // pair. Destructuring it as an array yields undefined and crashes on `.get`.
   const searchParams = useSearchParams();
   const certificateId = searchParams.get("id");
   const { issuedCertificateId } = useParams();
@@ -23,7 +21,7 @@ const VerifyCertificate = () => {
   const [copied, setCopied] = useState(false);
 
   // Get current URL for sharing
-  const currentUrl = window.location.href;
+  const currentUrl = typeof window === "undefined" ? "" : window.location.href;
 
   useEffect(() => {
     if (!certificateId) {
@@ -151,7 +149,7 @@ const VerifyCertificate = () => {
             <div className={styles.actionButtons}>
               <div className={styles.verifiedTag}>
                 <CheckCircle />
-                <span style={{ color: "white" }}>Verified by FEDKIIT</span>
+                <span className={styles.verifiedText}>Verified by FEDKIIT</span>
               </div>
               <div className={styles.buttonGroup}>
                 <button className={styles.downloadBtn} onClick={handleDownload}>

@@ -5,7 +5,7 @@ import { canManageBlogs, getCurrentUser } from "@/lib/auth/access";
 
 /**
  * POST /api/gemini/autofill
- * Port of controllers/blog/gemini.js — reads a post's metadata for the form.
+ * Port of controllers/blog/gemini.js - reads a post's metadata for the form.
  *
  * Restricted to blog authors. The endpoint fetches an arbitrary user-supplied
  * URL server-side, so leaving it open would make it a general-purpose request

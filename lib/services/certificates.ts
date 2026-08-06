@@ -11,16 +11,16 @@ import { siteUrl } from "@/lib/env";
  * Certificates.
  *
  * Ports controllers/certificate/*. The data model is unchanged:
- *   Certificate         — one template per event: an image plus field positions
- *   issuedCertificates  — one row per recipient, with their field values
+ *   Certificate         - one template per event: an image plus field positions
+ *   issuedCertificates  - one row per recipient, with their field values
  *
  * Rendering note: the Express version composited the finished image server-side
- * with `canvas` and `puppeteer`. Neither is used here — both are heavyweight
+ * with `canvas` and `puppeteer`. Neither is used here - both are heavyweight
  * native dependencies that do not deploy cleanly to a serverless runtime, and
  * `puppeteer` alone pulls a full Chromium download.
  *
  * Instead the template URL and the field coordinates are returned, and the
- * client composites onto a canvas — which is exactly what CertificatesForm.jsx
+ * client composites onto a canvas - which is exactly what CertificatesForm.jsx
  * and CertificatePreview.jsx already do for the live preview, using html2canvas.
  * The stored `imageSrc` is still honoured when a row already has one.
  */
@@ -73,6 +73,96 @@ export async function verifyCertificate(certificateId: string) {
       : null,
     event,
   };
+}
+
+/**
+ * Every certificate issued to one address, paired with its event.
+ *
+ * Backs the "Certificate" column of the profile's events table, which matches
+ * rows on `cert.eventId` and links to `/verify/certificate?id=<cert.id>`.
+ * Addresses are compared case-insensitively: rows issued by the Express
+ * backend were stored as the admin typed them, not folded to lower case.
+ */
+export async function listCertificatesForEmail(email: string) {
+  const address = email?.trim();
+  if (!address) throw new ApiError(400, "Email is required");
+
+  const issued = await prisma.issuedCertificates.findMany({
+    where: { email: { equals: address, mode: "insensitive" } },
+    include: { event: true },
+  });
+
+  return issued.map(({ event, ...cert }) => ({ cert, event }));
+}
+
+/** Mongo rejects a malformed ObjectId outright, so ids are screened first. */
+const isObjectId = (value: string) => /^[a-f\d]{24}$/i.test(value);
+
+/**
+ * The certificate Event bound to a form, with its templates.
+ *
+ * Certificates hang off `Event`, not off `form`, so the admin tooling resolves
+ * a form id to its event before it can read or issue anything.
+ */
+export async function getEventByFormId(formId: string) {
+  const id = formId?.trim();
+  if (!id) throw new ApiError(400, "Form ID is required");
+  if (!isObjectId(id)) throw new ApiError(404, "No event exists for this form");
+
+  const event = await prisma.event.findFirst({
+    where: { formId: id },
+    include: { certificates: true },
+  });
+  if (!event) throw new ApiError(404, "No event exists for this form");
+
+  return event;
+}
+
+/** Creates the Event that an organisation's certificates are issued against. */
+export async function createOrganisationEvent(input: {
+  name: string;
+  description: string;
+  organisationId: string;
+  formId?: string;
+}) {
+  if (!input.name?.trim()) throw new ApiError(400, "Event name is required");
+  if (!input.organisationId?.trim()) {
+    throw new ApiError(400, "Organisation ID is required");
+  }
+  if (!isObjectId(input.organisationId)) {
+    throw new ApiError(404, "Organisation not found");
+  }
+
+  const organisation = await prisma.organisation.findUnique({
+    where: { id: input.organisationId },
+    select: { id: true },
+  });
+  if (!organisation) throw new ApiError(404, "Organisation not found");
+
+  const formId = input.formId?.trim();
+  if (formId && !isObjectId(formId)) throw new ApiError(400, "Invalid form ID");
+
+  // Two admins opening the certificate form at once must not each create an
+  // event for the same form; the first one made is reused.
+  if (formId) {
+    const existing = await prisma.event.findFirst({
+      where: { formId },
+      include: { certificates: true },
+    });
+    if (existing) return existing;
+  }
+
+  const created = await prisma.event.create({
+    data: {
+      name: input.name.trim(),
+      description: input.description?.trim() ?? "",
+      organisationId: input.organisationId,
+      formId: formId ?? null,
+      attendees: [],
+    },
+  });
+
+  return { ...created, certificates: [] };
 }
 
 /** Creates or replaces an event's certificate template. */

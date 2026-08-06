@@ -11,7 +11,7 @@ import { contactNotificationEmail } from "@/lib/email/templates";
  *
  * Reached when the assistant decides a question needs a human, so the message
  * goes to the club inbox. It is stored in `contactus` alongside normal contact
- * submissions, because the original only emailed — meaning any enquiry raised
+ * submissions, because the original only emailed - meaning any enquiry raised
  * through the chatbot was lost if mail delivery failed.
  *
  * The recipient is fixed to the club address; only the body comes from the

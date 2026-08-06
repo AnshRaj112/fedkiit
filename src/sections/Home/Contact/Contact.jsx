@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { api } from "../../../services";
 import styles from "./styles/Contact.module.scss";
 import contactImg from "../../../assets/images/contact.png";
-import Button from "../../../components/Core/Button";
+import { Button } from "../../../components";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 import { Alert, MicroLoading } from "../../../microInteraction";
 
@@ -124,14 +124,11 @@ const ContactForm = () => {
 
           {!isMobile && (
             <div className={styles.imageSection}>
-              <div className={styles.backCircle}></div>
               <AnimatedBox direction="right">
                 <img src={contactImg.src} alt="Contact" />
               </AnimatedBox>
-              <div className={styles.circle}></div>
             </div>
           )}
-          <div className={styles.circle}></div>
         </div>
       </div>
       <Alert />

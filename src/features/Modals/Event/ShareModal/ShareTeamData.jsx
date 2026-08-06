@@ -1,8 +1,8 @@
 "use client";
 
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { Check, Copy } from "lucide-react";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -14,7 +14,7 @@ import {
   WhatsappIcon,
 } from "react-share";
 import styles from "./styles/ShareTeamData.module.scss";
-import { X } from "lucide-react";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import JSConfetti from "js-confetti";
 
 // Constructed lazily rather than at module scope: JSConfetti touches `document`
@@ -28,10 +28,10 @@ const getJsConfetti = () => {
 
 const ShareTeamData = ({ onClose, teamData, successMessage }) => {
   const { teamName, teamCode } = teamData;
-  const [copyText, setCopyText] = useState("Copy");
+  const [copied, setCopied] = useState(false);
 
   const message = `Congratulations! Your team \"${teamName}\" with code \"${teamCode}\" has been successfully registered!🎉🎉`;
-  // Read after mount — `window` does not exist during server rendering.
+  // Read after mount - `window` does not exist during server rendering.
   const [websiteUrl, setWebsiteUrl] = useState("");
   useEffect(() => setWebsiteUrl(window.location.href), []);
 
@@ -43,7 +43,6 @@ const ShareTeamData = ({ onClose, teamData, successMessage }) => {
     document.body.style.overflow = "hidden";
 
     return () => {
-      
       document.body.style.overflow = "";
     };
   }, []);
@@ -51,8 +50,8 @@ const ShareTeamData = ({ onClose, teamData, successMessage }) => {
   const handleCopy = () => {
     const textToCopy = `Team Name: ${teamName}\nTeam Code: ${teamCode}`;
     navigator.clipboard.writeText(textToCopy);
-    setCopyText("Copied");
-    setTimeout(() => setCopyText("Copy"), 4000); // Reset button text after 4 seconds
+    setCopied(true);
+    setTimeout(() => setCopied(false), 4000); // Reset button text after 4 seconds
   };
 
   const handleClose = () => {
@@ -60,118 +59,130 @@ const ShareTeamData = ({ onClose, teamData, successMessage }) => {
     onClose();
   };
 
+  const heading = successMessage ? "Registration successful" : "Your team info";
+
   return (
-    <div className={styles.shareContainer}>
-      <div className={styles.overlay}></div>
-      <div className={styles.maindiv}>
-        <div className={styles.closebtn} onClick={handleClose}>
-          <X />
-        </div>
-        {/* Conditional rendering for successMessage */}
-        {successMessage && (
-          <span className={styles.registrationTitle}>
-            Registration Successful
-          </span>
-        )}
-        {/* Conditional rendering for teamData */}
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={heading}>
+      <div className={styles.panel}>
+        <header className={styles.header}>
+          <h2 className={styles.title}>{heading}</h2>
+          <CloseButton
+            onClick={handleClose}
+            label="Close team details"
+            className={styles.closebtn}
+          />
+        </header>
+
         {teamName && teamCode && (
           <div>
-            <span className={styles.shareTitle}>Your Team Info</span>
-            <div className={styles.copyContainer}>
-              <p style={{ color: "#ffffff90", textWrap: "wrap" }}>
-                Your Team Name: <span style={{ fontWeight: "bold" }}>{teamName}</span>
-                <br />
-                Your Team Code: <span style={{ fontWeight: "bold" }}>{teamCode}</span>
-              </p>
+            <div className={styles.teamCard}>
+              <dl className={styles.teamFields}>
+                <div className={styles.field}>
+                  <dt className={styles.fieldLabel}>Team</dt>
+                  <dd className={styles.fieldValue}>{teamName}</dd>
+                </div>
+                <div className={styles.field}>
+                  <dt className={styles.fieldLabel}>Code</dt>
+                  <dd className={`${styles.fieldValue} ${styles.teamCode}`}>
+                    {teamCode}
+                  </dd>
+                </div>
+              </dl>
               <button
+                type="button"
                 onClick={handleCopy}
                 className={styles.copyButton}
               >
-                {copyText}
+                {copied ? (
+                  <Check size={15} aria-hidden="true" />
+                ) : (
+                  <Copy size={15} aria-hidden="true" />
+                )}
+                {copied ? "Copied" : "Copy"}
               </button>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-                width: "100%",
-                marginTop: "1rem",
-              }}
-            >
-              <FacebookShareButton
-                url={websiteUrl}
-                quote={message}
-                hashtag="#TeamSuccess"
-              >
-                <FacebookIcon size={40} round />
-              </FacebookShareButton>
-              <TwitterShareButton
-                url={websiteUrl}
-                title={message}
-                hashtags={["TeamSuccess"]}
-              >
-                <TwitterIcon size={40} round />
-              </TwitterShareButton>
-              <LinkedinShareButton
-                url={websiteUrl}
-                title="Team Success"
-                summary={message}
-                source="YourApp"
-              >
-                <LinkedinIcon size={40} round />
-              </LinkedinShareButton>
-              <WhatsappShareButton
-                url={websiteUrl}
-                title={message}
-                separator=":: "
-              >
-                <WhatsappIcon size={40} round />
-              </WhatsappShareButton>
-            </div>
+            <p className={styles.shareLabel}>Share the news</p>
+            <ul className={styles.networks}>
+              <li>
+                <WhatsappShareButton
+                  url={websiteUrl}
+                  title={message}
+                  separator=":: "
+                  className={styles.network}
+                >
+                  <WhatsappIcon size={40} round />
+                  <span className={styles.networkLabel}>WhatsApp</span>
+                </WhatsappShareButton>
+              </li>
+              <li>
+                <TwitterShareButton
+                  url={websiteUrl}
+                  title={message}
+                  hashtags={["TeamSuccess"]}
+                  className={styles.network}
+                >
+                  <TwitterIcon size={40} round />
+                  <span className={styles.networkLabel}>X</span>
+                </TwitterShareButton>
+              </li>
+              <li>
+                <LinkedinShareButton
+                  url={websiteUrl}
+                  title="Team Success"
+                  summary={message}
+                  source="YourApp"
+                  className={styles.network}
+                >
+                  <LinkedinIcon size={40} round />
+                  <span className={styles.networkLabel}>LinkedIn</span>
+                </LinkedinShareButton>
+              </li>
+              <li>
+                <FacebookShareButton
+                  url={websiteUrl}
+                  quote={message}
+                  hashtag="#TeamSuccess"
+                  className={styles.network}
+                >
+                  <FacebookIcon size={40} round />
+                  <span className={styles.networkLabel}>Facebook</span>
+                </FacebookShareButton>
+              </li>
+            </ul>
           </div>
         )}
-        {/* Rendering the success message */}
-        {successMessage && (
-          <div>
-            <p
-              style={{
-                textAlign: "center",
-                color: "#ffffff90",
-                marginTop: "0.3rem",
-                whiteSpace: "pre-wrap",
-                marginBottom: "0",
-              }}
-            >
-              {successMessage.successMessage
-                .trim()
-                .split(/\s+/)
-                .map((word, index) => {
-                  const urlPattern = /(https?:\/\/[^\s]+)/;
-                  const match = word.match(urlPattern);
 
-                  if (match) {
-                    return (
-                      <React.Fragment key={index}>
-                        <br />
-                        <br />
-                        <a
-                          href={match[0]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: "#FF8A00", textDecoration: "none" }}
-                        >
-                          {match[0]}
-                        </a>
-                        <br />
-                        <br />
-                      </React.Fragment>
-                    );
-                  }
-                  return <React.Fragment key={index}>{word} </React.Fragment>;
-                })}
-            </p>
-          </div>
+        {successMessage && (
+          <p className={styles.message}>
+            {successMessage.successMessage
+              .trim()
+              .split(/\s+/)
+              .map((word, index) => {
+                const urlPattern = /(https?:\/\/[^\s]+)/;
+                const match = word.match(urlPattern);
+
+                if (match) {
+                  return (
+                    <React.Fragment key={index}>
+                      <br />
+                      <br />
+                      <a
+                        href={match[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.messageLink}
+                      >
+                        {match[0]}
+                      </a>
+                      <br />
+                      <br />
+                    </React.Fragment>
+                  );
+                }
+                return <React.Fragment key={index}>{word} </React.Fragment>;
+              })}
+          </p>
         )}
       </div>
     </div>

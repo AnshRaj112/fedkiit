@@ -9,7 +9,7 @@ import { SITE } from "@/lib/site";
  * Slack rendered as a bare text preview. Uses the brand gradient from design.md.
  */
 
-export const alt = `${SITE.name} — ${SITE.tagline}`;
+export const alt = `${SITE.name} - ${SITE.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

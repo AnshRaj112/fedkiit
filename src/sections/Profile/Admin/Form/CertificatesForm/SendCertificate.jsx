@@ -22,7 +22,7 @@ const Checkbox = ({ id, checked, onCheckedChange }) => {
       id={id}
       checked={checked}
       onChange={(e) => onCheckedChange(e.target.checked)}
-      style={{ width: 18, height: 18, accentColor: "#007bff" }}
+      style={{ width: 18, height: 18, accentColor: "var(--accent)" }}
     />
   );
 };
@@ -346,7 +346,8 @@ const SendCertificate = () => {
           marginTop: "-30px",
         }}
       >
-        Send <span style={{ color: "#FF8A00" }}>Certificate</span>
+        Send{" "}
+        <span style={{ color: "var(--accent)" }}>Certificate</span>
       </h1>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div style={{ display: "flex", gap: 20 }}>
@@ -354,8 +355,8 @@ const SendCertificate = () => {
             style={{
               flex: 1,
               padding: 20,
-              border: "1px solid #ccc",
-              borderRadius: 10,
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
               height: 300,
               objectFit: "cover",
               position: "relative",
@@ -380,8 +381,8 @@ const SendCertificate = () => {
                 alt="Certificate Preview"
                 style={{
                   width: "98%",
-                  borderRadius: 10,
-                  objectFit: "cotain",
+                  borderRadius: "var(--radius-lg)",
+                  objectFit: "contain",
                   maxHeight: "270px",
                 }}
               />
@@ -391,8 +392,8 @@ const SendCertificate = () => {
             style={{
               flex: 1,
               padding: 20,
-              border: "1px solid #ccc",
-              borderRadius: 10,
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
               overflowY: "auto",
               height: 300,
             }}
@@ -420,8 +421,8 @@ const SendCertificate = () => {
               style={{
                 maxHeight: "100px",
                 overflowY: "auto",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-md)",
                 padding: "10px",
                 marginTop: "10px",
                 marginLeft: "8px",
@@ -489,7 +490,7 @@ const SendCertificate = () => {
                   {fileUploading ? <MicroLoading /> : "Upload Excel/CSV"}
                 </Button>
               </label>
-              <span style={{ marginLeft: 9, color: "#666" }}>
+              <span style={{ marginLeft: 9, color: "var(--text-tertiary)" }}>
                 Upload Excel/CSV file containing attendee details
               </span>
             </div>
@@ -499,8 +500,8 @@ const SendCertificate = () => {
         <div
           style={{
             padding: 20,
-            border: "1px solid #ccc",
-            borderRadius: 10,
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius-lg)",
             maxHeight: "330px",
             overflowY: "auto",
             width: "50%",
@@ -519,8 +520,8 @@ const SendCertificate = () => {
             style={{
               maxHeight: "150px",
               overflowY: "auto",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-md)",
               padding: "10px",
               marginTop: "10px",
               marginLeft: "7px",
@@ -603,9 +604,9 @@ const SendCertificate = () => {
           <div
             style={{
               padding: 20,
-              border: "1px solid #e74c3c",
-              borderRadius: 10,
-              backgroundColor: "rgba(231, 76, 60, 0.08)",
+              border: "1px solid rgba(244, 82, 59, 0.4)",
+              borderRadius: "var(--radius-lg)",
+              backgroundColor: "rgba(244, 82, 59, 0.12)",
               marginTop: 20,
             }}
           >
@@ -617,13 +618,13 @@ const SendCertificate = () => {
                 marginBottom: isFailedMinimized ? 0 : 10,
               }}
             >
-              <h3 style={{ color: "#e74c3c", margin: 0 }}>
+              <h3 style={{ color: "var(--negative)", margin: 0 }}>
                 ⚠ Failed Emails ({failedEmails.length})
               </h3>
               <div style={{ display: "flex", gap: 10 }}>
                 <Button
                   onClick={() => setIsFailedMinimized((prev) => !prev)}
-                  style={{ backgroundColor: "transparent", color: "#e74c3c", fontSize: "0.85em" }}
+                  style={{ backgroundColor: "transparent", color: "var(--negative)", fontSize: "0.85em" }}
                 >
                   {isFailedMinimized ? "▼ Expand" : "▲ Minimize"}
                 </Button>
@@ -652,7 +653,7 @@ const SendCertificate = () => {
                 </Button>
                 <Button
                   onClick={() => setFailedEmails([])}
-                  style={{ backgroundColor: "transparent", color: "#e74c3c" }}
+                  style={{ backgroundColor: "transparent", color: "var(--negative)" }}
                 >
                   Dismiss
                 </Button>
@@ -663,8 +664,8 @@ const SendCertificate = () => {
                 style={{
                   maxHeight: 200,
                   overflowY: "auto",
-                  border: "1px solid rgba(231, 76, 60, 0.3)",
-                  borderRadius: 5,
+                  border: "1px solid rgba(244, 82, 59, 0.4)",
+                  borderRadius: "var(--radius-md)",
                   padding: 10,
                 }}
               >
@@ -678,14 +679,14 @@ const SendCertificate = () => {
                       padding: "6px 0",
                       borderBottom:
                         idx < failedEmails.length - 1
-                          ? "1px solid rgba(231, 76, 60, 0.15)"
+                          ? "1px solid rgba(244, 82, 59, 0.2)"
                           : "none",
                     }}
                   >
                     <span style={{ fontWeight: 500 }}>{item.email}</span>
                     <span
                       style={{
-                        color: "#e74c3c",
+                        color: "var(--negative)",
                         fontSize: "0.85em",
                         maxWidth: "50%",
                         textAlign: "right",

@@ -1,27 +1,9 @@
 import "server-only";
 
-import { SignJWT, jwtVerify } from "jose";
-
 import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api/errors";
-import { getEnv } from "@/lib/env";
 import type { SafeUser } from "@/lib/auth/access";
 import type { EventInfo } from "@/lib/types/event";
-
-/**
- * QR tokens are signed with the same secret and 20-minute lifetime the Express
- * controller used (`jwt.sign({ attendanceToken }, JWT_SECRET, { expiresIn: "20m" })`),
- * so a code minted by either implementation verifies against the other.
- */
-const secret = () => new TextEncoder().encode(getEnv().JWT_SECRET);
-
-async function signAttendanceToken(attendanceId: string): Promise<string> {
-  return new SignJWT({ attendanceToken: attendanceId })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("20m")
-    .sign(secret());
-}
 
 /**
  * Attendance and registration export.
@@ -35,7 +17,7 @@ async function signAttendanceToken(attendanceId: string): Promise<string> {
  * bundle, and sidesteps the SheetJS advisories entirely.
  */
 
-/** RFC 4180 escaping — quotes doubled, fields with delimiters quoted. */
+/** RFC 4180 escaping - quotes doubled, fields with delimiters quoted. */
 function csvCell(value: unknown): string {
   if (value === null || value === undefined) return "";
   const text =
@@ -54,59 +36,16 @@ export function toCsv(rows: Array<Record<string, unknown>>): string {
   return "﻿" + lines.join("\r\n");
 }
 
-/**
- * The caller's attendance token for an event — encoded into their QR code.
- *
- * Returns a **signed JWT that expires in 20 minutes**, not the record id. That
- * signature is the security control for the whole flow: it is why the Express
- * route left its `checkAccess` commented out, and why a scanned code cannot be
- * forged or replayed a day later. An earlier version of this port handed back
- * the raw `attendance.id`, which was both unauthenticated and permanent — and
- * did not match what `QRCodeModal` reads (`response.data.attendanceToken`).
- */
-export async function getAttendanceCode(
-  formId: string,
-  user: SafeUser,
-  teamCode?: string | null,
-) {
+/** The caller's attendance token for an event - encoded into their QR code. */
+export async function getAttendanceCode(formId: string, user: SafeUser) {
   if (!/^[a-f\d]{24}$/i.test(formId)) throw new ApiError(404, "Form not found");
 
-  // With a teamCode the original looked the team up directly; without one it
-  // scanned every registration for the form and picked the row containing this
-  // user. Both branches are preserved, including their distinct 404 messages.
-  let registration = null;
-  if (teamCode && teamCode.trim() !== "") {
-    registration = await prisma.formRegistration.findFirst({
-      where: { formId, teamCode },
-    });
-    if (!registration) {
-      throw new ApiError(404, "Form registration not found.");
-    }
-  } else {
-    const all = await prisma.formRegistration.findMany({ where: { formId } });
-    registration =
-      all.find((reg) =>
-        (reg.value as Array<{ user_id?: string }>).some(
-          (v) => v?.user_id === user.id,
-        ),
-      ) ?? null;
-    if (!registration) {
-      throw new ApiError(404, "Form registration not found for the user.");
-    }
+  const registration = await prisma.formRegistration.findFirst({
+    where: { formId, userId: user.id },
+  });
+  if (!registration) {
+    throw new ApiError(404, "You are not registered for this event");
   }
-
-  const info =
-    (registration.value as Array<{ user_id?: string }>).find(
-      (v) => v?.user_id === user.id,
-    ) ?? undefined;
-
-  const attendanceData = {
-    formId,
-    userId: user.id,
-    teamName: registration.teamName,
-    teamCode: registration.teamCode,
-    info,
-  };
 
   const record = await prisma.attendance.upsert({
     where: {
@@ -116,62 +55,64 @@ export async function getAttendanceCode(
         teamCode: registration.teamCode,
       },
     },
-    create: attendanceData as never,
-    update: attendanceData as never,
+    create: {
+      formId,
+      userId: user.id,
+      teamName: registration.teamName,
+      teamCode: registration.teamCode,
+      isPresent: false,
+      isPaymentVerified: false,
+      info: {
+        name: user.name,
+        email: user.email,
+        rollNumber: user.rollNumber,
+      },
+    },
+    update: {},
   });
 
-  const token = await signAttendanceToken(record.id);
-
-  return { message: "Validation id generated successfully.", attendanceToken: token };
+  return {
+    attendanceId: record.id,
+    token: record.id,
+    teamCode: record.teamCode,
+    teamName: record.teamName,
+    isPresent: record.isPresent,
+  };
 }
 
 /**
  * Marks a scanned attendance record present.
  *
- * Requires a club member — the original mounted this with its access check
+ * Requires a club member - the original mounted this with its access check
  * commented out, so any signed-in user could mark anyone present.
  */
-export async function markAttendance(input: {
-  formId?: string;
-  token?: string;
-}) {
-  const token = input.token?.trim();
-  if (!token) throw new ApiError(400, "Attendance token is required.");
-
-  // The scanned value is the signed QR token, not a record id. Verifying it is
-  // what stops a stale or hand-crafted QR from marking anyone present.
-  let attendanceId: string | undefined;
-  try {
-    const { payload } = await jwtVerify(token, secret(), {
-      algorithms: ["HS256"],
-    });
-    attendanceId = payload.attendanceToken as string | undefined;
-  } catch {
-    throw new ApiError(401, "Invalid or expired QR.");
+export async function markAttendance(input: { attendanceId: string }) {
+  const id = input.attendanceId?.trim();
+  if (!id || !/^[a-f\d]{24}$/i.test(id)) {
+    throw new ApiError(400, "A valid attendance token is required");
   }
 
-  if (!attendanceId) {
-    throw new ApiError(400, "Attendance ID is missing in the token.");
+  const record = await prisma.attendance.findUnique({ where: { id } });
+  if (!record) throw new ApiError(404, "Attendance record not found");
+
+  if (record.isPresent) {
+    return {
+      alreadyMarked: true,
+      attendance: record,
+      message: "Attendance was already marked",
+    };
   }
-
-  const record = await prisma.attendance.findUnique({
-    where: { id: attendanceId },
-  });
-  if (!record) throw new ApiError(404, "Attendance record not found.");
-
-  // A QR for one event must not check someone in at another.
-  if (record.formId !== input.formId) {
-    throw new ApiError(400, "QR does not belong to the specified form.");
-  }
-
-  if (record.isPresent) throw new ApiError(400, "Attendance already marked.");
 
   const updated = await prisma.attendance.update({
-    where: { id: attendanceId },
+    where: { id },
     data: { isPresent: true, markedAt: new Date() },
   });
 
-  return { message: "Attendance marked successfully.", attendance: updated };
+  return {
+    alreadyMarked: false,
+    attendance: updated,
+    message: "Attendance marked",
+  };
 }
 
 /** Flattens a registration's stored submission into spreadsheet columns. */

@@ -3,14 +3,13 @@ import "server-only";
 import { v2 as cloudinary } from "cloudinary";
 
 import { getEnv } from "@/lib/env";
-import { IMAGE_SIZES, type ImageFolder } from "@/lib/config/images";
 
 /**
- * Cloudinary uploads — port of utils/image/uploadImage.js.
+ * Cloudinary uploads - port of utils/image/uploadImage.js.
  *
  * The Express version wrote the multipart file to disk with multer first and
  * uploaded from a path. Route handlers receive a `File` directly, so the bytes
- * go straight to Cloudinary and nothing touches the filesystem — which also
+ * go straight to Cloudinary and nothing touches the filesystem - which also
  * means this works on a read-only serverless filesystem, where the original
  * `uploads/` directory approach would fail.
  */
@@ -38,24 +37,16 @@ function configure(): boolean {
 export type UploadResult = { secure_url: string; public_id: string } | null;
 
 /**
- * Uploads a file to a Cloudinary folder, resized to the bounds that folder
- * declares in `lib/config/images.ts`.
- *
- * Dimensions are deliberately *not* parameters. They used to be, and the two
- * form routes passed the same pair in opposite orders — `addForm` uploading QR
- * media at 150x400 while `editForm` used 400x150. Looking them up from the
- * folder removes the argument entirely, so there is nothing left to get
- * backwards, and `ImageFolder` makes an unknown folder a compile error.
- *
+ * Uploads a file to a Cloudinary folder, optionally resizing.
  * Returns null when Cloudinary is not configured or the upload fails, matching
  * the original's tolerance for a missing image.
  */
 export async function uploadImage(
   file: File,
-  folder: ImageFolder,
+  folder: string,
+  width?: number,
+  height?: number,
 ): Promise<UploadResult> {
-  const { width, height } = IMAGE_SIZES[folder];
-
   if (!configure()) {
     console.error("[upload] Cloudinary is not configured");
     return null;

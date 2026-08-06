@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import Providers from "@/src/context/Providers";
-import Chatbot from "@/src/components/Chatbot/Chatbot";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo/metadata";
@@ -23,19 +22,18 @@ import "./globals.scss";
  */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "FED KIIT",
-    template: "%s | FED KIIT",
-  },
-  description: SITE.description,
-  keywords: [...SITE.keywords],
+  title: "FED KIIT",
+  description:
+    "FED KIIT bridges the gap between engineering and entrepreneurship. A community-driven initiative fostering innovation, mentorship, and building products that scale.",
+  keywords: ["FED KIIT", "entrepreneurship", "KIIT University", "startup", "founders", "innovation"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE.name,
     title: "FED KIIT",
-    description: SITE.description,
+    description:
+      "Empowering the next generation of founders at KIIT University.",
     locale: SITE.locale,
   },
   twitter: {
@@ -43,14 +41,20 @@ export const metadata: Metadata = {
     title: "FED KIIT",
     description: SITE.description,
   },
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/fedkiit-logo.png", type: "image/png" },
+    ],
+    shortcut: "/fedkiit-logo.png",
+    apple: "/fedkiit-logo.png",
+  },
   other: {
     "facebook-domain-verification": "j4kyebnva8sowmo539jn3julvtgvqq",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c1c1c",
+  themeColor: "#000000",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -60,18 +64,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // `data-scroll-behavior="smooth"` acknowledges the `scroll-behavior: smooth`
-    // that globals.scss sets on <html>. Without it Next warns, because it has to
-    // decide whether a route change should animate the scroll to the top — with
-    // the attribute present it keeps the smooth scroll the original had.
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/*
-          The exact font families and weights the original SCSS pulled in.
-          Declared as <link> rather than `@import url(...)` in globals.scss:
-          Next's CSS bundler drops those rules, which left Open Sans unloaded and
-          every line box ~2px shorter than the Vite build.
-        */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -80,29 +74,19 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
         />
       </head>
       <body>
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        <Providers>
-          {/*
-            App.jsx renders <Chatbot /> above <Routes>, so it is present on
-            every route — the auth screens included. Mounting it in the (main)
-            layout instead hid it on /Login, /SignUp, /otp, /ForgotPassword and
-            /completeProfile. It sits inside Providers because it reads
-            AuthContext to attach the signed-in user to a conversation.
-          */}
-          <Chatbot />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
 
-        {/* Razorpay checkout, loaded in index.html on the original site. */}
+        {/* Razorpay checkout */}
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="lazyOnload"
         />
-        {/* Google Analytics, same measurement id as the original. */}
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-027MLWYPTL"
           strategy="afterInteractive"

@@ -9,7 +9,7 @@ import { createSessionToken, setSessionCookie } from "@/lib/auth/session";
  * POST /api/auth/login
  * Port of controllers/auth/loginController.js.
  *
- * Response is `{ message, user, token }` at the top level — Login.jsx reads
+ * Response is `{ message, user, token }` at the top level - Login.jsx reads
  * `response.data.user` and `response.data.token` directly.
  *
  * One deliberate change: the Express route ran `checkAccess` first, which

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Riple } from "react-loading-indicators";
 
 /**
- * Section-level loader — ported from microInteraction/Load/ComponentLoad.jsx.
+ * Section-level loader - ported from microInteraction/Load/ComponentLoad.jsx.
  *
  * The original read `window.innerWidth` in the `useState` initialiser, which
  * throws during server rendering. It starts at the desktop value and corrects

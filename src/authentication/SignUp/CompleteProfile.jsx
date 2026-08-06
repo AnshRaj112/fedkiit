@@ -12,8 +12,6 @@ import AuthContext from "../../context/AuthContext";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter, usePathname } from "next/navigation";
-import postAuthRedirect from "../../utils/postAuthRedirect";
-import { YEAR_OPTIONS } from "../../data/yearOptions";
 
 function CompleteProfile() {
   const [loadingEffect, setLoad] = useState(false);
@@ -29,6 +27,7 @@ function CompleteProfile() {
     college: "",
     contactNo: "",
     img: "",
+    year: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -49,6 +48,15 @@ function CompleteProfile() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const options = [
+    { value: "1st", text: "1st year" },
+    { value: "2nd", text: "2nd year" },
+    { value: "3rd", text: "3rd year" },
+    { value: "4th", text: "4th year" },
+    { value: "5th", text: "5th year" },
+    { value: "Passout", text: "Passout" },
+  ];
 
   useEffect(() => {
     setAlert({
@@ -117,9 +125,7 @@ function CompleteProfile() {
             "someToken",
             7200000
           );
-          // Honours a pending destination — a team invite link, typically —
-          // falling back to "/" as the original always did.
-          router.push(postAuthRedirect("/"));
+          router.push("/");
         }, 3000);
 
         
@@ -150,17 +156,12 @@ function CompleteProfile() {
         <div className={styles.ArrowBackIcon} onClick={() => router.back()}>
           <ArrowBackIcon />
         </div>
-        <div className={styles.circle}></div>
-        <div className={styles.circle1}></div>
         <div className={styles.BackGround}>
           <div>
             <p
               className={styles.CreateProfile}
               style={{
-                background: "var(--primary)",
                 padding: "5px 0px 5px 0px",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
                 alignItems: "center",
               }}
             >
@@ -181,14 +182,12 @@ function CompleteProfile() {
               error={errors.rollNumber}
             />
 
-            {/* Chosen, not derived from the roll number: a lateral-entry
-                student admitted in 2025 is in 2nd year with the 2024 batch. */}
             <Input
               type="select"
               placeholder="Select Year"
               label="Year"
               name="year"
-              options={YEAR_OPTIONS}
+              options={options.map(option => ({ label: option.text, value: option.value }))}
               value={year}
               onChange={(value) => setYear(value)}
               required
@@ -240,11 +239,16 @@ function CompleteProfile() {
               <Button
                 style={{
                   width: "102%",
-                  background: "var(--primary)",
-                  color: "#fff",
-                  height: "40px",
+                  backgroundColor: "var(--accent)",
+                  borderColor: "transparent",
+                  borderRadius: "var(--radius-pill)",
+                  boxShadow: "var(--depth)",
+                  color: "var(--text-inverse)",
+                  minHeight: "44px",
                   marginTop: "20px",
-                  fontSize: "1rem",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
                   cursor: "pointer",
                 }}
                 type="submit"

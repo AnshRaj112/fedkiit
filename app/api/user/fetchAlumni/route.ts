@@ -9,7 +9,7 @@ export async function GET() {
   return handle(async () => {
     const users = await prisma.user.findMany({
       where: { access: { in: ["ALUMNI"] } },
-      // Matches getAlumni.js exactly — note it selects no `id`, unlike
+      // Matches getAlumni.js exactly - note it selects no `id`, unlike
       // fetchTeam. Alumni.jsx keys its list on the array index, so adding one
       // would change nothing visually but would break byte-parity with the
       // original response.

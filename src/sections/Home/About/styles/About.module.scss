@@ -1,714 +1,174 @@
-// @import "../../../../assets/styles/Global.scss";
-
-
-
-
-.container{
-    overflow: hidden;
+.aboutSection {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem 3rem;
+  box-sizing: border-box;
 }
 
-
-.head{
-    font-weight: 700;
-    font-size: 50px;
-    // position: relative;
-    text-align: center;
-    margin-top: 2rem;
-    // margin-bottom: -3rem;
+/* ── Heading ── */
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-bottom: 2.5rem;
 }
 
-.boxflex{
-    margin-top: -3rem;
+.head {
+  font-weight: 800;
+  font-size: 52px;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
+.highlight {
+  background: var(--primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 
 .bottomLine {
-    width: 12rem;
-    height: 0.3125rem;
-    background: var(--primary);
-    color: transparent;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+  width: 10rem;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 99px;
+  margin-top: 0.5rem;
+}
+
+/* ── Card stage ── */
+.cardStage {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 380px;
+  flex-shrink: 0;
+}
+
+.cardWrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.reverseLayout {
+  flex-direction: row-reverse;
+}
+
+.imageContainer {
+  width: 44%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardImage {
+  width: 100%;
+  max-height: 310px;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+}
+
+.box {
+  width: 53%;
+  padding: 2rem 2.5rem;
+  background: rgba(18, 18, 18, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: rgba(249, 115, 22, 0.5);
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
-
-.heading{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
-
-
-.box{
-    // height: 14rem;
-    height : 35vh ;
-    width: 65%;
-    padding: 2rem;
-    background: transparent;
-    font-size: 1.85rem;
-    border: 2px solid white;
-    border-radius: 20px;
+.boxhead {
+  font-weight: 700;
+  font-size: 1.85rem;
+  line-height: 1.3;
+  margin-bottom: 12px;
 }
-
-// .whatfed{    
-//     padding: 1.5rem 2rem 1.5rem 2rem;
-// }
-
-.howfed{
-    text-align: right;
-}
-
-.boxhead{
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
 
 .boxinnertext {
-    font-size: 1.4rem;
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: #bbbbbb;
+
+  p { margin: 0 0 4px; }
 }
 
-.boxflex{
+/* dots/hint removed */
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .aboutSection {
+    min-height: auto;
+    padding: 3rem 1.2rem 3.5rem;
+    justify-content: flex-start;
+  }
+
+  .head { font-size: 34px; }
+  .bottomLine { width: 7rem; }
+
+  .cardStage {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 2.5rem;
+    height: auto;
+    margin-top: 0.5rem;
+  }
+
+  .cardWrapper,
+  .reverseLayout {
+    position: relative !important;
+    inset: auto !important;
+    flex-direction: column !important;
+    text-align: center;
+    gap: 1.2rem;
+  }
+
+  .imageContainer { width: 100%; }
+  .cardImage { max-height: 220px; }
+
+  .box {
+    width: 100%;
+    padding: 1.4rem 1.5rem;
+    text-align: center;
+    border-radius: 18px;
+    box-sizing: border-box;
+  }
+
+  .boxhead { font-size: 1.3rem; }
+  .boxinnertext { font-size: 0.95rem; }
 }
 
-.box1{
-    align-items: center;
-    width: 1500px;
+@media (max-width: 480px) {
+  .head { font-size: 28px; }
+  .bottomLine { width: 5.5rem; }
+  .boxhead { font-size: 1.2rem; }
+  .boxinnertext { font-size: 0.9rem; }
 }
 
-.box2{
-    padding-top: 2rem;
-}
-
-.box3{
-    padding-top: 2rem;
-    // padding-bottom: -9rem;
-}
-
-.whyfed{
-    order: 1;
-    margin-top: 80px;
-    position: relative;
-    left: 100px;
-    z-index: 0;
-}
-
-.whyfedimg{
-    order: 2;
-    background: none;
-    position: relative;
-    right: 80px;
-    z-index: 0;
-}
-
-.howfed{
-    position: relative;
-    right: 60px;
-    z-index: 0;
-}
-
-.howfedimg{
-    background: none;
-    position: relative;
-    left: 70px;
-    z-index:1;
-    height: 350px;
-}
-
-.whatfed{
-    order: 1;
-    position: relative;
-    left: 100px;
-    z-index: 0;
-}
-
-.whatfedimg{
-    order: 2;
-    background: none;
-    position: relative;
-    right: 90px;
-    z-index: 0;
-    height: 353px;
-}
-
-
-@media screen and (max-width: 1046px){
-    .head{
-        font-size: 60.8px;
-    }
-
-    .box1{
-        align-items: center;
-    }
-    
-    .box2{
-        padding-top: 3rem;
-    }
-    
-    .box3{
-        padding-top: 3rem;
-    
-    }
-
-    .box{
-        width: 55%;
-        font-size: 1.65rem;
-    }
-}
-
-@media screen and (max-width: 976px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1.3rem;
-        // height: 9rem;
-        width: 55%;
-    }
-
-.howfed, .whatfed,.whyfed{
-    height: 10rem;
-}
-
-    .box1{
-        align-items: center;
-        padding-top: 1rem;
-    }
-    
-    .box2{
-        padding-top: -1rem;
-        margin-top: -5rem;
-    }
-    
-    .box3{
-        padding-top: -1rem;
-        margin-top: -5rem;
-    }
-
-    .whatfed{
-        // height: 9.5rem;
-    }
-}
-
-@media screen and (max-width: 914px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1rem;
-        height: 14rem;
-        width: 55%;
-        padding: 2rem;
-        background: transparent;
-        font-size: 1.85rem;
-        border: 2px solid white;
-        border-radius: 20px;
-    }
-
-    
-}
-
-@media screen and (max-width: 875px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.5rem;
-        height: 17rem;
-        width: 45%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 30px;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 200px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        top: 0px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 300px;
-        padding-top: 9.5rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 350px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 7rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 353px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: -20rem;
-    }
-}
-
-@media screen and (max-width: 714px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.45rem;
-        height: 17rem;
-        width: 45%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 30px;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 200px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        left: 100px;
-        top: 0px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 300px;
-        padding-top: 9.5rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 350px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 7rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 353px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: -3rem;
-    }
-    
-}
-
-@media screen and (max-width: 642px){
-    .head{
-        font-size: 42px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.05rem;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 590px){
-    .head{
-        font-size: 45px;
-        margin-bottom: 20px;
-    }
-    .box{
-        font-size: 1.15rem;
-        height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 8rem;
-        order: 2;
-        position: relative;
-        left: 0px;
-        z-index: 0;
-        bottom: 180px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        top: 0px;
-        z-index: 1;
-        height: 397px;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        right: 0px;
-        bottom: 275px;
-        padding-top: 8rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        z-index: 1;
-        height: 300px;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 350px;
-        padding: 1rem;
-        padding-top: 6rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 150px;
-        padding-top: -3rem;
-        z-index: 1;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 1.18rem;
-    }
-}
-
-@media screen and (max-width: 443px){
-    .head{
-        font-size: 35px;
-    }
-    .box{
-        font-size: 1.15rem;
-        // height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-
-    .bottomLine{
-        
-        width: 6rem;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 5rem;
-        order: 2;
-        position: relative;
-        z-index: 0;
-        bottom: 160px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        right: -100;
-        top: 0px;
-        height: 347px;
-        margin-right: 9.9rem;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 1.18rem;
-    }
-
-    .boxhead{
-        margin-top: 19px;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-        z-index: 1;
-    }
-
-    .container{
-        margin-bottom: 1rem;
-    }
-}
-
-@media (max-width: 380px){
-    .howfed{
-        padding-top: 5rem;
-    }
-}
-
-@media screen and (max-width: 338px){
-    .head{
-        font-size: 40px;
-    }
-    .box{
-        font-size: 1.1rem;
-        height: 18rem;
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 40px;
-    }
-    .box1,.box2,.box3{
-        margin-top: 20px;
-        padding-top: 1rem;
-        align-items: center;
-        width: 100%;
-    }
-    .boxflex{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .whyfed{
-        padding-top: 5rem;
-        order: 2;
-        position: relative;
-        z-index: 0;
-        bottom: 160px;
-    }
-    
-    .whyfedimg{
-        order: 1;
-        position: relative;
-        top: 0px;
-        height: 347px;
-        z-index: 1;
-    }
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-        z-index: 1;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-        z-index: 1;
-    }
-
-    .boxinnertext p{
-        font-size: 1.15rem;
-    }
-}
-
-@media screen and (max-width: 306px){
-    
-    .howfed{
-        order: 2;
-        position: relative;
-        bottom: 250px;
-        padding-top: 6rem;
-        height: 20rem;
-    }
-    
-    .howfedimg{
-        order: 1;
-        position: relative;
-        left: 0px;
-        bottom: 150px;
-        height: 250px;
-    }
-    
-    .whatfed{
-        order: 2;
-        position: relative;
-        left: 0px;
-        bottom: 330px;
-        padding: 1rem;
-        padding-top: 4rem;
-    }
-    
-    .whatfedimg{
-        order: 1;
-        position: relative;
-        right: 0px;
-        bottom: 250px;
-        height: 253px;
-    }
-
-    
-    .boxinnertext p{
-        font-size: 0.8rem;
-    }
-}
-
-@media screen and (min-width: 1680px){
-    .box{
-        width: 80%;
-        font-size: 2.3rem;
-    }
-
-    .howfed, .whyfed, .whatfed{
-        height: 15rem;
-    }
-}
-
-@media screen and (min-width: 2496px){
-    .box{
-        font-size: 2.3rem;
-    }
-}
-
-@media screen and (min-width: 1256px){
-    .box{
-        font-size: 2.3rem;
-    }
-    .howfed, .whyfed, .whatfed{
-        height: 15rem;
-    }
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cardStage { height: 340px; }
+  .boxhead { font-size: 1.5rem; }
+  .box { padding: 1.8rem 2rem; }
+  .boxinnertext { font-size: 1rem; }
 }

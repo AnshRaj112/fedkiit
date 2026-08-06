@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]): string {
  * Formats an event date for display.
  *
  * Event dates are free-text strings in the database, so this falls back to the
- * raw string when it will not parse rather than rendering "Invalid Date" — which
+ * raw string when it will not parse rather than rendering "Invalid Date" - which
  * is what the old `moment(info.eventDate).format(...)` calls did.
  */
 export function formatEventDate(

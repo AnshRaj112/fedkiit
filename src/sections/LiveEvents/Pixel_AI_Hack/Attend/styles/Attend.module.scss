@@ -75,14 +75,9 @@
   height: auto;
   padding: 20px;
   border-radius: 15px;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   text-align: left;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
 
   @media (max-width: 768px) {
     max-width: 80%;
@@ -119,32 +114,6 @@
   }
 }
 
-.circle1,
-.circle2 {
-  position: absolute;
-  filter: blur(40px);
-  // border-radius: 50%;
-  height: 40vh;
-  width: 20vw;
-  z-index: -1;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-.circle1 {
-  top: 250%;
-  left: -15%;
-  background: linear-gradient(#112C3C, #E2084C, #FFD389, #B4DFFF);
-}
-
-.circle2 {
-  top: 270%;
-  right: -10%;
-  background: linear-gradient(#112C3C, #E2084C, #FFD389, #B4DFFF);
-}
-
 @media (max-width: 480px) {
   .boxmain {
     flex-direction: column;
@@ -152,10 +121,5 @@
 
   .card {
     width: 90%;
-  }
-
-  .circle1,
-  .circle2 {
-    display: none;
   }
 }

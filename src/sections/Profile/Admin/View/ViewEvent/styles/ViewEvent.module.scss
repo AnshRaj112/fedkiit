@@ -1,31 +1,41 @@
+// Event list - admin.
+//
+// The ongoing/past switch was two bare headings that turned #dc5e14 on hover;
+// it is now a proper tab row with a hairline rule and an accent underline on
+// the selected tab, so the inactive tab still reads as a control.
+
 .container {
-  background-color: transparent;
-  color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
 }
 
 .buttonContainer {
-  font-size: 30px;
-  letter-spacing: 0.02em;
-  line-height: 40px;
-  padding-bottom: 50px;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 50px;
 }
 
 .headInnerText {
+  margin: 0;
   margin-left: 3.5rem;
   margin-top: 12px;
-}
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 
-.headInnerText span {
-  margin-right: 3px;
-  background: linear-gradient(to right, #d03e21 40%, #FF8A00);
-  -webkit-background-clip: text;
-  color: transparent;
+  span {
+    margin-right: 6px;
+    color: var(--accent);
+  }
 }
 
 .form {
@@ -40,30 +50,41 @@
   width: 100%;
 }
 
+/* -------------------------------------------------------------------- tabs */
+
 .tabContainer {
   display: flex;
   justify-content: center;
+  gap: 8px;
   margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .tabHeading {
+  margin: 0;
+  padding: 12px 24px;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
   cursor: pointer;
-  margin: 0 4rem;
-  margin-top: -1rem;
-  padding: 0.5rem;
-  font-size: 1.4rem;
   user-select: none;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .tabHeading:hover {
-  color: #dc5e14;
+  background-color: var(--surface-2);
 }
 
 .activeTab {
-  border-bottom: 2px solid #dc5e14;
-  font-weight: bold;
+  border-bottom-color: var(--accent);
+  font-weight: 700;
+  color: var(--text-primary);
 }
+
+/* ------------------------------------------------------------------- lists */
 
 .eventSectionContainer {
   display: flex;
@@ -84,21 +105,31 @@
 }
 
 .eventCardContainer {
-  margin-bottom: 1rem;
   position: relative;
   max-width: 24rem;
+  margin-bottom: 1rem;
+}
+
+.error {
+  padding: 44px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
 }
 
 .eventList::-webkit-scrollbar {
   width: 10px;
   height: 0px;
-  transition: .2s linear;
-  background-color: #292929;
+  background-color: transparent;
 }
 
 .eventList::-webkit-scrollbar-thumb {
-  border-radius: 22px;
-  background: var(--primary);
+  border-radius: var(--radius-pill);
+  background-color: var(--border-strong);
 }
 
 .eventList::-webkit-scrollbar-track {
@@ -107,28 +138,6 @@
 }
 
 @media (max-width: 768px) {
-  .buttonContainer {
-    display: none;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .topSection {
-    flex-direction: column;
-  }
-  .topSectionInputContainer:nth-child(1) {
-    margin-right: 0;
-  }
-  .EventInput {
-    width: 100%;
-  }
-  .EventInputArea {
-    width: 100%;
-  }
-  .posterPreview {
-    width: 100%;
-  }
   .buttonContainer {
     display: none;
   }

@@ -3,7 +3,7 @@ import { handle, json } from "@/lib/api/express";
 
 /**
  * GET /api/blog/getBlog
- * Port of controllers/blog/getBlogs.js — `{ success, message, blogs }`.
+ * Port of controllers/blog/getBlogs.js - `{ success, message, blogs }`.
  *
  * Blog.jsx filters on `visibility` itself, so every row is returned exactly as
  * the Express endpoint did.

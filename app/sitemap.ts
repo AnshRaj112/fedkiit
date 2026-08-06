@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: entry.priority,
   }));
 
-  // A database hiccup must not fail the whole sitemap — better to serve the
+  // A database hiccup must not fail the whole sitemap - better to serve the
   // static routes than a 500.
   let eventRoutes: MetadataRoute.Sitemap = [];
   try {

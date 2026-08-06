@@ -13,17 +13,13 @@ import TeamlessState from "./components/TeamlessState";
 import styles from "./styles/TeamManagement.module.scss";
 import { IoArrowBack, IoCopyOutline, IoCheckmark } from "react-icons/io5";
 import { FiEdit2, FiCheck, FiX } from "react-icons/fi";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useParams, usePathname, useSearchParams } from "next/navigation";
 
 const TeamManagement = () => {
     const { eventId: formId } = useParams();
     const router = useRouter();
-    // Not `const [searchParams] = useSearchParams()`: that is React Router's
-    // shape. Next returns a ReadonlyURLSearchParams directly, and because it is
-    // iterable the array destructuring silently took the first [key, value]
-    // entry — `undefined` when the URL has no query string, hence
-    // "Cannot read properties of undefined (reading 'get')".
     const searchParams = useSearchParams();
+    const pathname = usePathname();
     const authCtx = useContext(AuthContext);
 
     const [teamData, setTeamData] = useState(null);
@@ -52,12 +48,14 @@ const TeamManagement = () => {
     const isLeader = teamData?.leaderEmail === authCtx.user?.email;
     const isRegistrationOpen = !teamData?.isRegistrationClosed && !teamData?.isEventPast;
     const spotsRemaining = teamData ? teamData.maxTeamSize - teamData.teamSize : 0;
+    // Solo registrations come back without team limits, so the size/limit meta
+    // would otherwise render as a dangling "1/".
+    const isSoloEntry = Boolean(teamData) && !teamData.maxTeamSize;
 
     // [v2] Handle toast params from email action redirects
     useEffect(() => {
         const toast = searchParams.get("toast");
         const name = searchParams.get("name");
-        const reason = searchParams.get("reason");
         if (toast) {
             const toastMessages = {
                 joined: { type: "success", message: `${name || "User"} has been added to the team! 🎉` },
@@ -68,39 +66,18 @@ const TeamManagement = () => {
                 already_joined: { type: "info", message: `${name || "This user"} has already joined another team.` },
                 team_full: { type: "warning", message: `Team is full. ${name || "The user"} could not be added.` },
                 invalid: { type: "error", message: "Invalid request." },
-                // Set by PreviewForm when an invite link's auto-join fails after
-                // registration. `reason` is the API's own message ("This team is
-                // full", "Invalid team code", ...) so the user is told why they
-                // are looking at the team search instead of their invited team.
-                join_failed: {
-                    type: "warning",
-                    message: reason
-                        ? `${reason} You can join another team below.`
-                        : "Couldn't join that team. You can join another team below.",
-                },
             };
             const t = toastMessages[toast];
             if (t) {
                 Alert({ type: t.type, message: t.message, position: "top-right" });
             }
-            // Clean URL params after showing toast.
-            //
-            // The original mutated the params object and handed it back to
-            // React Router's setter. Next's is a *read-only* view with no
-            // setter, so the equivalent is a copy plus a replace — same result:
-            // the toast does not fire again on refresh, and no history entry is
-            // added.
-            const next = new URLSearchParams(searchParams.toString());
+            // Clean URL params after showing toast
+            const next = new URLSearchParams(searchParams);
             next.delete("toast");
             next.delete("name");
-            next.delete("reason");
             const query = next.toString();
-            router.replace(
-                `${window.location.pathname}${query ? `?${query}` : ""}`,
-                { scroll: false },
-            );
+            router.replace(query ? `${pathname}?${query}` : pathname);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Run once on mount
 
     const fetchTeamDetails = useCallback(async () => {
@@ -293,7 +270,7 @@ const TeamManagement = () => {
 
     if (!teamData && !isTeamless) return null;
 
-    // [v2] Teamless state — show create/browse UI
+    // [v2] Teamless state - show create/browse UI
     if (isTeamless && teamlessInfo) {
         return (
             <div className={styles.container}>
@@ -363,8 +340,12 @@ const TeamManagement = () => {
                             </div>
                         ) : (
                             <>
-                                <h2 className={styles.teamName}>Team: {teamData.teamName}</h2>
-                                {isLeader && isRegistrationOpen && (
+                                <h2 className={styles.teamName}>
+                                    {isSoloEntry
+                                        ? "Solo registration"
+                                        : `Team: ${teamData.teamName}`}
+                                </h2>
+                                {!isSoloEntry && isLeader && isRegistrationOpen && (
                                     <button
                                         className={styles.editButton}
                                         onClick={() => setIsEditing(true)}
@@ -379,7 +360,9 @@ const TeamManagement = () => {
 
                     <div className={styles.teamMeta}>
                         <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Team Code</span>
+                            <span className={styles.metaLabel}>
+                                {isSoloEntry ? "Registration code" : "Team code"}
+                            </span>
                             <button className={styles.codeBadge} onClick={handleCopyCode} title="Copy team code">
                                 <span>{teamData.teamCode}</span>
                                 {codeCopied ? <IoCheckmark /> : <IoCopyOutline />}
@@ -388,13 +371,17 @@ const TeamManagement = () => {
                         <div className={styles.metaItem}>
                             <span className={styles.metaLabel}>Members</span>
                             <span className={styles.metaValue}>
-                                {teamData.teamSize}/{teamData.maxTeamSize}
+                                {isSoloEntry
+                                    ? teamData.teamSize
+                                    : `${teamData.teamSize}/${teamData.maxTeamSize}`}
                             </span>
                         </div>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Min Required</span>
-                            <span className={styles.metaValue}>{teamData.minTeamSize}</span>
-                        </div>
+                        {!isSoloEntry && teamData.minTeamSize ? (
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Min required</span>
+                                <span className={styles.metaValue}>{teamData.minTeamSize}</span>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -419,7 +406,7 @@ const TeamManagement = () => {
                 </div>
             </div>
 
-            {/* Invite Section — Leader Only, Team Not Full, Registration Open */}
+            {/* Invite Section - Leader Only, Team Not Full, Registration Open */}
             {isLeader && spotsRemaining > 0 && isRegistrationOpen && (
                 <div className={styles.section}>
                     <h3 className={styles.sectionTitle}>
@@ -438,14 +425,14 @@ const TeamManagement = () => {
                 {/* Non-leader: Leave Team */}
                 {!isLeader && isRegistrationOpen && (
                     <button className={styles.dangerButton} onClick={handleLeaveTeam}>
-                        Leave Team
+                        Leave team
                     </button>
                 )}
 
                 {/* Leader, sole member: Dissolve Team */}
                 {isLeader && teamData.teamSize === 1 && isRegistrationOpen && (
                     <button className={styles.dangerButton} onClick={handleLeaveTeam}>
-                        Dissolve Team
+                        {isSoloEntry ? "Cancel registration" : "Dissolve team"}
                     </button>
                 )}
 

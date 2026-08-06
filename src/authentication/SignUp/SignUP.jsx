@@ -18,8 +18,6 @@ import { api } from "../../services";
 import AuthContext from "../../context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import postAuthRedirect from "../../utils/postAuthRedirect";
-import { YEAR_OPTIONS } from "../../data/yearOptions";
 // import { validateData } from "../../utils/hooks/validation/validateSignupData";
 
 const SignUp = () => {
@@ -44,8 +42,8 @@ const SignUp = () => {
     rollNumber: "",
     school: "",
     college: "",
-    year: "",
     contactNo: "+91",
+    year: "",
   });
 
   useEffect(() => {
@@ -257,10 +255,7 @@ const SignUp = () => {
             10800000
           );
           // console.log(authCtx);
-          // Return to whatever sent them here — a team invite link, typically —
-          // instead of always landing on the home page. Falls back to "/" when
-          // nothing is pending, which is where the original always went.
-          router.push(postAuthRedirect("/"));
+          router.push("/");
         }
       } catch (error) {
         setAlert({
@@ -294,16 +289,14 @@ const SignUp = () => {
 
   return (
     <>
-      <div style={{ width: "100vw" }}>
+      <div className={styles.page}>
         <Link href={"/"}>
           <div className={styles.ArrowBackIcon}>
             <ArrowBackIcon />
           </div>
         </Link>
 
-        <div className={styles.circle}></div>
-
-        <div className={styles.circle1}></div>
+        <div className={styles.stage}>
         <div
           className={styles.container}
           style={{
@@ -320,11 +313,12 @@ const SignUp = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                margin: "8 px 0 4px 0",
+                gap: "1rem",
+                margin: "8px 0 4px 0",
               }}
             >
               <div className={styles.divider} />
-              <p style={{ color: "#fff", textAlign: "center" }}>or</p>
+              <p style={{ color: "var(--text-secondary)", textAlign: "center" }}>or</p>
               <div className={styles.divider} />
             </div>
             <form onSubmit={handleSignUp}>
@@ -432,15 +426,19 @@ const SignUp = () => {
                 }}
               >
                 <div style={{ width: "46%" }}>
-                  {/* Chosen, not derived from the roll number: a lateral-entry
-                      student admitted in 2025 is in 2nd year with the 2024
-                      batch. */}
                   <Input
                     type="select"
                     placeholder="Select year"
                     label="Year"
                     name="year"
-                    options={YEAR_OPTIONS}
+                    options={[
+                      { value: "1st", label: "1st year" },
+                      { value: "2nd", label: "2nd year" },
+                      { value: "3rd", label: "3rd year" },
+                      { value: "4th", label: "4th year" },
+                      { value: "5th", label: "5th year" },
+                      { value: "Passout", label: "Passout" },
+                    ]}
                     value={showUser.year}
                     onChange={(value) => DataInp("year", value)}
                     required
@@ -481,7 +479,12 @@ const SignUp = () => {
               >
                 <input
                   type="checkbox"
-                  style={{ height: "17px", width: "17px", cursor: "pointer" }}
+                  style={{
+                    height: "17px",
+                    width: "17px",
+                    cursor: "pointer",
+                    accentColor: "var(--accent)",
+                  }}
                   checked={isTandChecked}
                   onClick={handleCheckBox}
                   id="custom-checkbox"
@@ -499,9 +502,7 @@ const SignUp = () => {
                   <Link
                     href="/TermsAndConditions"
                     style={{
-                      background: "var(--primary)",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
+                      color: "var(--accent)",
                       marginLeft: "7px",
                       marginRight: "7px",
                     }}
@@ -512,9 +513,7 @@ const SignUp = () => {
                   <Link
                     href="/PrivacyPolicy"
                     style={{
-                      background: "var(--primary)",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
+                      color: "var(--accent)",
                       marginLeft: "7px",
                     }}
                   >
@@ -527,13 +526,17 @@ const SignUp = () => {
                 type="submit"
                 style={{
                   width: "100%",
-                  background: "var(--primary)",
-                  color: "#fff",
-                  height: "40px",
+                  backgroundColor: "var(--accent)",
+                  borderColor: "transparent",
+                  borderRadius: "var(--radius-pill)",
+                  boxShadow: "var(--depth)",
+                  color: "var(--text-inverse)",
+                  minHeight: "44px",
                   marginTop: "20px",
-                  fontSize: "1rem",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
                   cursor: "pointer",
-                  // border: "1px solid #fff",
                 }}
                 disabled={isLoading}
               >
@@ -550,9 +553,7 @@ const SignUp = () => {
                 <Link
                   href="/Login"
                   style={{
-                    background: "var(--primary)",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
+                    color: "var(--accent)",
                   }}
                 >
                   Login
@@ -560,7 +561,10 @@ const SignUp = () => {
               </Text>
             </form>
           </div>
-          <div className={styles.sideImage}></div>
+        </div>
+        <div className={styles.sideArt} aria-hidden="true">
+          <img src="/assets/design-2.png" alt="" />
+        </div>
         </div>
       </div>
 

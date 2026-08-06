@@ -4,8 +4,9 @@ import { enforceRateLimit, RATE_LIMITS } from "@/lib/api/rate-limit";
 import { getCurrentUser } from "@/lib/auth/access";
 import { uploadImage } from "@/lib/services/upload";
 
-/** Upload size cap. The avatar's pixel bounds live in `lib/config/images.ts`. */
+/** Cloudinary caps and the square avatar the profile UI renders. */
 const MAX_BYTES = 5 * 1024 * 1024;
+const AVATAR = 512;
 
 /**
  * POST /api/user/editProfileImage
@@ -15,7 +16,7 @@ const MAX_BYTES = 5 * 1024 * 1024;
  * the request body, so any authenticated caller could overwrite another
  * member's avatar.
  *
- * Returns `{ url }` — EditImage.jsx reads `response.data.url`.
+ * Returns `{ url }` - EditImage.jsx reads `response.data.url`.
  */
 export async function POST(request: Request) {
   return handle(async () => {
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
       return expressError(415, "That file is not an image");
     }
 
-    const result = await uploadImage(file, "ProfileImages");
+    const result = await uploadImage(file, "ProfileImages", AVATAR, AVATAR);
     if (!result) {
       return expressError(502, "Could not upload the image. Please try again.");
     }

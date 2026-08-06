@@ -618,15 +618,16 @@ function NewBlogForm() {
             {isVisibility ? (
               <IoSettingsSharp
                 size={20}
-                color="#FF8A00"
-                style={{ cursor: "pointer", marginTop: "10px" }}
+                className={styles.settingsIcon}
+                data-active="true"
+                style={{ marginTop: "10px" }}
                 onClick={() => setisVisibility(!isVisibility)}
               />
             ) : (
               <IoSettingsOutline
                 size={20}
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                color="#fff"
+                className={styles.settingsIcon}
+                style={{ marginTop: "10px" }}
                 onClick={() => setisVisibility(!isVisibility)}
               />
             )}
@@ -639,27 +640,23 @@ function NewBlogForm() {
       </div>
 
       {isVisibility && (
-        <div style={{
-          backgroundColor: "rgb(35, 34, 34)",
-          width: "86%",
-          margin: ".5em 0",
-          padding: "1.6em",
-          borderRadius: "8px",
-          marginBottom: "1em",
-        }}>
-          <div style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: "1em"
-          }}>
-            <label style={{ color: "#fff", margin: "1px 0", fontSize: ".8em" }}>
+        <div className={styles.settings}>
+          <div className={styles.settingsRow}>
+            <label className={styles.settingsLabel}>
               Blog Visibility (
-              <span style={{ color: !data.isPublished ? "#FF8A00" : "white" }}>
+              <span
+                className={
+                  !data.isPublished ? styles.settingsOn : styles.settingsOff
+                }
+              >
                 Private
               </span>
               /
-              <span style={{ color: data.isPublished ? "#FF8A00" : "white" }}>
+              <span
+                className={
+                  data.isPublished ? styles.settingsOn : styles.settingsOff
+                }
+              >
                 Public
               </span>
               )
@@ -676,9 +673,9 @@ function NewBlogForm() {
           </div>
         </div>
       )}
-      <div style={{ fontSize: '0.75em', color: '#FF8A00', margin: '0 0 0.5em 0', fontWeight: 400, letterSpacing: '0.01em' }}>
+      <p className={styles.visibilityHint}>
         Don’t forget to change visibility to Private/Public in settings
-      </div>
+      </p>
       <div style={{
         height: "90vh",
         width: "90%",
@@ -754,21 +751,10 @@ function NewBlogForm() {
               <button
                 type="button"
                 onClick={handleAttachClick}
-                style={{
-                  position: "absolute",
-                  right: "4.5rem",
-                  top: "55%",
-                  transform: "translateY(-50%)",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  display: "flex",
-                  alignItems: "center"
-                }}
+                className={styles.attachButton}
                 title="Upload Image"
               >
-                <FaPaperclip size={18} color="#FF8A00" />
+                <FaPaperclip size={18} />
               </button>
               <input
                 type="file"
@@ -781,7 +767,7 @@ function NewBlogForm() {
 
             {data.image && (
               <div style={{ marginTop: "10px" }}>
-                <p style={{ margin: "5px 0", fontSize: "0.9rem", color: "#666" }}>Preview:</p>
+                <p className={styles.previewLabel}>Preview:</p>
                 <img
                   src={
                     data.image instanceof File
@@ -789,13 +775,7 @@ function NewBlogForm() {
                       : data.image
                   }
                   alt="Blog Thumbnail Preview"
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 5px rgba(0,0,0,0.2)",
-                    objectFit: "cover",
-                  }}
+                  className={styles.previewImage}
                 />
               </div>
             )}

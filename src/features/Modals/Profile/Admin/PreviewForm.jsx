@@ -3,12 +3,14 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./styles/Preview.module.scss";
 import AuthContext from "../../../../context/AuthContext";
-import { Button, Text } from "../../../../components";
 import Section from "./SectionModal";
 
-import { X } from "lucide-react";
+import CloseButton from "../../../../components/CloseButton/CloseButton";
 import { getOutboundList } from "../../../../sections/Profile/Admin/Form/NewForm/NewForm";
-import Complete from "../../../../assets/images/Complete.svg";
+import {
+  ErrorArt,
+  SuccessArt,
+} from "../../../../views/Event/components/Artwork";
 import { api } from "../../../../services";
 import {
   Alert,
@@ -17,7 +19,6 @@ import {
 } from "../../../../microInteraction";
 // import AuthContext from "../../../../context/AuthContext";
 import { RecoveryContext } from "../../../../context/RecoveryContext";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const operators = [
@@ -171,66 +172,42 @@ const PreviewForm = ({
       const participationType = eventData?.participationType;
       const successMessage = eventData?.successMessage;
       console.log(participationType);
-      // [v2] Redeems an invite link's team code once registration has gone
-      // through. Returns where to send them next, so the caller owns navigation.
-      const autoJoinTeam = async () => {
-        try {
-          const joinResponse = await api.post("/api/form/joinTeam", {
-            formId: form.id,
-            teamCode,
-          });
-
-          if (joinResponse?.data?.success) {
-            Alert({
-              type: "success",
-              message: joinResponse.data.message || `Joined team successfully!`,
-              position: "bottom-right",
-              duration: 3000,
-            });
-            return { path: `/Events/${form.id}/team`, replace: true };
-          }
-
-          return failedJoinDestination(joinResponse?.data?.message);
-        } catch (joinErr) {
-          console.error("Auto-join failed:", joinErr);
-          return failedJoinDestination(joinErr?.response?.data?.message);
-        }
-      };
-
-      // The invite could not be honoured — the team filled up while they were
-      // registering, the code is stale, or registration closed. Registration
-      // itself succeeded, so they go to the team page, which renders the team
-      // search for an unaffiliated registrant, rather than to /Events with no
-      // explanation. The reason rides along as a query param for the toast.
-      const failedJoinDestination = (reason) => {
-        const query = new URLSearchParams({ toast: "join_failed" });
-        if (reason) query.set("reason", reason);
-        return {
-          path: `/Events/${form.id}/team?${query.toString()}`,
-          replace: true,
-        };
-      };
-
-      const eventsDestination = () => {
-        if (participationType === "Team") {
-          setTeamCode(code);
-          setTeamName(team);
-        }
-        if (successMessage) setSuccessMessage(successMessage);
-        return { path: "/Events", replace: false };
-      };
-
       const handleAutoClose = async () => {
-        const destination =
-          teamCode && participationType === "Team"
-            ? await autoJoinTeam()
-            : eventsDestination();
+        // [v2] If teamCode is present (invite link), auto-join the team after registration
+        if (teamCode && participationType === "Team") {
+          try {
+            const joinResponse = await api.post("/api/form/joinTeam", {
+              formId: form.id,
+              teamCode: teamCode,
+            });
+            if (joinResponse.data?.success) {
+              Alert({
+                type: "success",
+                message: joinResponse.data.message || `Joined team successfully!`,
+                position: "bottom-right",
+                duration: 3000,
+              });
+              const eventId = joinResponse.data.data?.eventId || form.id;
+              setTimeout(() => {
+                router.replace(`/Events/${form.id}/team`);
+              }, 1000);
+              return;
+            }
+          } catch (joinErr) {
+            console.error("Auto-join failed:", joinErr);
+            // Fall through to normal flow if join fails
+          }
+        }
 
-        // Single navigation for every outcome. The delay lets the success or
-        // failure toast be read before the page changes.
         setTimeout(() => {
-          if (destination.replace) router.replace(destination.path);
-          else router.push(destination.path);
+          if (participationType === "Team") {
+            setTeamCode(code);
+            setTeamName(team);
+          }
+          if (successMessage) {
+            setSuccessMessage(successMessage);
+          }
+          router.push("/Events");
         }, 1000);
       };
 
@@ -587,49 +564,53 @@ const PreviewForm = ({
 
     if (eventType === "Paid" && currentSection.name === "Payment Details") {
       return (
-        <div
-          style={{
-            margin: "8px auto",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {receiverDetails.media && (
-            <img
-              src={
-                typeof receiverDetails.media === "string"
-                  ? receiverDetails.media
-                  : URL.createObjectURL(receiverDetails.media)
-              }
-              alt={"QR-Code"}
-              style={{
-                width: 200,
-                height: 200,
-                objectFit: "contain",
-              }}
-            />
-          )}
-
-          {/* ✅ Download & Copy Buttons */}
-          <div style={{ display: "flex", gap: "10px", marginTop: 10 }}>
-            <Button onClick={handleDownloadQR}>Download QR</Button>
-            <Button onClick={handleCopyUPIID}>Copy UPI ID</Button>
+        <div className={styles.payment}>
+          <div className={styles.paymentAmount}>
+            <span className={styles.paymentLabel}>Amount due</span>
+            <span className={styles.paymentValue}>&#8377;{eventAmount}</span>
           </div>
 
-          <p
-            style={{
-              fontSize: 12,
-              marginTop: 12,
-              color: "lightgray",
-              textAlign: "center",
-            }}
-          >
-            Make the payment of{" "}
-            <strong style={{ color: "#fff" }}>&#8377;{eventAmount}</strong>{" "}
-            using QR-Code or Pay using UPI ID:{" "}
-            <strong style={{ color: "#fff" }}>{receiverDetails.upi} (No Refund Policy)</strong>
+          {receiverDetails.media && (
+            <div className={styles.qrFrame}>
+              <img
+                src={
+                  typeof receiverDetails.media === "string"
+                    ? receiverDetails.media
+                    : URL.createObjectURL(receiverDetails.media)
+                }
+                alt="Payment QR code"
+                className={styles.qr}
+              />
+            </div>
+          )}
+
+          {receiverDetails.upi && (
+            <div className={styles.upiRow}>
+              <span className={styles.upiLabel}>UPI ID</span>
+              <span className={styles.upiValue}>{receiverDetails.upi}</span>
+            </div>
+          )}
+
+          <div className={styles.paymentActions}>
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={handleDownloadQR}
+            >
+              Download QR
+            </button>
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={handleCopyUPIID}
+            >
+              Copy UPI ID
+            </button>
+          </div>
+
+          <p className={styles.paymentNote}>
+            Pay with the QR code or UPI ID above, then enter your transaction
+            details below. Payments are non-refundable.
           </p>
         </div>
       );
@@ -639,157 +620,158 @@ const PreviewForm = ({
   };
 
 
+  const submitted = isCompleted.includes("Submitted");
+  const nav = inboundList();
+  const totalSteps = data?.length || 1;
+  const rawIndex = data?.findIndex((sec) => sec._id === currentSection?._id);
+  const stepIndex = rawIndex >= 0 ? rawIndex + 1 : totalSteps;
+
+  if (!open) {
+    return <Alert />;
+  }
+
   return (
-    <>
-      open && (
-      <div className={styles.mainPreview}>
-        <div className={styles.previewContainerWrapper}>
-          <div ref={wrapperRef} className={styles.previewContainer}>
-            {showCloseBtn &&
-              (isEditing ? (
-                <div onClick={handleClose} className={styles.closeBtn}>
-                  <X />
-                </div>
-              ) : (
-                <Link href="/Events" onClick={handleClose}>
-                  <div className={styles.closeBtn}>
-                    <X />
-                  </div>
-                </Link>
-              ))}
-            <Text
-              style={{
-                marginBottom: "20px",
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                fontSize: "25px",
-              }}
+    <div className={styles.overlay}>
+      <div
+        className={styles.panel}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Register for ${eventData?.eventTitle || "event"}`}
+      >
+        <header className={styles.header}>
+          <div>
+            <p className={styles.kicker}>Registration</p>
+            <h2 className={styles.eventTitle}>
+              {eventData?.eventTitle || "Preview event"}
+            </h2>
+          </div>
+
+          {showCloseBtn &&
+            (isEditing ? (
+              <CloseButton
+                onClick={handleClose}
+                label="Close registration"
+                className={styles.close}
+              />
+            ) : (
+              <CloseButton
+                href="/Events"
+                onClick={handleClose}
+                label="Close registration"
+                className={styles.close}
+              />
+            ))}
+        </header>
+
+        {!isLoading && !submitted && currentSection && (
+          <div className={styles.progress}>
+            <div className={styles.progressMeta}>
+              <span>
+                Step {stepIndex} of {totalSteps}
+              </span>
+              <span className={styles.progressName}>
+                {nav && nav.nextSection
+                  ? `Next: ${nav.nextSection.name}`
+                  : "Last step"}
+              </span>
+            </div>
+            <div
+              className={styles.track}
+              role="progressbar"
+              aria-valuemin={1}
+              aria-valuemax={totalSteps}
+              aria-valuenow={stepIndex}
+              aria-label="Registration progress"
             >
-              {eventData?.eventTitle || "Preview Event"}
-            </Text>
-            {isLoading ? (
+              {Array.from({ length: totalSteps }).map((_, i) => (
+                <span
+                  key={i}
+                  className={styles.segment}
+                  data-done={i < stepIndex ? "true" : undefined}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div ref={wrapperRef} className={styles.body}>
+          {isLoading ? (
+            <div className={styles.loading}>
               <ComponentLoading
                 customStyles={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginLeft: "0rem",
-                  marginTop: "5rem",
                 }}
               />
-            ) : !isCompleted.includes("Submitted") ? (
-              <div style={{ width: "100%" }}>
-                <div>
-                  <Text style={{ alignSelf: "center" }} variant="secondary">
-                    {currentSection.name}
-                  </Text>
-                  <Text
-                    style={{
-                      cursor: "pointer",
-                      padding: "6px 0",
-                      fontSize: "11px",
-                      opacity: "0.4",
-                      marginBottom: "8px",
-                    }}
-                  >
+            </div>
+          ) : !submitted ? (
+            <>
+              <div className={styles.sectionHead}>
+                <h3 className={styles.sectionName}>{currentSection.name}</h3>
+                {currentSection.description && (
+                  <p className={styles.sectionDesc}>
                     {currentSection.description}
-                  </Text>
-                </div>
-                {renderPaymentScreen()}
-                <Section section={currentSection} handleChange={handleChange} />
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  {inboundList() && inboundList().backSection && (
-                    <Button style={{ marginRight: "10px" }} onClick={onBack}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    onClick={
-                      inboundList() && inboundList().nextSection
-                        ? onNext
-                        : handleSubmit
-                    }
-                  >
-                    {inboundList() && inboundList().nextSection ? (
-                      "Next"
-                    ) : isMicroLoading ? (
-                      <MicroLoading />
-                    ) : (
-                      "Submit"
-                    )}
-                  </Button>
-                </div>
+                  </p>
+                )}
               </div>
-            ) : isSuccess ? (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={Complete.src}
-                  alt="Complete"
-                  style={{ width: "400px", height: "400px", margin: "auto" }}
-                />
-                <Text
-                  variant="secondary"
-                  style={{
-                    width: "60%",
-                    fontSize: "14px",
-                    alignSelf: "center",
-                    textAlign: "center",
-                    marginTop: "16px",
-                    userSelect: "none",
-                  }}
-                >
-                  Form Submitted Successfully! Thank you for your time.
-                </Text>
-              </div>
-            ) : (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <Text
-                  variant="secondary"
-                  style={{
-                    width: "60%",
-                    fontSize: "14px",
-                    alignSelf: "center",
-                    textAlign: "center",
-                    marginTop: "16px",
-                    userSelect: "none",
-                  }}
-                >
-                  <h2 style={{ marginBottom: "3rem" }}>
-                    Error Submitting your Form
-                  </h2>
-                  There is an error submitting the form. If you have made any
-                  payment, please fill up your payment details again. There is
-                  no need to pay again.
-                </Text>
-              </div>
-            )}
-          </div>
+
+              {renderPaymentScreen()}
+
+              <Section section={currentSection} handleChange={handleChange} />
+            </>
+          ) : isSuccess ? (
+            <div className={styles.result}>
+              <SuccessArt className={styles.resultArtSuccess} />
+              <h3 className={styles.resultTitle}>You&rsquo;re registered</h3>
+              <p className={styles.resultBody}>
+                We&rsquo;ve saved your response. Event details and updates will
+                reach you over email.
+              </p>
+            </div>
+          ) : (
+            <div className={styles.result} role="alert">
+              <ErrorArt className={styles.resultArt} />
+              <h3 className={styles.resultTitle}>We couldn&rsquo;t submit</h3>
+              <p className={styles.resultBody}>
+                Something went wrong sending your form. If you already paid,
+                re-enter your payment details only &mdash; there is no need to
+                pay again.
+              </p>
+            </div>
+          )}
         </div>
+
+        {!isLoading && !submitted && (
+          <footer className={styles.footer}>
+            {nav && nav.backSection && (
+              <button
+                type="button"
+                className={styles.secondary}
+                onClick={onBack}
+              >
+                Back
+              </button>
+            )}
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={nav && nav.nextSection ? onNext : handleSubmit}
+            >
+              {nav && nav.nextSection ? (
+                "Continue"
+              ) : isMicroLoading ? (
+                <MicroLoading />
+              ) : (
+                "Submit registration"
+              )}
+            </button>
+          </footer>
+        )}
       </div>
-      )
+
       <Alert />
-    </>
+    </div>
   );
 };
 export default PreviewForm;

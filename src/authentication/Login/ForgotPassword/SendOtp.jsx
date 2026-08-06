@@ -112,8 +112,6 @@ export default function Login() {
             <ArrowBackIcon />
           </div>
   
-            <div className={style.circle}><div></div></div>
-            <div className={style.circle1}></div>
             <div  className={style.primaryBox}>
               <form>
                 <div className={style.boxTitle}>

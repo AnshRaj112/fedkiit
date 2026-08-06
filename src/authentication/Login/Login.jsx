@@ -1,14 +1,11 @@
 "use client";
 
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 import React, { useState, useContext, useEffect } from "react";
-
 import style from "./styles/Login.module.scss";
 import Input from "../../components/Core/Input";
 import Button from "../../components/Core/Button";
 import Text from "../../components/Core/Text";
-import users from "../../data/user.json";
 import { api } from "../../services";
 import AuthContext from "../../context/AuthContext";
 import { RecoveryContext } from "../../context/RecoveryContext";
@@ -41,8 +38,6 @@ const Login = () => {
     }
   }, [alert]);
 
-  // `replace`, not `push`: App.jsx redirected with <Navigate replace />, so the
-  // login page must not sit in the history stack behind the destination.
   useEffect(() => {
     if (shouldNavigate) {
       router.replace(navigatePath);
@@ -71,11 +66,8 @@ const Login = () => {
         password,
       });
 
-      // console.log("incoming response", response.data);
-
       if (response.status === 200 || response.status === 201) {
         const user = response.data.user;
-        // console.log("user is ", user);
 
         setAlert({
           type: "success",
@@ -107,14 +99,8 @@ const Login = () => {
             response.data.token,
             9600000
           );
-          // App.jsx re-rendered /Login as <LoginRedirect /> the moment
-          // isLoggedIn flipped. App Router routes are files and nothing watches
-          // that flag, so the navigation this component was already wired for
-          // has to be triggered explicitly.
           setShouldNavigate(true);
         }, 800);
-        // console.log(authCtx);
-
       } else {
         setAlert({
           type: "error",
@@ -144,140 +130,143 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className={style.container}>
-        <Link href={"/"}>
-          <div className={style.ArrowBackIcon}>
-            <ArrowBackIcon />
-          </div>
-        </Link>
-        <div className={style.circle}>
-          <div></div>
-        </div>
-        <div className={style.circle1}></div>
-        <div className={style.login}>
-          <h1
-            style={{
-              paddingTop: "10px",
-              background: "var(--primary)",
-              width: "20%",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            Login
-          </h1>
-          <GoogleLogin />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "1rem",
-            }}
-          >
-            <div className={style.divider} />
-            <p
+    <div className={style.page}>
+      <Link href="/" className={style.ArrowBackIcon} aria-label="Go back">
+        <ArrowBackIcon />
+      </Link>
+      <div className={style.stage}>
+        <div className={style.container}>
+          <div className={style.login}>
+            <h1 style={{ paddingTop: "10px", width: "100%", textAlign: "left" }}>
+              Login
+            </h1>
+            
+            <div style={{ width: "100%", marginTop: "1rem" }}>
+              <GoogleLogin />
+            </div>
+
+            <div
               style={{
-                color: "#fff",
-                textAlign: "center",
-                marginBottom: "0.2rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "1rem",
+                width: "100%",
+                margin: "1.25rem 0",
               }}
             >
-              or
-            </p>
-            <div className={style.divider} />
-          </div>
-          <form className={style.form} onSubmit={handleLogin}>
-            <Input
-              type="text"
-              placeholder="eg:something@gmail.com"
-              label="Email"
-              name="email"
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
-              required
-              style={{
-                width: "98%",
-              }}
-            />
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              label="Password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{
-                width: "98%",
-              }}
-            />
-            <Text
-              onClick={handleForgot}
-              variant="secondary"
-              style={{
-                fontSize: "0.7rem",
-                cursor: "pointer",
-                width: "40%",
-                marginLeft: "0.4rem",
-                background: "var(--primary)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              Forget Password?
-            </Text>
-            <Button
-              type="submit"
-              style={{
-                width: "98%",
-                background: "var(--primary)",
-                color: "#fff",
-                height: "40px",
-                marginTop: "20px",
-                fontSize: "1rem",
-                cursor: "pointer",
-                marginLeft: "0.4rem",
-              }}
-              disabled={isLoading}
-            >
-              {isLoading ? <MicroLoading /> : "Login"}
-            </Button>
-            <Text
-              style={{
-                fontSize: "0.8rem",
-                textAlign: "center",
-                marginTop: "14px",
-              }}
-            >
-              Don't have an account?{" "}
-              <Link
-                href="/signup"
-                onClick={() => {
-                  // Only remember this page if nothing is already pending.
-                  // Overwriting unconditionally — as the original did — threw
-                  // away the destination `ProtectedRoute` had just stored, so
-                  // someone arriving on a team invite link and choosing "Sign
-                  // Up" lost the invite before signing up. `/Login` is never a
-                  // useful place to return to anyway.
-                  if (!sessionStorage.getItem("prevPage")) {
-                    sessionStorage.setItem(
-                      "prevPage",
-                      window.location.pathname,
-                    );
-                  }
-                }}
+              <div className={style.divider} style={{ flex: 1 }} />
+              <p
                 style={{
-                  background: "var(--primary)",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
+                  color: "var(--text-secondary)",
+                  textAlign: "center",
+                  margin: 0,
+                  fontSize: "0.875rem",
                 }}
               >
-                Sign Up
-              </Link>
-            </Text>
-          </form>
+                or
+              </p>
+              <div className={style.divider} style={{ flex: 1 }} />
+            </div>
+
+            <form 
+              className={style.form} 
+              onSubmit={handleLogin}
+              style={{ 
+                width: "100%", 
+                display: "flex", 
+                flexDirection: "column", 
+                gap: "1rem" 
+              }}
+            >
+              <Input
+                type="text"
+                placeholder="eg:something@gmail.com"
+                label="Email"
+                name="email"
+                value={email}
+                onChange={(e) => setemail(e.target.value)}
+                required
+                style={{ width: "100%" }}
+              />
+              
+              <div>
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  label="Password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  style={{ width: "100%" }}
+                />
+                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.4rem" }}>
+                  <Text
+                    onClick={handleForgot}
+                    variant="secondary"
+                    style={{
+                      fontSize: "0.75rem",
+                      cursor: "pointer",
+                      color: "var(--accent)",
+                      userSelect: "none",
+                    }}
+                  >
+                    Forgot Password?
+                  </Text>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                style={{
+                  width: "100%",
+                  backgroundColor: "var(--accent)",
+                  borderColor: "transparent",
+                  borderRadius: "var(--radius-pill)",
+                  boxShadow: "var(--depth)",
+                  color: "var(--text-inverse)",
+                  minHeight: "44px",
+                  marginTop: "0.5rem",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                disabled={isLoading}
+              >
+                {isLoading ? <MicroLoading /> : "Login"}
+              </Button>
+
+              <Text
+                style={{
+                  fontSize: "0.85rem",
+                  textAlign: "center",
+                  marginTop: "0.5rem",
+                }}
+              >
+                Don't have an account?{" "}
+                <Link
+                  href="/signup"
+                  onClick={() => {
+                    sessionStorage.setItem("prevPage", window.location.pathname);
+                  }}
+                  style={{
+                    color: "var(--accent)",
+                    fontWeight: 600,
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </Text>
+            </form>
+          </div>
+        </div>
+        <div className={style.sideArt} aria-hidden="true">
+          <img src="/assets/design-3.png" alt="" />
         </div>
       </div>
       <Alert />

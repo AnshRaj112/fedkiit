@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useContext } from 'react';
-import { X } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import CloseButton from '../../../../components/CloseButton/CloseButton';
 import AuthContext from '../../../../context/AuthContext';
 import { RecoveryContext } from '../../../../context/RecoveryContext';
 import { api } from '../../../../services';
@@ -82,34 +82,39 @@ const QRCodeModal = ({ onClose, eventId, onAttendanceMarked }) => {
   };
 
   return (
-    <div className={style.qrContainer}>
-      <div className={style.overlay} onClick={handleClose}></div>
-      <div className={style.maindiv}>
-        <div className={style.header}>
-          <div
-            onClick={handleClose}
-            className={style.closebtn}
-          >
-            <X />
-          </div>
-          <div className={style.title}>Attendance QR Code</div>
-        </div>
-        
+    <div
+      className={style.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Attendance QR code"
+      onClick={(e) => e.target === e.currentTarget && handleClose()}
+    >
+      <div className={style.panel}>
+        <header className={style.header}>
+          <h2 className={style.title}>Attendance QR code</h2>
+          <CloseButton onClick={handleClose} label="Close QR code" />
+        </header>
+
         <div className={style.content}>
           {isLoading ? (
-            <div className={style.loadingContainer}>
-              <div className={style.spinner}></div>
-              <p>Generating QR Code...</p>
+            <div className={style.state}>
+              <div className={style.spinner} aria-hidden="true" />
+              <p className={style.stateText}>Generating QR code</p>
             </div>
           ) : error ? (
-            <div className={style.errorContainer}>
-              <p>{error}</p>
-              <button onClick={handleRetry} className={style.retryBtn}>
-                Try Again
+            <div className={style.state}>
+              <p className={style.stateTitle}>Couldn&rsquo;t generate a code</p>
+              <p className={style.stateText}>{error}</p>
+              <button
+                type="button"
+                onClick={handleRetry}
+                className={style.action}
+              >
+                Try again
               </button>
             </div>
           ) : qrCodeData ? (
-            <div className={style.qrContent}>
+            <>
               <div className={style.qrWrapper}>
                 <QRCodeSVG
                   value={qrCodeData}
@@ -121,18 +126,20 @@ const QRCodeModal = ({ onClose, eventId, onAttendanceMarked }) => {
                   bgColor="transparent"
                 />
               </div>
-              
-              <div className={style.codeInfo}>
-                <p className={style.instruction}>
-                  Show this QR code to event organizers for attendance verification.
-                </p>
-                <p className={style.instruction}>
-                This attendance QR code can be used only once. Do not share it with others.              </p>
-              </div>
-            </div>
+
+              <p className={style.instruction}>
+                Show this to an organiser to verify your attendance.
+              </p>
+              <p className={style.caution}>
+                Single use - don&rsquo;t share it with anyone else.
+              </p>
+            </>
           ) : (
-            <div className={style.noCodeContainer}>
-              <p>No attendance code available</p>
+            <div className={style.state}>
+              <p className={style.stateTitle}>No attendance code yet</p>
+              <p className={style.stateText}>
+                A code appears here once attendance opens for this event.
+              </p>
             </div>
           )}
         </div>

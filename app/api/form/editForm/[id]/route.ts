@@ -9,7 +9,7 @@ import type { EventInfo } from "@/lib/types/event";
 
 /**
  * PUT /api/form/editForm/:id
- * Port of controllers/forms/editForm.js — admin only.
+ * Port of controllers/forms/editForm.js - admin only.
  *
  * Merges submitted fields into the existing `info` blob rather than replacing
  * it, so a partial edit cannot silently blank out fields the form did not post.
@@ -76,13 +76,13 @@ export async function PUT(
 
     const eventImg = form.get("eventImg");
     if (eventImg instanceof File && eventImg.size > 0) {
-      const result = await uploadImage(eventImg, "FormImages");
+      const result = await uploadImage(eventImg, "FormImages", 1000, 1000);
       if (result) info.eventImg = result.secure_url;
     }
 
     const media = form.get("media");
     if (media instanceof File && media.size > 0) {
-      const result = await uploadImage(media, "QRMediaImages");
+      const result = await uploadImage(media, "QRMediaImages", 500, 500);
       if (result) {
         info.receiverDetails = {
           ...(info.receiverDetails ?? {}),
@@ -110,7 +110,7 @@ export async function PUT(
 
     return json({
       success: true,
-      message: "Form info and sections updated successfully",
+      message: "Form updated successfully",
       form: updated,
     });
   });

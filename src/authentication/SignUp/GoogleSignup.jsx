@@ -124,15 +124,8 @@ export default function GoogleSignup({ setAlert }) {
     <>
       <button
         style={{
-          backgroundColor: "transparent",
-          color: "#fff",
-          height: "40px",
+          width: "100%",
           marginTop: "20px",
-          fontSize: ".77rem",
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }}
         className={styles.google_btn}
         onClick={signUp}

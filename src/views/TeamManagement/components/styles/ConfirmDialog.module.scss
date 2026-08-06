@@ -1,0 +1,123 @@
+// Kept in its own module rather than in TeamManagement.module.scss so the
+// confirm popup carries the shared modal pattern wherever it is reused.
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.72);
+  font-family: var(--font-sans);
+}
+
+.dialogContent {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+}
+
+.dialogTitle {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.dialogMessage {
+  margin: 0 0 20px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialogCancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.dialogConfirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid rgba(244, 82, 59, 0.4);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--negative);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(244, 82, 59, 0.12);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialogActions {
+    flex-direction: column-reverse;
+  }
+
+  .dialogCancel,
+  .dialogConfirm {
+    width: 100%;
+  }
+}

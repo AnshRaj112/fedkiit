@@ -3,15 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "node scripts/with-env.mjs dev",
     "build": "node scripts/with-env.mjs build",
     "start": "node scripts/with-env.mjs start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
-    "audit:nesting": "node scripts/audit-nesting.mjs",
-    "audit:contracts": "node scripts/audit-api-contracts.mjs",
-    "postinstall": "node scripts/ensure-prisma.mjs --optional",
-    "prisma:generate": "node scripts/ensure-prisma.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -60,6 +57,7 @@
     "react-social-media-embed": "^2.5.18",
     "react-switch": "^7.1.0",
     "resend": "^6.18.1",
+    "saas": "^1.0.0",
     "sass": "^1.102.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",

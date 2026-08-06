@@ -18,7 +18,7 @@ const eslintConfig = defineConfig([
   {
     /**
      * `src/**` is the 1:1 port of FED-Frontend. Its components keep the original
-     * markup and logic on purpose — that fidelity is the whole point of the
+     * markup and logic on purpose - that fidelity is the whole point of the
      * migration, and it is what makes the replica pixel-identical.
      *
      * The rules below are React-Compiler-era lint rules that postdate the
@@ -26,7 +26,7 @@ const eslintConfig = defineConfig([
      * `setState` inside an effect, mutation of a value captured in render, and
      * components declared inside other components. Satisfying them would mean
      * rewriting the state flow of ~120 components with no behavioural change
-     * intended — a large, untestable diff against a working UI.
+     * intended - a large, untestable diff against a working UI.
      *
      * They are therefore warnings here, so they stay visible without failing
      * the lint run, while everything under app/, lib/, components/ and

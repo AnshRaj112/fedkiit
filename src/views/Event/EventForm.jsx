@@ -15,8 +15,6 @@ const EventForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(null);
   const { eventId } = useParams();
-  // Next returns the params object itself, not React Router's [params, setter]
-  // pair. Destructuring it as an array yields undefined and crashes on `.get`.
   const searchParams = useSearchParams();
   const router = useRouter();
   const authCtx = useContext(AuthContext);
@@ -78,7 +76,7 @@ const EventForm = () => {
           if (teamCode && authCtx.isLoggedIn) {
             const isRegistered = authCtx.user?.regForm?.includes(fetchedEventData?.id || eventId);
             if (isRegistered) {
-              // User is already registered — auto-join the team via invite link
+              // User is already registered - auto-join the team via invite link
               await handleAutoJoin(fetchedEventData?.id || eventId, teamCode);
               return; // Don't show the form
             }
@@ -114,6 +112,16 @@ const EventForm = () => {
 
   return (
     <div>
+      {isLoading && (
+        <ComponentLoading
+          customStyles={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "60vh",
+          }}
+        />
+      )}
       {!isLoading && showPreview && (
         <PreviewForm
           open={showPreview}

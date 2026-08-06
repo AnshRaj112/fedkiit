@@ -1,44 +1,54 @@
+// Participated / timeline events table.
+//
+// The heading was a gradient text-clip, the table rule was `2px solid grey` and
+// the row actions had no class at all - `.viewButton` was referenced from the
+// JSX but never defined, so they rendered as browser default buttons with an
+// inline `color: orange`. They are pills now.
+
 .participatedEvents {
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 300;
   display: flex;
   flex-direction: column;
   padding-left: 0px;
   padding-top: 35px;
   padding-bottom: 27px;
   height: auto;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--text-primary);
 
   .error {
     padding: 30px 70px;
     z-index: 1;
     text-align: center;
     margin-top: 2rem;
-    font-size: 1.2rem;
-    font-weight: 400;
     margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--text-secondary);
   }
 
   .proHeading {
-    font-size: 30px;
-    letter-spacing: 0.02em;
-    line-height: 40px;
-    margin-bottom: 50px;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .headInnerText span {
-    margin-right: 3px;
-    background: linear-gradient(to right, #d03e21 40%, #ff8a00);
-    -webkit-background-clip: text;
-    color: transparent;
+    width: 100%;
+    margin-bottom: 50px;
   }
 
   .headInnerText {
+    margin: 0;
     margin-left: 10.5rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+
+    span {
+      margin-right: 6px;
+      color: var(--accent);
+    }
   }
 
   .tables {
@@ -54,14 +64,20 @@
     border-collapse: collapse;
 
     th {
-      border-bottom: 2px solid grey;
       padding-bottom: 10px;
       padding-top: 5px;
-      font-size: 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
     }
 
     td {
-      font-size: 15px;
+      padding: 10px 0;
+      font-size: 0.875rem;
+      color: var(--text-primary);
     }
 
     th,
@@ -92,16 +108,62 @@
   }
 
   .noEvents {
-    text-align: center;
-    font-size: 25px;
-    font-weight: 700;
-    color: grey;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     margin: auto;
+    padding: 44px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-1);
+    box-shadow: var(--depth);
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding-inline: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -141,19 +203,16 @@
     margin-bottom: 20px;
   }
 
-  .eventsTable {
+  .participatedEvents .eventsTable {
     margin-left: 3vw;
     margin-right: 3vw;
   }
 
-  .error {
-    padding: 30px 70px;
-    z-index: 1;
-    text-align: center;
+  .participatedEvents .error {
+    padding: 20px;
     margin-top: 10px;
-    font-size: .9rem;
-    font-weight: 400;
     margin-bottom: 10px;
+    font-size: 0.875rem;
   }
 
   .participatedEvents .tables {
@@ -161,8 +220,8 @@
     margin-left: 0rem;
   }
 
-  .noEvents {
-    font-size: 22px;
+  .participatedEvents .noEvents {
+    font-size: 1rem;
     height: auto;
   }
 }
@@ -172,33 +231,14 @@
     margin-left: 5vw;
     margin-right: 5vw;
   }
-
-  .noEvents {
-    font-size: 20px;
-  }
 }
 
 @media screen and (max-width: 480px) {
   .participatedEvents .headInnerText {
-    font-size: 30px;
+    font-size: 1.5rem;
   }
 
   .participatedEvents .eventsTable th {
-    font-size: 17px;
-  }
-
-  .error {
-    padding: 30px 70px;
-    z-index: 1;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-  }
-
-  .noEvents {
-    font-size: 18px;
+    font-size: 0.6875rem;
   }
 }
-

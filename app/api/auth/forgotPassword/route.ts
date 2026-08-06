@@ -7,7 +7,7 @@ import { issueOtp } from "@/lib/services/otp";
  * POST /api/auth/forgotPassword
  * Port of controllers/auth/forgetPassword.js.
  *
- * SendOtp.jsx branches on a 200, so an unknown address still gets a 200 —
+ * SendOtp.jsx branches on a 200, so an unknown address still gets a 200 -
  * which also avoids confirming whether an account exists.
  */
 export async function POST(request: Request) {

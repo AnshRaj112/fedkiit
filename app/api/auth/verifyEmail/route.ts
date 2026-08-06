@@ -5,7 +5,7 @@ import { issueOtp } from "@/lib/services/otp";
 
 /**
  * POST /api/auth/verifyEmail
- * Port of controllers/auth/verifyEmailController.js — step 1 of signup.
+ * Port of controllers/auth/verifyEmailController.js - step 1 of signup.
  */
 export async function POST(request: Request) {
   return handle(async () => {

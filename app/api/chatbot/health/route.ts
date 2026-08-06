@@ -3,7 +3,7 @@ import { handle, json } from "@/lib/api/express";
 
 /**
  * GET /api/chatbot/health
- * Port of the health probe in routes/api/chatbot — reports whether any Gemini
+ * Port of the health probe in routes/api/chatbot - reports whether any Gemini
  * key is configured, without revealing the keys themselves.
  */
 export async function GET() {

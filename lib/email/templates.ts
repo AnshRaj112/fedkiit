@@ -134,7 +134,7 @@ export function otpEmail(input: {
       This code expires in <strong>${input.validityMinutes} minutes</strong>.
     </p>
     <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7280;">
-      If you did not request this, you can safely ignore this email — nobody can
+      If you did not request this, you can safely ignore this email - nobody can
       access your account without the code.
     </p>`;
 
@@ -162,7 +162,7 @@ export function welcomeEmail(input: { name: string }): {
       registrations and download certificates from your profile.
     </p>
     <p style="${P}">
-      FED is the student entrepreneurship body of KIIT TBI — we run events,
+      FED is the student entrepreneurship body of KIIT TBI - we run events,
       workshops and competitions, and help student founders get their ideas off
       the ground.
     </p>`;
@@ -257,39 +257,4 @@ export function contactNotificationEmail(input: {
       preheader: `${input.name}: ${input.message.slice(0, 80)}`,
     }),
   };
-}
-
-/**
- * Sent to someone a team leader has removed.
- *
- * Copy follows emailTemplates/removedMember.html: the point is to make clear the
- * person is still registered for the event and can join or start another team.
- */
-export function removedMemberEmail(input: {
-  teamName: string;
-  eventName: string;
-}): string {
-  const body = `
-    <p style="${P}">Hi there,</p>
-    <p style="${P}">
-      You have been removed from the team <strong>${escapeHtml(input.teamName)}</strong>
-      for <strong>${escapeHtml(input.eventName)}</strong>.
-    </p>
-    <p style="${P}">
-      But don't worry — your registration for the event is still active. You can:
-    </p>
-    <p style="${P}">
-      • Browse and join other available teams<br />
-      • Create your own brand new team
-    </p>
-    <p style="${P}">
-      Head over to the Team Management page to explore your options and get back
-      in the action.
-    </p>`;
-
-  return shell({
-    heading: "Team Membership Update",
-    body,
-    preheader: `You have been removed from ${input.teamName}.`,
-  });
 }
