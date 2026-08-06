@@ -1,11 +1,8 @@
 .container {
   padding: 20px;
-  font-family: var(--font-sans);
-
+  
   h2 {
-    font-family: var(--font-display);
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
+    color: var(--primary);
     margin-bottom: 20px;
   }
 }
@@ -30,35 +27,21 @@
   
   button {
     flex: 1;
-    min-height: 40px;
-    padding-inline: 18px;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-pill);
-    background-color: var(--surface-2);
-    box-shadow: var(--depth);
-    font-family: inherit;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    
     &:hover {
-      background-color: var(--surface-3);
-    }
-
-    &:active {
-      box-shadow: var(--depth-strong);
+      transform: translateY(-2px);
+      transition: transform 0.2s ease;
     }
 
     &:last-child {
-      border-color: transparent;
-      background-color: var(--accent);
-      color: var(--text-inverse);
-
+      background: #FF8A00;
+      color: white;
+      
       &:hover {
-        background-color: var(--accent-hover);
+        background: rgba(255, 138, 0, 0.9);
       }
     }
   }
@@ -66,74 +49,80 @@
 
 .scannerModal {
   position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.72);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   z-index: 1000;
-  font-family: var(--font-sans);
 }
 
 .scannerContent {
-  background-color: var(--surface-1);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--depth);
-  padding: 20px;
-  width: 100%;
-  max-width: 480px;
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
   position: relative;
 
-  // Positioning only - appearance comes from <CloseButton />.
   .closeButton {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 4px;
+    right: 6px;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2rem;
+    background: transparent;
+  
+    &:hover {
+      color: #D14206;
+      transition: .2s linear;
+  
   }
+}
 
   .scannerTitle {
-    margin: 0 44px 16px 0;
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
   }
 
   .scannerArea {
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-lg);
+    border: 2px solid var(--primary);
+    border-radius: 8px;
     overflow: hidden;
     margin: 1rem 0;
-
+    
     #qr-reader {
       width: 100%;
-
+      
       video {
         width: 100% !important;
-        display: block;
+        border-radius: 6px;
       }
-
+      
       button {
-        min-height: 40px;
-        padding-inline: 20px;
+        padding: 8px 16px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 4px;
         margin: 8px;
-        border: 1px solid transparent;
-        border-radius: var(--radius-pill);
-        background-color: var(--accent);
-        box-shadow: var(--depth);
-        font-family: inherit;
-        font-size: 0.8125rem;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        color: var(--text-inverse);
         cursor: pointer;
-        transition: all 0.2s ease;
-
+        
         &:hover {
-          background-color: var(--accent-hover);
+          opacity: 0.9;
         }
       }
     }
@@ -142,52 +131,35 @@
 
 .successContent {
   text-align: center;
-  color: var(--text-primary);
-
+  color: white;
+  
   .successIcon {
     font-size: 3rem;
-    color: var(--positive);
+    color: #FF8A00;
     margin-bottom: 1rem;
   }
-
+  
   .successTitle {
+    color: white;
     margin-bottom: 1.5rem;
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
+    font-size: 1.3rem;
   }
+  
 
+  
   .buttonGroup {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
     justify-content: center;
     margin-top: 2rem;
-
+    
     button {
       min-width: 120px;
-      min-height: 44px;
-      padding-inline: 24px;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-pill);
-      background-color: var(--surface-2);
-      box-shadow: var(--depth);
-      font-family: inherit;
-      font-size: 0.875rem;
+      border-radius: 6px;
       font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      cursor: pointer;
       transition: all 0.2s ease;
-
-      &:hover {
-        background-color: var(--surface-3);
-      }
-
-      &:active {
-        box-shadow: var(--depth-strong);
-      }
+      
+    
     }
   }
 }
@@ -198,15 +170,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  border-radius: var(--radius-lg);
-
+  border-radius: 8px;
+  
   .scanningText {
-    color: var(--text-primary);
+    color: white;
     font-size: 1.1rem;
     font-weight: 600;
   }

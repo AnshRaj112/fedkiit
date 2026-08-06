@@ -3,9 +3,8 @@
 .cardskeleton {
     width: 22rem;
     height: auto;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background-color: var(--surface-1);
+    border-radius: 1.42075rem 1.42075rem 1.4rem 1.4rem;
+    background: #2a2a2a90;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     padding: 1rem;
@@ -13,7 +12,7 @@
   
   .cardskeleton img,
   .cardskeleton div {
-    border-radius: var(--radius-md);
+    border-radius: 1.42075rem 1.42075rem 1.4rem 1.4rem;
   }
   
 

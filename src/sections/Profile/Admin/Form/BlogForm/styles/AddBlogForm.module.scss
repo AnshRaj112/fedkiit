@@ -1,100 +1,38 @@
-// Blog composer + uploaded-blog list - admin.
-//
-// Every control here used to carry the brand gradient: the heading was a
-// text-clip, and edit/view/read/delete were four gradient pills that read as
-// four different actions of equal weight. They are now one accent primary, one
-// neutral secondary and one destructive, all on the flat surface ramp.
 
-/* ------------------------------------------------------------------ header */
-
+// form header
 .formHeader {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
   margin-top: 1.6em;
   width: 86%;
   height: fit-content;
+  align-items: center;
 }
 
+// header buttons
 .buttonContainer {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  line-height: 30px;
   display: flex;
   align-items: center;
 }
 
+// form heading text
 .headInnerText {
-  margin: 0 0 16px;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+  font-size: 24px;
+  margin-bottom: 16px;
 
   span {
-    margin-right: 6px;
-    color: var(--accent);
+    margin-right: 3px;
+    background: linear-gradient(to right, #d03e21 40%, #FF8A00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 
-.settingsIcon {
-  display: inline-flex;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: color 0.2s ease;
-
-  &[data-active="true"] {
-    color: var(--accent);
-  }
-}
-
-/* ------------------------------------------------------------------ toggles */
-
-.settings {
-  width: 86%;
-  margin: 0.5em 0 1em;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-1);
-  box-shadow: var(--depth);
-}
-
-.settingsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.settingsLabel {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--text-secondary);
-}
-
-.settingsOn {
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.settingsOff {
-  color: var(--text-tertiary);
-}
-
-.visibilityHint {
-  margin: 0 0 0.5em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-/* ------------------------------------------------------------------- fields */
-
+// inputs and textarea
 .formInput {
   width: 90% !important;
   margin-bottom: 1.4em;
@@ -105,22 +43,25 @@
   height: 31vh !important;
 }
 
+// input container
 .formFieldContainer {
   display: flex;
   flex-direction: column;
   width: 86%;
-  margin-bottom: 1em;
   padding: 1em;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-1);
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background-color: rgba(126, 126, 128, 0.066);
+  margin-bottom: 1em;
 }
 
-.formFieldContainer:hover {
-  background-color: var(--surface-2);
+.formFieldContainer:hover,
+.formFieldContainer:active {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
 }
 
+// field row
 .mainFieldForm {
   display: flex;
   flex-direction: row;
@@ -140,50 +81,22 @@
   width: 30%;
 }
 
-.attachButton {
-  position: absolute;
-  right: 4.5rem;
-  top: 55%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--accent);
-}
-
-.previewLabel {
-  margin: 5px 0;
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-}
-
-.previewImage {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  object-fit: cover;
-}
-
-/* --------------------------------------------------------------- blog list */
-
+// blog section
 .blogListSection {
   width: 86%;
   margin-top: 40px;
   margin-bottom: 60px;
   padding-top: 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+// filter section
 .filterSection {
+  margin-bottom: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 100%;
-  margin-bottom: 20px;
 }
 
 .searchContainer {
@@ -199,42 +112,70 @@
 }
 
 .filterLabel {
+  color: #fff;
+  font-size: 0.9rem;
   margin-bottom: 5px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
 }
 
+// select styles
 .visibilitySelect {
   width: 100%;
+
+  :global(.select-container) {
+    background: rgba(47, 0, 18, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+
+    &:hover,
+    &:focus-within {
+      border-color: rgba(255, 138, 0, 0.6);
+    }
+  }
+
+  :global(.select-control) {
+    min-height: 36px;
+  }
+
+  :global(.select-menu) {
+    background-color: #2d2d2d;
+    border: 1px solid rgba(255, 138, 0, 0.3);
+  }
+
+  :global(.select-option) {
+    &:hover {
+      background: rgba(255, 138, 0, 0.2);
+    }
+
+    &.is-selected {
+      background: rgba(255, 138, 0, 0.4);
+      color: #fff;
+    }
+  }
 }
 
+// search input
 .searchInput {
   width: 100%;
-  min-height: 44px;
-  padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--surface-0);
-  font-family: inherit;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  transition: all 0.2s ease;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(126, 126, 128, 0.066);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 
   &::placeholder {
-    color: var(--text-tertiary);
+    color: rgba(255, 255, 255, 0.6);
   }
 
+  &:hover,
   &:focus {
+    border: 1px solid rgba(255, 255, 255, 0.5);
     outline: none;
-    border-color: var(--accent);
-    background-color: var(--surface-2);
-    box-shadow: 0 0 0 3px var(--accent-quiet);
   }
 }
 
+// blog list
 .blogListContainer {
   height: auto;
   max-height: 600px;
@@ -248,27 +189,27 @@
   }
 }
 
+// loading and empty state
 .loadingContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 30px;
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
+  color: #fff;
+  opacity: 0.7;
 }
 
 .emptyState {
-  padding: 44px 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-1);
-  box-shadow: var(--depth);
+  padding: 30px;
   text-align: center;
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
+  color: #fff;
+  opacity: 0.7;
+  background-color: rgba(47, 0, 18, 0.07);
+  border-radius: 8px;
 }
 
+// blog grid
 .blogsList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -277,112 +218,94 @@
 }
 
 .blogItem {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-1);
-  box-shadow: var(--depth);
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1b1b;
+  border-radius: 8px;
   overflow: hidden;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: var(--surface-2);
-  }
+  position: relative;
 }
 
-// Reads as metadata, not as an action - hence the hairline chip rather than
-// the filled gradient it replaced.
+// badge
 .visibilityBadge {
   position: absolute;
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+ 
   top: 10px;
   right: 10px;
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  padding-inline: 10px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  background-color: var(--surface-2);
+  padding: 4px 10px;
+  border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text-secondary);
+  color: white;
+  z-index: 10;
 }
 
-/* ---------------------------------------------------------------- actions */
-
+// button wrappers
 .customButtonContainer {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   margin-right: 10px;
 }
 
-.editButton,
-.viewButton,
-.readButton,
-.deleteButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 36px;
-  padding-inline: 18px;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--depth);
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:active {
-    box-shadow: var(--depth-strong);
-  }
-}
-
+// buttons
 .editButton {
-  border: 1px solid transparent;
-  background-color: var(--accent);
-  color: var(--text-inverse);
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.viewButton {
+  background: linear-gradient(260deg, rgba(11, 255, 123, 0.84) -29.7%, rgba(3, 180, 100, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   &:hover {
-    background-color: var(--accent-hover);
+    background: linear-gradient(260deg, rgba(11, 255, 123, 0.9) -29.7%, rgba(3, 180, 100, 0.9) 128.34%);
   }
 }
 
-.viewButton,
 .readButton {
-  border: 1px solid var(--border-strong);
-  background-color: var(--surface-2);
-  color: var(--text-primary);
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
 
   &:hover {
-    background-color: var(--surface-3);
+    background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
   }
 }
 
-.deleteButton {
-  border: 1px solid rgba(244, 82, 59, 0.4);
-  background-color: var(--surface-2);
-  color: var(--negative);
-
-  &:hover {
-    background-color: rgba(244, 82, 59, 0.12);
-  }
-}
-
-/* ------------------------------------------------------------ gemini input */
-
+// input with button icon
 .mediumLinkWrapper,
 .descriptionWrapper {
   position: relative;
@@ -396,16 +319,17 @@
   }
 }
 
+// icon button
 .geminiButtonM,
 .geminiButtonD {
   position: absolute;
   top: 40px;
   right: 37px;
   transform: translateY(-50%);
-  padding: 4px;
-  border: none;
   background: transparent;
+  border: none;
   cursor: pointer;
+  padding: 4px;
 
   img {
     width: 24px;
@@ -413,21 +337,85 @@
   }
 }
 
-.animateDescription,
+// animation effects
+.animateDescription {
+  animation: pulse 0.4s ease-in-out;
+}
+
 .animateMediumLink {
   animation: pulse 0.4s ease-in-out;
 }
 
-// Fires once on click as feedback for the AI fill - not a hover affordance,
-// so it does not fall under the no-hover-transform rule.
+// delete button
+.deleteButton {
+  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
+  padding: 8px 15px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: none;
+  transition: 0.2s linear;
+
+  &:hover {
+    background: linear-gradient(260deg, rgba(255, 190, 11, .9) -29.7%, rgba(244, 43, 3, .9) 128.34%);
+  }
+}
+
+.mediumLinkWrapper,
+.descriptionWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.4em;
+
+  input,
+  textarea {
+    width: 100%;
+    padding-right: 42px; // space for the button
+  }
+}
+
+.geminiButtonM,
+.geminiButtonD {
+  position: absolute;
+  top: 40px;
+  right: 37px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+
+/* Animation remains same */
 @keyframes pulse {
   0% {
-    transform: translateY(-50%) scale(1);
+    transform: scale(1);
   }
   40% {
-    transform: translateY(-50%) scale(1.4);
+    transform: scale(1.4);
   }
   100% {
-    transform: translateY(-50%) scale(1);
+    transform: scale(1);
   }
+}
+
+.animateDescription {
+  animation: pulse 0.4s ease-in-out;
+}
+
+.animateMediumLink {
+  animation: pulse 0.4s ease-in-out;
 }

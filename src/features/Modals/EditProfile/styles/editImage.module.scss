@@ -1,154 +1,138 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.72);
-  font-family: var(--font-sans);
+.container{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: linear-gradient(
+    90deg,
+    rgba(32, 32, 32, 0.95) -11.52%,
+    rgba(37, 37, 37, 0.95) 106.29%
+  );
+  margin-top: 4rem;
+  padding: 2rem;
+  border-radius: 1.26863rem;
+  border: 1.2px solid rgba(214, 214, 214, 0.81);
 }
-
-.container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 380px;
-  max-height: 90vh;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  background-color: var(--surface-1);
-  box-shadow: var(--depth);
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.imageTitle {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-// Positioning only - appearance comes from <CloseButton />.
-.closeModal {
-  flex: none;
-}
-
-.imageFrame {
-  align-self: center;
-  width: 100%;
-  max-width: 15rem;
-  aspect-ratio: 1;
-  padding: 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-0);
-}
-
-.imagePreview {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--radius-md);
-  object-fit: cover;
-}
-
-.errorRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 14px;
-  padding: 10px 14px;
-  border: 1px solid rgba(244, 82, 59, 0.4);
-  border-radius: var(--radius-md);
-  background-color: rgba(244, 82, 59, 0.08);
-}
-
-.errMsg {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--negative);
-}
-
-.repick {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  min-width: 36px;
-  min-height: 36px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  background-color: var(--surface-2);
-  box-shadow: var(--depth);
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--surface-3);
+  .submit{
+    font-size: 15px;
+    width: 15rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    cursor: pointer;
   }
 
-  &:active {
-    box-shadow: var(--depth-strong);
+  .closeModal {
+    color: white;
+    border: none;
+    background: none;
+    font-size: 30px;
+    position: absolute;
+    cursor: pointer;
+    top: 0.1rem;
+    right: 0.7rem;
   }
 
-  img {
-    width: 18px;
-    height: 18px;
+ 
+.wrapper {
+    position: relative;
+  height: 3rem;
+  width: auto;
+  margin-top: 0.5rem;
+  
+  &::before,
+  &::after {
+    display: block;
+    position: absolute;
+    z-index: 99;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: .75rem 0.75rem;
+    pointer-events: none;
   }
-}
-
-.fileInput {
-  display: none;
-}
-
-// Same override problem as EditProfile: the shared Button primitive declares
-// its own geometry and its stylesheet is emitted after this one. The colours
-// arrive as an inline style prop from the JSX, so only :hover needs to shout.
-.submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 44px;
-  margin-top: 20px !important;
-  padding: 0 28px !important;
-  border: 1px solid transparent !important;
-  border-radius: var(--radius-pill) !important;
-  box-shadow: var(--depth);
-  font-family: inherit;
-  font-size: 0.875rem !important;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--accent-hover) !important;
+  
+  &::before {
+    content: "+";
+    right: 0;
+    text-align: right; /* Align the text to the right */
+  }
+  
+  &::after {
+    content: "-";
+    left: 0;
+    font-size: 2rem;
+    margin-top: -3%;
+    text-align: left; /* Align the text to the left */
+  }
   }
 
-  &:active {
-    box-shadow: var(--depth-strong);
+
+  
+  .rangeInput {
+    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    width: 15rem;
+    height: 2rem;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: row-resize;
   }
-}
+  
+  .rangeInput[step] {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2) calc(12.5% - 1px),
+      #05051a 12.5%
+    );
+  }
+  
+  .rangeInput::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0;
+    box-shadow: -20rem 0 0 20rem rgba(255, 255, 255, 0.2);
+  }
+  
+  .rangeInput::-moz-range-thumb {
+    border: none;
+    width: 0;
+    box-shadow: -20rem 0 0 20rem rgba(255, 255, 255, 0.2);
+  }
+  
+  .imagePreview{
+    border: 5px solid #1c1c1c;
+  }
+
+  .imageTitle{
+    font-size: 1.3rem;
+    font-weight: 600;
+    // margin-top: 0.5rem;
+    background: var(
+      --Primary,
+      linear-gradient(
+        260deg,
+        rgba(255, 190, 11, 0.84) -29.7%,
+        rgba(244, 43, 3, 0.84) 128.34%
+      )
+    );
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-top: -1rem;
+
+  }
+
+  .errMsg{
+    font-size: 0.9rem;
+    color:red;
+    width: 70%;
+  }

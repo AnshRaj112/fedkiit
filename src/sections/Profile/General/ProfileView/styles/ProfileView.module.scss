@@ -1,51 +1,52 @@
-// Profile details.
-//
-// A key/value table rather than a card grid, so the only work here is the
-// heading (was a gradient text-clip), the edit affordance (was a bare icon with
-// no hit target) and the two "Open Sans" declarations that never resolved.
-
 #profile {
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
   display: flex;
   flex-direction: column;
   padding-left: 0px;
   padding-top: 35px;
   padding-bottom: 27px;
-  font-family: var(--font-sans);
-  font-weight: 400;
-  color: var(--text-primary);
 }
-
+  
 .proHeading {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  line-height: 40px;
+  padding-bottom: 50px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding-bottom: 50px;
 }
 
-.headInnerText {
-  margin: 0;
+.headInnerText{
   margin-left: 10rem;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-
-  span {
-    margin-right: 6px;
-    color: var(--accent);
-  }
 }
-
-.details {
+  
+.headInnerText span{
+  margin-right: 3px;
+  background: linear-gradient(to right , #d03e21 40%, #FF8A00 );
+  -webkit-background-clip: text;
+  color: transparent;
+  
+}
+  
+.details{
   display: flex;
   justify-content: start;
   align-items: center;
   width: 100%;
+  // background-color: red;
   margin-left: 10rem;
+
 }
+
+// .profileBox{
+
+//   width: 700px;
+//   display: flex;
+// }
 
 .profileTable {
   table-layout: fixed;
@@ -53,194 +54,176 @@
 }
 
 .vals {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
   padding-bottom: 27px;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
 
   &.highlight {
     max-width: 50%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
   }
 
-  &.highlight:hover {
+  &.highlight:hover{
     overflow: scroll;
     text-overflow: clip;
   }
 
-  &.highlight::-webkit-scrollbar {
+  &.highlight::-webkit-scrollbar{
     display: none;
   }
 }
 
-.link {
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--text-primary);
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: var(--accent);
-  }
-}
-
-.dets {
-  width: 35%;
-  padding-right: 100px;
+.dets{
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
   padding-bottom: 27px;
-  font-size: 0.75rem;
+  width:35%;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
 }
 
-.editbtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  margin-right: 13rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  background-color: var(--surface-2);
-  box-shadow: var(--depth);
-  font-size: 1.125rem;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--surface-3);
-  }
-
-  &:active {
-    box-shadow: var(--depth-strong);
-  }
-}
-
-@media screen and (max-width: 989px) {
-  .details {
-    width: 90%;
-    margin-left: 5rem;
-  }
-
-  .headInnerText {
-    margin-left: 5rem;
-  }
-
-  .editbtn {
-    margin-right: 5rem;
-  }
-}
-
-@media screen and (max-width: 867px) {
-  .details {
-    width: 90%;
-    margin-left: 2rem;
-  }
-
-  .headInnerText {
-    margin-left: 2rem;
-  }
-
-  .editbtn {
-    margin-right: 2rem;
-  }
-}
-
-@media screen and (max-width: 769px) {
-  .proHeading {
-    display: grid;
-    grid-template-columns: 15% 70% 15%;
-  }
-
-  .headInnerText {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    text-align: center;
-    margin-left: 0px;
-  }
-
-  .editbtn {
-    margin-right: 0rem;
-    margin-left: 20%;
-  }
-
-  .details {
-    justify-content: center;
-    width: 95%;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
 
   .dets {
-    width: 50%;
-    padding-left: 2rem;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  #profile {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 100px;
   }
 
-  .proHeading {
-    display: grid;
-    grid-template-columns: 12.5% 65% 10% 12.5%;
-    margin-left: -1.1rem;
+  .editbtn{
+    font-size: 1.6rem;
+    margin-right: 13rem;
+    cursor: pointer;
+    display: flex;
+    align-items: end;
+  }
+  
+  @media screen and (max-width:989px) {
+    .details{
+      width: 90%;
+      margin-left: 5rem;
+    }
+
+    .headInnerText{
+      margin-left: 5rem;
+    }
+
+    .editbtn{
+      margin-right: 5rem;
+    }
+  }
+  
+  @media screen and (max-width:867px) {
+    .details{
+      width: 90%;
+      margin-left: 2rem;
+    }
+
+    .headInnerText{
+      margin-left: 2rem;
+    }
+
+    .editbtn{
+      margin-right: 2rem;
+    }
   }
 
-  .headInnerText {
-    font-size: 1.5rem;
-    text-align: start;
-    grid-column-start: 2;
-    grid-column-end: 3;
+  @media screen and (max-width:769px) {
+    .proHeading{
+      display: grid;
+      grid-template-columns: 15% 70% 15%;
+    }
+
+    .headInnerText{
+      grid-column-start: 2;
+      grid-column-end: 3;
+      text-align: center;
+      margin-left: 0px;
+    }
+
+    .editbtn{
+      margin-right: 0rem;
+      margin-left: 20%;
+    }
+
+    .details{
+      justify-content: center;
+      width: 95%;
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+
+    .dets{
+      width:50%;
+      padding-left: 2rem;
+    }
+
+  }
+  
+  @media screen and (max-width:480px) {
+    #profile {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .proHeading{
+      display: grid;
+      grid-template-columns: 12.5% 65% 10% 12.5%;
+      margin-left: -1.1rem;
+    }
+
+    .headInnerText{
+      font-size: 30px;
+      text-align: start;
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
+
+    .editbtn{
+      font-size: 20px;
+      text-align: end;
+      grid-column-start: 3;
+      grid-column-end: 4;
+    }
+  
+    .dets {
+      padding-right: 50px;
+    }
+
+    .profileTable{
+      width: 100%;
+      margin-left: -2%;
+    }
+
   }
 
-  .editbtn {
-    grid-column-start: 3;
-    grid-column-end: 4;
-  }
-
-  .dets {
-    padding-right: 50px;
-  }
-
-  .profileTable {
-    width: 100%;
-    margin-left: -2%;
-  }
-}
-
-@media screen and (max-width: 430px) {
+  @media screen and (max-width:430px) {
   .dets,
   .vals {
-    font-size: 0.8125rem;
+    font-size: 16px;
   }
 
-  .proHeading {
+  .proHeading{
     display: grid;
     grid-template-columns: 7.5% 70% 15% 7.5%;
     margin-left: 0.8rem;
   }
-}
-
-@media screen and (max-width: 380px) {
-  .dets {
-    padding-right: 30px;
   }
 
-  .proHeading {
-    display: grid;
-    grid-template-columns: 5% 80% 15%;
-    margin-left: 10px;
-  }
+  @media screen and (max-width:380px) {
+    
+    .dets {
+      padding-right: 30px;
+    }
 
-  .profileTable {
-    margin-left: -20px;
+    .proHeading{
+      display: grid;
+      grid-template-columns: 5% 80% 15%;
+      margin-left: 10px;
+    }
+
+    .profileTable{
+      margin-left: -20px;
+    }
+    
   }
-}
+  
+  

@@ -1,47 +1,46 @@
+@use "../../../assets/styles/Global.scss" as *;
+// Global Colors
+$dark-bg-primary: #121212;
+$dark-bg-secondary: #1e1e1e;
+$accent-color: #ff8000;
+$text-color: #ffffff;
+$card-radius: 16px;
+
 // Search & Filter Row
 .searchWrapper {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: fixed;
   margin: 1.5rem 0;
 }
 
 .searchBar {
   width: 100%;
   max-width: 100%; // matches blog card layout width
-  display: flex;
+  display: fixed;
   align-items: center;
+  background-color: #353434;
+  border-radius: 50px;
   padding: 0.6rem 1.2rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background-color: var(--surface-1);
-  box-shadow: var(--depth);
-  position: relative;
-  transition: all 0.2s ease;
-
-  &:focus-within {
-    border-color: var(--accent);
-    background-color: var(--surface-2);
-  }
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  position: fixed;
 }
 
 .searchIcon {
-  color: var(--text-tertiary);
+  color: #ff8000;
   margin-right: 0.75rem;
 }
 
 .searchInput {
   flex: 1;
-  min-width: 0;
   background-color: transparent;
   border: none;
   outline: none;
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 0.9375rem;
+  color: white;
+  font-size: 1rem;
 
   &::placeholder {
-    color: var(--text-tertiary);
+    color: #bbb;
   }
 }
 
@@ -50,9 +49,9 @@
   align-items: center;
 
   .filterButton {
-    background-color: transparent;
+    background: none;
     border: none;
-    color: var(--accent);
+    color: #ff8000;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -63,42 +62,51 @@
     position: absolute;
     top: 110%;
     right: 0;
-    padding: 4px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background-color: var(--surface-2);
-    box-shadow: var(--depth);
+    background-color: #2d2d2d;
+    border: 1px solid rgba(255, 138, 0, 0.3);
+    border-radius: 4px;
+    padding: 0.5rem 0;
     list-style: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 20;
 
     .dropdownItem {
       padding: 0.5rem 1.2rem;
-      border-radius: var(--radius-sm);
       cursor: pointer;
-      color: var(--text-secondary);
-      transition: all 0.2s ease;
+      color: white;
+      transition: background 0.2s ease;
 
       &:hover {
-        background-color: var(--surface-3);
-        color: var(--text-primary);
+        background: rgba(255, 138, 0, 0.2);
       }
     }
 
     .activeItem {
-      background-color: var(--surface-3);
-      color: var(--accent);
+      background: rgba(255, 138, 0, 0.4);
+      color: #fff;
       font-weight: 600;
     }
   }
 }
 
+
+// Blog Sections Layout
+// .blogSections {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 3rem;
+//   width: 100%;
+// }
+
 // Responsive Two-column Layout
 .topSection {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: stretch; 
   gap: 2rem;
   margin-bottom: 2rem;
+
+
 
   @media (max-width: 900px) {
     display: flex;
@@ -107,17 +115,17 @@
   }
 }
 
+
+
 // Trending Blogs
 .trendingBlogs {
   width: 100%;
 
   h3 {
-    color: var(--accent);
-    font-family: var(--font-display);
+    color: $accent-color;
+    margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
   }
 
   .trendingGrid {
@@ -127,25 +135,24 @@
   }
 
   .blogCard {
+    background: $dark-bg-secondary;
+    border-radius: $card-radius;
     padding: 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background-color: var(--surface-1);
-    box-shadow: var(--depth);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: transform 0.2s;
 
     &:hover {
-      background-color: var(--surface-2);
+      transform: translateY(-3px) scale(1.02);
     }
 
     img {
       width: 100%;
       height: 100px;
       object-fit: cover;
-      border-radius: var(--radius-md);
+      border-radius: 10px;
       margin-bottom: 0.6rem;
-      background-color: var(--surface-2);
+      background: $dark-bg-primary;
     }
 
     .cardContent {
@@ -153,19 +160,19 @@
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 0.2rem;
-        color: var(--text-primary);
+        color: $text-color;
       }
 
       .blogMeta {
         font-size: 0.85rem;
-        color: var(--accent);
+        color: $accent-color;
         margin-bottom: 0.2rem;
         font-weight: 600;
       }
 
       .blogDesc {
         font-size: 0.88rem;
-        color: var(--text-secondary);
+        color: #ccc;
         line-height: 1.2;
       }
     }
@@ -177,12 +184,10 @@
   width: 100%;
 
   h3 {
-    color: var(--accent);
-    font-family: var(--font-display);
+    color: $accent-color;
+    margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
   }
 
   .featuredGrid {
@@ -192,25 +197,24 @@
   }
 
   .blogCard {
+    background: $dark-bg-secondary;
+    border-radius: $card-radius;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 1.2rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background-color: var(--surface-1);
-    box-shadow: var(--depth);
+    transition: transform 0.2s;
     cursor: pointer;
-    transition: all 0.2s ease;
 
     &:hover {
-      background-color: var(--surface-2);
+      transform: translateY(-4px);
     }
 
     img {
       width: 100%;
       height: 120px;
       object-fit: cover;
-      border-radius: var(--radius-md);
+      border-radius: 10px;
       margin-bottom: 0.8rem;
-      background-color: var(--surface-2);
+      background: $dark-bg-primary;
     }
 
     .cardContent {
@@ -218,36 +222,22 @@
         font-size: 1.05rem;
         font-weight: 700;
         margin-bottom: 0.2rem;
-        color: var(--text-primary);
+        color: $text-color;
       }
 
       .blogMeta {
         font-size: 0.9rem;
-        color: var(--accent);
+        color: $accent-color;
         margin-bottom: 0.2rem;
         font-weight: 600;
       }
 
       .blogDesc {
         font-size: 0.95rem;
-        color: var(--text-secondary);
+        color: #ccc;
         line-height: 1.3;
       }
     }
-  }
-}
-
-// Recently Added
-.recentlyAdded {
-  width: 100%;
-
-  h3 {
-    color: var(--accent);
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
   }
 }
 
@@ -260,46 +250,19 @@
 }
 
 .seeAllButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding-inline: 28px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  background-color: var(--accent);
-  box-shadow: var(--depth);
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-inverse);
+  background: linear-gradient(135deg, $accent-color, #ff4500);
+  color: #fff;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
 
   &:hover {
-    background-color: var(--accent-hover);
+    transform: scale(1.05);
   }
-
-  &:active {
-    box-shadow: var(--depth-strong);
-  }
-}
-
-// Loading & error states
-.loadingContainer,
-.errorContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  width: 100%;
-}
-
-.errorMessage {
-  color: var(--negative);
-  font-size: 1rem;
 }
 
 // Responsive Padding

@@ -83,7 +83,10 @@
 }
 
 .navLinks .activeLink {
-  color: var(--accent);
+  background: var(--primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .navLinks .activeLinkPixel_AI_Hack {
@@ -126,7 +129,9 @@
 }
 
 .navLinks li a:hover {
-  color: var(--accent);
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
   transition: 0.2s ease-in;
 
   &::after {

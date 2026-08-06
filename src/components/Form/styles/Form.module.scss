@@ -36,6 +36,10 @@
   opacity: 0.8;
   cursor: not-allowed;
 }
+.formFieldContainer:hover {
+  border: 0.5px solid #ff88008c;
+  transition: 0.5s ease-in-out;
+}
 .formFieldContainer:active {
   border: 0.5px solid #ff88008c;
   transition: 0.5s ease-in-out;

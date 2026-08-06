@@ -20,7 +20,8 @@
     width: 87%; 
     max-width: 800px; 
     height: auto;
-    background: var(--surface-1);
+    backdrop-filter: blur(10px);
+    background: #0b0b0b11;
     border: solid;
     border-color: white;
     border-width: 1px;

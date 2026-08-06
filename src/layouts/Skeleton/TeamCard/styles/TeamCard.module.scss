@@ -20,8 +20,7 @@
   .skeletonBack{
     width: 90%;
     height: 70%;
-    background-color: var(--surface-3);
-    border-radius: var(--radius-md);
+    background-color: #313131;
     overflow: hidden;
     margin: 10px;
     margin-bottom: 0;
@@ -31,8 +30,7 @@
   .skeletonBack2{
     width: 90%;
     height: 20%;
-    background-color: var(--surface-3);
-    border-radius: var(--radius-md);
+    background-color: #313131;
     overflow: hidden;
     margin: 10px;
   }
@@ -44,9 +42,9 @@
     width: 20vw;
     overflow: hidden;
     bottom: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background-color: var(--surface-1);
+    border: 1px solid rgba(94, 73, 73, 0.3);
+    border-radius: 10px;
+    background-color: #2a2a2a90;
     display: flex;
     align-items: center;
     justify-content: center;

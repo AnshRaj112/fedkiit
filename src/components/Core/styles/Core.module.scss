@@ -1,36 +1,17 @@
 .main_Button {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
   margin-top: 20px;
-  min-height: 44px;
-  padding-inline: 28px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  background-color: var(--surface-2);
-  box-shadow: var(--depth);
   outline: none;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+  border: none;
+  padding: 8px 16px;
+  font-size: 12px;
+  background-color: transparent;
+  border: 1px solid rgba(211, 211, 211, 0.5);
   cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--surface-3);
-  }
-
-  &:active {
-    box-shadow: var(--depth-strong);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  border-radius: 4px;
+  font-weight: 500;
 }
 
 .h1 {
@@ -80,65 +61,44 @@
 .input {
   display: flex;
   outline: none;
-  min-height: 44px;
-  padding: 0 14px;
-  font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  border: none;
+  padding: 10px;
+  font-size: 12px;
   margin: 6px;
   margin-bottom: 10px;
-  background-color: var(--surface-0);
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
+  background-color: transparent;
+  border: 1px solid rgba(211, 211, 211, 0.5) !important;
+  border-radius: 4px;
+  color: #fff;
   position: relative;
   width: auto;
-  transition: all 0.2s ease;
-
-  &::placeholder {
-    color: var(--text-tertiary);
-  }
-
-  &:focus {
-    border-color: var(--accent) !important;
-    background-color: var(--surface-2);
-    box-shadow: 0 0 0 3px var(--accent-quiet);
-  }
 }
+.input:hover {
+  border: 1px solid #fff !important;
+  transition: 0.3s ease-in-out;
+}
+
 .inputTxtArea {
   min-height: 185px;
   width: 380px;
-  padding: 12px 14px;
   resize: none;
-  line-height: 1.55;
 }
 .inputSelect {
-  color: var(--text-primary);
+  color: #fff;
   width: 380px !important;
 }
 .inputSelect option {
   color: black;
 }
 .inputDate {
-  padding: 6px 36px 6px 10px !important;
-  width: 100% !important;
-  min-height: 44px !important;
-  height: auto !important;
+  padding: 6px !important;
+  width: auto !important;
+  height: 40px !important;
   position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.inputDate :global(.react-date-picker) {
-  width: 100%;
-}
-
-.inputDate :global(.react-datepicker-wrapper),
-.inputDate :global(.react-datepicker__input-container) {
-  width: 100%;
 }
 // Both halves of this selector list must be :global(). The automated pass that
 // wrapped impure selectors worked line by line, so it only caught the part on
-// the line that opened the block and left the first half scoped - which meant
+// the line that opened the block and left the first half scoped — which meant
 // the spin-button reset silently stopped applying.
 :global(input[type="number"]::-webkit-inner-spin-button),
 :global(input[type="number"]::-webkit-outer-spin-button) {

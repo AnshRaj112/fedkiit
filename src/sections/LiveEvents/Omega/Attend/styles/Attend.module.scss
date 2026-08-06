@@ -87,7 +87,8 @@
     width: 550px;
     height: 100px;
     justify-content: space-evenly;
-    background: var(--surface-1);
+    backdrop-filter: blur(1px);
+    background: #0b0b0b11;
     border: solid;
     border-color: white;
     border-width: 0.5px;

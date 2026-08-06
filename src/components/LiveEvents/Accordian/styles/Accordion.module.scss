@@ -38,7 +38,7 @@
     height: auto;
     position: relative;
     padding: 20px;
-    background: var(--surface-1);
+    backdrop-filter: blur(10px);
    border-radius: 2px;
     border: solid;
   
