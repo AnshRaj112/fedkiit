@@ -258,3 +258,38 @@ export function contactNotificationEmail(input: {
     }),
   };
 }
+
+/**
+ * Sent to someone a team leader has removed.
+ *
+ * Copy follows emailTemplates/removedMember.html: the point is to make clear the
+ * person is still registered for the event and can join or start another team.
+ */
+export function removedMemberEmail(input: {
+  teamName: string;
+  eventName: string;
+}): string {
+  const body = `
+    <p style="${P}">Hi there,</p>
+    <p style="${P}">
+      You have been removed from the team <strong>${escapeHtml(input.teamName)}</strong>
+      for <strong>${escapeHtml(input.eventName)}</strong>.
+    </p>
+    <p style="${P}">
+      But don't worry — your registration for the event is still active. You can:
+    </p>
+    <p style="${P}">
+      • Browse and join other available teams<br />
+      • Create your own brand new team
+    </p>
+    <p style="${P}">
+      Head over to the Team Management page to explore your options and get back
+      in the action.
+    </p>`;
+
+  return shell({
+    heading: "Team Membership Update",
+    body,
+    preheader: `You have been removed from ${input.teamName}.`,
+  });
+}

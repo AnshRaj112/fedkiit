@@ -11,7 +11,9 @@ import shareOutline from "../../../../../assets/images/shareOutline.svg";
 import { useParams, useSearchParams } from "next/navigation";
 
 const VerifyCertificate = () => {
-  const [searchParams] = useSearchParams();
+  // Next returns the params object itself, not React Router's [params, setter]
+  // pair. Destructuring it as an array yields undefined and crashes on `.get`.
+  const searchParams = useSearchParams();
   const certificateId = searchParams.get("id");
   const { issuedCertificateId } = useParams();
   const [certificateData, setCertificateData] = useState(null);

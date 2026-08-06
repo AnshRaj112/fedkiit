@@ -15,7 +15,9 @@ const EventForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(null);
   const { eventId } = useParams();
-  const [searchParams] = useSearchParams();
+  // Next returns the params object itself, not React Router's [params, setter]
+  // pair. Destructuring it as an array yields undefined and crashes on `.get`.
+  const searchParams = useSearchParams();
   const router = useRouter();
   const authCtx = useContext(AuthContext);
 

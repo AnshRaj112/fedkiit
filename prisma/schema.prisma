@@ -167,6 +167,13 @@ model teamJoinRequest {
   requesterName      String
   teamRegistrationId String    @db.ObjectId
   teamName           String?
+  // The team's code at the moment the request was made. `teamRegistrationId`
+  // alone cannot tell a rename from a disband-and-recreate: the registration row
+  // is reused, so its id survives both. `teamCode` does distinguish them —
+  // renaming leaves it untouched, while dissolving a team resets it to a SOLO-
+  // code and creating the next one mints a fresh code. Optional because rows
+  // written before this field existed do not carry it.
+  teamCode           String?
   leaderEmail        String
   status             String    @default("PENDING")
   seenByRequester    Boolean   @default(false)

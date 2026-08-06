@@ -19,7 +19,13 @@ const Social = () => {
     <div className={styles.socialMcontainer}>
       <div className={styles.text}>
         <div className={styles.circleCenter}></div>
-        <p className={styles.content}>
+        {/*
+          A <div>, not a <p>: it wraps `div.fed`, which the parser will not keep
+          inside a <p>. `.content` had no rule in the stylesheet — so this
+          className resolved to `undefined` and did nothing — and now carries the
+          same declarations as `.text p`, which is what actually styled it.
+        */}
+        <div className={styles.content}>
           Welcome to the social media page of <br />
           <div className={styles.fed}>
             <div className={styles.box} id={styles.box1}>
@@ -46,7 +52,7 @@ const Social = () => {
             </div>
           </div>
           <br />
-        </p>
+        </div>
       </div>
       <div className={styles.socialMedia}>
         <div className={styles.container}>

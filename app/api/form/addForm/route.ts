@@ -14,10 +14,16 @@ import { uploadImage } from "@/lib/services/upload";
  * fields, and assembles the same `info` blob the original wrote, so existing
  * documents and new ones stay structurally identical.
  */
-const FORM_IMAGE_W = 1000;
-const FORM_IMAGE_H = 1000;
-const QR_IMAGE_W = 500;
-const QR_IMAGE_H = 500;
+/**
+ * Upload dimensions come from `lib/config/images.ts`.
+ *
+ * They were literals here and in `editForm`, and the two had drifted: Express
+ * declares `QrImageWidth = 400, QrImageHeight = 150` in both controllers, but
+ * `addForm` passed them into `uploadimage(path, folder, height, width)` in the
+ * wrong order, so it uploaded QR media at 150x400 while `editForm` used
+ * 400x150. Centralising picks the declared intent, which is what `editForm`
+ * already did — so this call changes, deliberately, to match.
+ */
 
 export async function POST(request: Request) {
   return handle(async () => {
@@ -55,23 +61,13 @@ export async function POST(request: Request) {
 
     const eventImg = form.get("eventImg");
     if (eventImg instanceof File && eventImg.size > 0) {
-      const result = await uploadImage(
-        eventImg,
-        "FormImages",
-        FORM_IMAGE_W,
-        FORM_IMAGE_H,
-      );
+      const result = await uploadImage(eventImg, "FormImages");
       info.eventImg = result?.secure_url ?? null;
     }
 
     const media = form.get("media");
     if (media instanceof File && media.size > 0) {
-      const result = await uploadImage(
-        media,
-        "QRMediaImages",
-        QR_IMAGE_W,
-        QR_IMAGE_H,
-      );
+      const result = await uploadImage(media, "QRMediaImages");
       (info.receiverDetails as { media: string | null }).media =
         result?.secure_url ?? null;
     }
@@ -96,9 +92,11 @@ export async function POST(request: Request) {
     // Drop the cached listing so the new event shows up immediately.
     revalidatePath("/Events");
 
-    return json(
-      { success: true, message: "Form added successfully", form: created },
-      201,
-    );
+    // 200 and this wording are what the Express controller returned.
+    return json({
+      success: true,
+      message: "Form created successfully",
+      form: created,
+    });
   });
 }

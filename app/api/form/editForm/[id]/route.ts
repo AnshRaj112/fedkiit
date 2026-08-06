@@ -76,13 +76,13 @@ export async function PUT(
 
     const eventImg = form.get("eventImg");
     if (eventImg instanceof File && eventImg.size > 0) {
-      const result = await uploadImage(eventImg, "FormImages", 1000, 1000);
+      const result = await uploadImage(eventImg, "FormImages");
       if (result) info.eventImg = result.secure_url;
     }
 
     const media = form.get("media");
     if (media instanceof File && media.size > 0) {
-      const result = await uploadImage(media, "QRMediaImages", 500, 500);
+      const result = await uploadImage(media, "QRMediaImages");
       if (result) {
         info.receiverDetails = {
           ...(info.receiverDetails ?? {}),
@@ -110,7 +110,7 @@ export async function PUT(
 
     return json({
       success: true,
-      message: "Form updated successfully",
+      message: "Form info and sections updated successfully",
       form: updated,
     });
   });

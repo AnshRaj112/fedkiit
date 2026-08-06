@@ -118,7 +118,9 @@
   background-clip: text;
 }
 
-.eventname p {
+// `.meta` is the wrapper that used to be a <p> — see EventModal.jsx.
+.eventname p,
+.eventname .meta {
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -316,7 +318,8 @@ input:checked + .slider:before {
   .eventname {
     font-size: 0.95rem;
   }
-  .eventname p{
+  .eventname p,
+  .eventname .meta {
     font-size: 0.7rem;
   }
 

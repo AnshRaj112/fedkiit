@@ -38,6 +38,43 @@ const schema = z.object({
   CERT_ORG: z.string().optional(),
 
   NEXT_PUBLIC_SITE_URL: z.string().url().default("https://www.fedkiit.com"),
+
+  // --- Tunables that used to be literals in the code ------------------------
+  // Defaults reproduce the previous hardcoded behaviour exactly, so setting
+  // none of these changes nothing.
+
+  /**
+   * Digits in a one-time password.
+   *
+   * `NEXT_PUBLIC_` because `OtpInput` has to draw exactly this many boxes. One
+   * variable read by both sides makes them impossible to desync — a
+   * server-only setting here would recreate the bug where six digits were
+   * emailed to a screen with four boxes.
+   */
+  NEXT_PUBLIC_OTP_LENGTH: z.coerce.number().int().min(4).max(10).default(4),
+  /** How long an OTP stays valid, in minutes. */
+  OTP_VALIDITY_MINUTES: z.coerce.number().int().min(1).max(120).default(15),
+
+  /**
+   * Extra hosts that may appear in an `Origin` header and still be used to
+   * build an emailed invite link. Comma-separated. The canonical site host is
+   * always trusted and does not need listing; this is for staging and preview
+   * deployments.
+   */
+  TRUSTED_ORIGIN_HOSTS: z.string().optional(),
+
+  /**
+   * Addresses allowed to read form analytics regardless of role.
+   * Comma-separated. Previously the literal `srex@fedkiit.com`.
+   */
+  FORM_ANALYTICS_ALLOWED_EMAILS: z.string().optional(),
+
+  /**
+   * Calendar month the academic year rolls over in, 1-12. July by default:
+   * a student admitted in 2022 is in their 4th year until July 2026, not until
+   * January 2026.
+   */
+  ACADEMIC_YEAR_START_MONTH: z.coerce.number().int().min(1).max(12).default(7),
   DEBUG: z
     .string()
     .optional()
@@ -74,4 +111,13 @@ export function getEnv(): Env {
 /** Canonical origin, no trailing slash — used for metadata, sitemap and email links. */
 export function siteUrl(): string {
   return getEnv().NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+}
+
+/** Splits a comma-separated env value, dropping blanks and surrounding space. */
+export function envList(value: string | undefined): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }

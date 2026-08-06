@@ -60,7 +60,7 @@ export async function PUT(
 
     const file = form.get("image");
     if (file instanceof File && file.size > 0) {
-      const result = await uploadImage(file, "BlogImages", 1200, 800);
+      const result = await uploadImage(file, "BlogImages");
       if (result) data.image = result.secure_url;
     } else {
       const imageUrl = text("image");
