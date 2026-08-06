@@ -48,7 +48,11 @@ const QRCodeModal = ({ onClose, eventId, onAttendanceMarked }) => {
       });
 
       if (response.status === 200) {
-        setQrCodeData(response.data.data.attendanceId);
+        // `{ message, attendanceToken }` at the top level — the shape both the
+        // Express controller (markAttendance.js:99) and this port return. The
+        // value is a signed JWT that expires in 20 minutes, not a record id, so
+        // it is what has to be encoded into the QR image.
+        setQrCodeData(response.data.attendanceToken);
       } else {
         throw new Error('Failed to fetch attendance code');
       }
