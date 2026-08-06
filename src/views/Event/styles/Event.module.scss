@@ -14,7 +14,11 @@
   width: 100%;
   max-width: 1200px;
   margin-inline: auto;
-  padding: 110px 20px 64px;
+  // Top padding is breathing room only. Clearing the fixed navbar is the
+  // layout's job now — `.page--nav-offset` reserves its height for every page
+  // — and this used to carry a further 110px for the same purpose, so the two
+  // stacked and left a large empty band under the bar.
+  padding: 0 20px 64px;
 }
 
 .srOnly {
@@ -420,7 +424,7 @@
 
 @media (min-width: 768px) {
   .shell {
-    padding: 120px 32px 80px;
+    padding: 8px 32px 80px;
   }
 
   .masthead {

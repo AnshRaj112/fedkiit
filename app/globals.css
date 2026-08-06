@@ -26,11 +26,11 @@
 
   /* Vertical space the fixed navbar occupies, plus breathing room.
    *
-   * The navbar sits at `top: 1.25rem` and is about 62px tall, so its lower
-   * edge is ~82px down the viewport. Pages whose first element is a heading
-   * need to clear that or the text renders behind the pill. Declared once
-   * here so the two numbers cannot drift apart. */
-  --fed-navbar-offset: 5.5rem;
+   * Measured, not estimated: the bar sits at `top: 1.25rem` and renders 80px
+   * tall, so its lower edge is 100px down the viewport. 8rem leaves about 28px
+   * of clearance. Declared once here so pages cannot each guess their own
+   * value — which is how /Events ended up reserving the space twice. */
+  --fed-navbar-offset: 8rem;
 }
 
 /* ─── Base ───────────────────────────────────────────────────────── */
