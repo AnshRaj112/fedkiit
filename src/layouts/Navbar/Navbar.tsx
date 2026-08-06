@@ -197,13 +197,13 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/Social"
+                href="/Insights"
                 className={`${styles.link} ${
-                  isActive("/social") ? styles.activeLink : ""
+                  isActive("/insights") ? styles.activeLink : ""
                 } ${isOmegaActive ? styles.omegaHover : ""}`}
                 onClick={closeMobileMenu}
               >
-                Social
+                Insights
               </Link>
             </li>
             <li>
@@ -215,17 +215,6 @@ const Navbar = () => {
                 onClick={closeMobileMenu}
               >
                 Team
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/Blog"
-                className={`${styles.link} ${
-                  isActive("/blog") ? styles.activeLink : ""
-                }`}
-                onClick={closeMobileMenu}
-              >
-                Blogs
               </Link>
             </li>
           </div>
