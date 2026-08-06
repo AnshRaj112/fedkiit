@@ -7,6 +7,7 @@ import { TeamCard } from "../../components";
 import { ArrowUpRight } from "lucide-react";
 import { ComponentLoading } from "../../microInteraction";
 import Link from "next/link";
+import TeamDisclosure from "./components/TeamDisclosure";
 
 const BOARD_ACCESS = [
   "PRESIDENT",
@@ -188,17 +189,18 @@ const Team = () => {
           {error && <p className={styles.error}>{error}</p>}
 
           {directorsAndAbove.length > 0 && (
-            <section className={styles.section}>
-              <div className={styles.sectionHead}>
-                <div>
-                  <p className={styles.sectionEyebrow}>Leadership</p>
-                  <h2 className={styles.sectionTitle}>Board of directors</h2>
-                </div>
+            <TeamDisclosure
+              eyebrow="Leadership"
+              title="Board of directors"
+              count={directorsAndAbove.length}
+              defaultOpen
+              action={
                 <Link href="/Alumni" className={styles.alumniLink}>
                   Our alumni
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
-              </div>
+              }
+            >
               <div className={styles.grid}>
                 {directorsAndAbove.map((member) => (
                   <TeamCard
@@ -207,23 +209,17 @@ const Team = () => {
                   />
                 ))}
               </div>
-            </section>
+            </TeamDisclosure>
           )}
 
-          {teamByRole.map((group) => (
-            <section key={group.role} className={styles.section}>
-              <div className={styles.sectionHead}>
-                <div>
-                  <p className={styles.sectionEyebrow}>Vertical</p>
-                  <h2 className={styles.sectionTitle}>
-                    Team {group.role}
-                  </h2>
-                </div>
-                <span className={styles.count}>
-                  {group.members.length}{" "}
-                  {group.members.length === 1 ? "member" : "members"}
-                </span>
-              </div>
+          {teamByRole.map((group, index) => (
+            <TeamDisclosure
+              key={group.role}
+              eyebrow="Vertical"
+              title={`Team ${group.role}`}
+              count={group.members.length}
+              defaultOpen={index === 0}
+            >
               <div className={styles.grid}>
                 {group.members.map((member) => (
                   <TeamCard
@@ -232,7 +228,7 @@ const Team = () => {
                   />
                 ))}
               </div>
-            </section>
+            </TeamDisclosure>
           ))}
         </>
       )}

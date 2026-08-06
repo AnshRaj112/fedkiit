@@ -142,6 +142,15 @@ const DropdownIndicator = (props) => {
   );
 };
 
+const coerceDate = (value) => {
+  if (!value) return null;
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value;
+  }
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
 const Input = (props) => {
   const {
     type = "text",
@@ -165,10 +174,12 @@ const Input = (props) => {
   const [previewFile, setpreviewFile] = useState(null);
 
   const filterPassedTime = (time) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(time);
-
-    return currentDate.getTime() < selectedDate.getTime();
+    const selected = coerceDate(time);
+    if (!selected) return true;
+    const now = new Date();
+    // Only filter times earlier today - editing past events must still work.
+    if (selected.toDateString() !== now.toDateString()) return true;
+    return selected.getTime() >= now.getTime();
   };
 
   const getInputTypes = () => {
@@ -242,13 +253,13 @@ const Input = (props) => {
               className={`${styles.input} ${styles.inputDate} ${className}`}
               ref={dateRef}
               placeholder={placeholder}
-              value={value}
+              value={coerceDate(value)}
               onChange={onChange}
               clearIcon={null}
               style={style || {}}
               calendarIcon={
                 <FaRegCalendarAlt
-                  color="#fff"
+                  color="var(--text-primary)"
                   size={18}
                   style={{
                     position: "absolute",
@@ -267,16 +278,17 @@ const Input = (props) => {
             <DatePickerWithTime
               name={name}
               ref={dateRef}
-              value={value}
+              selected={coerceDate(value)}
               onChange={onChange}
-              clearIcon={null}
               showTimeSelect
               filterTime={filterPassedTime}
               timeFormat="HH:mm"
               timeIntervals={15}
-              timeCaption="time"
-              dateFormat="MMMM d, yyyy h:mm"
+              timeCaption="Time"
+              dateFormat="MMMM d, yyyy h:mm aa"
               customInput={<CustomInput placeholder={placeholder} />}
+              calendarClassName={styles.dateTimeCalendar}
+              popperPlacement="bottom-start"
               {...rest}
             />
           </div>
@@ -571,6 +583,7 @@ Input.propTypes = {
     PropTypes.string,
     PropTypes.number,
     PropTypes.bool,
+    PropTypes.instanceOf(Date),
   ]),
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,

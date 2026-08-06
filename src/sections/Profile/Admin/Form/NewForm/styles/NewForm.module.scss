@@ -97,6 +97,47 @@
 .formInputTxtArea {
   width: 90% !important;
   height: 31vh !important;
+  min-height: 12rem;
+}
+
+.formScroll {
+  width: 90%;
+  max-height: min(90vh, 920px);
+  margin-bottom: 50px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.formColumns {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.formColumn {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .formHeader,
+  .settings,
+  .sectionsBar,
+  .formScroll {
+    width: 100%;
+  }
+
+  .formColumns {
+    flex-direction: column;
+  }
+
+  .formInput,
+  .formInputTxtArea,
+  .fieldInput {
+    width: 100% !important;
+  }
 }
 
 .formFieldContainer {

@@ -398,13 +398,23 @@ const EventCard = (props) => {
   };
 
   if (isLoading || showSkeleton) {
+    const featured = variant === "featured";
     return (
-      <div className={style.skeleton} aria-hidden="true">
+      <div
+        className={`${style.skeleton} ${featured ? style.skeletonFeatured : ""}`}
+        aria-hidden="true"
+      >
         <div className={style.skeletonMedia} />
         <div className={style.skeletonBody}>
           <span className={style.skeletonLine} style={{ width: "35%" }} />
-          <span className={style.skeletonLine} style={{ width: "80%" }} />
-          <span className={style.skeletonLine} style={{ width: "60%" }} />
+          <span className={style.skeletonLine} style={{ width: featured ? "55%" : "80%" }} />
+          <span className={style.skeletonLine} style={{ width: featured ? "70%" : "60%" }} />
+          {featured && (
+            <>
+              <span className={style.skeletonLine} style={{ width: "90%" }} />
+              <span className={style.skeletonCta} />
+            </>
+          )}
         </div>
       </div>
     );
@@ -648,7 +658,7 @@ const EventCard = (props) => {
             type="button"
             className={style.adminBtn}
             aria-label="View analytics"
-            onClick={() => router.push("/profile/Events/Analytics/" + data.id)}
+            onClick={() => router.push("/profile/events/Analytics/" + data.id)}
           >
             <BarChart3 size={15} aria-hidden="true" />
           </button>

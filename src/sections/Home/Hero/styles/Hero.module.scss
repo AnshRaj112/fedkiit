@@ -1,182 +1,192 @@
 .main {
-  height: auto;
   width: 100%;
-  background-color: transparent;
-  margin-top: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.25rem 1.5rem 4.75rem;
+  background: transparent;
 }
 
 .hero {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  background-color: transparent;
-  position: relative; 
-  margin-top: 2rem;   
-  padding-bottom: 4.5vw;
-  padding-left: 0px;
-  z-index: 0;
-}
-
-.heroTextContainer {
-  height: 100%;
-  width: 100%;    
-  z-index: 1;
-  padding-left: 2.5rem;
-  margin-top: 3rem;
-
-}
-
-.heroCarousel {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 2.5rem 2.75rem;
   align-items: center;
   position: relative;
 }
 
-.main span{
-  color: transparent;
-  background-clip: text;
+.heroTextContainer {
+  position: relative;
+  z-index: 1;
+  min-height: 18rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  padding: 1.75rem 1.6rem;
+ 
+  overflow: hidden;
+}
+.textBackdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(58%, 17rem);
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    // Shift image further to the right
+    object-position: 85% center; // try 90%, 95%, or 100%
+
+    opacity: 0.88;
+    transform: scale(1.08); // optional, prevents empty edges when shifting
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      var(--surface-1) 0%,
+      rgba(10, 10, 10, 0.82) 28%,
+      rgba(10, 10, 10, 0.35) 62%,
+      transparent 100%
+    );
+  }
 }
 
-.largeContent p,
-.largeContent .largeText {
+.textContent {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.heroCarousel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  font-size: 2.45rem;
-  color: #FFFFFF;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
-.largeContent h3{
-  animation: fadeIn 3s ease-in-out;
-  white-space: nowrap; 
+.largeText {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 100;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
 
 .dynamicText {
-  height: 65px; 
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
+  display: block;
+  min-height: 1.35em;
+  font-weight: 800;
+
+  margin-top: 0.35rem;
 }
 
 .typing {
   display: inline-block;
-  white-space: nowrap;
-  border-right: 4px solid;
-  animation: blink 0.75s step-end infinite;
   max-width: 100%;
   overflow: hidden;
+  white-space: nowrap;
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+  border-right: 2px solid var(--accent);
+  animation: blink 0.8s step-end infinite;
+  vertical-align: bottom;
 }
 
-.smallContent p {
-  font-size: 1.1rem;
-  color: #FFFFFF;
-  letter-spacing: 0.1vw;
+.lede {
+  margin: 1.15rem 0 0;
+  max-width: 40ch;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
-.maincontent {
-  padding-top: 50px;
-  display: flex;
-  align-items: center;
+.accent {
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
 }
 
-.smallContent {
-  display: flex;
-  align-items: center;
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
 
-
-.smallContainer {
-  padding-top: 2vw;
-  padding-bottom: 3vw;
-}
-
-
-@media (max-width: 1025px) {
-.largeContent p,
-.largeContent .largeText{
-  font-size: 1.3rem;
-}
-
-.smallContainer strong{
-  font-size: 0.8rem;
-}
-
-}
-
-@media screen and (max-width: 768px) {
+@media (max-width: 900px) {
   .hero {
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    background-color: transparent !important;
-    position: relative; 
-    margin-top: 1rem;
-    margin-right: 0rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .smallcontent {
-    padding-top: 1rem;
+  .heroCarousel {
+    order: -1;
   }
 
   .heroTextContainer {
-    z-index: 1; 
-    padding-left: 25px;
-    padding-right: 30px;
+    min-height: 0;
+    padding: 1.35rem 1.2rem;
+  }
+
+  .textBackdrop {
+    width: min(48%, 12rem);
+    opacity: 0.75;
+  }
+
+  .lede {
+    max-width: none;
   }
 }
 
-
-
-@media screen and (max-width: 480px) {
-
-  .largeContent p,
-  .largeContent .largeText{
-    font-size: 1.2rem;
-    text-align: center;
-    
+@media (max-width: 480px) {
+  .main {
+    padding: 1.25rem 1rem 2.25rem;
   }
 
-  .heroCarousel{
-    margin-top: 1rem;
+  .largeText {
+    font-size: 1.55rem;
   }
 
-  .dynamicText {
-    height: 45px; /* Set to a fixed height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-
+  .lede {
+    font-size: 0.95rem;
   }
 
-  .smallContent p{
-    font-size: 1rem;
+  .textBackdrop {
+    width: 42%;
+    opacity: 0.55;
   }
-  .hero {
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    background-color: transparent !important;
-    position: relative; 
-    align-items: center;
-  }
+}
 
-  .heroTextContainer{
-    margin-top: 4rem;
-    margin-left: 1rem;
-    justify-content: center;
-    text-align: center;
-    word-spacing: 0.1rem;
-  }
-
-  .main{
-    margin-top: -1rem;
-  }
-
-  .smallContent {
-    padding-top: 2rem;
+@media (prefers-reduced-motion: reduce) {
+  .typing {
+    animation: none;
+    border-right-color: var(--accent);
   }
 }

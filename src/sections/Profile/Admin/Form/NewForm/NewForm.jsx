@@ -129,11 +129,27 @@ function NewForm() {
 
   useEffect(() => {
     if (authCtx.eventData) {
+      const info = authCtx.eventData?.info || {};
+      const parseMaybeDate = (value) => {
+        if (!value) return "";
+        if (value instanceof Date) return value;
+        const native = new Date(value);
+        if (!Number.isNaN(native.getTime())) return native;
+        const formatted = moment(value, [
+          "MMMM Do YYYY, h:mm:ss a",
+          "MMMM D YYYY, h:mm:ss a",
+          moment.ISO_8601,
+        ], true);
+        return formatted.isValid() ? formatted.toDate() : value;
+      };
+
       setdata({
-        ...authCtx.eventData?.info,
-        isPublic: authCtx.eventData?.info.isPublic,
-        isRegistrationClosed: authCtx.eventData?.info.isRegistrationClosed,
-        isEventPast: authCtx.eventData?.info.isEventPast,
+        ...info,
+        eventDate: parseMaybeDate(info.eventDate),
+        regDateAndTime: parseMaybeDate(info.regDateAndTime),
+        isPublic: info.isPublic,
+        isRegistrationClosed: info.isRegistrationClosed,
+        isEventPast: info.isEventPast,
       });
       setsections(authCtx.eventData?.sections);
       setisEditing(true);
@@ -359,10 +375,20 @@ function NewForm() {
       form.append("upi", data.receiverDetails.upi);
 
       Object.keys(data).forEach((key) => {
-        const value = data[key];
-        if (key !== "eventImg") {
-          form.append(key, value);
+        let value = data[key];
+        if (key === "eventImg") return;
+
+        if (key === "eventDate" && value instanceof Date) {
+          value = value.toISOString();
         }
+        if (key === "regDateAndTime" && value instanceof Date) {
+          value = moment(value).format("MMMM Do YYYY, h:mm:ss a");
+        }
+        if (typeof value === "object" && value !== null) {
+          value = JSON.stringify(value);
+        }
+
+        form.append(key, value);
       });
 
       if (typeof data.eventImg === "string") {
@@ -1027,26 +1053,9 @@ function NewForm() {
           </div>
         </div>
       )}
-      <div
-        style={{
-          height: "90vh",
-          width: "90%",
-          overflow: "hidden scroll",
-          scrollbarWidth: "none",
-          marginBottom: "50px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <div
-            style={{
-              width: "45%",
-            }}
-          >
+      <div className={styles.formScroll}>
+        <div className={styles.formColumns}>
+          <div className={styles.formColumn}>
             <Input
               placeholder="Enter Event Title or Name"
               label="Event Title"
@@ -1072,9 +1081,8 @@ function NewForm() {
               className={styles.formInput}
               label="Event Date"
               type="date"
-              style={{ width: "88%" }}
               value={data.eventDate}
-              onChange={(date) => setdata({ ...data, eventDate: date })}
+              onChange={(date) => setdata({ ...data, eventDate: date || "" })}
             />
             <Input
               placeholder="Select Event Type"
@@ -1212,18 +1220,12 @@ function NewForm() {
               onChange={(date) => {
                 setdata({
                   ...data,
-                  regDateAndTime: moment(date).format(
-                    "MMMM Do YYYY, h:mm:ss a"
-                  ),
+                  regDateAndTime: date || "",
                 });
               }}
             />
           </div>
-          <div
-            style={{
-              width: "45%",
-            }}
-          >
+          <div className={styles.formColumn}>
             <Input
               placeholder="Enter Event Description"
               label="Event Description"

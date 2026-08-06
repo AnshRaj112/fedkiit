@@ -17,7 +17,109 @@
 // shorter than the original.
 
 @import "react-datepicker/dist/react-datepicker.css";
-@import "./globals.css";
+@import "react-date-picker/dist/DatePicker.css";
+@import "react-calendar/dist/Calendar.css";
+
+// Dark-theme overrides for the ported date pickers so calendars match the
+// surface ramp instead of shipping as unstyled white widgets.
+.react-date-picker {
+  width: 100%;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+  width: 100%;
+}
+
+.react-date-picker__inputGroup {
+  min-width: 0;
+  padding: 0 0.25rem;
+}
+
+.react-date-picker__inputGroup__input {
+  color: var(--text-primary) !important;
+}
+
+.react-date-picker__inputGroup__divider,
+.react-date-picker__inputGroup__leadingZero {
+  color: var(--text-secondary);
+}
+
+.react-date-picker__calendar {
+  z-index: 1300 !important;
+  inset: calc(100% + 6px) auto auto 0 !important;
+}
+
+.react-calendar {
+  border: 1px solid var(--border-strong) !important;
+  border-radius: var(--radius-md);
+  background: var(--surface-2) !important;
+  color: var(--text-primary);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
+}
+
+.react-calendar__navigation button,
+.react-calendar__tile {
+  color: var(--text-primary);
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus,
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: var(--surface-3) !important;
+}
+
+.react-calendar__tile--now {
+  background: var(--accent-quiet) !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.react-datepicker {
+  font-family: var(--font-sans);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.react-datepicker__header {
+  background: var(--surface-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name,
+.react-datepicker__time-list-item {
+  color: var(--text-primary);
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__time-list-item:hover {
+  background: var(--surface-3) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__time-list-item--selected {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.react-datepicker__time-container,
+.react-datepicker__time,
+.react-datepicker__time-box {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
 
 // The brand gradient. Lived in Global.scss on the original site; it moved here
 // because Global.scss is now injected into every CSS Module, and a `:root`
@@ -116,10 +218,6 @@ h4 {
   letter-spacing: -0.02em;
 }
 
-.react-date-picker__wrapper {
-  border: none !important;
-}
-
 html {
   // Was `scroll-behavior: smooth`. Removed: it hijacks every in-page jump and
   // App Router route change, which Next also warns about.
@@ -141,8 +239,7 @@ body {
   align-items: center;
   background-color: $page-color;
   overflow: hidden;
-  margin-top: 0;
-  padding-top: 90px;
+  margin-top: 88px;
 }
 
 .page.omega-page {
