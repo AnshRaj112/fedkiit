@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 export default async function BlogFeed() {
   const blogs = await prisma.blog.findMany({
     where: { visibility: "public" },
-    orderBy: { createdAt: "desc" },
+    orderBy: { date: "desc" },
   });
 
   if (blogs.length === 0) {
