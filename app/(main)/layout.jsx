@@ -2,7 +2,10 @@
 
 import { usePathname } from "next/navigation";
 
-import Navbar from "@/src/layouts/Navbar/Navbar";
+// The revamped navbar. Its links point at the canonical capitalised routes
+// (/Events, /Team, /Blog), so it drives the existing pages rather than
+// replacing them. The previous SCSS navbar is still in the tree, unused.
+import Navbar from "@/app/components/Navbar";
 import Footer from "@/src/layouts/Footer/Footer";
 
 /**

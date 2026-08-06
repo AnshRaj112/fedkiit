@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.72);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
@@ -22,38 +22,28 @@
 }
 
 .popupContent {
-  border-radius: 30px;
+  border-radius: var(--radius-xl);
   position: relative;
   width: fit-content;
-  // background-color: aqua;
   max-width: 600px;
   height: 60vh;
   max-height: 600px;
   text-align: center;
-  background-color: none;
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
   overflow: hidden;
   display: flex;
-  border: white solid 1.5px;
+  border: 1px solid var(--border);
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+// Positioning only - appearance comes from <CloseButton />.
 .closeButton {
   position: absolute;
-  opacity: 85%;
   top: 0px;
   right: 14px;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid #fff;
-  font-size: 1.5em;
-  cursor: pointer;
-  color: #fff;
-  padding: 2px 12px;
-  border-radius: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 100;
 }
 
@@ -70,8 +60,8 @@
   object-fit: cover;
   
   object-position: center;
-  border-top-left-radius: 1.42075rem;
-  border-top-right-radius: 1.42075rem;
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
   // border: 2px solid $border-color;
   border-bottom: none;
 }
@@ -88,7 +78,6 @@
   .closeButton {
     top: 4px;
     right: 10px;
-    font-size: 1.2em;
   }
 }
 
@@ -123,8 +112,6 @@
   .closeButton {
     top: 6px;
     right: 10px;
-    font-size: 1em;
-    padding: 0 7px;
   }
   .popupContent img {
     width: 100%; 

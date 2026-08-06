@@ -4,21 +4,25 @@
   max-width: 40rem;
   height: 85vh;
   overflow-y: auto;
-  padding: 10px;
+  padding: 12px;
   margin-right: 1rem;
-  background: rgba(255, 255, 255, 0.1); 
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+  background-color: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
 }
 
 .title {
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin-bottom: 15px;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%); /* Gradient background on hover */
-  -webkit-background-clip: text;
-  color: transparent; 
+  padding: 0 4px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
 }
 
 :global(ul) {
@@ -29,31 +33,25 @@
 
 .tabItem {
   cursor: pointer;
-  padding: 16px;
-  font-size: 16px;
-  color: white; 
-  border-bottom: 1px solid rgb(143, 139, 139); 
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 14px 12px;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
 }
 
 .tabItem:hover {
-  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
-  -webkit-background-clip: text;
-  color: transparent; 
+  color: var(--text-primary);
+  background-color: var(--surface-2);
 }
 
 .tabItem.active {
-  background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
-  -webkit-background-clip: text;
-  color: transparent; 
-  font-weight: bold;
-  border-left: 4px solid #f4b60c; 
+  color: var(--accent);
+  background-color: var(--accent-quiet);
+  font-weight: 600;
+  border-left-color: var(--accent);
 }
-
-.tabItem:last-child {
-  border-bottom: none;
-}
-
 
 @media (max-width: 1200px) {
   .tabBar {
@@ -61,51 +59,33 @@
   }
 
   .tabItem {
-    font-size: 14px; 
-    padding: 12px;  
-  }
-
-  .title {
-    font-size: 18px; 
-    background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%); /* Gradient background on hover */
-
+    font-size: 0.875rem;
+    padding: 12px;
   }
 }
 
 @media (max-width: 900px) {
   .tabBar {
-    max-width: 30rem;  
-    margin-right: 0;   
+    max-width: 30rem;
+    margin-right: 0;
   }
 
   .tabItem {
-    font-size: 14px; 
-    padding: 10px;  
-  }
-
-  .title {
-    font-size: 16px; 
-    background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%); /* Gradient background on hover */
-
+    font-size: 0.875rem;
+    padding: 10px;
   }
 }
 
 @media (max-width: 600px) {
   .tabBar {
-    max-width: 100%; 
-    height: 70vh;    
-    margin-right: 0; 
-    padding: 8px;     
+    max-width: 100%;
+    height: 70vh;
+    margin-right: 0;
+    padding: 8px;
   }
 
-  .title {
-    font-size: 14px; 
-    background: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%); /* Gradient background on hover */
-    
-  } 
-
   .tabItem {
-    font-size: 12px; 
-    padding: 8px;   
+    font-size: 0.8125rem;
+    padding: 10px;
   }
 }

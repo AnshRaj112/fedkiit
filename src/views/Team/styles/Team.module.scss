@@ -1,402 +1,347 @@
-.Team h2 {
-  text-align: center;
-  font-size: 50px;
-  margin-top: 20px;
+.page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 110px 24px 80px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
 }
 
-.Team h2 span {
-  color: #FF8A00;
+/* -------------------------------------------------------------- masthead */
+
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
 }
 
-.para p {
-  padding: 30px 70px;
-  z-index: 1;
-  text-align: center;
-  margin-top: 10px;
-  padding-bottom: 0;
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 15px;
+.mastheadText {
+  padding: 28px 24px;
+}
+
+.mastheadArt {
+  display: none;
+  position: relative;
+  min-height: 180px;
+  border-left: 1px solid var(--border);
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center right;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      var(--surface-1) 0%,
+      rgba(10, 10, 10, 0.45) 36%,
+      transparent 78%
+    );
+  }
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  span {
+    color: var(--accent);
+  }
+}
+
+.lede {
+  margin: 12px 0 0;
+  max-width: 48ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .masthead {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  }
+
+  .mastheadText {
+    padding: 36px 32px;
+  }
+
+  .mastheadArt {
+    display: block;
+  }
+}
+
+/* ------------------------------------------------------------------- fic */
+
+.fic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 22px;
+}
+
+.ficPhoto {
+  width: min(180px, 100%);
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-3);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+.ficBody {
+  min-width: 0;
+}
+
+.ficEyebrow {
+  margin: 0 0 6px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.ficName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.ficQuote {
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 720px) {
+  .fic {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 28px;
+    padding: 28px;
+  }
+}
+
+/* --------------------------------------------------------------- sections */
+
+.section {
+  margin-top: 40px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 12px 6px 8px;
+  margin-left: -8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+.chevron {
+  flex: none;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+
+  &[data-open] {
+    transform: rotate(180deg);
+  }
+}
+
+.sectionHeadText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.sectionEyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.625rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.countBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.count {
+  flex: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.alumniLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ----------------------------------------------------------------- states */
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 72px 0;
 }
 
 .error {
-  padding: 30px 70px;
-  z-index: 1;
-  text-align: center;
-  margin-top: 4rem;
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
+  margin: 28px 0 0;
+  padding: 18px 20px;
+  border: 1px solid rgba(244, 82, 59, 0.35);
+  border-radius: var(--radius-lg);
+  background-color: rgba(244, 82, 59, 0.08);
+  color: var(--negative);
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
-.teamSection {
-  text-align: left;
-  padding: 30px;
-  color: white;
-  // margin-top: 20px;
-}
-
-.teamSection h3 {
-  font-size: 40px;
-  color: #FF8A00;
-  margin-bottom: 60px;
-  margin-left: 50px;
-}
-
-.teamSection span {
-  font-weight: 800;
-}
-
-.Team strong {
-  font-weight: 800;
-}
-
-.teamTitle {
-  color: #fff;
-}
-
-.teamGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(100px, 1fr));
-  gap: 32px;
-  justify-content: center;
-  padding: 10px 50px;
-  z-index: 0;
-}
-
-.directorGrid {
-  grid-template-columns: repeat(4, minmax(100px, 1fr));
-  padding-top: 0;
-}
-
-.lastRowCentered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 29px;
-  margin-top: -1rem;
-}
-
-
-
-
-.circle {
-  height: 50vh;
-  width: 30vh;
-  background-color: rgba(255, 92, 0, 0.69);
-  position: absolute;
-  top: 80%;
-  left: -10%;
-  border-radius: 50%;
-  filter: blur(150px);
-}
-
-
-.alumniBut {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-right: 60px;
-  margin-top: -30px;
-  color: #FF8A00;
-  font-size: 25px;
-  padding-bottom: 20px;
-
-}
-
-.alumniBut a {
-  background: var(--primary);
-  background-clip: text;
-  color: transparent;
-  text-decoration: none;
-}
-
-
-.alumniBut .ulhover {
-  margin-right: 10px;
-  font-weight: 700;
-  padding: 5px;
-  padding-right: 0;
-  font-size: 25px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-
-.alumniBut .ulhover:after {
-  background: none repeat scroll 0 0 transparent;
-  bottom: 0;
-  content: "";
-  display: block;
-  height: 2px;
-  left: 50%;
-  position: absolute;
-  background: #fff;
-  transition: width 0.3s ease 0s, left 0.3s ease 0s;
-  width: 0;
-}
-
-.alumniBut .ulhover:hover:after {
-  width: 100%;
-  left: 0;
-}
-
-//* Outer dark box */
-.FICwrapper {
-  background: #0d0d0d;
-  /* same as TEAM page background */
-  padding: 50px;
-  border-radius: 20px;
-  max-width: 1150px;
-  min-height: 220px;
-  margin: 30px auto;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
-
-}
-
-/* Grid layout */
-.FICsection {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 50px;
-  align-items: center;
-}
-
-/* Left Image */
-.image img {
-  display: flex;
-  justify-content: center;
-  /* centers horizontally */
-  align-items: center;
-  width: 180px;
-  height: 180px;
-  border-radius: 0%;
-  object-fit: cover;
-  box-shadow: 0 10px 40px rgba(255, 138, 0, 0.2);
-  border: 3px solid rgba(255, 138, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.FICsection .image img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 15px 60px rgba(255, 138, 0, 0.4);
-}
-
-/* Text Block */
-.textBlock {
-  text-align: left;
-  /* ensures all text aligns left */
-}
-
-/* Name */
-.name {
-  font-size: 32px;
-  font-weight: 800;
-  color: #FF8A00;
-  margin: 0;
-}
-
-/* Role title */
-.role {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #FF8A00;
-  margin-top: 8px;
-  text-transform: uppercase;
-}
-
-/* Intro & Vision */
-.intro,
-.vision {
-  margin-top: 25px;
-  font-style: italic
-}
-
-.intro p,
-.vision p {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #e0e0e0;
-  margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .FICsection {
-    grid-template-columns: 1fr;
-    text-align: left;
+@media (max-width: 560px) {
+  .page {
+    padding: 100px 12px 56px;
   }
 
-  .FICsection .image {
-    margin-bottom: 20px;
-  }
-
-  .FICsection .image img {
-    width: 220px;
-    height: 220px;
-  }
-
-  .name {
-    font-size: 26px;
-  }
-}
-
-@media (max-width: 480px) {
-  .FICwrapper {
-    max-width: 350px;
-  }
-
-  .FICsection {
-    grid-template-columns: 1fr;
-  }
-
-  .FICsection .image {
-    margin-bottom: 20px;
-    margin: 0 auto;
-  }
-
-  .FICsection .image img {
-    width: 150px;
-    height: 150px;
-    text-align: center;
-  }
-
-  .vision {
-    font-size: 18px;
-    text-align: center;
-  }
-
-  .name {
-    font-size: 22px;
-    text-align: center;
-  }
-
-  .role {
-    text-align: center;
+  .sectionHead {
+    flex-wrap: wrap;
     align-items: center;
   }
-}
 
-/* Responsive styles */
-
-@media (max-width: 1024px) {
-
-  .circle {
-    left: -30%;
-  }
-}
-
-@media (max-width: 768px) {
-  .circle {
-    left: -20%;
+  .sectionToggle {
+    width: 100%;
   }
 
-
-  .error {
-    padding: 30px 70px;
-    z-index: 1;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-  }
-
-  .Team h2 {
-    font-size: 2.5rem;
-  }
-
-  .teamSection h3 {
-    font-size: 2em;
-  }
-
-
-  .para p {
-    font-size: 1rem;
-    padding: 30px 30px;
-    line-height: auto;
-  }
-}
-
-@media (max-width: 550px) {
-  .teamGrid {
-    gap: 5vw;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .teamGrid {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0;
-  }
-
-  .teamSection h3 {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-
-  .para p {
-    margin-bottom: 20px;
-  }
-
-  .Team h2 {
-    font-size: 40px;
-  }
-
-  .circle {
-    left: -30%;
-    background-color: rgba(255, 92, 0, 0.59);
-  }
-
-  .teamSection h3 {
-    margin-left: 0px;
-  }
-
-  .error {
-    padding: 30px 70px;
-    z-index: 1;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-  }
-
-  .lastRowCentered {
-    margin-top: 1rem;
-  }
-
-
-
-
-  .alumniBut {
-    margin-right: 10px;
-    padding-right: 15px;
-  }
-
-  .alumniBut a {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 430px) {
-  .lastRowCentered {
-    margin-bottom: 0;
-  }
-}
-
-@media (max-width: 415px) {
-  .teamGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5vw;
-  }
-
-  .lastRowCentered {
-    margin-bottom: 0;
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 }

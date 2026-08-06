@@ -1,37 +1,41 @@
-@use "sass:color";
-@use "../../../../../../assets/styles/Global.scss" as *;
-$primary-color: #1C1C1C;
-$secondary-color: #1DB954;
-$accent-color: #FF8A00;
-$bg-blur: rgba(255, 255, 255, 0.05);
-$text-color: #f1f1f1;
-$border-radius: 16px;
-$shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+// Public certificate verification.
+//
+// The old sheet carried its own mini palette ($accent-color, $secondary-color,
+// $bg-blur) plus a 24px drop shadow and a 2px accent frame around the artwork.
+// Depth now comes from the same hairline border and bevel as every other panel,
+// and the local variables - including the sass:color import they needed - are
+// gone in favour of tokens.
 
 .container {
   padding: 2rem 1.5rem;
-  // background: #0a0a0a;
-  color: $text-color;
   min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
 }
 
 .title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
   margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--text-primary);
 
   span {
-    color: $accent-color;
+    color: var(--accent);
   }
 
   &::after {
     content: "Digital Certificate Verification";
     display: block;
-    font-size: 1rem;
-    font-weight: 400;
     margin-top: 0.5rem;
-    color: #bbb;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--text-secondary);
   }
 }
 
@@ -53,47 +57,38 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 
   img {
     max-width: 95%;
-    border-radius: $border-radius;
-    box-shadow: $shadow;
-    border: 2px solid $accent-color;
-    transition: transform 0.3s;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--depth);
 
-    &:hover {
-      transform: scale(1.02);
-    }
-    @media(max-width: 390px) {
+    @media (max-width: 390px) {
       padding: 0.1rem;
       width: 85%;
-
-    
-  }
-
+    }
   }
 }
 
 .detailsContainer {
-  background: $bg-blur;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  padding: 2rem;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-  display:inline-flexbox;
-  width:100%;  
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
 
-  @media(max-width: 480px) {
-      padding: 1.0rem;
-      margin-top: 2rem;
-    
+  @media (max-width: 480px) {
+    padding: 1rem;
+    margin-top: 2rem;
   }
-    @media(max-width: 390px) {
-      padding: 0rem;
-      width:95%;
-      margin-left: 9px;
-      margin-top: 2rem;
-    
+
+  @media (max-width: 390px) {
+    padding: 1rem 0.75rem;
+    width: 95%;
+    margin-left: 9px;
+    margin-top: 2rem;
   }
 }
 
@@ -101,19 +96,25 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 100%;
   margin-bottom: 2rem;
 
-  th, td {
+  th,
+  td {
     padding: 0.95rem;
     text-align: left;
   }
 
   th {
-    color: $accent-color;
-    font-weight: 600;
     width: 40%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
   }
 
   td {
-    color: #ddd;
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+    color: var(--text-primary);
   }
 }
 
@@ -123,59 +124,101 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   align-items: center;
   flex-wrap: wrap;
 
-  .verifiedTag {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: $secondary-color;
-    font-weight: 600;
-    font-size: 1rem;
-
-    @media(max-width: 390px) {
-      padding: 0.1rem;
-      margin-left: 2px;
-  }
-    svg {
-      font-size: 1.25rem;
-    }
-  }
-
-  .downloadBtn {
-    background-color: $accent-color;
-    color: white;
-    padding: 0.5rem 1.2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: color.adjust($accent-color, $lightness: -10%);
-      transform: scale(1.05);
-    }
-  }
-
   @media (max-width: 480px) {
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     gap: 1rem;
   }
-
 }
 
-.loadingContainer, .errorContainer {
+.verifiedTag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--positive);
+
+  @media (max-width: 390px) {
+    padding: 0.1rem;
+    margin-left: 2px;
+  }
+
+  svg {
+    font-size: 1.25rem;
+  }
+}
+
+.verifiedText {
+  color: var(--text-primary);
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+.shareBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding-inline: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--surface-3);
+  }
+}
+
+.loadingContainer,
+.errorContainer {
+  padding: 44px 24px;
   text-align: center;
-  // margin-top: 5rem;
-  // color: red;
+  color: var(--text-secondary);
 
   p {
     margin-bottom: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.0625rem;
     font-weight: 600;
+    color: var(--text-primary);
   }
 }
+
 .actions {
   display: flex;
   align-items: center;
@@ -186,28 +229,20 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     width: 32px;
     height: 32px;
     cursor: pointer;
-    transition: transform 0.2s ease;
-
-    &:hover {
-      transform: scale(1.1);
-    }
   }
 }
-.actionButtons{
+
+.actionButtons {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   width: 100%;
 }
+
 .buttonGroup {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.shareBtn {
-  font-size: smaller;
-
-  &:hover {
-    background-color: color.adjust($accent-color, $lightness: -10%);
-    transform: scale(1.05);
-  }
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }

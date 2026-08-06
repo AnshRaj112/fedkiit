@@ -1,4 +1,3 @@
-@use "../../assets/styles/Global.scss" as *;
 /**
  * FED Chatbot Styles
  * Self-contained SCSS module for the chatbot component
@@ -7,17 +6,6 @@
 // ============================================
 // VARIABLES (Self-contained)
 // ============================================
-
-// Colors
-$page-color: #1C1C1C;
-$dark-bg: #141414;
-$light-text: #ffffff;
-$border-subtle: rgba(255, 255, 255, 0.1);
-$glass-bg: rgba(28, 28, 28, 0.95);
-$glass-blur: 10px;
-
-// Gradients
-$primary-gradient: linear-gradient(260deg, rgba(255, 190, 11, 0.84) -29.7%, rgba(244, 43, 3, 0.84) 128.34%);
 
 // Spacing
 $spacing-sm: 8px;
@@ -39,23 +27,10 @@ $mobile: 480px;
 
 // Sizes
 $toggle-button-size: 72px;
-$border-radius-medium: 16px;
 
 // ============================================
 // ANIMATIONS
 // ============================================
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
 
 @keyframes fadeIn {
     from {
@@ -93,62 +68,136 @@ $border-radius-medium: 16px;
     }
 }
 
+@keyframes tipPop {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.86);
+    }
+
+    55% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes tipIdle {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes avatarBob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
 // ============================================
 // TOGGLE BUTTON
 // ============================================
 
-.chatbotToggle {
+.launcher {
     position: fixed;
     bottom: $spacing-xl;
     right: $spacing-xl;
+    z-index: $z-toggle;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.tip {
+    position: relative;
+    max-width: 220px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 16px 16px 4px 16px;
+    background-color: var(--surface-2);
+    box-shadow: var(--depth);
+    animation: tipPop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both,
+        tipIdle 2.4s ease-in-out 0.45s infinite;
+    transform-origin: bottom right;
+}
+
+.tipText {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.tip::after {
+    content: "";
+    position: absolute;
+    right: 18px;
+    bottom: -6px;
+    width: 10px;
+    height: 10px;
+    border-right: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
+    background-color: var(--surface-2);
+    transform: rotate(45deg);
+}
+
+.chatbotToggle {
     width: $toggle-button-size;
     height: $toggle-button-size;
-    border-radius: 50%;
-    background: $primary-gradient;
-    border: none;
-    color: $light-text;
+    padding: 0;
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    box-shadow: var(--depth);
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(244, 43, 3, 0.4);
-    z-index: $z-toggle;
     transition: all $transition-fast;
-    animation: bounce 2s infinite;
-    backdrop-filter: blur($glass-blur);
+    animation: avatarBob 3.2s ease-in-out infinite;
 
     &:hover {
-        transform: scale(1.1);
-        animation: none;
-        box-shadow: 0 12px 32px rgba(244, 43, 3, 0.5);
+        border-color: var(--accent-hover);
+        filter: brightness(1.06);
     }
 
     &:active {
-        transform: scale(0.95);
+        box-shadow: var(--depth-strong);
+        animation: none;
     }
 }
 
-.pulseRing {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.toggleAvatar {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 190, 11, 0.6);
-    animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
 }
 
-@keyframes pulseRing {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+    .tip,
+    .chatbotToggle {
+        animation: none;
     }
 }
 
@@ -162,7 +211,7 @@ $border-radius-medium: 16px;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 42;
     animation: fadeIn 0.3s ease;
 }
@@ -177,14 +226,13 @@ $border-radius-medium: 16px;
     right: 20px;
     width: min(400px, calc(100vw - 40px));
     height: calc(100vh - 120px);
-    background-color: $glass-bg;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    background-color: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--depth);
     display: flex;
     flex-direction: column;
     z-index: $z-container;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur($glass-blur);
     animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
 }
@@ -210,11 +258,9 @@ $border-radius-medium: 16px;
     justify-content: space-between;
     align-items: center;
     padding: 6px $spacing-sm;
-    background: linear-gradient(135deg, rgba(28, 28, 28, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
-    border-radius: 24px 24px 0 0;
-    border-bottom: 1px solid $border-subtle;
+    background-color: var(--surface-2);
+    border-bottom: 1px solid var(--border);
     min-height: 42px;
-    backdrop-filter: blur(12px);
 }
 
 .headerContent {
@@ -230,7 +276,10 @@ $border-radius-medium: 16px;
 .avatar {
     height: 42px;
     width: 42px;
-    border-radius: 50%;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+    object-position: center top;
+    border: 1px solid var(--border-strong);
 }
 
 .statusIndicator {
@@ -239,9 +288,9 @@ $border-radius-medium: 16px;
     right: 2px;
     width: 12px;
     height: 12px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    border-radius: 50%;
-    border: 2px solid $dark-bg;
+    background-color: var(--positive);
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--surface-2);
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -252,48 +301,26 @@ $border-radius-medium: 16px;
 }
 
 .title {
-    color: $light-text;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     margin: 0;
-    letter-spacing: 0.3px;
 }
 
 .subtitle {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 0.8rem;
     margin: 0;
 }
 
 .userBadge {
-    color: rgba(255, 190, 11, 0.9);
-    font-weight: 500;
-}
-
-.closeButton {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: all $transition-fast;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: rgba(255, 255, 255, 0.95);
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
+    color: var(--accent);
+    font-weight: 600;
 }
 
 // ============================================
@@ -309,24 +336,19 @@ $border-radius-medium: 16px;
     flex-direction: column;
     gap: $spacing-md;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.03);
+    scrollbar-color: var(--border-strong) transparent;
 
     &::-webkit-scrollbar {
         width: 6px;
     }
 
     &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 10px;
+        background-color: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 10px;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
+        background-color: var(--border-strong);
+        border-radius: var(--radius-pill);
     }
 }
 
@@ -364,7 +386,7 @@ $border-radius-medium: 16px;
     flex-shrink: 0;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: var(--radius-pill);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -372,7 +394,9 @@ $border-radius-medium: 16px;
     img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        border-radius: var(--radius-pill);
+        object-fit: cover;
+        object-position: center top;
     }
 }
 
@@ -385,38 +409,31 @@ $border-radius-medium: 16px;
 
 .message {
     padding: 12px 16px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--depth);
     word-wrap: break-word;
     font-size: 0.9rem;
     line-height: 1.5;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
-
-    &:hover {
-        transform: translateY(-2px) scale(1.01);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
 }
 
 .userMessage {
-    background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
-    color: #1a1a1a;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--accent);
+    color: var(--text-inverse);
+    border-bottom-right-radius: var(--radius-sm);
 
-    &:hover {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    a {
+        color: var(--text-inverse);
     }
 }
 
 .botMessage {
-    background: $primary-gradient;
-    color: $light-text;
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 2px 8px rgba(244, 43, 3, 0.2);
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    border-bottom-left-radius: var(--radius-sm);
 
-    &:hover {
-        box-shadow: 0 8px 24px rgba(255, 140, 40, 0.35);
+    a {
+        color: var(--accent);
     }
 
     // Style bullet lists inside bot messages
@@ -432,7 +449,7 @@ $border-radius-medium: 16px;
         line-height: 1.5;
 
         &::marker {
-            color: $light-text;
+            color: var(--text-tertiary);
         }
     }
 }
@@ -441,26 +458,29 @@ $border-radius-medium: 16px;
     display: flex; // Changed from inline-flex to make button on separate line
     width: fit-content;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     margin-top: 12px;
-    padding: 10px 18px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    color: $light-text;
+    min-height: 36px;
+    padding-inline: 18px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent);
+    box-shadow: var(--depth);
+    color: var(--text-inverse);
+    font-family: inherit;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     cursor: pointer;
     transition: all $transition-fast;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        background-color: var(--accent-hover);
     }
 
     &:active {
-        transform: translateY(0);
+        box-shadow: var(--depth-strong);
     }
 }
 
@@ -473,17 +493,17 @@ $border-radius-medium: 16px;
     align-items: center;
     gap: 6px;
     padding: 12px 16px;
-    background: $primary-gradient;
-    border-radius: 16px;
-    border-bottom-left-radius: 4px;
+    background-color: var(--surface-2);
+    box-shadow: var(--depth);
+    border-radius: var(--radius-lg);
+    border-bottom-left-radius: var(--radius-sm);
     max-width: 70px;
-    box-shadow: 0 2px 8px rgba(244, 43, 3, 0.2);
 
     span {
         width: 8px;
         height: 8px;
-        background-color: $light-text;
-        border-radius: 50%;
+        background-color: var(--text-secondary);
+        border-radius: var(--radius-pill);
         animation: typing 1.4s infinite ease-in-out;
 
         &:nth-child(2) {
@@ -508,7 +528,7 @@ $border-radius-medium: 16px;
 .promptsLabel {
     margin: 0 0 $spacing-sm 0;
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
     font-weight: 500;
     letter-spacing: 0.5px;
 }
@@ -520,25 +540,29 @@ $border-radius-medium: 16px;
 }
 
 .promptButton {
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding-inline: 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-2);
+    box-shadow: var(--depth);
+    color: var(--text-primary);
+    font-family: inherit;
     font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
     cursor: pointer;
     transition: all $transition-fast;
-    text-align: left;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 190, 11, 0.5);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 190, 11, 0.2);
+        background-color: var(--surface-3);
     }
 
     &:active {
-        transform: translateY(0);
+        box-shadow: var(--depth-strong);
     }
 }
 
@@ -550,88 +574,85 @@ $border-radius-medium: 16px;
     display: flex;
     align-items: center; // Vertically align input and buttons
     padding: 10px $spacing-md; // Reduced vertical padding
-    background: linear-gradient(135deg, rgba(28, 28, 28, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
-    border-radius: 0 0 24px 24px;
-    border-top: 1px solid $border-subtle;
+    background-color: var(--surface-2);
+    border-top: 1px solid var(--border);
     gap: $spacing-sm;
-    backdrop-filter: blur(12px);
 }
 
 .messageInput {
     flex: 1;
-    height: 44px; // Match mic and send button height
-    padding: 0 18px;
-    border: 1px solid $border-subtle;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.08);
-    color: $light-text;
-    font-size: 0.9rem;
-    font-family: 'Open Sans', sans-serif;
+    min-height: 44px; // Match mic and send button height
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-0);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9375rem;
     transition: all $transition-fast;
 
     &::placeholder {
-        color: rgba(255, 255, 255, 0.4);
+        color: var(--text-tertiary);
     }
 
     &:focus {
         outline: none;
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 190, 11, 0.5);
-        box-shadow: 0 0 0 3px rgba(255, 190, 11, 0.1);
+        border-color: var(--accent);
+        background-color: var(--surface-2);
+        box-shadow: 0 0 0 3px var(--accent-quiet);
     }
 }
 
 .voiceButton {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    width: 44px;
-    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-1);
+    box-shadow: var(--depth);
+    color: var(--text-primary);
     cursor: pointer;
-    color: $light-text;
     transition: all $transition-fast;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
+        background-color: var(--surface-3);
     }
 
     &:active {
-        transform: translateY(0);
+        box-shadow: var(--depth-strong);
     }
 
     &.listening {
-        background: $primary-gradient;
         border-color: transparent;
+        background-color: var(--accent);
+        color: var(--text-inverse);
         animation: pulse 1.5s ease-in-out infinite;
-        box-shadow: 0 0 20px rgba(255, 140, 40, 0.5);
     }
 }
 
 .sendButton {
-    background: $primary-gradient;
-    border: none;
-    border-radius: 12px;
-    width: 44px;
-    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    background-color: var(--accent);
+    box-shadow: var(--depth);
+    color: var(--text-inverse);
     cursor: pointer;
-    color: $light-text;
     transition: all $transition-fast;
-    box-shadow: 0 4px 12px rgba(244, 43, 3, 0.3);
 
     &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(244, 43, 3, 0.4);
+        background-color: var(--accent-hover);
     }
 
     &:active:not(:disabled) {
-        transform: translateY(0);
+        box-shadow: var(--depth-strong);
     }
 
     &:disabled {
@@ -667,14 +688,21 @@ $border-radius-medium: 16px;
         height: 80vh;
         bottom: $spacing-sm;
         right: $spacing-sm;
-        border-radius: $border-radius-medium;
+        border-radius: var(--radius-lg);
+    }
+
+    .launcher {
+        bottom: $spacing-md;
+        right: $spacing-md;
     }
 
     .chatbotToggle {
-        bottom: $spacing-md;
-        right: $spacing-md;
         width: 64px;
         height: 64px;
+    }
+
+    .tipText {
+        white-space: normal;
     }
 
     .message {
@@ -696,6 +724,6 @@ $border-radius-medium: 16px;
     }
 
     .title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
     }
 }

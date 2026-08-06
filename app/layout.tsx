@@ -9,6 +9,9 @@ import { SITE_URL } from "@/lib/seo/metadata";
 import { organizationSchema, websiteSchema } from "@/lib/seo/structured-data";
 
 import "./globals.scss";
+// Design tokens and `fed-*` component classes for the revamped Navbar and Home
+// sections. Loaded after globals.scss so its :root tokens win.
+import "./globals.css";
 
 /**
  * Root layout.

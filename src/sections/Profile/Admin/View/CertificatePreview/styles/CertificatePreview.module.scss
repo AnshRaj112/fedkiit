@@ -1,120 +1,113 @@
+// Certificate preview + test mail - admin.
+//
+// This module was entirely commented out, so `styles.info` resolved to
+// undefined and the screen fell back to inline styles with light-theme borders
+// (#ccc) and no tokens. The rules below restore it against the current markup.
 
-// .container {
-//   display: flex;
-//   flex-direction: column;
-//   width: 100%;
-//   height: 100%;
-//   padding: 20px;
-//   max-width: 800px;
-//   margin: 0 auto;
-//   border: 1px solid #ccc;
-//   border-radius: 10px;
+.page {
+  height: 90vh;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+}
 
-//   .preview {
-//     width: 100%;
-//     height: 300px;
-//     border: 1px solid #ccc;
-//     border-radius: 5px;
-//     position: relative;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     background-size: contain;
-//     background-repeat: no-repeat;
-//     background-position: center;
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--text-primary);
 
-//     &.loading {
-//       text-align: center;
+  span {
+    color: var(--accent);
+  }
+}
 
-//       p {
-//         font-size: 16px;
-//       }
-//     }
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
 
-//     &.empty {
-//       text-align: center;
+.previewLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 450px;
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-0);
+}
 
-//       .createButton {
-//         margin-top: 10px;
-//         padding: 10px 20px;
-//         border-radius: 5px;
-//       }
-//     }
-//   }
+.previewImage {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
 
-//   .form {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     gap: 20px;
+.form {
+  width: 100%;
+  margin-bottom: 20px;
+}
 
-//     .subject {
-//       label {
-//         font-weight: bold;
-//         margin-bottom: 5px;
-//         display: flex;
-//       }
+.label {
+  display: block;
+  margin-top: 20px;
+  margin-left: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
 
-//       input {
-//         width: 100%;
-//         padding: 10px;
-//         border: 1px solid #ccc;
-//         border-radius: 5px;
-//       }
-//     }
-   
-//     .details {
-//       display: flex;
-//       flex-direction: column;
-//       gap: 20px;
+.control {
+  width: 100%;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
 
-//       .description,
-//       .email {
-//         label {
-//           font-weight: bold;
-//           margin-bottom: 5px;
-//           display: block;
-          
-//         }
-        
-//         textarea,
-//         input {
-//           width: 100%;
-//           padding: 10px;
-//           border: 1px solid #ccc;
-//           border-radius: 5px;
-//           display: flex;
-//         }
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
 
-//         textarea {
-//           min-height: 80px;
-//         }
-//       }
-//     }
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
 
-//     .info {
-//       display: flex; 
-//       flex-direction: row;
-//       gap: 20px;
-//     }
-//   }
+  .label {
+    margin-top: 0;
+  }
+}
 
-//   .buttonGroup {
-//     display: flex;
-//     justify-content: center;
-//     margin-top: 20px;
+.submit {
+  margin-top: -10px;
+  border-color: transparent;
+  background-color: var(--accent);
+  color: var(--text-inverse);
 
-//     .testMailButton {
-//       padding: 10px 20px;
-//       border-radius: 5px;
-//       background-color: #007bff;
-      
-//       border: none;
-//       cursor: pointer;
-
-//       &:hover {
-//         background-color: #0056b3;
-//       }
-//     }
-//   }
-// }
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+}

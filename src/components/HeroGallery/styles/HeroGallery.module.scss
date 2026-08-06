@@ -1,0 +1,252 @@
+.gallery {
+  --gallery-w: min(100%, 32rem);
+  --gallery-h: 19rem;
+  position: relative;
+  width: var(--gallery-w);
+  height: calc(var(--gallery-h) + 3.25rem);
+  margin: 0 auto;
+  user-select: none;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: var(--gallery-h);
+  perspective: 1200px;
+}
+
+.card {
+  position: absolute;
+  inset: 0;
+  width: 78%;
+  height: 100%;
+  left: 11%;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: var(--depth);
+  cursor: pointer;
+  transition:
+    transform 0.55s var(--ease),
+    opacity 0.45s var(--ease),
+    filter 0.45s var(--ease),
+    box-shadow 0.45s var(--ease),
+    border-color 0.3s var(--ease);
+  transform-origin: center center;
+  will-change: transform, opacity;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 4s linear;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 3px;
+  }
+}
+
+.active {
+  z-index: 5;
+  opacity: 1;
+  transform: translateX(0) scale(1) rotateY(0deg);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    var(--depth-strong);
+  cursor: default;
+  pointer-events: none;
+
+  img {
+    transform: scale(1.04);
+  }
+}
+
+.prev,
+.next {
+  z-index: 3;
+  opacity: 0.72;
+  filter: brightness(0.72) saturate(0.9);
+}
+
+.prev {
+  transform: translateX(-34%) scale(0.82) rotateY(14deg);
+}
+
+.next {
+  transform: translateX(34%) scale(0.82) rotateY(-14deg);
+}
+
+.farPrev,
+.farNext {
+  z-index: 1;
+  opacity: 0.28;
+  filter: brightness(0.5);
+  pointer-events: none;
+}
+
+.farPrev {
+  transform: translateX(-52%) scale(0.68) rotateY(22deg);
+}
+
+.farNext {
+  transform: translateX(52%) scale(0.68) rotateY(-22deg);
+}
+
+.hidden {
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0) scale(0.55);
+}
+
+.prev:hover,
+.next:hover {
+  opacity: 0.9;
+  filter: brightness(0.88);
+  border-color: rgba(255, 138, 0, 0.45);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.navBtn {
+  position: relative;
+  width: 2.55rem;
+  height: 2.55rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+    var(--surface-2);
+  color: var(--text-primary);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: var(--depth);
+  transition:
+    border-color 0.25s var(--ease),
+    background 0.25s var(--ease),
+    color 0.25s var(--ease),
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 138, 0, 0.35),
+      transparent 55%
+    );
+    opacity: 0;
+    transition: opacity 0.25s var(--ease);
+  }
+
+  &:hover {
+    border-color: rgba(255, 138, 0, 0.55);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 138, 0, 0.15);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+.navIcon {
+  position: relative;
+  z-index: 1;
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
+}
+
+.rail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.railDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.28);
+  cursor: pointer;
+  transition:
+    width 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.railDotActive {
+  width: 1.45rem;
+  background: var(--accent);
+}
+
+@media (min-width: 900px) {
+  .gallery {
+    --gallery-w: 34rem;
+    --gallery-h: 20.5rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .gallery {
+    --gallery-w: 36rem;
+    --gallery-h: 21.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    --gallery-w: min(100%, 24rem);
+    --gallery-h: 15.5rem;
+  }
+
+  .prev {
+    transform: translateX(-28%) scale(0.78) rotateY(10deg);
+  }
+
+  .next {
+    transform: translateX(28%) scale(0.78) rotateY(-10deg);
+  }
+
+  .farPrev,
+  .farNext {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card img,
+  .railDot {
+    transition: none;
+  }
+
+  .active img {
+    transform: none;
+  }
+}

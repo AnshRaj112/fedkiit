@@ -4,7 +4,7 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #1c1c1c; /* Adjust color as needed */
+    background-color: var(--surface-0); /* Adjust color as needed */
   }
 
   /* otp-input-styles.css */
@@ -28,7 +28,6 @@
 
 
   .innerBox1:hover{
-    border: 1px solid #ffffff70;
     box-shadow: 2px 3px #94949470;
   }
 
@@ -202,43 +201,6 @@
 }
 
 
-
-.circle {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  filter: blur(100px);
-  position: absolute;
-  top: 20%;
-  left: -12%;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 0;
-}
-.circleMid {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  filter: blur(100px);
-  position: absolute;
-  top: 10%;
-  left: 40%;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.circle1 {
-  height: 25rem;
-  width: 25rem;
-  background-color: rgba(255, 92, 0, 0.19);
-  position: absolute;
-
-  top: 5%;
-  right: -5%;
-  border-radius: 50%;
-  filter: blur(100px);
-}
 
 .ArrowBackIcon {
   position: absolute;

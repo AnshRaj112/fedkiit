@@ -1,19 +1,16 @@
 "use client";
 
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { api } from "../../../services";
 import styles from "./styles/Contact.module.scss";
 import contactImg from "../../../assets/images/contact.png";
-import Button from "../../../components/Core/Button";
+import { Button } from "../../../components";
 import { AnimatedBox } from "../../../assets/animations/AnimatedBox";
 import { Alert, MicroLoading } from "../../../microInteraction";
 
 const ContactForm = () => {
   const [alert, setAlert] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  // Resolved on mount; `window` does not exist during server rendering.
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (alert) {
@@ -21,21 +18,6 @@ const ContactForm = () => {
       Alert({ type, message, position, duration });
     }
   }, [alert]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,7 +51,7 @@ const ContactForm = () => {
           duration: 3000,
         });
       }
-    } catch (error) {
+    } catch {
       setAlert({
         type: "error",
         message:
@@ -83,37 +65,66 @@ const ContactForm = () => {
   };
 
   return (
-    <section id="Contact Us">
+    <section id="Contact Us" className={styles.section} aria-labelledby="contact-heading">
       <div className={styles.contactFormContainer}>
-        <h2>
-          GET <span className={styles.highlight}>IN</span> TOUCH
-        </h2>
-        <div className={styles.bottomLine}></div>
+        <header className={styles.heading}>
+          <h2 id="contact-heading">
+            GET <span className={styles.highlight}>IN</span> TOUCH
+          </h2>
+          <div className={styles.bottomLine} aria-hidden="true" />
+          <p className={styles.subhead}>
+            Questions, ideas, or partnerships — drop us a note.
+          </p>
+        </header>
+
         <div className={styles.formSection}>
           <form className={styles.contactForm} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <input type="text" name="name" placeholder="Name" required />
-            </div>
-            <div className={styles.formGroup}>
-              <input type="email" name="email" placeholder="Email" required />
-            </div>
-            <div className={styles.formGroup}>
-              <textarea
-                name="message"
-                placeholder="Message"
+              <label className={styles.label} htmlFor="contact-name">
+                Name
+              </label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                placeholder="Your name"
                 required
-              ></textarea>
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="contact-email">
+                Email
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="contact-message">
+                Message
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                placeholder="How can we help?"
+                required
+              />
             </div>
             <Button
               type="submit"
+              className={styles.submitBtn}
               style={{
                 width: "100%",
                 background: "var(--primary)",
                 color: "#fff",
-                height: "40px",
-                marginTop: "20px",
-                fontSize: "1rem",
-                borderRadius: "15px",
+                height: "2.5rem",
+                marginTop: "0.35rem",
+                fontSize: "0.9375rem",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
               }}
               disabled={isLoading}
@@ -122,16 +133,11 @@ const ContactForm = () => {
             </Button>
           </form>
 
-          {!isMobile && (
-            <div className={styles.imageSection}>
-              <div className={styles.backCircle}></div>
-              <AnimatedBox direction="right">
-                <img src={contactImg.src} alt="Contact" />
-              </AnimatedBox>
-              <div className={styles.circle}></div>
-            </div>
-          )}
-          <div className={styles.circle}></div>
+          <div className={styles.imageSection}>
+            <AnimatedBox direction="right">
+              <img src={contactImg.src} alt="" aria-hidden="true" />
+            </AnimatedBox>
+          </div>
         </div>
       </div>
       <Alert />
