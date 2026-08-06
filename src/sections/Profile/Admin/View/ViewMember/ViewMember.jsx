@@ -125,7 +125,6 @@ function ViewMember() {
     headerMenu.map((menu) => (
       <Button
         key={menu}
-        className={styles.buttonMember}
         variant={
           menu === memberActivePage.toLowerCase() ? "primary" : "secondary"
         }
@@ -200,7 +199,9 @@ function ViewMember() {
     button: styles.buttonCustom,
     knowPara: styles.knowParaCustom,
     updatebtn: styles.updatebtnCustom,
-    teamMemberBack: styles.teamMemberBackCustom,
+    // `teamMemberBack` is omitted: no `.teamMemberBackCustom` exists in this
+    // module, so it only ever passed undefined. TeamCard already falls back to
+    // "" for a missing override, so behaviour is unchanged.
   };
 
   const handleUpdate = (member) => {

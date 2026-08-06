@@ -188,7 +188,7 @@ const EditProfile = ({ handleModalClose }) => {
                 </div>
                 {authCtx.user && (
                   <div className={styles.details}>
-                    <div className={styles.profileTable}>
+                    <div>
                       <div className={styles.table}>
                         <h6 className={styles.dets}>Full Name</h6>
                         <Input

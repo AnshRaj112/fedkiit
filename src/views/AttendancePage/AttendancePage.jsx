@@ -347,7 +347,7 @@ const AttendancePage = () => {
   }
 
   if (error) {
-    return <div className={styles.error}>{error}</div>;
+    return <div>{error}</div>;
   }
 
   return (

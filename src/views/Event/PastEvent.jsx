@@ -79,7 +79,7 @@ const PastEvent = () => {
             <ArrowBackIcon />
           </div>
         </Link>
-        <div className={style.whole}>
+        <div>
           <div className={style.eventwhole}>
             {isLoading ? (
               <ComponentLoading
@@ -127,7 +127,7 @@ const PastEvent = () => {
           <div className={style.circle}></div>
           <div className={style.circleone}></div>
           <div className={style.circletwo}></div>
-          <div className={style.circlethree}></div>
+          <div></div>
         </div>
       </div>
     </>

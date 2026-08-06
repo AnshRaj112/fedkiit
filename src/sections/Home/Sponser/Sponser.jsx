@@ -11,7 +11,7 @@ const SponserCard = ({ image }) => {
     <div className={styles.sponser_card}>
       <img
         src={image.image}
-        className={`${styles.SponserCard_image} ${loaded ? styles.loaded : ""}`}
+        className={`${styles.SponserCard_image} ${"" /* .loaded is not defined by this module, as in the original */}`}
         alt={image.title || "Sponsor logo"}
         onLoad={() => setLoaded(true)}
         loading="lazy"

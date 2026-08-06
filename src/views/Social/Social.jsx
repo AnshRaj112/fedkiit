@@ -30,7 +30,6 @@ const Social = () => {
           <div className={styles.fed}>
             <div className={styles.box} id={styles.box1}>
               <img
-                className={styles.instalogo}
                 src={instalogo.src}
                 alt="Instagram Logo"
               />
@@ -45,7 +44,6 @@ const Social = () => {
                 FED{" "}
               </span>
               <img
-                className={styles.linkedinlogo}
                 src={linkedinlogo.src}
                 alt="LinkedIn Logo"
               />
@@ -61,7 +59,7 @@ const Social = () => {
               <div className={styles.instagramfeed}>
                 <SocialEmbed type="instagramTopPost" />
               </div>
-              <div className={styles.instagramfeed2}>
+              <div>
                 <SocialEmbed type="instagramBottomPost" />
                 <div className={styles.circle}></div>
               </div>

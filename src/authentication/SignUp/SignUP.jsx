@@ -323,9 +323,9 @@ const SignUp = () => {
                 margin: "8 px 0 4px 0",
               }}
             >
-              <div className={styles.divider} />
+              <div />
               <p style={{ color: "#fff", textAlign: "center" }}>or</p>
-              <div className={styles.divider} />
+              <div />
             </div>
             <form onSubmit={handleSignUp}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -338,7 +338,6 @@ const SignUp = () => {
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
-                    className={styles.input}
                   />
                 </div>
                 <div style={{ width: "48%" }}>
@@ -350,7 +349,6 @@ const SignUp = () => {
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
-                    className={styles.input}
                   />
                 </div>
               </div>
@@ -361,7 +359,6 @@ const SignUp = () => {
                     placeholder="eg.-myemail@gmail.com"
                     label="Email"
                     name="email"
-                    className={styles.input}
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
@@ -376,7 +373,6 @@ const SignUp = () => {
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
-                    className={styles.input}
                   />
                 </div>
               </div>
@@ -394,7 +390,6 @@ const SignUp = () => {
                     placeholder="College Name"
                     label="college"
                     name="college"
-                    className={styles.input}
                     value={showUser.college}
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
@@ -417,7 +412,6 @@ const SignUp = () => {
                     placeholder="School"
                     label="School"
                     name="school"
-                    className={styles.input}
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
@@ -445,7 +439,6 @@ const SignUp = () => {
                     onChange={(value) => DataInp("year", value)}
                     required
                     style={{ width: "96%" }}
-                    className={styles.input}
                   />
                 </div>
                 <div style={{ width: "48%" }}>
@@ -457,7 +450,6 @@ const SignUp = () => {
                     onChange={(e) => DataInp(e.target.name, e.target.value)}
                     required
                     style={{ width: "96%" }}
-                    className={styles.input}
                   />
                 </div>
               </div>
@@ -469,7 +461,6 @@ const SignUp = () => {
                 onChange={(e) => DataInp(e.target.name, e.target.value)}
                 required
                 style={{ width: "98%" }}
-                className={styles.input}
               />
 
               <div

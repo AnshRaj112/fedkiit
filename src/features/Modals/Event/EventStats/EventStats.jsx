@@ -276,7 +276,6 @@ const EventStats = ({ onClosePath }) => {
                           style={{ display: "flex", flexDirection: "column" }}
                         >
                           <div
-                            className={styles.toggleSwitchContainer}
                             style={{
                               display: "flex",
                               flexDirection: "row",

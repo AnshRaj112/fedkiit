@@ -116,7 +116,6 @@ const ContactForm = () => {
             </div>
             <Button
               type="submit"
-              className={styles.submitBtn}
               style={{
                 width: "100%",
                 background: "var(--primary)",

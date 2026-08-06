@@ -515,7 +515,7 @@ const EventModal = (props) => {
                               {" | "}
                             </>
                           )}
-                          <div className={EventCardModal.price}>
+                          <div>
                             {info.eventAmount ? (
                               <p style={{ font: "2rem" }}>
                                 <FaRupeeSign color="#f97507" size={15} />

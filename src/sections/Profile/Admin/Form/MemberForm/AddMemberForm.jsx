@@ -242,7 +242,7 @@ function AddMemberForm() {
 
           {imagePrv && (
             <div className={styles.imagePreview}>
-              <img src={imagePrv} alt="Preview" className={styles.image} />
+              <img src={imagePrv} alt="Preview" />
             </div>
           )}
           <Input

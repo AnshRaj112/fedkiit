@@ -48,7 +48,7 @@ function Carousel({ children, images, customStyles = {}, showSkeleton = true }) 
   }
 
   return (
-    <div className={`${styles.carousel_outer} ${customStyles.carousel_outer}`}>
+    <div className={`${customStyles.carousel_outer}`}>
       <div
         className={`${styles.carousel} ${customStyles.carousel}`}
         onMouseEnter={() => {

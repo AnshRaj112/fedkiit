@@ -261,7 +261,7 @@ const Blog = () => {
               </section>
               <section className={styles.trendingBlogs}>
                 <h3>TRENDING BLOGS</h3>
-                <div className={styles.trendingGrid}>
+                <div>
                   {trendingBlogs.length > 0 ? (
                     <>
                       <div

@@ -351,7 +351,7 @@ const Event = () => {
         <div className={style.circleleft}></div>
         <div className={style.circleone}></div>
         <div className={style.circletwo}></div>
-        <div className={style.circlethree}></div>
+        <div></div>
       </div>
     </>
   );

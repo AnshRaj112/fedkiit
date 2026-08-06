@@ -95,8 +95,8 @@ const Alumni = () => {
           Alumni
         </span>
       </h2>
-      {/* <div className={styles.circle}></div> */}
-      {/* <div className={styles.circle2}></div> */}
+      {/* <div></div> */}
+      {/* <div></div> */}
       {isLoading ? (
         <ComponentLoading
           customStyles={{

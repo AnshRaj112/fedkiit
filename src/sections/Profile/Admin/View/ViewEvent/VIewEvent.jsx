@@ -109,7 +109,7 @@ function ViewEvent({ handleChangePage }) {
         {activePage === "View Events" && (
           <div className={styles.eventListContainer}>
             {error ? (
-              <div className={styles.error}>{error.message}</div>
+              <div>{error.message}</div>
             ) : (
               <>
                 <div className={styles.tabContainer}>

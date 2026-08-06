@@ -51,7 +51,6 @@ const Section = ({ section, handleChange }) => {
           justifyContent: "space-between",
           flexDirection: "row",
         }}
-        className={styles.teamContainer}
       >
         {team.map((field, index) => (
           <div
@@ -59,7 +58,6 @@ const Section = ({ section, handleChange }) => {
             style={{
               width: "30%",
             }}
-            className={styles.teamField}
           >
             <Input
               placeholder={field.value}

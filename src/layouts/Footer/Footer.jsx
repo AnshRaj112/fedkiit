@@ -20,12 +20,15 @@ export default function Footer() {
   const location = { pathname: usePathname() };
   const isOmega = location.pathname.includes("/Omega");
 
+  // The <section> carried `id={styles.footer}`, but the module defines no
+  // `#footer` rule, so it resolved to undefined and rendered as
+  // id="undefined" — an invalid duplicate whenever another such element was on
+  // the page. Dropped; nothing targets it.
   return (
-    <section id={styles.footer}>
+    <section>
       <footer className={styles.f1}>
         <div className={styles.logodiv}>
           <img
-            className={styles.fedlogo}
             src="https://uploads-ssl.webflow.com/629d87f593841156e4e0d9a4/62eeaa9927e6aea4ff13590e_FedLogo.png"
             alt="fedlogo"
           />
@@ -184,7 +187,7 @@ export default function Footer() {
                 Privacy policy
               </Link>
             </div>
-            <div className={styles.tnpMDiv}>
+            <div>
               <p className={styles.copyrightPTag}>© {new Date().getFullYear()}, fedkiit</p>
             </div>
             {/* <div className={styles.dotDiv}></div> */}

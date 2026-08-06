@@ -148,3 +148,13 @@
       margin-left: -1rem;
     }
 }
+// Applied to <body> while the preview modal is open, via
+// `document.body.classList.add(styles.noScroll)` in PreviewForm.jsx.
+//
+// The component has always referenced it, but no rule existed here — in the
+// original app either — so `styles.noScroll` was `undefined` and the call added
+// a literal "undefined" class. The page behind the modal stayed scrollable.
+// Same declaration the original uses for this class in its other modules.
+.noScroll {
+  overflow: hidden;
+}

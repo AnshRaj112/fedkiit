@@ -43,7 +43,12 @@
   margin: 0 auto;
 }
 
-.eventsGrid {
+// The skeletons shown while events load sit in the same grid as the real
+// cards, so the layout does not shift when they are replaced. `.loadingGrid`
+// was referenced by the component but never defined, which left the skeleton
+// row rendering as an unstyled stack.
+.eventsGrid,
+.loadingGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.75rem;
