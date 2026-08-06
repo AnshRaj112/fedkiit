@@ -14,7 +14,7 @@ export default async function SocialFeed() {
   }
 
   return (
-    <section className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 py-8 w-full max-w-7xl mx-auto px-4">
+    <section className="grid grid-cols-2 lg:grid-cols-3 gap-8 py-8 w-full max-w-7xl mx-auto px-4">
       {posts.map((post) => (
         <div key={post.id} className="flex flex-col gap-3">
           {post.platform === "instagram" ? (
