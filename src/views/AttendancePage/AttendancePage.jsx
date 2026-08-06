@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { EventCard } from "../../components";
 import { Button } from "../../components/Core";
 import AuthContext from "../../context/AuthContext";
@@ -25,6 +25,7 @@ const AttendancePage = () => {
   const [hasShownAlert, setHasShownAlert] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const authCtx = useContext(AuthContext);
+  const processingRef = useRef(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -97,6 +98,8 @@ const AttendancePage = () => {
   };
 
   const onScanSuccess = async (decodedText) => {
+    if (processingRef.current) return;
+    processingRef.current = true;
     setIsScanning(true);
     console.log("QR Code scanned successfully:", decodedText);
     console.log("Selected Event ID:", selectedEventId);
@@ -117,6 +120,16 @@ const AttendancePage = () => {
       );
 
       if (response.status === 200) {
+        if (response.data?.data?.alreadyMarked) {
+          // attendance was already marked — show warning, skip success modal
+          Alert({
+            type: "info",
+            message: response.data.message || "Attendance was already marked",
+            position: "top-right",
+          });
+          return;
+        }
+
         // store user details
         setAttendedUser(response.data.user || response.data);
         setIsSuccess(true);
@@ -162,6 +175,7 @@ const AttendancePage = () => {
       }
     } finally {
       setIsScanning(false);
+      processingRef.current = false;
     }
   };
 
@@ -174,6 +188,7 @@ const AttendancePage = () => {
     setShowScanner(true);
     setHasShownAlert(false); // reset alert state
     setIsSuccess(false); // reset success state
+    processingRef.current = false;
   };
 
   const handleCloseSuccessModal = () => {
