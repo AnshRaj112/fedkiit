@@ -1,5 +1,8 @@
 import { prisma } from "@/lib/db";
+import styles from "./BlogFeed.module.scss";
 
+// Server component: public blogs as cards in side-by-side columns.
+// Styled via SCSS module — Tailwind is not loaded in this project.
 export default async function BlogFeed() {
   const blogs = await prisma.blog.findMany({
     where: { visibility: "public" },
@@ -7,37 +10,30 @@ export default async function BlogFeed() {
   });
 
   if (blogs.length === 0) {
-    return (
-      <p className="text-center text-gray-400 py-12">No blogs to show yet.</p>
-    );
+    return <p className={styles.empty}>No blogs to show yet.</p>;
   }
 
   return (
-    <section className="flex flex-wrap gap-8 py-8 w-full max-w-7xl mx-auto px-4">
+    <section className={styles.feed}>
       {blogs.map((blog) => (
         <a
           key={blog.id}
           href={blog.blogLink || "#"}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 min-w-[280px] max-w-[400px] flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 hover:border-zinc-600 transition-colors"
+          className={styles.card}
         >
           {blog.image && (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={blog.image}
               alt={blog.title || "Blog image"}
-              className="w-full h-48 object-cover rounded-lg"
+              className={styles.image}
             />
           )}
-          <h3 className="text-lg font-semibold text-white">
-            {blog.title || "Untitled Blog"}
-          </h3>
-          {blog.summary && (
-            <p className="text-sm text-gray-400 line-clamp-3">
-              {blog.summary}
-            </p>
-          )}
-          <p className="text-xs text-gray-500">
+          <h3 className={styles.title}>{blog.title || "Untitled Blog"}</h3>
+          {blog.summary && <p className={styles.summary}>{blog.summary}</p>}
+          <p className={styles.date}>
             {blog.date
               ? new Date(blog.date).toLocaleDateString("en-US", {
                   year: "numeric",
