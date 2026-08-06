@@ -151,7 +151,7 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: darken($accent-color, 10%);
+      background-color: #E67A00;
       transform: scale(1.05);
     }
   }
@@ -206,7 +206,7 @@ $shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   font-size: smaller;
 
   &:hover {
-    background-color: darken($accent-color, 10%);
+    background-color: #E67A00;
     transform: scale(1.05);
   }
 }
