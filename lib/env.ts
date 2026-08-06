@@ -38,6 +38,7 @@ const schema = z.object({
   CERT_ORG: z.string().optional(),
 
   NEXT_PUBLIC_SITE_URL: z.string().url().default("https://www.fedkiit.com"),
+  ACADEMIC_YEAR_START_MONTH: z.coerce.number().int().min(1).max(12).default(7),
   DEBUG: z
     .string()
     .optional()

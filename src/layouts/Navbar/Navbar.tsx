@@ -21,7 +21,7 @@ import defaultImg from "../../assets/images/defaultImg.jpg";
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [navbarHeight, setNavbarHeight] = useState("72px");
+  const [navbarHeight, setNavbarHeight] = useState("90px");
   const [windowWidth, setWindowWidth] = useState(0);
   const [activeLink, setActiveLink] = useState("/");
   const lastScrollY = useRef(0);
@@ -97,12 +97,12 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setIsMobile(!isMobile);
-    setNavbarHeight(!isMobile ? "500vw" : "72px");
+    setNavbarHeight(!isMobile ? "500vw" : "90px");
   };
 
   const closeMobileMenu = () => {
     setIsMobile(false);
-    setNavbarHeight("72px");
+    setNavbarHeight("90px");
   };
 
   const handleLogout = () => {

@@ -3,7 +3,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 3.5rem 1.5rem;
-  border-top: 1px solid var(--border);
 }
 
 .contactFormContainer {
@@ -57,8 +56,8 @@
   width: 100%;
   padding: 1.75rem 1.85rem;
  
-  background: var(--surface-1);
-  box-shadow: var(--depth);
+  background: transparent;
+  box-shadow: none;
 }
 
 .contactForm {
@@ -123,14 +122,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   min-width: 0;
   padding: 0.5rem;
+}
+
+.imageSection > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .imageSection img {
   width: min(100%, 20rem);
   height: auto;
   display: block;
+  margin: 0 auto;
   filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.4));
 }
 
@@ -147,10 +155,20 @@
 
   .imageSection {
     order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .imageSection > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 
   .imageSection img {
-    width: min(100%, 13rem);
+    width: min(100%, 14rem);
+    margin: 0 auto;
   }
 }
 

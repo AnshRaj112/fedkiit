@@ -21,10 +21,37 @@ const titles = [
 ];
 
 function Hero() {
+  const mainRef = React.useRef(null);
   const [currentTitle, setCurrentTitle] = useState("");
   const [titleIndex, setTitleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return undefined;
+
+    const handleMouseMove = (e) => {
+      const rect = main.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      main.style.setProperty("--grid-mouse-x", `${x}px`);
+      main.style.setProperty("--grid-mouse-y", `${y}px`);
+      main.style.setProperty("--grid-spotlight-opacity", "1");
+    };
+
+    const handleMouseLeave = () => {
+      main.style.setProperty("--grid-spotlight-opacity", "0");
+    };
+
+    main.addEventListener("mousemove", handleMouseMove);
+    main.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      main.removeEventListener("mousemove", handleMouseMove);
+      main.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
 
   useEffect(() => {
     const title = titles[titleIndex];
@@ -51,7 +78,7 @@ function Hero() {
   }, [charIndex, isDeleting, titleIndex]);
 
   return (
-    <section className={styles.main} aria-label="Hero">
+    <section ref={mainRef} className={styles.main} aria-label="Hero">
       <div className={styles.hero}>
         <div className={styles.heroTextContainer}>
           <div className={styles.textBackdrop} aria-hidden="true">
@@ -59,7 +86,7 @@ function Hero() {
           </div>
           <AnimatedBox direction="left">
             <div className={styles.textContent}>
-              <p className={styles.eyebrow}>Forum for Entrepreneurship Development</p>
+              <p className={styles.eyebrow}>Federation Of Entrepreneurship Development</p>
               <h1 className={styles.largeText}>
                 Nurturing using innovative &amp; creative strategies
                 <span className={styles.dynamicText}>

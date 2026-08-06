@@ -3,7 +3,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 3.5rem 1.5rem;
-  border-top: 1px solid var(--border);
 }
 
 .heading {
@@ -49,11 +48,11 @@
 .marqueeShell {
   position: relative;
   width: 100%;
-  padding: 1.35rem 0;
+  padding: 0.5rem 0;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
-  background: var(--surface-1);
-  box-shadow: var(--depth);
+  border: none;
+  background: transparent;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -64,16 +63,17 @@
   z-index: 2;
   background: linear-gradient(
     to right,
-    var(--surface-1) 0%,
-    transparent 8%,
-    transparent 92%,
-    var(--surface-1) 100%
+    #080808 0%,
+    transparent 15%,
+    transparent 85%,
+    #080808 100%
   );
 }
 
 .sponser_container {
   overflow: hidden;
   width: 100%;
+  padding: 1rem 0;
 }
 
 .track {
@@ -81,7 +81,7 @@
   width: max-content;
   align-items: center;
   gap: 1.75rem;
-  padding: 0.35rem 1.5rem;
+  padding: 2.25rem 1.5rem;
   animation: sponsorScroll 40s linear infinite;
 }
 
@@ -93,26 +93,23 @@
   border: 1px solid var(--border-strong);
   background: #fff;
   overflow: hidden;
+  will-change: transform;
   transition:
-    transform 0.25s var(--ease),
-    border-color 0.25s var(--ease);
+    border-color 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
 }
 
 .sponser_card:hover {
-  transform: translateY(-3px) scale(1.05);
-  border-color: rgba(255, 138, 0, 0.55);
+  border-color: rgba(255, 138, 0, 0.85);
+  box-shadow: 0 0 15px rgba(255, 138, 0, 0.35);
 }
 
 .SponserCard_image {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.3s var(--ease);
-}
-
-.SponserCard_image.loaded {
   opacity: 1;
+  transition: opacity 0.3s var(--ease);
 }
 
 @keyframes sponsorScroll {
@@ -126,17 +123,31 @@
 
 @media (max-width: 640px) {
   .section {
-    padding: 2.75rem 1rem;
+    padding: 2.5rem 0.5rem;
+  }
+
+  .marqueeShell {
+    padding: 0.5rem 0;
+  }
+
+  .marqueeFade {
+    background: linear-gradient(
+      to right,
+      #080808 0%,
+      transparent 22%,
+      transparent 78%,
+      #080808 100%
+    );
   }
 
   .sponser_card {
     height: 4.5rem;
     width: 4.5rem;
-    animation: sponsorMobileGlow 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s 1 forwards;
   }
 
   .track {
     gap: 1.15rem;
+    padding: 2.25rem 1rem;
     animation-duration: 32s;
   }
 }

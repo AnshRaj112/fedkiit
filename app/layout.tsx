@@ -8,6 +8,7 @@ import { SITE_URL } from "@/lib/seo/metadata";
 import { organizationSchema, websiteSchema } from "@/lib/seo/structured-data";
 
 import "./globals.scss";
+import "./globals.css";
 
 /**
  * Root layout.
