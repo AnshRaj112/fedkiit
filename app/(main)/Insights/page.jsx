@@ -1,5 +1,5 @@
 import SocialFeed from "@/components/SocialFeed";
-import Blog from "@/src/views/Blog/Blog";
+import BlogFeed from "@/components/BlogFeed";
 
 export default function InsightsPage() {
   return (
@@ -14,7 +14,7 @@ export default function InsightsPage() {
         <h2 className="text-2xl font-semibold text-center mb-8">
           Blogs
         </h2>
-        <Blog />
+        <BlogFeed />
       </section>
     </main>
   );
