@@ -39,7 +39,7 @@ const Sponser = () => {
         <div className={styles.sponser_div}>
           <div className={styles.marquee_track}>
             {marqueeItems.map((item, idx) => (
-              <SponserCard key={idx} image={item} />
+              <SponserCard key={`${item.title || 'sponsor'}-${idx}`} image={item} />
             ))}
           </div>
         </div>

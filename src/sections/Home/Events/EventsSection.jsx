@@ -114,8 +114,8 @@ export default function HomeEventsSection() {
           </div>
         ) : (
           <div className={styles.eventsGrid}>
-            {upcomingEvents.map((ev) => (
-              <Link href={ev.link} key={ev.id} className={styles.eventCardLink}>
+            {upcomingEvents.map((ev, idx) => (
+              <Link href={ev.link} key={ev.id || `event-${idx}`} className={styles.eventCardLink}>
                 <div className={styles.eventCard}>
                   {/* Top Image Banner with Tag Overlay */}
                   <div className={styles.cardImageWrapper}>
