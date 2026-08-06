@@ -259,7 +259,11 @@ html {
 body {
   background-color: $page-color;
   color: $text-color;
-  overflow-x: hidden;
+  // `clip` rather than `hidden`: `overflow-x: hidden` forces `overflow-y` to
+  // compute to `auto`, which makes <body> a scroll container and is the usual
+  // reason `position: sticky` silently stops working further down the tree.
+  // `clip` suppresses the same sideways overflow without that side effect.
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -270,7 +274,15 @@ body {
   justify-content: center;
   align-items: center;
   background-color: $page-color;
-  overflow: hidden;
+  // `overflow-x: clip`, not `overflow: hidden`.
+  //
+  // The intent has always been to stop sideways overflow, but `hidden` makes
+  // this element a scroll container, and a scroll container between a sticky
+  // element and the viewport stops it sticking. That is why the About
+  // section's pin had to be reimplemented in JavaScript. `clip` trims the same
+  // overflow without creating a scroll container, so `position: sticky` works
+  // normally inside the page.
+  overflow-x: clip;
   margin-top: 88px;
 }
 

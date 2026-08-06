@@ -129,37 +129,20 @@ export default function About() {
       });
     };
 
+    // Pinning is CSS's job now (`position: sticky` on .stickyInner), so this
+    // only measures how far through the section we are and hands that to the
+    // panels. No layout is written per frame, only opacity and transform,
+    // both of which the compositor can animate without a reflow.
     const tick = () => {
       rafId.current = null;
       const rect   = outer.getBoundingClientRect();
       const vh     = window.innerHeight;
       const travel = outer.offsetHeight - vh;
 
-      if (rect.top > 0) {
-        // ── Above sticky zone – normal document flow ─────────────────
-        inner.style.position = "relative";
-        inner.style.removeProperty("top");
-        inner.style.removeProperty("left");
-        inner.style.removeProperty("right");
-        applyPanels(0);
+      const progress =
+        travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
 
-      } else if (rect.bottom >= vh) {
-        // ── In sticky zone – pin with fixed ──────────────────────────
-        inner.style.position = "fixed";
-        inner.style.top      = "0";
-        inner.style.left     = "0";
-        inner.style.right    = "0";
-        const progress = travel > 0 ? Math.min(1, (-rect.top) / travel) : 0;
-        applyPanels(progress);
-
-      } else {
-        // ── Past sticky zone – unpin, all panels shown ───────────────
-        inner.style.position = "relative";
-        inner.style.removeProperty("top");
-        inner.style.removeProperty("left");
-        inner.style.removeProperty("right");
-        applyPanels(1);
-      }
+      applyPanels(progress);
     };
 
     const onEvent = () => {

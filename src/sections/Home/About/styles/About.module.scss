@@ -12,9 +12,16 @@
   min-height: 200vh;
 }
 
-/* ─── Sticky viewport pin (JS sets position:fixed while pinned) ────── */
+/* ─── Sticky viewport pin ───────────────────────────────────────────
+   Native `position: sticky`. This used to be pinned from JavaScript, which
+   set `position: fixed` on the way in and back to `relative` on the way out,
+   writing top/left/right every frame. Toggling an element in and out of flow
+   mid-scroll is what made the section jump at both boundaries; the browser
+   handles sticky on the compositor instead, and the script is left to do
+   nothing but compute progress for the panels. */
 .stickyInner {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
   display: flex;

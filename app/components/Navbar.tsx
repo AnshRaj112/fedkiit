@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,7 +17,20 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // Refs, not state: the previous scroll position changes on every tick and
+  // nothing renders from it, so holding it in state forced a re-render per
+  // scroll event — and, because the effect listed it as a dependency, tore the
+  // listener down and re-attached it just as often. That is what made the bar
+  // stutter. `mobileOpenRef` lets the handler read the latest value without
+  // becoming a dependency itself.
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+  const mobileOpenRef = useRef(mobileOpen);
+  // Synced in an effect rather than assigned during render, which React's lint
+  // rules reject — refs must not be written while rendering.
+  useEffect(() => {
+    mobileOpenRef.current = mobileOpen;
+  }, [mobileOpen]);
 
   const checkIsActive = (linkHref: string) => {
     if (!pathname) return false;
@@ -34,30 +47,46 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
+    // Work is done once per animation frame rather than once per scroll event.
+    // Browsers fire scroll far more often than they paint, so without this the
+    // component did several times more state work than the screen could show.
+    const update = () => {
+      ticking.current = false;
       const currentScrollY = window.scrollY;
 
-      // Step 1: Elongate navbar after scrolling past 40px
+      // Elongate the bar once past 40px.
       setScrolled(currentScrollY > 40);
 
-      if (!mobileOpen) {
-        // Step 2: Keep visible while in top zone (<= 220px) so elongation is clearly shown
+      if (!mobileOpenRef.current) {
         if (currentScrollY <= 220) {
+          // Always visible near the top, so the elongation is legible.
           setVisible(true);
-        } else {
-          // Disappear when scrolling down past 220px, appear when scrolling up
-          if (currentScrollY > lastScrollY + 4) {
-            setVisible(false);
-          } else if (currentScrollY < lastScrollY - 4) {
-            setVisible(true);
-          }
+        } else if (currentScrollY > lastScrollY.current + 6) {
+          setVisible(false);
+        } else if (currentScrollY < lastScrollY.current - 6) {
+          setVisible(true);
         }
       }
-      setLastScrollY(currentScrollY);
+
+      // Only advance the reference point once the threshold has been crossed.
+      // Updating it every frame meant a slow drag never accumulated past the
+      // threshold, so the bar hunted between shown and hidden.
+      if (Math.abs(currentScrollY - lastScrollY.current) > 6) {
+        lastScrollY.current = currentScrollY;
+      }
     };
+
+    const handleScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+      window.requestAnimationFrame(update);
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    update();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, mobileOpen]);
+    // Attached once for the lifetime of the component.
+  }, []);
 
   // Close the mobile menu on route change.
   //

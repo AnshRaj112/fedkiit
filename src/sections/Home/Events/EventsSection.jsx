@@ -37,8 +37,18 @@ export default function HomeEventsSection() {
       let sortedEvents = [];
 
       if (liveOrUpcoming.length > 0) {
-        // Sort upcoming/live events by date ascending (soonest / imminent dates first)
+        // Ranked by `eventPriority` first, then date — the same order the
+        // /Events page uses. Sorting on date alone meant the ordering an admin
+        // sets in the event form had no effect on which three events the home
+        // page features, which is the one place it matters most.
         sortedEvents = [...liveOrUpcoming].sort((a, b) => {
+          const priorityA = Number.parseInt(a.info?.eventPriority, 10);
+          const priorityB = Number.parseInt(b.info?.eventPriority, 10);
+          // Unranked events sort last rather than ahead of everything.
+          const rankA = Number.isNaN(priorityA) ? Infinity : priorityA;
+          const rankB = Number.isNaN(priorityB) ? Infinity : priorityB;
+          if (rankA !== rankB) return rankA - rankB;
+
           const timeA = new Date(a.info?.eventDate || a.date || 0).getTime();
           const timeB = new Date(b.info?.eventDate || b.date || 0).getTime();
           return (isNaN(timeA) ? Infinity : timeA) - (isNaN(timeB) ? Infinity : timeB);

@@ -23,6 +23,14 @@
   --fed-text: #ffffff;
   --fed-muted: #888888;
   --fed-subtle: #555555;
+
+  /* Vertical space the fixed navbar occupies, plus breathing room.
+   *
+   * The navbar sits at `top: 1.25rem` and is about 62px tall, so its lower
+   * edge is ~82px down the viewport. Pages whose first element is a heading
+   * need to clear that or the text renders behind the pill. Declared once
+   * here so the two numbers cannot drift apart. */
+  --fed-navbar-offset: 7.5rem;
 }
 
 /* ─── Base ───────────────────────────────────────────────────────── */
@@ -54,7 +62,13 @@ main {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`. This rule applies to body, .page and main at once,
+   * and `overflow-x: hidden` forces `overflow-y` to compute to `auto`, turning
+   * all three into scroll containers. A scroll container between a sticky
+   * element and the viewport stops it sticking, which is why the About
+   * section's pin had to be driven from JavaScript. `clip` suppresses the same
+   * sideways overflow without creating a scroll container. */
+  overflow-x: clip;
   position: relative;
 }
 
