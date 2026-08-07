@@ -250,6 +250,32 @@ button {
   margin-bottom: 15px;
 }
 
+/**
+ * Lifted out of TeamCard.module.scss, where it sits as a top-level bare
+ * `button { }` rule.
+ *
+ * Vite emits every CSS Module into one stylesheet for the whole SPA, and it does
+ * not hash element selectors — so that rule was live on every page of the
+ * original site. Next code-splits CSS per route, so once ported it only loaded
+ * where TeamCard did (/Team, /profile/members). Everywhere else buttons fell
+ * back to the user-agent appearance: measured on /otp, the disabled "Resend OTP"
+ * button rendered with `background-color: rgba(19, 1, 1, 0.3)` and a
+ * `2px outset` border against the original's transparent / `0px none`.
+ *
+ * Declared here so the cascade matches the original app. It is only specificity
+ * 0-0-1, so every component's own class rules still win, exactly as before.
+ */
+button {
+  color: #ff8a00;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
 html {
   // Was `scroll-behavior: smooth`. Removed: it hijacks every in-page jump and
   // App Router route change, which Next also warns about.
