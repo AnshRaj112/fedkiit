@@ -6,7 +6,9 @@ import styles from "./styles/Core.module.scss";
 const Text = (props) => {
   const {
     children,
-    className,
+    // Defaults to "" for the same reason as Input: it is interpolated into a
+    // template literal, so an omitted prop became a literal "undefined" class.
+    className = "",
     variant = "primary",
     type = "h6",
     style,
@@ -29,7 +31,10 @@ const Text = (props) => {
       case "h6":
         return styles.h6;
       case "p":
-        return styles.body1;
+        // The stylesheet defines `.body2` but never `.body1`, so this arm has
+        // always produced no class — same in the original. Returning "" keeps
+        // the rendering identical without emitting class="undefined".
+        return "";
       case "body2":
         return styles.body2;
       default:

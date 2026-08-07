@@ -24,15 +24,38 @@
  * ratio, and a cropped QR code does not scan.
  */
 export const IMAGE_SIZES = {
-  /** Event cover art on the form/event card. */
+  /**
+   * Event poster on the event card.
+   *
+   * These were `196.37 x 350.67`, carried over from the Express controllers.
+   * Cloudinary takes integer pixel dimensions, so the fractional pair meant the
+   * transformation was never applied at all — banners were stored at whatever
+   * size they were uploaded. One live poster is a 4320x4320 PNG weighing 3.9 MB,
+   * served in full to every visitor of /Events.
+   *
+   * 1600 is the cap now: comfortably sharp for the featured card at 2x DPI, and
+   * roughly a tenth of the bytes. Square because posters here are square and
+   * `limit` preserves aspect ratio anyway — the box only sets an upper bound.
+   *
+   * Only affects new uploads. Images already in Cloudinary keep their size.
+   */
   FormImages: {
-    width: 196.37,
-    height: 350.67,
+    width: 1600,
+    height: 1600,
   },
   /** Payment QR shown on the registration form. */
   QRMediaImages: {
     width: 400,
     height: 150,
+  },
+  /**
+   * Payment proof a participant uploads on the registration form. Kept large:
+   * an admin has to be able to read a UTR and an amount off it, and a UPI
+   * confirmation screenshot is a tall phone capture.
+   */
+  PaymentScreenshots: {
+    width: 1200,
+    height: 1600,
   },
   /** Blog hero image. */
   BlogImages: {

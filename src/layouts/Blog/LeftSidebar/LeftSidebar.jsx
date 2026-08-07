@@ -39,7 +39,6 @@ function LeftSidebar({
           placeholder="Search blogs..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className={styles.searchInput}
         />
       </div>
       
@@ -54,7 +53,6 @@ function LeftSidebar({
             placeholder="Latest"
             onChange={(value) => onSortOrderChange(value)}
             options={sortOptions}
-            className={styles.sortInput}
           />
         </div>
       </div>
@@ -72,7 +70,6 @@ function LeftSidebar({
               onSelectDepartment(value === "All Departments" ? null : value)
             }
             options={departments.map((dept) => ({ label: dept, value: dept }))}
-            className={styles.departmentInput}
           />
         </div>
       </div>

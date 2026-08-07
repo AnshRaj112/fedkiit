@@ -129,8 +129,41 @@ const AuthContext = React.createContext<AuthContextValue>({
   croppedImageFile: null,
 });
 
+/**
+ * How long a restored client session stays valid, in milliseconds.
+ *
+ * This MUST match the JWT's lifetime in lib/auth/session.ts (7 hours). A session
+ * has two halves — the httpOnly `token` cookie the proxy reads, and the
+ * localStorage copy this context reads — and they are the sole authority for
+ * their own side. When their clocks disagree the app deadlocks: proxy.ts sees a
+ * live cookie and bounces /Login to /profile, while ProtectedRoute sees no
+ * localStorage and bounces /profile back to /Login, so the Login button stops
+ * working entirely.
+ *
+ * It was 9600000 (2h40m), inherited from the Express frontend, against a 7 hour
+ * cookie — so every visitor who closed the tab and came back between those two
+ * marks hit exactly that deadlock.
+ */
+export const SESSION_TTL_MS = 7 * 60 * 60 * 1000;
+
 const calculateRemainingTime = (expirationTime: number) =>
   expirationTime - new Date().getTime();
+
+/**
+ * Drops the httpOnly cookie the client half can't reach.
+ *
+ * Whenever this context concludes there is no session, the server has to be told
+ * as well, or it keeps redirecting on the strength of a cookie the UI no longer
+ * knows about.
+ */
+export async function clearServerSession() {
+  try {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+  } catch {
+    // Offline or the route is unreachable — the local session is cleared either
+    // way, and the cookie expires on its own.
+  }
+}
 
 function retrieveStoredToken() {
   if (typeof window === "undefined") return null;
@@ -147,7 +180,10 @@ function retrieveStoredToken() {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
     localStorage.removeItem("user");
-    return null;
+    // Reported so the caller can drop the cookie too. Reaching here means the
+    // tab was closed over the expiry instead of being open for the logout timer
+    // to fire, which is the common way the two halves drift apart.
+    return "expired" as const;
   }
 
   try {
@@ -302,7 +338,12 @@ export const AuthContextProvider = (props: { children: React.ReactNode }) => {
   // and client agree on the first paint.
   useEffect(() => {
     const tokenData = retrieveStoredToken();
-    if (tokenData) {
+    if (tokenData === "expired") {
+      // The stored session lapsed while the tab was closed, so the logout timer
+      // never ran and the cookie is still sitting there. Drop it, or the proxy
+      // goes on treating this browser as signed in and /Login is unreachable.
+      void clearServerSession();
+    } else if (tokenData) {
       setToken(tokenData.token);
       setUser(tokenData.user ?? EMPTY_USER);
       setUserIsLoggedIn(true);

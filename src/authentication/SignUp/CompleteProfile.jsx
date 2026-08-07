@@ -8,7 +8,7 @@ import Button from "../../components/Core/Button";
 import Load from "../../microInteraction/Load/Load";
 import styles from "./style/CompleteProfile.module.scss";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import AuthContext from "../../context/AuthContext";
+import AuthContext, { SESSION_TTL_MS } from "../../context/AuthContext";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter, usePathname } from "next/navigation";
@@ -115,7 +115,7 @@ function CompleteProfile() {
             userObject.editProfileCount,
             "USER",
             "someToken",
-            7200000
+            SESSION_TTL_MS
           );
           // Honours a pending destination — a team invite link, typically —
           // falling back to "/" as the original always did.

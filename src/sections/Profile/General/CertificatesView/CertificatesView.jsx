@@ -145,10 +145,9 @@ const Events = () => {
                         {formatDate(event.info.eventDate)}
                       </td>
 
-                      <td className={styles.mobilewidthtd}>
+                      <td>
                         <Link href={`${viewCertificatesPath}/${event.id}`}>
                           <button
-                            className={styles.viewButton}
                             style={{
                               marginLeft: "auto",
                               whiteSpace: "nowrap",
@@ -161,10 +160,9 @@ const Events = () => {
                         </Link>
                       </td>
                       {(analyticsAccessRoles.includes(authCtx.user.access) || authCtx.user.email == "srex@fedkiit.com") && (
-                        <td className={styles.mobilewidthtd}>
+                        <td>
                           <Link href={`${SendCertificatePath}/${event.id}`}>
                             <button
-                              className={styles.viewButton}
                               style={{
                                 marginLeft: "auto",
                                 whiteSpace: "nowrap",
@@ -178,10 +176,9 @@ const Events = () => {
                         </td>
                       )}
                       {(analyticsAccessRoles.includes(authCtx.user.access) || authCtx.user.email == "srex@fedkiit.com") && (
-                        <td className={styles.mobilewidthtd}>
+                        <td>
                           <Link href={`${createCertificatesPath}/${event.id}`}>
                             <button
-                              className={styles.viewButton}
                               style={{
                                 marginLeft: "auto",
                                 whiteSpace: "nowrap",

@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import styles from "./styles/AddMemberForm.module.scss";
 import { Button, Input } from "../../../../../components";
-import AccessTypes from "../../../../../data/Access.json";
 import AuthContext from "../../../../../context/AuthContext";
 import { api } from "../../../../../services";
 import { EditImage } from "../../../../../features";
@@ -66,13 +65,17 @@ function AddMemberForm() {
 
   const fetchAccessTypes = async () => {
     try {
-      const response = await api.get("/api/user/fetchAccessTypes"); // Uncomment and use actual API
+      const response = await api.get("/api/user/fetchAccessTypes");
       const fetchedAccessTypes = response.data.data;
-      setAccessTypes(fetchedAccessTypes);
-      // setAccessTypes(AccessTypes.data);
+      setAccessTypes(Array.isArray(fetchedAccessTypes) ? fetchedAccessTypes : []);
     } catch (error) {
       console.error("Error fetching access types:", error);
-      setAccessTypes(AccessTypes.data);
+      // No static fallback. The bundled Access.json had drifted badly from the
+      // schema — 15 entries against the enum's 30, missing every SENIOR_EXECUTIVE
+      // and DEPUTY_DIRECTOR role while offering three (DIRECTOR_SPONSORSHIP,
+      // OPERATION, SPONSORSHIP) that no longer exist. Assigning one of those
+      // would have been rejected by the backend anyway.
+      setAccessTypes([]);
     }
   };
 
@@ -169,12 +172,26 @@ function AddMemberForm() {
   };
   
 
+  const isSafeImagePreviewUrl = (url) => {
+    return (
+      typeof url === "string" &&
+      (url.startsWith("blob:") || url.startsWith("data:image/"))
+    );
+  };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (!file.type || !file.type.startsWith("image/")) {
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePrv(reader.result);
+        if (isSafeImagePreviewUrl(reader.result)) {
+          setImagePrv(reader.result);
+        } else {
+          setImagePrv(null);
+        }
       };
       reader.readAsDataURL(file);
       setSelectedFile(file);
@@ -191,7 +208,11 @@ function AddMemberForm() {
   };
 
   const updateImagePreview = (url) => {
-    setImagePrv(url);
+    if (isSafeImagePreviewUrl(url)) {
+      setImagePrv(url);
+    } else {
+      setImagePrv(null);
+    }
     // selectedFile(imageFile);
   };
 
@@ -242,7 +263,7 @@ function AddMemberForm() {
 
           {imagePrv && (
             <div className={styles.imagePreview}>
-              <img src={imagePrv} alt="Preview" className={styles.image} />
+              <img src={imagePrv} alt="Preview" />
             </div>
           )}
           <Input

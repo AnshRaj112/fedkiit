@@ -33,12 +33,48 @@
   align-items: center;
 }
 
+/* ------------------------------------------------------------------ inline */
+
+/* The page-shaped variant, used when the form is a route of its own rather
+   than an overlay. Styled from the design tokens in globals.scss so it sits
+   next to the revamped event pages instead of the old modal chrome. */
+
+.pagePreview {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pagePreviewWrapper {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--depth);
+  overflow: hidden;
+}
+
 .previewContainer {
   width: 100%;
   height: 100%;
   padding: 2rem;
   overflow-y: auto;
   overflow-x: hidden; /* Added to prevent horizontal overflow */
+}
+
+/* Height and scrolling belong to the page here, not to an inner pane — a
+   nested scroller inside a full page traps the wheel and gives two scrollbars. */
+.inlineContainer {
+  height: auto;
+  overflow: visible;
+  padding: 1.75rem 2rem 2rem;
+}
+
+/* The gutter below exists to keep content clear of the overlay's scrollbar.
+   There is no scrollbar in this mode, so it would just read as off-centre. */
+.inlineContainer > * {
+  padding-right: 0;
 }
 
 .previewContainer::-webkit-scrollbar {
@@ -147,4 +183,52 @@
       width: 115%;
       margin-left: -1rem;
     }
+}
+// Applied to <body> while the preview modal is open, via
+// `document.body.classList.add(styles.noScroll)` in PreviewForm.jsx.
+//
+// The component has always referenced it, but no rule existed here — in the
+// original app either — so `styles.noScroll` was `undefined` and the call added
+// a literal "undefined" class. The page behind the modal stayed scrollable.
+// Same declaration the original uses for this class in its other modules.
+.noScroll {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ mobile */
+
+@media (max-width: 768px) {
+  /* The field row is a wrapping flexbox with a 3rem column gap and a 2rem left
+   * pad — sensible for the two-up desktop form, but on a phone each field
+   * became a shrink-to-content flex item about 200px wide inside a 340px card,
+   * and the left pad pushed everything off centre. One field per row, each
+   * filling the width. */
+  .formFieldContainer {
+    flex-direction: column;
+    align-items: stretch;
+    column-gap: 0;
+    padding: 0.75rem;
+  }
+
+  .formFieldContainer > * {
+    width: 100%;
+  }
+
+  /* The overlay reserves a gutter for its own scrollbar. The page variant has
+   * no scrollbar, and at this width the gutter is visible as a lopsided margin. */
+  .previewContainer {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .previewContainer > * {
+    padding-right: 0;
+  }
+
+  .inlineContainer {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .pagePreviewWrapper {
+    border-radius: var(--radius-md);
+  }
 }

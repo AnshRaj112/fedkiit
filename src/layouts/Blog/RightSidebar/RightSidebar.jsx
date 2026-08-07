@@ -9,10 +9,10 @@ const RightSidebar = ({ blogs }) => {
 
   return (
     <div className={styles.rightSidebar}>
-      <div className={styles.sidebarHeader}>
+      <div>
         <h3>Top Blogs</h3>
       </div>
-      <ul className={styles.blogList}>
+      <ul>
         {displayedBlogs.length > 0 ? (
           displayedBlogs.map((blog) => {
             // Parse author information safely - similar to BlogCard implementation
@@ -85,7 +85,7 @@ const RightSidebar = ({ blogs }) => {
             );
           })
         ) : (
-          <li className={styles.noBlogs}>No blogs available</li>
+          <li>No blogs available</li>
         )}
       </ul>
     </div>

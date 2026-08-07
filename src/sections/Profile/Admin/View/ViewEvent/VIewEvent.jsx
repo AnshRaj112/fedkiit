@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from "react";
 import styles from "./styles/ViewEvent.module.scss";
 import { EventCard } from "../../../../../components";
 import { ComponentLoading } from "../../../../../microInteraction";
-import FormData from "../../../../../data/FormData.json";
 import { api } from "../../../../../services";
 import AuthContext from "../../../../../context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -109,7 +108,7 @@ function ViewEvent({ handleChangePage }) {
         {activePage === "View Events" && (
           <div className={styles.eventListContainer}>
             {error ? (
-              <div className={styles.error}>{error.message}</div>
+              <div>{error.message}</div>
             ) : (
               <>
                 <div className={styles.tabContainer}>

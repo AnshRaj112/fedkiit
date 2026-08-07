@@ -90,8 +90,8 @@ function FedShow() {
 
   return (
     <div className={styles.fedShow}>
-      <div className={styles.fedshowcircle}></div>
-      <div className={styles.fedshowcircle2}></div>
+      <div></div>
+      <div></div>
 
       <div className={styles.imageContainer}>
         

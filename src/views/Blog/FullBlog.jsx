@@ -109,7 +109,7 @@ const FullBlog = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.loadingContainer}>
+      <div>
         <ComponentLoading />
       </div>
     );
@@ -117,14 +117,14 @@ const FullBlog = () => {
 
   if (error) {
     return (
-      <div className={styles.errorContainer}>
-        <p className={styles.errorMessage}>{error}</p>
+      <div>
+        <p>{error}</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.pageWrapper}>
+    <div>
       <div className={styles.contentContainer}>
         <div className={styles.searchWrapper}>
           <div className={styles.searchBar}>
@@ -167,7 +167,7 @@ const FullBlog = () => {
           {/* Recently Added & Trending */}
           <div className={styles.topSection}>
             {/* Recently Added */}
-            <section className={styles.recentlyAdded}>
+            <section>
               <h3>RECENTLY ADDED</h3>
               {filteredBlogs.length > 0 ? (
                 <BlogCard

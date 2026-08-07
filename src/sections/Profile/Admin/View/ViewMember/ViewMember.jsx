@@ -5,8 +5,6 @@ import axios from "axios";
 import styles from "./styles/ViewMember.module.scss";
 import { Button, TeamCard } from "../../../../../components";
 import AddMemberForm from "../../Form/MemberForm/AddMemberForm";
-import localTeamMembers from "../../../../../data/Team.json";
-import AccessTypes from "../../../../../data/Access.json";
 import AuthContext from "../../../../../context/AuthContext";
 import { api } from "../../../../../services";
 import { Alert, ComponentLoading } from "../../../../../microInteraction";
@@ -38,7 +36,9 @@ function ViewMember() {
         setMembers(fetchedMembers);
       } catch (error) {
         console.error("Error fetching member data:", error);
-        setMembers(localTeamMembers); // Fallback to test data
+        // No local fallback: this used to load Team.json, so a failed
+        // fetch showed admins a roster of sample members that looked real.
+        setMembers([]);
       } finally {
         setLoading(false);
       }
@@ -49,36 +49,13 @@ function ViewMember() {
         const response = await api.get("/api/user/fetchAccessTypes");
         const fetchedAccess = response.data.data;
 
-        const testAccess = [
-          "ADMIN",
-          "USER",
+        // The role list comes from /api/user/fetchAccessTypes, which returns
+        // the Prisma AccessTypes enum. It used to be fetched and then thrown
+        // away in favour of a hardcoded `testAccess` array, so the dropdown
+        // silently went stale whenever the schema gained or lost a role.
+        const accessTypes = Array.isArray(fetchedAccess) ? fetchedAccess : [];
 
-          "PRESIDENT",
-          "VICEPRESIDENT",
-          "DIRECTOR_TECHNICAL",
-          "DIRECTOR_CREATIVE",
-          "DIRECTOR_MARKETING",
-          "DIRECTOR_OPERATIONS",
-          "DIRECTOR_PR_AND_FINANCE",
-          "DIRECTOR_HUMAN_RESOURCE",
-          "DEPUTY_DIRECTOR_TECHNICAL",
-          "DEPUTY_DIRECTOR_CREATIVE",
-          "DEPUTY_DIRECTOR_MARKETING",
-          "DEPUTY_DIRECTOR_OPERATIONS",
-          "DEPUTY_DIRECTOR_PR_AND_FINANCE",
-          "DEPUTY_DIRECTOR_HUMAN_RESOURCE",
-          "TECHNICAL",
-          "CREATIVE",
-          "MARKETING",
-          "OPERATIONS",
-          "PR_AND_FINANCE",
-          "HUMAN_RESOURCE",
-
-          "ALUMNI",
-          "EX_MEMBER",
-        ];
-
-        const filteredAccess = testAccess.filter(
+        const filteredAccess = accessTypes.filter(
           (accessType) =>
             !["ADMIN", "USER", "PRESIDENT", "VICEPRESIDENT"].includes(
               accessType
@@ -97,7 +74,9 @@ function ViewMember() {
         setAccess(filteredAccess);
       } catch (error) {
         console.error("Error fetching Access Types:", error);
-        setAccess(AccessTypes.data); // Fallback to test data
+        // No fallback list: an empty menu makes the failure visible
+        // instead of showing roles the backend may no longer have.
+        setAccess(["Board", "Add Member"]);
       }
     };
 
@@ -125,7 +104,6 @@ function ViewMember() {
     headerMenu.map((menu) => (
       <Button
         key={menu}
-        className={styles.buttonMember}
         variant={
           menu === memberActivePage.toLowerCase() ? "primary" : "secondary"
         }
@@ -200,7 +178,9 @@ function ViewMember() {
     button: styles.buttonCustom,
     knowPara: styles.knowParaCustom,
     updatebtn: styles.updatebtnCustom,
-    teamMemberBack: styles.teamMemberBackCustom,
+    // `teamMemberBack` is omitted: no `.teamMemberBackCustom` exists in this
+    // module, so it only ever passed undefined. TeamCard already falls back to
+    // "" for a missing override, so behaviour is unchanged.
   };
 
   const handleUpdate = (member) => {

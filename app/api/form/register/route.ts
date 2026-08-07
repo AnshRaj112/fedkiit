@@ -7,6 +7,7 @@ import { enforceRateLimit, RATE_LIMITS } from "@/lib/api/rate-limit";
 import { getCurrentUser } from "@/lib/auth/access";
 import { sendMail } from "@/lib/email/mailer";
 import { registrationEmail } from "@/lib/email/templates";
+import { uploadImage } from "@/lib/services/upload";
 import type { EventInfo } from "@/lib/types/event";
 
 /**
@@ -32,6 +33,9 @@ import type { EventInfo } from "@/lib/types/event";
  */
 const UNAFFILIATED = "UNAFFILIATED";
 
+/** Cap on any single uploaded answer, e.g. a payment screenshot. */
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+
 const isTrue = (v: unknown) => v === true || v === "true";
 
 export async function POST(request: Request) {
@@ -43,6 +47,16 @@ export async function POST(request: Request) {
 
     let formId = "";
     let sections: unknown[] = [];
+    /**
+     * File/image answers, keyed by the field *name* — that is how
+     * `PreviewForm.handleSubmit` appends them, one entry per media field.
+     *
+     * These used to be dropped on the floor: the route read `_id` and
+     * `sections` and ignored every file part, while the JSON-encoded `sections`
+     * carried the File objects as `{}`. So a payment screenshot uploaded by a
+     * participant was never stored anywhere.
+     */
+    const uploadEntries: Array<{ name: string; file: File }> = [];
 
     const contentType = request.headers.get("content-type") ?? "";
     if (contentType.includes("multipart/form-data")) {
@@ -54,6 +68,11 @@ export async function POST(request: Request) {
           sections = JSON.parse(raw);
         } catch {
           return expressError(400, "sections must be valid JSON");
+        }
+      }
+      for (const [key, value] of form.entries()) {
+        if (value instanceof File && value.size > 0) {
+          uploadEntries.push({ name: key, file: value });
         }
       }
     } else {
@@ -137,6 +156,43 @@ export async function POST(request: Request) {
         );
       }
     }
+
+    // Uploaded last, once every rejection above has had its say — an upload for
+    // a registration that then bounces on capacity is a wasted Cloudinary write
+    // that nothing would ever reference.
+    const uploadedByField = new Map<string, string>();
+    for (const { name, file } of uploadEntries) {
+      if (file.size > MAX_UPLOAD_BYTES) {
+        return expressError(400, `${name} must be smaller than 5 MB`);
+      }
+      if (!file.type.startsWith("image/")) {
+        return expressError(400, `${name} must be an image`);
+      }
+      const result = await uploadImage(file, "PaymentScreenshots");
+      if (!result) {
+        return expressError(500, `Could not upload ${name}. Please try again.`);
+      }
+      uploadedByField.set(name, result.secure_url);
+    }
+
+    // Swap each media field's placeholder for the URL it was uploaded to. The
+    // client serialises a File as `{}`, so without this the stored answer is an
+    // empty object — which is also why an unmatched media field is nulled
+    // rather than left alone.
+    sections = sections.map((section) => {
+      const s = section as {
+        fields?: Array<{ name?: string; type?: string; value?: unknown }>;
+      };
+      if (!Array.isArray(s.fields)) return section;
+      return {
+        ...s,
+        fields: s.fields.map((field) => {
+          if (field?.type !== "file" && field?.type !== "image") return field;
+          const url = field?.name ? uploadedByField.get(field.name) : undefined;
+          return { ...field, value: url ?? null };
+        }),
+      };
+    });
 
     const teamCode = `SOLO-${user.id}-${randomInt(1000, 10000)}`;
     const capacity = Number.parseInt(String(info.eventMaxReg ?? ""), 10);

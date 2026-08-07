@@ -107,3 +107,58 @@
   appearance: none;
   margin: 0;
 }
+
+/* ------------------------------------------------------------------ mobile */
+
+/* Safari on iOS zooms the whole page in when a focused field's text is smaller
+ * than 16px, and does not zoom back out on blur. At 12px that fired on every
+ * field of the registration form — the page would jump and stay magnified
+ * halfway through signing up, which is where most people are coming from.
+ *
+ * 16px only below the tablet breakpoint, so the compact desktop form is
+ * unchanged. `!important` matches the existing declarations in this file, which
+ * already use it and would otherwise win. */
+@media (max-width: 768px) {
+  .input,
+  .inputTxtArea,
+  .inputSelect,
+  .inputDate {
+    font-size: 16px !important;
+    /* A 16px field needs a little more room than a 12px one, and 44px is the
+     * usual minimum for a comfortable touch target. */
+    min-height: 44px;
+  }
+
+  /* `.inputTxtArea` and `.inputSelect` are declared at a flat `width: 380px`,
+   * which is wider than a 375px phone — they pushed the whole form sideways.
+   * Everything here is fluid instead, and `box-sizing` keeps the border and
+   * padding inside that width rather than adding to it. */
+  .input,
+  .inputTxtArea,
+  .inputSelect {
+    width: 100% !important;
+    box-sizing: border-box;
+    margin-inline: 0;
+  }
+
+  .containerInput {
+    width: 100%;
+  }
+
+  .inputTxtArea {
+    min-height: 120px;
+  }
+
+  .inputDate {
+    width: 100% !important;
+    height: 44px !important;
+  }
+
+  /* Buttons were rendering at 34px tall — under the comfortable touch minimum
+   * on the one control every registration has to end with. */
+  .main_Button {
+    min-height: 44px;
+    font-size: 15px;
+    padding: 10px 18px;
+  }
+}
