@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useContext } from "react";
 
-import Skeleton from "react-loading-skeleton";
-import { SkeletonTheme } from "react-loading-skeleton";
 import { FaDownload } from "react-icons/fa";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Alert, ComponentLoading } from "../../../../microInteraction";
@@ -12,6 +10,7 @@ import Text from "../../../../components/Core/Text";
 import defaultImg from "../../../../assets/images/defaultImg.jpg";
 import { api } from "../../../../services";
 import styles from "../EventModal/styles/EventModal.module.scss";
+import sheet from "./styles/EventStats.module.scss";
 import AuthContext from "../../../../context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 
@@ -197,49 +196,10 @@ const EventStats = ({ onClosePath }) => {
         top: 0,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(4px)",
-          zIndex: "5",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            zIndex: "10",
-            borderRadius: "10px",
-            padding: "2rem",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: ".3rem",
-          }}
-        >
+      <div className={sheet.backdrop}>
           {data && (
             <>
-              <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-                <Skeleton height={180} style={{ marginBottom: "1rem" }} />
-                <Skeleton
-                  count={3}
-                  height={20}
-                  width="100%"
-                  style={{ marginBottom: "0.5rem" }}
-                />
-              </SkeletonTheme>
-              <div
-                style={{
-                  overflowY: "auto",
-                }}
-                className={styles.card}
-              >
+              <div className={sheet.panel}>
                 {isLoading ? (
                   <ComponentLoading
                     customStyles={{
@@ -604,7 +564,6 @@ const EventStats = ({ onClosePath }) => {
               </div>
             </>
           )}
-        </div>
       </div>
 
       {zoomedProof && (

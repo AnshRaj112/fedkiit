@@ -1,0 +1,63 @@
+// Analytics modal shell.
+//
+// This reused `.card` from EventModal.module.scss, which is a fixed `32rem`
+// wide with no height bound. The stats panel is much taller than an event card
+// — counts, a year breakdown, a registrant list and now a grid of payment
+// proofs — so it simply grew past the bottom of the viewport. The inline
+// `overflow-y: auto` on it never engaged, because an element with no height
+// constraint never overflows.
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  // Last-resort escape hatch: below roughly 420px tall the panel's own minimum
+  // exceeds the viewport, and without this the top would be unreachable.
+  overflow-y: auto;
+}
+
+.panel {
+  position: relative;
+  z-index: 10;
+  width: min(46rem, 94vw);
+  // Bounded, so the panel scrolls its own content instead of the page.
+  max-height: min(86vh, 900px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: linear-gradient(
+    90deg,
+    rgba(32, 32, 32, 0.95) -11.52%,
+    rgba(37, 37, 37, 0.95) 106.29%
+  );
+  border: 1.2px solid rgba(214, 214, 214, 0.81);
+  border-radius: 1.26863rem;
+  font-size: 0.75rem;
+  color: #fff;
+  text-align: center;
+  // Overscroll containment keeps a flick at the end of the list from scrolling
+  // the page behind the modal.
+  overscroll-behavior: contain;
+}
+
+.panel a {
+  color: #fff;
+}
+
+.panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
