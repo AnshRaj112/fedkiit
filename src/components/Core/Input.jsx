@@ -149,8 +149,11 @@ const Input = (props) => {
     options,
     name,
     showLabel = true,
-    className,
-    containerClassName,
+    // Defaults to "" because it is interpolated into a template literal below.
+    // Without it, every caller that omits the prop rendered a literal
+    // "undefined" in the class list.
+    className = "",
+    containerClassName = "",
     ...rest
   } = props;
   const dateRef = useRef(null);

@@ -51,7 +51,7 @@ const Accordion = () => {
         }
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className={styles.cut}></div>
+        <div></div>
         <div className={styles["accordion-item"]}>
           <div
             className={styles["accordion-title"]}
@@ -69,7 +69,6 @@ const Accordion = () => {
           </div>
         </div>
         <div
-          className={styles.cut2}
           style={{ display: activeIndex === index ? "none" : "block" }}
         ></div>
       </motion.div>
@@ -101,7 +100,6 @@ const Accordion = () => {
           marginTop: "20px",
           cursor: "pointer",
         }}
-        className={styles.showMoreButton}
         onClick={showAll ? hideItems : showMoreItems}
       >
         {showAll ? "Show Less" : "Show More"}

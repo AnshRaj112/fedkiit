@@ -12,7 +12,7 @@ const Layout = ({ children, title }) => {
   return (
     <div className={styles.main}>
       <div className={styles.frameMiddle} />
-      <div className={styles.bodyChildren}>{children}</div>
+      <div>{children}</div>
       <div className={styles.frameBottom} />
     </div>
   );

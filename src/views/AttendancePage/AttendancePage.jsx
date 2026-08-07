@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { EventCard } from "../../components";
 import { Button } from "../../components/Core";
 import AuthContext from "../../context/AuthContext";
@@ -25,6 +25,7 @@ const AttendancePage = () => {
   const [hasShownAlert, setHasShownAlert] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const authCtx = useContext(AuthContext);
+  const processingRef = useRef(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -97,6 +98,8 @@ const AttendancePage = () => {
   };
 
   const onScanSuccess = async (decodedText) => {
+    if (processingRef.current) return;
+    processingRef.current = true;
     setIsScanning(true);
     console.log("QR Code scanned successfully:", decodedText);
     console.log("Selected Event ID:", selectedEventId);
@@ -117,7 +120,13 @@ const AttendancePage = () => {
       );
 
       if (response.status === 200) {
-        // store user details
+        // A 200 only ever means "newly marked". A second scan of the same QR
+        // comes back as 400 "Attendance already marked." and is handled in the
+        // catch below — the API has no success-with-a-flag form.
+        //
+        // The response is `{ message, attendance }`; there is no `user` key, so
+        // this keeps the whole body. The success modal only checks that it is
+        // truthy.
         setAttendedUser(response.data.user || response.data);
         setIsSuccess(true);
         if (scanner) {
@@ -137,10 +146,44 @@ const AttendancePage = () => {
       }
     } catch (error) {
       console.error("Error marking attendance:", error);
+
+      // "Already marked" is the expected outcome of scanning the same QR twice,
+      // not a failure — the volunteer at the door needs to know the person is
+      // already through, not see a red error. The API signals it exactly as the
+      // Express controller does (markAttendance.js:154): a 400 carrying this
+      // message, with no machine-readable code to key off, so the message is
+      // what has to be matched.
+      const apiMessage = error.response?.data?.message;
+      if (
+        error.response?.status === 400 &&
+        typeof apiMessage === "string" &&
+        apiMessage.toLowerCase().includes("already marked")
+      ) {
+        if (scanner) {
+          try {
+            scanner.clear();
+          } catch (clearError) {
+            console.error("Error clearing scanner:", clearError);
+          }
+        }
+        setShowScanner(false);
+        setScanner(null);
+        Alert({
+          type: "info",
+          message: apiMessage,
+          position: "top-right",
+        });
+        return;
+      }
+
       let errorMessage = "Failed to verify QR code";
-      
+
       if (error.response?.status === 401) {
-        errorMessage = "Invalid or expired QR code";
+        // 401 covers two different things: a bad or expired QR ("Invalid or
+        // expired QR.") and the *scanner's* own session having lapsed ("Token
+        // is required"). Showing the API's wording keeps a signed-out volunteer
+        // from blaming the participant's QR code.
+        errorMessage = apiMessage || "Invalid or expired QR code";
       } else if (error.response?.status === 400) {
         errorMessage = error.response?.data?.message || "Invalid request";
       } else if (error.response?.status === 404) {
@@ -162,6 +205,7 @@ const AttendancePage = () => {
       }
     } finally {
       setIsScanning(false);
+      processingRef.current = false;
     }
   };
 
@@ -174,6 +218,7 @@ const AttendancePage = () => {
     setShowScanner(true);
     setHasShownAlert(false); // reset alert state
     setIsSuccess(false); // reset success state
+    processingRef.current = false;
   };
 
   const handleCloseSuccessModal = () => {
@@ -199,7 +244,7 @@ const AttendancePage = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `attendance_${eventId}.xlsx`);
+      link.setAttribute("download", `attendance_${eventId}.csv`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -302,7 +347,7 @@ const AttendancePage = () => {
   }
 
   if (error) {
-    return <div className={styles.error}>{error}</div>;
+    return <div>{error}</div>;
   }
 
   return (

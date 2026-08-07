@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import ProfileLayout from "@/src/layouts/Profile/ProfileLayout/ProfileLayout";
 import Sidebar from "@/src/layouts/Profile/Sidebar/Sidebar";
-import AuthContext from "@/src/context/AuthContext";
+import AuthContext, { clearServerSession } from "@/src/context/AuthContext";
 import { api } from "@/src/services";
 import { Loading } from "@/src/microInteraction";
 import style from "@/src/views/Profile/styles/Profile.module.scss";
@@ -32,7 +32,11 @@ export default function ProfileShell({
     if (authCtx.isLoading) return;
 
     if (!authCtx.isLoggedIn) {
-      router.replace("/Login");
+      // Clear the cookie before redirecting. proxy.ts gates /Login on the
+      // cookie alone, so leaving a live one here means it bounces us straight
+      // back to /profile and we land in this branch again — an invisible loop
+      // whose only symptom is that the Login button never opens the form.
+      clearServerSession().finally(() => router.replace("/Login"));
       return;
     }
 

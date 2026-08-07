@@ -6,9 +6,8 @@ import styles from "./style/Signup.module.scss";
 
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import AuthContext from "../../context/AuthContext";
+import AuthContext, { SESSION_TTL_MS } from "../../context/AuthContext";
 import google from "../../assets/images/google.png";
-import users from "../../data/user.json";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
 import { useRouter } from "next/navigation";
@@ -66,10 +65,10 @@ export default function GoogleSignup({ setAlert }) {
             position: "bottom-right",
             duration: 3000,
           });
-          sessionStorage.removeItem("prevPage"); // Clean up
-          // Order matters: App.jsx cleared prevPage here and only then rendered
-          // <LoginRedirect />, which therefore fell through to /profile.
-          setNavigatePath(postAuthRedirect());
+          // `prevPage` is deliberately *not* cleared first. The original wiped
+          // it here, so a Google sign-up begun from a team invite link lost the
+          // invite and landed on the profile page instead of joining.
+          setNavigatePath(postAuthRedirect("/"));
 
           setTimeout(() => {
             localStorage.setItem("token",response.data.token);
@@ -90,7 +89,7 @@ export default function GoogleSignup({ setAlert }) {
               user.regForm,
               user.blurhash,
               response.data.token,
-              9600000
+              SESSION_TTL_MS
             );
             // App.jsx re-rendered /SignUp as <LoginRedirect /> once isLoggedIn
             // flipped; nothing watches that flag under the App Router, so the

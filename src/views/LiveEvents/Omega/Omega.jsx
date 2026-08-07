@@ -126,7 +126,7 @@
 //   }, [ongoingEvents, authCtx.user.regForm]);
 
 //   return (
-//     <div className={styles.body}>
+//     <div>
 //      <div className={styles.imageContainer}>
 
 //       <motion.div

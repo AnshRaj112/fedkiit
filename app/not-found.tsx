@@ -1,4 +1,4 @@
-import Navbar from "@/src/layouts/Navbar/Navbar";
+import Navbar from "@/app/components/Navbar";
 import Footer from "@/src/layouts/Footer/Footer";
 import ErrorPage from "@/src/views/Error/Error";
 

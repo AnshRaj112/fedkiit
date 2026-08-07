@@ -27,7 +27,6 @@ function Sponsors() {
         initial={{ opacity: 0, y: 50, scale: 0.5 }}
         animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.5 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={styles.card}
       >
         <div className={styles.sponsorsLogos}>
           {sponsors.map((sponsor, index) => (

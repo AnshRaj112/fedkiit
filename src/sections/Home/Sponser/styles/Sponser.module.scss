@@ -1,202 +1,143 @@
-.sponser_container { 
+.section {
   width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
 }
 
-.sponser_all {
+.heading {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem 3rem;
-}
-
-.sponser_div{
-  border-radius: 2.77rem;
-  border: 0.88px solid rgba(255, 255, 255, 0.40);
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(6.7px);
-  width: 65rem;
-  height: 25rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.sponser_card {
-  height: 7rem;
-  width: 7rem;
-  border-radius: 4.9rem;
-  border: 2px solid white;
-  background-color: white;
-  overflow: hidden;
-}
-
-.SponserCard_image {
-  height: 100%;
-  width: 110%;
-  margin-left: -2px;
-  object-fit: cover;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .sponser_title {
-  text-align: center;
-  font-size: 50px;
-  color: white;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
   font-weight: 700;
-  /* font-family: Poppins; */
-  line-height: 149.415%;
-  letter-spacing: 0.035rem;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  margin-top: 2rem;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
 .sponser_title2 {
   background: var(--primary);
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
 
 .bottom_line {
-  width: 14rem;
-  margin-left: 25rem;
-  height: 0.3125rem;
+  width: 5.5rem;
+  height: 3px;
+  margin-top: 0.65rem;
+  border-radius: var(--radius-pill);
   background: var(--primary);
-  color: transparent;
-  border-radius: 5px;
 }
-.customCarouselCard {
+
+.subhead {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+.marqueeShell {
+  position: relative;
+  width: 100%;
+  padding: 0.5rem 0;
+  border-radius: var(--radius-xl);
   border: none;
-  width: 65rem;
-  height: 25rem;
+  background: transparent;
   box-shadow: none;
+  overflow: hidden;
+}
+
+.marqueeFade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    #080808 0%,
+    transparent 15%,
+    transparent 85%,
+    #080808 100%
+  );
+}
+
+.sponser_container {
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.track {
   display: flex;
-  justify-content: center;
+  width: max-content;
   align-items: center;
+  gap: 1.75rem;
+  padding: 2.25rem 1.5rem;
+  animation: sponsorScroll 40s linear infinite;
 }
 
-
-/* Media Queries */
-
-@media (max-width: 1024px) {
-
-  .sponser_div{
-    height: 20rem;
-    width: 55rem;
-  }
-  .sponser_all{
-    width: 50rem;
-    margin-top: 5rem;
-    gap: 2rem;
-  }
-  
-
-  .sponser_card {
-    height: 5rem;
-    width: 5rem;
-  }
-
-  .sponser_title {
-    font-size: 60.8px;
-  }
-
-  .bottom_line {
-    margin-left: 10%;
-  }
+.sponser_card {
+  flex: 0 0 auto;
+  height: 5.5rem;
+  width: 5.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  overflow: hidden;
+  will-change: transform;
+  transition:
+    border-color 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
 }
 
-@media (max-width: 768px) {
-  .sponser_div{
-    height: 20rem;
-    width: 45rem;
-  }
-  .sponser_all{
-    width: 45rem;
-    margin-top: 5rem;
-  }
+.sponser_card:hover {
+  border-color: rgba(255, 138, 0, 0.85);
+  box-shadow: 0 0 15px rgba(255, 138, 0, 0.35);
+}
 
-  .sponser_container
-  {
-    padding-top: 1rem;
-    align-items: center;
-  }
-  // .sponser_all {
-  //   width: 90%;
-  //   padding: 3rem 0;
-  //   gap: 1.5rem;
-  //   // z-index: 1;
-  // }
+.SponserCard_image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 0.3s var(--ease);
+}
 
-  .sponser_card {
-    height: 5rem;
-    width: 5rem;
-    border-radius: 4.9rem;
-    border: 2px solid white;
-    background-color: white;
+@keyframes sponsorScroll {
+  from {
+    transform: translateX(0);
   }
-
-  .sponser_title {
-    font-size: 45px;
-    // margin-top: -15rem;
-  }
-
-  .bottom_line {
-    margin-left: 35%;
-    width: 8rem;
+  to {
+    transform: translateX(-50%);
   }
 }
 
-@media (max-width: 480px) {
-  .sponser_div{
-    height: 20rem;
-    width: 22rem;
-  }
-  .sponser_all{
-    width: 22rem;
-    margin-left: -0.5rem;
-  }
-  .sponser_title {
-    font-size: 30px;
-    margin-top: -18rem;
-    margin-right: 0;
-   }
-
-
-  .bottom_line{
-    margin-right: 7rem;
+@media (max-width: 640px) {
+  .section {
+    padding: 2.5rem 0.5rem;
   }
 
-  .sponser_container{
-    padding-top: 3rem;
-    align-items: center;
+  .marqueeShell {
+    padding: 0.5rem 0;
   }
 
-}
-
-@media (max-width: 380px) {
-  .sponser_container{
-    width: 93%;
-    margin-left: 0.8rem;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 730px) {
-  .sponser_div {
-    height: 24rem;
-    width: 30rem;
-  }
-
-  .sponser_all {
-    width: 30rem;
-    margin-top: 3rem;
+  .marqueeFade {
+    background: linear-gradient(
+      to right,
+      #080808 0%,
+      transparent 22%,
+      transparent 78%,
+      #080808 100%
+    );
   }
 
   .sponser_card {
@@ -204,53 +145,24 @@
     width: 4.5rem;
   }
 
-  .sponser_title {
-    font-size: 35px;
-    margin-top: -15rem;
-  }
-
-  .bottom_line {
-    width: 6rem;
-    margin-left: 10rem;
-  }
-
-  .sponser_container {
-    padding-top: 2rem;
+  .track {
+    gap: 1.15rem;
+    padding: 2.25rem 1rem;
+    animation-duration: 32s;
   }
 }
 
-
-
-@media (min-width: 769px) and (max-width: 890px) {
-
-
-  .sponser_div {
-    height: 22rem;
-    width: 48rem;
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 44rem;
+    margin: 0 auto;
+    justify-content: center;
   }
 
-  .sponser_all {
-    width: 50rem;
-    margin-top: 4rem;
-  }
-
-  .sponser_card {
-    height: 5.5rem;
-    width: 5.5rem;
-  }
-
-  .sponser_title {
-    padding-top: 24%;
-    font-size: 48px;
-    margin-top: -12rem;
-  }
-
-  .bottom_line {
-    width: 10rem;
-    margin-left: 12rem;
-  }
-
-  .sponser_container {
-    padding-top: 2.5rem;
+  .marqueeFade {
+    display: none;
   }
 }

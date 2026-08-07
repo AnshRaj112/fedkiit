@@ -1,16 +1,26 @@
 "use client";
 
 import { useState, useEffect, useContext, useCallback } from "react";
+import Link from "next/link";
+import { MdArrowBackIos } from "react-icons/md";
 
-import FormData from "../../data/FormData.json";
 import PreviewForm from "../../features/Modals/Profile/Admin/PreviewForm";
 import AuthContext from "../../context/AuthContext";
 import { api } from "../../services";
 import { Alert, ComponentLoading } from "../../microInteraction";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
+import style from "./styles/EventForm.module.scss";
 
+/**
+ * /Events/:eventId/Form — registration, as a page.
+ *
+ * This used to render `PreviewForm` as a fixed full-screen overlay on top of
+ * the still-mounted event listing. A multi-step form with file uploads and a
+ * payment step is a destination, not a dialog: the overlay had its own inner
+ * scroller, locked the page behind it, and gave the browser no URL-level notion
+ * of "back" out of a half-filled form.
+ */
 const EventForm = () => {
-  const [showPreview, setShowPreview] = useState(true);
   const [eventData, setEventData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(null);
@@ -102,30 +112,53 @@ const EventForm = () => {
     fetchEvent();
   }, [id, teamCode, authCtx.isLoggedIn]);
 
-  // Add scroll lock effect when form opens
-  useEffect(() => {
-    if (showPreview) {
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showPreview]);
+  // No body scroll lock any more. This is a route of its own rather than an
+  // overlay, so locking the page would strand a long form with no way to reach
+  // its own submit button.
+
+  const backHref = `/Events/${eventId}`;
 
   return (
-    <div>
-      {!isLoading && showPreview && (
+    <div className={style.page}>
+      <Link href={backHref} className={style.back}>
+        <MdArrowBackIos size={14} aria-hidden="true" />
+        Back to event
+      </Link>
+
+      {isLoading ? (
+        <ComponentLoading
+          customStyles={{
+            width: "100%",
+            minHeight: "50vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
+      ) : eventData ? (
         <PreviewForm
-          open={showPreview}
-          handleClose={() => setShowPreview(false)}
+          open
+          inline
+          handleClose={() => router.push(backHref)}
           eventId={eventData?.id}
           sections={eventData?.sections || []}
           eventData={eventData?.info || {}}
           form={eventData || {}}
-          showCloseBtn={true}
+          showCloseBtn={false}
           teamCode={teamCode} // [v2] Pass teamCode to PreviewForm
         />
+      ) : (
+        <div className={style.missing}>
+          <h1 className={style.missingTitle}>We couldn&rsquo;t load this form</h1>
+          <p className={style.missingBody}>
+            The event may have been removed, or registration may have closed.
+          </p>
+          <Link href="/Events" className={style.missingAction}>
+            Back to events
+          </Link>
+        </div>
       )}
+
       <Alert />
     </div>
   );

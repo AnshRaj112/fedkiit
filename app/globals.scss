@@ -1,4 +1,4 @@
-// Global stylesheet — ported verbatim from FED-Frontend/src/index.scss.
+// Global stylesheet - ported verbatim from FED-Frontend/src/index.scss.
 //
 // Tailwind is deliberately NOT imported here. The original UI is built entirely
 // from SCSS modules, and Tailwind's preflight reset would subtly alter margins,
@@ -11,7 +11,7 @@
 // `@import url(...)` here.
 //
 // The original index.scss used @import. Under Next's CSS bundler those rules do
-// not survive into the emitted chunk — verified at runtime: the page had zero
+// not survive into the emitted chunk - verified at runtime: the page had zero
 // registered "Open Sans" font faces (against 183 in the Vite build), so all body
 // text silently fell back to a system sans-serif and every line box was ~2px
 // shorter than the original.
@@ -22,9 +22,110 @@
 // with react-calendar, and with Calendar.css missing the calendar opened as an
 // unstyled column of numbers. Verified by grepping the emitted CSS — zero
 // `.react-calendar` rules shipped.
+@import "react-datepicker/dist/react-datepicker.css";
 @import "react-date-picker/dist/DatePicker.css";
 @import "react-calendar/dist/Calendar.css";
-@import "react-datepicker/dist/react-datepicker.css";
+
+// Dark-theme overrides for the ported date pickers so calendars match the
+// surface ramp instead of shipping as unstyled white widgets.
+.react-date-picker {
+  width: 100%;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+  width: 100%;
+}
+
+.react-date-picker__inputGroup {
+  min-width: 0;
+  padding: 0 0.25rem;
+}
+
+.react-date-picker__inputGroup__input {
+  color: var(--text-primary) !important;
+}
+
+.react-date-picker__inputGroup__divider,
+.react-date-picker__inputGroup__leadingZero {
+  color: var(--text-secondary);
+}
+
+.react-date-picker__calendar {
+  z-index: 1300 !important;
+  inset: calc(100% + 6px) auto auto 0 !important;
+}
+
+.react-calendar {
+  border: 1px solid var(--border-strong) !important;
+  border-radius: var(--radius-md);
+  background: var(--surface-2) !important;
+  color: var(--text-primary);
+  box-shadow: var(--depth);
+  font-family: var(--font-sans);
+}
+
+.react-calendar__navigation button,
+.react-calendar__tile {
+  color: var(--text-primary);
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus,
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: var(--surface-3) !important;
+}
+
+.react-calendar__tile--now {
+  background: var(--accent-quiet) !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.react-datepicker {
+  font-family: var(--font-sans);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.react-datepicker__header {
+  background: var(--surface-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name,
+.react-datepicker__time-list-item {
+  color: var(--text-primary);
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__time-list-item:hover {
+  background: var(--surface-3) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__time-list-item--selected {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.react-datepicker__time-container,
+.react-datepicker__time,
+.react-datepicker__time-box {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
 
 // The brand gradient. Lived in Global.scss on the original site; it moved here
 // because Global.scss is now injected into every CSS Module, and a `:root`
@@ -35,17 +136,92 @@
     rgba(255, 190, 11, 0.84) -29.7%,
     rgba(244, 43, 3, 0.84) 128.34%
   );
+
+  // ---------------------------------------------------------------------------
+  // Design tokens
+  //
+  // The surface ramp is intentionally shallow - on a pure black page, depth is
+  // carried by hairline borders rather than by lifting panels toward grey, which
+  // is what makes stacked cards read as separate objects without any shadow or
+  // glow.
+  // ---------------------------------------------------------------------------
+  --surface-0: #000000;
+  --surface-1: #0a0a0a;
+  --surface-2: #121212;
+  --surface-3: #1a1a1a;
+
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-focus: #ff8a00;
+
+  // Contrast on #000: primary 20:1, secondary 8.6:1, tertiary 5.3:1. Tertiary is
+  // reserved for non-essential metadata so every ratio clears WCAG AA.
+  --text-primary: #f7f7f7;
+  --text-secondary: #a6a6a6;
+  --text-tertiary: #7a7a7a;
+  --text-inverse: #0a0a0a;
+
+  --accent: #ff8a00;
+  --accent-hover: #ff9d2b;
+  --accent-quiet: rgba(255, 138, 0, 0.12);
+
+  --positive: #3fbf67;
+  --negative: #f4523b;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 140ms;
+
+  // A top highlight and a bottom shade read as a physical bevel, so controls
+  // gain depth from lighting alone - no glow, and no colour of their own, which
+  // is what lets the same two lines sit on an accent button and a black card.
+  --depth: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  --depth-strong: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+}
+
+// One ring definition for every interactive element on the redesigned surfaces.
+// :focus-visible rather than :focus so a pointer press never paints a ring.
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
 }
 
-.react-date-picker__wrapper {
-  border: none !important;
+// Headings take the display face everywhere unless a section overrides it, so
+// the change reaches pages that were never part of the redesign.
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 /**
@@ -75,13 +251,21 @@ button {
 }
 
 html {
-  scroll-behavior: smooth;
+  // Was `scroll-behavior: smooth`. Removed: it hijacks every in-page jump and
+  // App Router route change, which Next also warns about.
+  background-color: $page-color;
 }
 
 body {
   background-color: $page-color;
   color: $text-color;
-  overflow-x: hidden;
+  // `clip` rather than `hidden`: `overflow-x: hidden` forces `overflow-y` to
+  // compute to `auto`, which makes <body> a scroll container and is the usual
+  // reason `position: sticky` silently stops working further down the tree.
+  // `clip` suppresses the same sideways overflow without that side effect.
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .page {
@@ -90,8 +274,16 @@ body {
   justify-content: center;
   align-items: center;
   background-color: $page-color;
-  overflow: hidden;
-  margin-top: 90px;
+  // `overflow-x: clip`, not `overflow: hidden`.
+  //
+  // The intent has always been to stop sideways overflow, but `hidden` makes
+  // this element a scroll container, and a scroll container between a sticky
+  // element and the viewport stops it sticking. That is why the About
+  // section's pin had to be reimplemented in JavaScript. `clip` trims the same
+  // overflow without creating a scroll container, so `position: sticky` works
+  // normally inside the page.
+  overflow-x: clip;
+  margin-top: 88px;
 }
 
 .page.omega-page {
@@ -117,17 +309,21 @@ body {
 body::-webkit-scrollbar {
   width: 10px;
   height: 0px;
-  transition: 0.2s linear;
-  background-color: #292929;
+  background-color: transparent;
 }
 
 body::-webkit-scrollbar-thumb {
-  border-radius: 22px;
-  background: var(--primary);
+  border-radius: var(--radius-pill);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.28);
 }
 
 body::-webkit-scrollbar-track {
-  padding: 0px 20px;
   background-color: transparent;
 }
 

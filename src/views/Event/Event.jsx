@@ -6,13 +6,13 @@ import { api } from "../../services";
 import style from "./styles/Event.module.scss";
 import AuthContext from "../../context/AuthContext";
 import { EventCard } from "../../components";
-import FormData from "../../data/FormData.json";
-import ring from "../../assets/images/ring.svg";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { ComponentLoading } from "../../microInteraction";
+import { ErrorArt, NoEventsArt } from "./components/Artwork";
+import Disclosure from "./components/Disclosure";
 import { RecoveryContext } from "../../context/RecoveryContext";
 import ShareTeamData from "../../features/Modals/Event/ShareModal/ShareTeamData";
 import Link from "next/link";
+
+const PAST_PREVIEW_COUNT = 4;
 
 const Event = () => {
   useEffect(() => {
@@ -20,23 +20,22 @@ const Event = () => {
   }, []);
 
   const authCtx = useContext(AuthContext);
-  const [eventData, setEventData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { events } = FormData;
   const [isOpen, setOpenModal] = useState(false);
   const [pastEvents, setPastEvents] = useState([]);
   const [ongoingEvents, setOngoingEvents] = useState([]);
-  const [privateEvents, setPrivateEvents] = useState([]);
   const recoveryCtx = useContext(RecoveryContext);
-  const [isOngoingPublic, setIsOngoingPublic] = useState(false);
   const [isRegisteredInRelatedEvents, setIsRegisteredInRelatedEvents] =
     useState(false);
   const [eventName, setEventName] = useState("");
   const [parentEventCount, setParentEventCount] = useState([]);
 
   useEffect(() => {
-    if (recoveryCtx.teamCode && recoveryCtx.teamName || recoveryCtx.successMessage) {
+    if (
+      (recoveryCtx.teamCode && recoveryCtx.teamName) ||
+      recoveryCtx.successMessage
+    ) {
       if (!isOpen) {
         setOpenModal(true);
       }
@@ -71,22 +70,16 @@ const Event = () => {
             return titleA.localeCompare(titleB);
           });
 
-          // Separate ongoing and past events
           const ongoing = sortedEvents.filter(
             (event) => !event.info.isEventPast
-          );
-          const privateEvent = sortedEvents.filter(
-            (event) => !event.info.isPublic
           );
           const past = sortedEvents.filter((event) => event.info.isEventPast);
           const sortedPastEvents = past.sort((a, b) => {
             return new Date(b.info.eventDate) - new Date(a.info.eventDate);
           });
 
-          // Set state with the sorted events
           setOngoingEvents(ongoing);
           setPastEvents(sortedPastEvents);
-          setPrivateEvents(privateEvent);
         } else {
           setError({
             message:
@@ -108,251 +101,269 @@ const Event = () => {
   }, []);
 
   const handleShare = () => {
-    if (recoveryCtx.teamCode && recoveryCtx.teamName || recoveryCtx.successMessage) { //if error comes put recoveryCtx.successMessage in or and setSuccessMessage(null)
+    if (
+      (recoveryCtx.teamCode && recoveryCtx.teamName) ||
+      recoveryCtx.successMessage
+    ) {
       const { setTeamCode, setTeamName, setSuccessMessage } = recoveryCtx;
       setTeamCode(null);
-      setTeamName(null); //have to check later on 
+      setTeamName(null);
       setSuccessMessage(null);
       setOpenModal(false);
     }
   };
 
   useEffect(() => {
-    const hasPublicOngoingEvent = ongoingEvents.some(
-      (event) => event.info.isPublic
-    );
-    setIsOngoingPublic(hasPublicOngoingEvent);
-
     const eventWithNullRelated = ongoingEvents.find(
       (event) => event.info.relatedEvent === "null"
     );
 
-    const eventName = eventWithNullRelated
-      ? eventWithNullRelated.info.eventTitle
-      : "";
-    setEventName(eventName);
+    setEventName(
+      eventWithNullRelated ? eventWithNullRelated.info.eventTitle : ""
+    );
   }, [ongoingEvents]);
 
   useEffect(() => {
     const registeredEventIds = authCtx.user.regForm || [];
 
+    // Looked up against the events actually fetched from the API. This used to
+    // search the bundled FormData.json sample, so the count reflected mock
+    // records rather than what the member is really registered for.
+    const allEvents = [...ongoingEvents, ...pastEvents];
+
     const parentEvents = registeredEventIds
-      .map((id) => events.find((event) => event.id === id)) // Map IDs to event objects
-      .filter((event) => event?.info?.relatedEvent == null || event.info.relatedEvent === "null");
+      .map((id) => allEvents.find((event) => event.id === id))
+      .filter(
+        (event) =>
+          event?.info?.relatedEvent == null ||
+          event.info.relatedEvent === "null"
+      );
 
     setParentEventCount(parentEvents.length);
-    // console.log(parentEventCount);
 
     const relatedEventIds = ongoingEvents
       .map((event) => event.info.relatedEvent)
       .filter((id) => id !== null && id !== undefined && id !== "null")
       .filter((id, index, self) => self.indexOf(id) === index);
 
-    let isRegisteredInRelatedEvents = false;
+    let registeredInRelated = false;
     if (registeredEventIds.length > 0 && relatedEventIds.length > 0) {
-      isRegisteredInRelatedEvents = relatedEventIds.some((relatedEventId) =>
+      registeredInRelated = relatedEventIds.some((relatedEventId) =>
         registeredEventIds.includes(relatedEventId)
       );
     }
 
-    if (isRegisteredInRelatedEvents) {
+    if (registeredInRelated) {
       setIsRegisteredInRelatedEvents(true);
     }
-  }, [ongoingEvents, authCtx.user.regForm]);
-
-  const customStyles = {
-    eventname: {
-      fontSize: "1.2rem",
-    },
-    registerbtn: {
-      width: "8rem",
-      fontSize: ".721rem",
-    },
-    eventnamep: {
-      fontSize: "0.7rem",
-    },
-  };
+  }, [ongoingEvents, pastEvents, authCtx.user.regForm]);
 
   const teamCodeAndName = {
     teamCode: recoveryCtx.teamCode,
     teamName: recoveryCtx.teamName,
   };
-  // console.log(teamCodeAndName);
 
-  const successMessage = {
-    successMessage: recoveryCtx.successMessage
-  };
-  // console.log(successMessage);
+  const successMessage = { successMessage: recoveryCtx.successMessage };
 
-  // Slice the public pastEvents array to show only the first 4 events
-  const displayedPastEvents = pastEvents
-    .filter((event) => event.info.isPublic)
-    .slice(0, 4);
+  const openEvents = ongoingEvents.filter((event) => event.info.isPublic);
+  const publicPastEvents = pastEvents.filter((event) => event.info.isPublic);
+  const displayedPastEvents = publicPastEvents.slice(0, PAST_PREVIEW_COUNT);
+
+  // Registration can stay open on events whose date has already passed, so the
+  // spotlight picks the soonest event that is genuinely still ahead of us and
+  // only falls back to the priority order when nothing upcoming is left.
+  const upcoming = openEvents
+    .filter((event) => new Date(event.info.eventDate).getTime() >= Date.now())
+    .sort((a, b) => new Date(a.info.eventDate) - new Date(b.info.eventDate));
+
+  const spotlight = upcoming[0] || openEvents[0];
+  const remainingOpen = openEvents.filter((event) => event.id !== spotlight?.id);
+
+  // Spelling out how far away the event is makes "upcoming" concrete in a way
+  // that a bare date never does.
+  const countdown = (() => {
+    if (!upcoming[0]) return null;
+    const start = new Date(upcoming[0].info.eventDate);
+    const midnight = (d) =>
+      new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+    const days = Math.round(
+      (midnight(start) - midnight(new Date())) / 86400000
+    );
+    if (days <= 0) return "Today";
+    if (days === 1) return "Tomorrow";
+    if (days < 30) return `In ${days} days`;
+    const months = Math.round(days / 30);
+    return `In ${months} month${months > 1 ? "s" : ""}`;
+  })();
+
+  const showPrerequisiteNotice =
+    !isRegisteredInRelatedEvents &&
+    parentEventCount === 0 &&
+    authCtx.isLoggedIn &&
+    authCtx.user.access === "USER" &&
+    Boolean(eventName);
 
   return (
     <>
-
       {isOpen && (
-        <ShareTeamData onClose={handleShare} teamData={teamCodeAndName} successMessage={successMessage} />
+        <ShareTeamData
+          onClose={handleShare}
+          teamData={teamCodeAndName}
+          successMessage={successMessage}
+        />
       )}
-      <div className={style.main}>
-        <div style={{ display: "flex" }}>
+
+      <main className={style.page}>
+        <div className={style.shell}>
+        
+
           {isLoading ? (
-            <>
-              <ComponentLoading
-                customStyles={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  marginTop: "10rem",
-                  marginBottom: "10rem",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-            </>
+            <section className={style.group} aria-busy="true">
+              <div className={style.groupHead}>
+                <h2 className={style.groupTitle}>Happening next</h2>
+              </div>
+              <div className={`${style.skeleton} ${style.skeletonFeatured}`}>
+                <div className={style.skeletonMedia} />
+                <div className={style.skeletonBody}>
+                  <span className={style.skeletonLine} style={{ width: "35%" }} />
+                  <span className={style.skeletonLine} style={{ width: "55%" }} />
+                  <span className={style.skeletonLine} style={{ width: "70%" }} />
+                  <span className={style.skeletonLine} style={{ width: "90%" }} />
+                  <span className={style.skeletonCta} />
+                </div>
+              </div>
+              <div className={style.grid} style={{ marginTop: "1.5rem" }}>
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className={style.skeleton}>
+                    <div className={style.skeletonMedia} />
+                    <div className={style.skeletonBody}>
+                      <span className={style.skeletonLine} />
+                      <span
+                        className={style.skeletonLine}
+                        style={{ width: "60%" }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <span className={style.srOnly}>Loading events</span>
+            </section>
           ) : error ? (
-            <div className={style.error}>{error.message}</div>
+            <div className={style.state} role="alert">
+              <ErrorArt className={style.stateArt} />
+              <h2 className={style.stateTitle}>We couldn&rsquo;t load events</h2>
+              <p className={style.stateBody}>{error.message}</p>
+              <button
+                type="button"
+                className={style.stateAction}
+                onClick={() => window.location.reload()}
+              >
+                Try again
+              </button>
+            </div>
           ) : (
             <>
-              {ongoingEvents.length > 0 && privateEvents.length > 0 ? (
-                <div className={style.line} style={{ marginTop: "3rem" }}></div>
-              ) : privateEvents.length > 0 && ongoingEvents.length === 0 ? (
-                <div className={style.line} style={{ marginTop: "3rem" }}></div>
-              ) : privateEvents.length === 0 && ongoingEvents.length > 0 ? (
-                <div className={style.line} style={{ marginTop: "2rem" }}></div>
-              ) : (
-                <div className={style.line} style={{ marginTop: "3rem" }}></div>
+              {showPrerequisiteNotice && (
+                <aside className={style.notice}>
+                  <span className={style.noticeDot} aria-hidden="true" />
+                  <p className={style.noticeText}>
+                    Register for <strong>{eventName}</strong> to unlock the
+                    remaining events.
+                  </p>
+                </aside>
               )}
 
-              <div className={style.eventwhole}>
-
-                <>
-                  {ongoingEvents.length > 0 && (
-                    <div className={style.eventcard}>
-                      {isOngoingPublic ? (
-                        <div
-                          className={style.name}
-                          style={{ marginBottom: "-1rem" }}
-                        >
-                          <img className={style.ring1} src={ring.src} alt="ring" />
-
-                          <span className={style.w1}>Ongoing</span>
-                          <span className={style.w2}>Events</span><br />
-
-                        </div>
-                      ) : (
-                        <div> </div>
-                      )}
-                      {!isRegisteredInRelatedEvents && parentEventCount == 0 &&
-                        authCtx.isLoggedIn &&
-                        authCtx.user.access === "USER" && (
-                          <div className={style.notify}>
-                            <span className={style.w1}>
-                              {" "}
-                              Register yourself in{" "}
-                              <span
-                                style={{
-                                  paddingTop: "10px",
-                                  background: "var(--primary)",
-                                  width: "20%",
-                                  WebkitBackgroundClip: "text",
-                                  color: "transparent",
-                                }}
-                              >
-                                {eventName}
-                              </span>
-                            </span>
-                          </div>
-                        )}
-                      <div className={style.cardsin}>
-                        {ongoingEvents.map((event, index) =>
-                          event.info.isPublic ? (
-                            <div
-                              style={{ height: "auto", width: "22rem" }}
-                              key={index}
-                            >
-                              <EventCard
-                                data={event}
-                                onOpen={() => console.log("Event opened")}
-                                type="ongoing"
-                                customStyles={customStyles}
-                                modalpath="/Events/"
-                                aosDisable={false}
-                                isLoading={isLoading}
-                                isRegisteredInRelatedEvents={
-                                  isRegisteredInRelatedEvents
-                                }
-                                eventName={eventName}
-                              />
-                            </div>
-                          ) : null
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  <div
-                    className={style.pasteventcard}
-                    style={{
-                      marginTop: ongoingEvents.length > 0 ? "3rem" : "3rem",
-                      marginBottom: pastEvents.length > 4 ? "3rem" : "3rem",
-                    }}
-                  >
-                    {pastEvents.length > 0 && (
-                      <div>
-                        <div
-                          className={style.name}
-                          style={{
-                            marginTop:
-                              privateEvents.length > 0 ? "-1rem" : "-1rem",
-                          }}
-                        >
-                          <img className={style.ring2} src={ring.src} alt="ring" />
-                          <span className={style.w1Past}>Past</span>
-                          <span className={style.w2Past}>Events</span>
-                        </div>
-                        <div className={style.cardone}>
-                          {displayedPastEvents.map((event, index) =>
-                            event.info.isPublic ? (
-                              <div
-                                style={{ height: "auto", width: "22rem" }}
-                                key={index}
-                              >
-                                <EventCard
-                                  data={event}
-                                  type="past"
-                                  customStyles={customStyles}
-                                  modalpath="/Events/pastEvents/"
-                                  isLoading={isLoading}
-                                />
-                              </div>
-                            ) : null
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {pastEvents.length > 4 && (
-                      <div className={style.bottom}>
-                        <Link href="/Events/pastEvents">
-                          <button className={style.seeall}>
-                            See all <MdKeyboardArrowRight />
-                          </button>
-                        </Link>
-                      </div>
+              {spotlight ? (
+                <section className={style.group}>
+                  <div className={style.groupHead}>
+                    <h2 className={style.groupTitle}>
+                      {upcoming[0] ? "Happening next" : "Featured"}
+                    </h2>
+                    {countdown && (
+                      <span className={style.countdown}>{countdown}</span>
                     )}
                   </div>
-                </>
-              </div>
+                  <EventCard
+                    key={spotlight.id}
+                    data={spotlight}
+                    onOpen={() => {}}
+                    type="ongoing"
+                    variant="featured"
+                    modalpath="/Events/"
+                    isLoading={false}
+                    isRegisteredInRelatedEvents={isRegisteredInRelatedEvents}
+                    eventName={eventName}
+                  />
+                </section>
+              ) : (
+                <section className={style.group}>
+                  <div className={style.groupHead}>
+                    <h2 className={style.groupTitle}>Open for registration</h2>
+                  </div>
+                  <div className={style.state}>
+                    <NoEventsArt className={style.stateArt} />
+                    <h3 className={style.stateTitle}>Nothing open right now</h3>
+                    <p className={style.stateBody}>
+                      New events are announced here. Browse what we&rsquo;ve run
+                      before in the meantime.
+                    </p>
+                  </div>
+                </section>
+              )}
+
+              {remainingOpen.length > 0 && (
+                <Disclosure
+                  title="Also open"
+                  count={remainingOpen.length}
+                  defaultOpen
+                >
+                  <div className={style.grid}>
+                    {remainingOpen.map((event) => (
+                      <EventCard
+                        key={event.id}
+                        data={event}
+                        onOpen={() => {}}
+                        type="ongoing"
+                        modalpath="/Events/"
+                        isLoading={false}
+                        isRegisteredInRelatedEvents={isRegisteredInRelatedEvents}
+                        eventName={eventName}
+                      />
+                    ))}
+                  </div>
+                </Disclosure>
+              )}
+
+              {displayedPastEvents.length > 0 && (
+                <Disclosure
+                  title="Past events"
+                  count={publicPastEvents.length}
+                  action={
+                    publicPastEvents.length > PAST_PREVIEW_COUNT ? (
+                      <Link href="/Events/pastEvents" className={style.groupLink}>
+                        View all
+                      </Link>
+                    ) : null
+                  }
+                >
+                  <div className={style.grid}>
+                    {displayedPastEvents.map((event) => (
+                      <EventCard
+                        key={event.id}
+                        data={event}
+                        onOpen={() => {}}
+                        type="past"
+                        modalpath="/Events/pastEvents/"
+                        isLoading={false}
+                      />
+                    ))}
+                  </div>
+                </Disclosure>
+              )}
             </>
           )}
         </div>
-
-        <div className={style.circle}></div>
-        <div className={style.circleleft}></div>
-        <div className={style.circleone}></div>
-        <div className={style.circletwo}></div>
-        <div className={style.circlethree}></div>
-      </div>
+      </main>
     </>
   );
 };

@@ -1,0 +1,33 @@
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  box-shadow: var(--depth);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-3);
+  }
+
+  &:active {
+    box-shadow: var(--depth-strong);
+  }
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+}
+
+.sm {
+  width: 32px;
+  height: 32px;
+}

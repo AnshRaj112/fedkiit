@@ -95,7 +95,6 @@ const TeamCard = ({
                 resolutionX={32}
                 resolutionY={32}
                 punch={1}
-                className={styles.teamMember_blurhash}
               />
             )}
             <img
@@ -129,7 +128,7 @@ const TeamCard = ({
             <>
               {extraData.designation && (
                 <h5
-                  className={`${styles.teamMemberBackh5} ${
+                  className={`${
                     customStyles.teamMemberBackh5 || ""
                   }`}
                   style={{ color: "#fff" }}
@@ -147,7 +146,7 @@ const TeamCard = ({
                     href={handleLink(extraData?.linkedin)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${styles.socialLinksa} ${
+                    className={`${
                       customStyles.socialLinksa || ""
                     }`}
                   >
@@ -159,7 +158,7 @@ const TeamCard = ({
                     href={handleLink(extraData?.github)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${styles.socialLinksa} ${
+                    className={`${
                       customStyles.socialLinksa || ""
                     }`}
                   >
@@ -171,7 +170,7 @@ const TeamCard = ({
                 <button
                   onClick={() => setShowMore(true)}
                   aria-expanded={showMore}
-                  className={`${styles.button} ${customStyles.button || ""}`}
+                  className={`${customStyles.button || ""}`}
                 >
                   Know More
                 </button>
@@ -240,7 +239,7 @@ const TeamCard = ({
               <button
                 onClick={() => setShowMore(false)}
                 aria-expanded={showMore}
-                className={`${styles.button} ${customStyles.button || ""}`}
+                className={`${customStyles.button || ""}`}
               >
                 Back
               </button>

@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles/EventsView.module.scss";
 import AuthContext from "../../../../context/AuthContext";
-// import eventsData from "../../../../data/FormData.json";
 
 import { api } from "../../../../services";
 import { ComponentLoading, MicroLoading } from "../../../../microInteraction";
@@ -211,10 +210,9 @@ const Events = () => {
                       </td>
 
                       {/* View Event Details - accessible to all */}
-                      <td className={styles.mobilewidthtd}>
+                      <td>
                         <Link href={`${viewPath}/${event.id}`}>
                           <button
-                            className={styles.viewButton}
                             style={{
                               marginLeft: "auto",
                               whiteSpace: "nowrap",
@@ -229,9 +227,9 @@ const Events = () => {
 
                       {/* Certificate - only for USERS */}
                       {authCtx.user.access === "USER" && (
-                        <td className={styles.mobilewidthtd}>
+                        <td>
                           {loadingCerts ? (
-                            <div className={styles.loadingContainer}>
+                            <div>
                               <MicroLoading />
                             </div>
                           ) : certMap[event.id] ? (
@@ -240,13 +238,12 @@ const Events = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              <button className={styles.viewButton}>
+                              <button>
                                 View
                               </button>
                             </Link>
                           ) : (
                             <button
-                              className={styles.viewButton}
                               disabled
                               style={{ opacity: 0.5 }}
                             >
@@ -259,10 +256,9 @@ const Events = () => {
                       {/* Analytics - only for admins and specific roles */}
                       {(analyticsAccessRoles.includes(authCtx.user.access) ||
                         authCtx.user.email === "srex@fedkiit.com") && (
-                        <td className={styles.mobilewidthtd}>
+                        <td>
                           <Link href={`${analyticsPath}/${event.id}`}>
                             <button
-                              className={styles.viewButton}
                               style={{
                                 marginLeft: "auto",
                                 whiteSpace: "nowrap",
