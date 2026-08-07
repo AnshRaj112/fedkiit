@@ -27,11 +27,26 @@
 .media {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 9;
+  // 4:3 rather than 16:9. Posters here are square, so the wider the media box,
+  // the more of the poster has to be thrown away to fill it.
+  aspect-ratio: 4 / 3;
   background-color: var(--surface-3);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
+
+// How much taller than its box the poster is drawn. This is the crop/stretch
+// dial, and the two are traded directly against each other:
+//
+//   cropped      = 1 - 1/stretch
+//   distortion   = boxAspect / stretch
+//
+// At 1.19 against a 4:3 box that is ~16% cropped off the bottom and ~12%
+// horizontal stretch — enough give that the poster keeps its title, logos and
+// subject, while staying well short of the point where circular logos read as
+// visibly oval. 1.0 would be undistorted but crops 25%; matching the box aspect
+// exactly (1.33) crops nothing but stretches 33%.
+$poster-stretch: 1.19;
 
 .mediaPlaceholder {
   position: absolute;
@@ -40,8 +55,11 @@
 
 .image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  // Drawn taller than the media box and clipped by its `overflow: hidden`, so
+  // the overflow all falls off the bottom. `fill` rather than `cover` because
+  // the stretch is the point — it is what buys back the crop.
+  height: calc(100% * #{$poster-stretch});
+  object-fit: fill;
   transition: opacity 200ms var(--ease);
 }
 
@@ -311,7 +329,10 @@
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     grid-template-rows: 1fr auto;
-    min-height: 320px;
+    // Was 320px, which against the ~570px image column made the media box a
+    // 1.8:1 letterbox — a square poster lost 44% of its height to fill it.
+    // Taller box, squarer ratio, far less thrown away.
+    min-height: 430px;
   }
 
   // Schematic line work sits behind the copy on the right - blueprint grid,
@@ -360,7 +381,13 @@
 
   .featured .image {
     position: absolute;
-    inset: 0;
+    // Explicitly `bottom: auto` rather than `inset: 0` — pinning both edges
+    // would over-constrain the box and defeat the stretch height above.
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: auto;
+    height: calc(100% * #{$poster-stretch});
   }
 
   .featured .body {
@@ -412,7 +439,8 @@
 }
 
 .skeletonMedia {
-  aspect-ratio: 16 / 9;
+  // Tracks .media above; a mismatch here is a layout shift on load.
+  aspect-ratio: 4 / 3;
   background-color: var(--surface-3);
 }
 
@@ -449,13 +477,13 @@
   .skeletonFeatured {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-    min-height: 320px;
+    min-height: 430px;
     height: auto;
   }
 
   .skeletonFeatured .skeletonMedia {
     aspect-ratio: auto;
-    min-height: 320px;
+    min-height: 430px;
     height: 100%;
     border-right: 1px solid var(--border);
   }

@@ -533,6 +533,8 @@ const EventCard = (props) => {
             />
           </div>
         )}
+        {/* Cropped from the bottom rather than the centre — see `.image` in the
+            stylesheet for why. */}
         <img
           src={info.eventImg}
           className={style.image}

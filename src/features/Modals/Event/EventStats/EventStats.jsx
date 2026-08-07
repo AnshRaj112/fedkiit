@@ -27,6 +27,11 @@ const EventStats = ({ onClosePath }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [viewTeams, setViewTeams] = useState(false);
+  // Payment proof, fetched separately and only for paid events — a free event
+  // has no payment step, so the request would come back empty every time.
+  const [payments, setPayments] = useState([]);
+  const [isLoadingPayments, setIsLoadingPayments] = useState(false);
+  const [zoomedProof, setZoomedProof] = useState(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -70,6 +75,34 @@ const EventStats = ({ onClosePath }) => {
 
     fetchEvent();
   }, [eventId]);
+
+  useEffect(() => {
+    if (info?.eventType !== "Paid") return;
+
+    let cancelled = false;
+    const fetchPayments = async () => {
+      setIsLoadingPayments(true);
+      try {
+        const response = await api.get(`/api/form/payments/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        });
+        if (!cancelled && response.status === 200) {
+          setPayments(response.data.payments || []);
+        }
+      } catch (error) {
+        console.error("Error fetching payment proofs:", error);
+      } finally {
+        if (!cancelled) setIsLoadingPayments(false);
+      }
+    };
+
+    fetchPayments();
+    return () => {
+      cancelled = true;
+    };
+  }, [eventId, info?.eventType]);
 
   useEffect(() => {
     if (alert) {
@@ -456,6 +489,116 @@ const EventStats = ({ onClosePath }) => {
                         </div>
                       )}
                     </div>
+
+                    {info?.eventType === "Paid" && (
+                      <div style={{ marginTop: "1.5rem" }}>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: "1rem",
+                            fontWeight: "500",
+                            marginBottom: "0.75rem",
+                          }}
+                        >
+                          Payment Proofs{" "}
+                          <span style={{ color: "#FF8A00" }}>
+                            ({payments.length})
+                          </span>
+                        </Text>
+
+                        {isLoadingPayments ? (
+                          <ComponentLoading
+                            customStyles={{
+                              display: "flex",
+                              justifyContent: "center",
+                              padding: "1rem 0",
+                            }}
+                          />
+                        ) : payments.length === 0 ? (
+                          <Text style={{ color: "#aaa", fontSize: ".85rem" }}>
+                            No payment details submitted yet.
+                          </Text>
+                        ) : (
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns:
+                                "repeat(auto-fill, minmax(180px, 1fr))",
+                              gap: "0.75rem",
+                            }}
+                          >
+                            {payments.map((payment) => (
+                              <div
+                                key={`${payment.registrationId}-${payment.userEmail}`}
+                                style={{
+                                  border: "1px solid #333",
+                                  borderRadius: "8px",
+                                  padding: "0.6rem",
+                                  background: "rgba(255,255,255,0.03)",
+                                }}
+                              >
+                                {payment.screenshot ? (
+                                  <img
+                                    src={payment.screenshot}
+                                    alt={`Payment proof from ${payment.userEmail}`}
+                                    onClick={() =>
+                                      setZoomedProof(payment.screenshot)
+                                    }
+                                    style={{
+                                      width: "100%",
+                                      height: 120,
+                                      objectFit: "cover",
+                                      borderRadius: "4px",
+                                      cursor: "zoom-in",
+                                    }}
+                                  />
+                                ) : (
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      height: 120,
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      borderRadius: "4px",
+                                      background: "rgba(255,255,255,0.05)",
+                                      color: "#888",
+                                      fontSize: ".75rem",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    No screenshot
+                                  </div>
+                                )}
+                                <div
+                                  style={{
+                                    color: "#fff",
+                                    fontSize: ".75rem",
+                                    marginTop: "0.5rem",
+                                    wordBreak: "break-all",
+                                  }}
+                                >
+                                  {payment.userEmail}
+                                </div>
+                                <div
+                                  style={{ color: "#aaa", fontSize: ".7rem" }}
+                                >
+                                  UTR: {payment.utr || "—"}
+                                </div>
+                                <div
+                                  style={{
+                                    color: "#FF8A00",
+                                    fontSize: ".7rem",
+                                  }}
+                                >
+                                  &#8377;{payment.amount}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -463,6 +606,33 @@ const EventStats = ({ onClosePath }) => {
           )}
         </div>
       </div>
+
+      {zoomedProof && (
+        <div
+          onClick={() => setZoomedProof(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2000,
+            cursor: "zoom-out",
+          }}
+        >
+          <img
+            src={zoomedProof}
+            alt="Payment proof"
+            style={{
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      )}
+
       <Alert />
     </div>
   );

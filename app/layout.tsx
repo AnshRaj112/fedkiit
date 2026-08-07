@@ -46,7 +46,11 @@ export const metadata: Metadata = {
     title: "FED KIIT",
     description: SITE.description,
   },
-  icons: { icon: "/favicon.ico" },
+  // No `icons` entry on purpose. Setting one overrides Next's file convention
+  // wholesale, and this used to pin the icon to /favicon.ico — which was still
+  // the Vercel triangle that `create-next-app` ships, so the scaffolding icon
+  // was being served in place of the FED logo. Leaving it out lets app/
+  // favicon.ico, icon.png and apple-icon.png all get advertised.
   other: {
     "facebook-domain-verification": "j4kyebnva8sowmo539jn3julvtgvqq",
   },

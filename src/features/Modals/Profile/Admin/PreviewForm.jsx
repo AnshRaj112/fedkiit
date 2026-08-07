@@ -540,7 +540,26 @@ const PreviewForm = ({
   };
 
   const renderPaymentScreen = () => {
-    const { eventType, receiverDetails, eventAmount } = formData;
+    const { eventType, eventAmount } = formData;
+    // Events created before the payment-mode setting have no `receiverDetails`
+    // at all on the free path, and no `mode` on the paid one.
+    const receiverDetails = formData.receiverDetails ?? {};
+    const paymentMode = receiverDetails.mode === "Link" ? "Link" : "QR";
+
+    // The href is admin-entered and rendered for participants, so it is checked
+    // here too rather than trusting the admin form's validation alone — that
+    // check did not exist for events saved before it, and `javascript:` in an
+    // anchor runs on click.
+    const safeLink = (() => {
+      try {
+        const parsed = new URL(receiverDetails.link ?? "");
+        return parsed.protocol === "http:" || parsed.protocol === "https:"
+          ? parsed.href
+          : null;
+      } catch {
+        return null;
+      }
+    })();
 
     const handleDownloadQR = async () => {
       try {
@@ -584,6 +603,76 @@ const PreviewForm = ({
           });
       }
     };
+
+    if (
+      eventType === "Paid" &&
+      currentSection.name === "Payment Details" &&
+      paymentMode === "Link"
+    ) {
+      return (
+        <div
+          style={{
+            margin: "8px auto",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p
+            style={{
+              fontSize: 13,
+              color: "lightgray",
+              textAlign: "center",
+              marginBottom: 12,
+            }}
+          >
+            Amount payable:{" "}
+            <strong style={{ color: "#fff" }}>&#8377;{eventAmount}</strong>
+          </p>
+
+          {safeLink ? (
+            <a
+              href={safeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                padding: "10px 24px",
+                borderRadius: "30px",
+                backgroundColor: "#FF8A00",
+                color: "#fff",
+                fontSize: 14,
+                fontWeight: 500,
+                textDecoration: "none",
+                textAlign: "center",
+              }}
+            >
+              {receiverDetails.buttonText || "Pay Now"}
+            </a>
+          ) : (
+            <p style={{ fontSize: 12, color: "#ff6b6b", textAlign: "center" }}>
+              The payment link for this event is missing or invalid. Please
+              contact fedkiit@gmail.com before continuing.
+            </p>
+          )}
+
+          {receiverDetails.message && (
+            <p
+              style={{
+                fontSize: 12,
+                marginTop: 12,
+                color: "lightgray",
+                textAlign: "center",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {receiverDetails.message}
+            </p>
+          )}
+        </div>
+      );
+    }
 
     if (eventType === "Paid" && currentSection.name === "Payment Details") {
       return (
@@ -641,7 +730,14 @@ const PreviewForm = ({
 
   return (
     <>
-      open && (
+      {/*
+        This guard was written without its braces, so `open && (` and the
+        matching `)` were rendered as literal text at the top and bottom of
+        every registration form — participants saw "open && (" above the
+        heading. Both call sites already mount this only when the flag is set,
+        so making it a real conditional changes nothing else.
+      */}
+      {open && (
       <div className={styles.mainPreview}>
         <div className={styles.previewContainerWrapper}>
           <div ref={wrapperRef} className={styles.previewContainer}>
@@ -787,7 +883,7 @@ const PreviewForm = ({
           </div>
         </div>
       </div>
-      )
+      )}
       <Alert />
     </>
   );
