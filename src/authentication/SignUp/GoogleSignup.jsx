@@ -6,7 +6,7 @@ import styles from "./style/Signup.module.scss";
 
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import AuthContext from "../../context/AuthContext";
+import AuthContext, { SESSION_TTL_MS } from "../../context/AuthContext";
 import google from "../../assets/images/google.png";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { api } from "../../services";
@@ -89,7 +89,7 @@ export default function GoogleSignup({ setAlert }) {
               user.regForm,
               user.blurhash,
               response.data.token,
-              9600000
+              SESSION_TTL_MS
             );
             // App.jsx re-rendered /SignUp as <LoginRedirect /> once isLoggedIn
             // flipped; nothing watches that flag under the App Router, so the

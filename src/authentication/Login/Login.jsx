@@ -9,7 +9,7 @@ import Input from "../../components/Core/Input";
 import Button from "../../components/Core/Button";
 import Text from "../../components/Core/Text";
 import { api } from "../../services";
-import AuthContext from "../../context/AuthContext";
+import AuthContext, { SESSION_TTL_MS } from "../../context/AuthContext";
 import { RecoveryContext } from "../../context/RecoveryContext";
 import GoogleLogin from "./GoogleLogin";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -104,7 +104,7 @@ const Login = () => {
             user.regForm,
             user.blurhash,
             response.data.token,
-            9600000
+            SESSION_TTL_MS
           );
           // App.jsx re-rendered /Login as <LoginRedirect /> the moment
           // isLoggedIn flipped. App Router routes are files and nothing watches

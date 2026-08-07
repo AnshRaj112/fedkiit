@@ -15,7 +15,7 @@ import OtpInputModal from "../../features/Modals/authentication/OtpInputModal";
 import { Alert, MicroLoading } from "../../microInteraction";
 import { RecoveryContext } from "../../context/RecoveryContext";
 import { api } from "../../services";
-import AuthContext from "../../context/AuthContext";
+import AuthContext, { SESSION_TTL_MS } from "../../context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import postAuthRedirect from "../../utils/postAuthRedirect";
@@ -254,7 +254,7 @@ const SignUp = () => {
             response.data.user.regForm,
             response.data.user.blurhash,
             response.data.token,
-            10800000
+            SESSION_TTL_MS
           );
           // console.log(authCtx);
           // Return to whatever sent them here — a team invite link, typically —
