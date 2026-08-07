@@ -33,12 +33,48 @@
   align-items: center;
 }
 
+/* ------------------------------------------------------------------ inline */
+
+/* The page-shaped variant, used when the form is a route of its own rather
+   than an overlay. Styled from the design tokens in globals.scss so it sits
+   next to the revamped event pages instead of the old modal chrome. */
+
+.pagePreview {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pagePreviewWrapper {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--depth);
+  overflow: hidden;
+}
+
 .previewContainer {
   width: 100%;
   height: 100%;
   padding: 2rem;
   overflow-y: auto;
   overflow-x: hidden; /* Added to prevent horizontal overflow */
+}
+
+/* Height and scrolling belong to the page here, not to an inner pane — a
+   nested scroller inside a full page traps the wheel and gives two scrollbars. */
+.inlineContainer {
+  height: auto;
+  overflow: visible;
+  padding: 1.75rem 2rem 2rem;
+}
+
+/* The gutter below exists to keep content clear of the overlay's scrollbar.
+   There is no scrollbar in this mode, so it would just read as off-centre. */
+.inlineContainer > * {
+  padding-right: 0;
 }
 
 .previewContainer::-webkit-scrollbar {

@@ -1,19 +1,14 @@
 "use client";
 
-import Event from "@/src/views/Event/Event";
-import EventModal from "@/src/features/Modals/Event/EventModal/EventModal";
+import EventDetail from "@/src/views/Event/EventDetail";
 
 /**
  * /Events/:eventId
  *
- * App.jsx rendered `[<Event />, <EventModal onClosePath="/Events" />]` — the
- * listing stays mounted underneath and the modal opens over it.
+ * Was `[<Event />, <EventModal onClosePath="/Events" />]` — the listing stayed
+ * mounted and a fixed overlay opened on top of it. It is a page of its own now,
+ * so the listing is no longer fetched and painted underneath just to be covered.
  */
 export default function Page() {
-  return (
-    <>
-      <Event />
-      <EventModal onClosePath="/Events" />
-    </>
-  );
+  return <EventDetail />;
 }

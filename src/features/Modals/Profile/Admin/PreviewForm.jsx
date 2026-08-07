@@ -40,6 +40,11 @@ const PreviewForm = ({
   handleClose,
   showCloseBtn,
   teamCode, // [v2] invite link team code
+  // Renders in normal document flow as a page card instead of the fixed
+  // full-screen overlay. Only the three wrapper elements differ — the form
+  // itself is one copy, so a change to a step cannot land in one mode and not
+  // the other.
+  inline = false,
 }) => {
   const router = useRouter();
   const authCtx = useContext(AuthContext);
@@ -71,8 +76,11 @@ const PreviewForm = ({
     }, 1000);
   }, []);
 
+  // Locking the page behind the form only makes sense for the overlay, where
+  // the form has its own scroller. Inline it is the page, and freezing the body
+  // leaves a form taller than the viewport with no way to reach its own Submit.
   useEffect(() => {
-    if (open) {
+    if (open && !inline) {
       document.body.classList.add(styles.noScroll);
     } else {
       document.body.classList.remove(styles.noScroll);
@@ -81,7 +89,7 @@ const PreviewForm = ({
     return () => {
       document.body.classList.remove(styles.noScroll);
     };
-  }, [open]);
+  }, [open, inline]);
 
   useEffect(() => {
     constructSections();
@@ -738,9 +746,18 @@ const PreviewForm = ({
         so making it a real conditional changes nothing else.
       */}
       {open && (
-      <div className={styles.mainPreview}>
-        <div className={styles.previewContainerWrapper}>
-          <div ref={wrapperRef} className={styles.previewContainer}>
+      <div className={inline ? styles.pagePreview : styles.mainPreview}>
+        <div
+          className={
+            inline ? styles.pagePreviewWrapper : styles.previewContainerWrapper
+          }
+        >
+          <div
+            ref={wrapperRef}
+            className={`${styles.previewContainer} ${
+              inline ? styles.inlineContainer : ""
+            }`}
+          >
             {showCloseBtn &&
               (isEditing ? (
                 <div onClick={handleClose} className={styles.closeBtn}>
