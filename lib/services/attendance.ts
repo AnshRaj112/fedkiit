@@ -174,6 +174,46 @@ export async function markAttendance(input: {
   return { message: "Attendance marked successfully.", attendance: updated };
 }
 
+export type StoredField = { name?: string; type?: string; value?: unknown };
+export type StoredSubmission = {
+  user_name?: string;
+  user_email?: string;
+  date_time?: string;
+  amount?: string;
+  sections?: Array<{ name?: string; fields?: StoredField[] }>;
+};
+
+const isHttpUrl = (v: unknown): v is string =>
+  typeof v === "string" && /^https?:\/\//i.test(v);
+
+/**
+ * Pulls the payment answers out of a stored submission.
+ *
+ * Located by shape and by name pattern rather than by a fixed index, because
+ * admins can rename and reorder the sections a form is built from. Shared with
+ * the payments endpoint so the two cannot drift.
+ */
+export function paymentFromSubmission(submission: StoredSubmission): {
+  utr: string;
+  screenshot: string | null;
+} {
+  const fields = (submission.sections ?? []).flatMap((section) =>
+    Array.isArray(section?.fields) ? section.fields : [],
+  );
+
+  const utr = fields.find((f) => /utr|transaction/i.test(f?.name ?? ""));
+  // Matched on the stored URL rather than on `type`: a renamed field still
+  // uploads to the same place, and a media field left blank is null.
+  const screenshot = fields.find(
+    (f) => (f?.type === "image" || f?.type === "file") && isHttpUrl(f?.value),
+  );
+
+  return {
+    utr: utr?.value == null ? "" : String(utr.value),
+    screenshot: isHttpUrl(screenshot?.value) ? screenshot.value : null,
+  };
+}
+
 /** Flattens a registration's stored submission into spreadsheet columns. */
 function flattenRegistration(row: {
   teamName: string;
@@ -263,8 +303,30 @@ export async function exportAttendance(formId: string) {
   });
   const byId = new Map(users.map((u) => [u.id, u]));
 
+  // Payment proof lives on the registration, not on the attendance record, so
+  // it has to be joined in. Without this the attendance sheet gave a desk
+  // volunteer no way to check a payment against what the participant uploaded.
+  const registrations = await prisma.formRegistration.findMany({
+    where: { formId },
+    select: { userId: true, value: true },
+  });
+  const paymentByUser = new Map<
+    string,
+    { utr: string; screenshot: string | null }
+  >();
+  for (const registration of registrations) {
+    for (const entry of registration.value ?? []) {
+      const payment = paymentFromSubmission(entry as StoredSubmission);
+      if (payment.utr || payment.screenshot) {
+        paymentByUser.set(registration.userId, payment);
+        break;
+      }
+    }
+  }
+
   const rows = records.map((r) => {
     const u = byId.get(r.userId);
+    const payment = paymentByUser.get(r.userId);
     return {
       name: u?.name ?? "",
       email: u?.email ?? "",
@@ -274,6 +336,8 @@ export async function exportAttendance(formId: string) {
       isPresent: r.isPresent ? "YES" : "NO",
       isPaymentVerified: r.isPaymentVerified ? "YES" : "NO",
       markedAt: r.markedAt ? r.markedAt.toISOString() : "",
+      utr: payment?.utr ?? "",
+      paymentScreenshot: payment?.screenshot ?? "",
     };
   });
 

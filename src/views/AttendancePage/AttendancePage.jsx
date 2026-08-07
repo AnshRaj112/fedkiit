@@ -244,7 +244,7 @@ const AttendancePage = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `attendance_${eventId}.xlsx`);
+      link.setAttribute("download", `attendance_${eventId}.csv`);
       document.body.appendChild(link);
       link.click();
       link.remove();

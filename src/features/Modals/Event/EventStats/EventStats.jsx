@@ -149,7 +149,7 @@ const EventStats = ({ onClosePath }) => {
 
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", `registration_data_${eventId}.xlsx`);
+        link.setAttribute("download", `registration_data_${eventId}.csv`);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -186,16 +186,7 @@ const EventStats = ({ onClosePath }) => {
   const yearCounts = year || {};
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        width: "100%",
-        height: "100%",
-        zIndex: "10",
-        left: 0,
-        top: 0,
-      }}
-    >
+    <div className={sheet.overlay}>
       <div className={sheet.backdrop}>
           {data && (
             <>
@@ -217,9 +208,9 @@ const EventStats = ({ onClosePath }) => {
                     }}
                   >
                     <button
-                      className={styles.closeModal}
+                      className={sheet.close}
                       onClick={handleModalClose}
-                      style={{ paddingTop: "42px", paddingRight: "20px" }}
+                      aria-label="Close"
                     >
                       <X />
                     </button>
@@ -385,7 +376,7 @@ const EventStats = ({ onClosePath }) => {
                       className={styles.searchInput}
                     />
 
-                    <div className={styles.eventEmails}>
+                    <div className={sheet.list}>
                       {isSearching ? (
                         <ComponentLoading
                           customStyles={{
@@ -400,13 +391,13 @@ const EventStats = ({ onClosePath }) => {
                       ) : viewTeams ? (
                         filteredTeams && filteredTeams.length > 0 ? (
                           filteredTeams.map((team, index) => (
-                            <div key={index} className={styles.userCard}>
+                            <div key={index} className={sheet.userCard}>
                               <img
                                 src={defaultImg.src}
                                 alt="Team"
-                                className={styles.userImg}
+                                className={sheet.userImg}
                               />
-                              <div className={styles.userEmail}>{team}</div>
+                              <div className={sheet.userEmail}>{team}</div>
                             </div>
                           ))
                         ) : (
@@ -425,13 +416,13 @@ const EventStats = ({ onClosePath }) => {
                         )
                       ) : filteredUsers && filteredUsers.length > 0 ? (
                         filteredUsers.map((user, index) => (
-                          <div key={index} className={styles.userCard}>
+                          <div key={index} className={sheet.userCard}>
                             <img
                               src={defaultImg.src}
                               alt="User"
-                              className={styles.userImg}
+                              className={sheet.userImg}
                             />
-                            <div className={styles.userEmail}>{user}</div>
+                            <div className={sheet.userEmail}>{user}</div>
                           </div>
                         ))
                       ) : (
