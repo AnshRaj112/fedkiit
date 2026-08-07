@@ -194,7 +194,7 @@ function EventCard({ data, isRegisteredInRelatedEvents, ongoingEvents }) {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={styles.card}
     >
-      <div className={styles.cut}></div>
+      <div></div>
       <div className={styles.card_img}>
         <img src={data.info.eventImg} alt="Event" />
       </div>
@@ -212,7 +212,7 @@ function EventCard({ data, isRegisteredInRelatedEvents, ongoingEvents }) {
             {isMicroLoading ? <MicroLoading color="#38ccff" /> : btnTxt}
           </button>
         </div>
-        <div className={styles.cut2}></div>
+        <div></div>
       </div>
     </motion.div>
   );

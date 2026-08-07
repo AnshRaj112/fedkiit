@@ -5,7 +5,6 @@ import { api } from "../../services";
 import styles from "./styles/Alumni.module.scss";
 import { TeamCard } from "../../components";
 import useWindowWidth from "../../utils/hooks/useWindowWidth"; // Import useWindowWidth hook
-import MemberData from "../../data/Team.json"; // Local fallback data
 import { ComponentLoading } from "../../microInteraction";
 
 const Alumni = () => {
@@ -30,12 +29,13 @@ const Alumni = () => {
           setAlumni(sortedAlumni);
         } else {
           console.error("Error fetching our Alumnis:", response.data.message);
-          // using local JSON data
-          const testMembers = MemberData;
-          const fileteredAlumni = testMembers
-            .filter((member) => member.access === "ALUMNI")
-            .sort((a, b) => a.name.localeCompare(b.name));
-          setAlumni(fileteredAlumni);
+          // No local fallback: this used to list sample people out of
+          // Team.json, which reads as a real alumni roster to a visitor.
+          setError({
+            message:
+              "Sorry for the inconvenience, we are having issues fetching our Alumni",
+          });
+          setAlumni([]);
         }
       } catch (error) {
         setError({
@@ -95,8 +95,8 @@ const Alumni = () => {
           Alumni
         </span>
       </h2>
-      {/* <div className={styles.circle}></div> */}
-      {/* <div className={styles.circle2}></div> */}
+      {/* <div></div> */}
+      {/* <div></div> */}
       {isLoading ? (
         <ComponentLoading
           customStyles={{

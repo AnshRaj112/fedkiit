@@ -29,7 +29,22 @@ export type EventInfo = {
   isRegistrationClosed?: boolean;
   isEventPast?: boolean;
   ongoingEvent?: boolean;
-  receiverDetails?: { upi?: string | null; media?: string | null };
+  receiverDetails?: {
+    upi?: string | null;
+    media?: string | null;
+    /**
+     * How the participant is asked to pay. Absent on every event created before
+     * this setting existed, and those all stored UPI/QR — so a missing `mode`
+     * has to be read as "QR" everywhere, never as "unset".
+     */
+    mode?: "QR" | "Link" | null;
+    /** External payment page, used only when `mode` is "Link". */
+    link?: string | null;
+    /** Label for the button that opens `link`. */
+    buttonText?: string | null;
+    /** Optional copy rendered under that button. */
+    message?: string | null;
+  };
 };
 
 /** Normalised event, safe to render. Every consumer uses this, not raw `info`. */

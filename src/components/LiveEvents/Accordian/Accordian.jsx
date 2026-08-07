@@ -40,7 +40,7 @@ const Accordion = ({ data }) => {
     return (
       <motion.div
         key={index}
-        className={`${styles.card} ${activeIndex === index ? styles.activeCard : ""}`}
+        className={`${styles.card} ${"" /* .activeCard is not defined by this module, as in the original */}`}
         ref={ref}
         initial={{ opacity: 0, y: 50, scale: 0.5 }}
         animate={
@@ -105,7 +105,6 @@ const Accordion = ({ data }) => {
           marginTop: "20px",
           cursor: "pointer",
         }}
-        className={styles.showMoreButton}
         onClick={showAll ? hideItems : showMoreItems}
       >
         {showAll ? "Show Less" : "Show More"}

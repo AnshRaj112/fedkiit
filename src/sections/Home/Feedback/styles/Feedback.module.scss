@@ -1,217 +1,225 @@
 .feedbackContainer {
-  background-color: #1C1C1C;
-  color: #ffffff;
-  text-align: center;
   position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 0 4rem;
   overflow: hidden;
-  padding-bottom: 60px;
+  color: var(--text-primary);
+  text-align: center;
 }
-.FeedbackMsg{
-  width: 260px;
-  height: 132px;
-  margin-bottom: 8px;
-  overflow-y: scroll;
-}
-:global(::-webkit-scrollbar) {
-  visibility: hidden;
-}
-.feedbackContainer .upQuote {
-  width: 150px;
-  height: 90px;
+
+.upQuote,
+.downQuote {
   position: absolute;
-  right: 0%;
-  top: 15%;
+  width: 5.5rem;
+  height: auto;
+  opacity: 0.32;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.feedbackContainer .downQuote {
-  width: 150px;
-  height: 90px;
-  position: absolute;
-  left: 0%;
-  bottom: 0%;
-  rotate: 180deg;
-  margin-bottom: 5px;
+.upQuote {
+  right: 1.25rem;
+  top: 4.25rem;
 }
 
-.feedbackContainer h2 {
-  font-size: 50px;
-  margin-bottom: 20px;
-  padding-top: 20px;
-}
-
-.bottomLine {
-  width: 12rem;
-  height: 0.3125rem;
-  background: var(--primary);
-  color: transparent;
-  border-radius: 5px;
-  margin-bottom: 4rem;
+.downQuote {
+  left: 1.25rem;
+  bottom: 1.5rem;
+  transform: rotate(180deg);
 }
 
 .heading {
+  position: relative;
+  z-index: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  margin-top: 3rem;
-  font-size: 1.7rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 1.5rem;
 }
-.heading span{
-  background: var(--primary);
-    background-clip: text;
-    color: transparent;
+
+.heading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-.highlight {
+
+.heading span {
   background: var(--primary);
-    background-clip: text;
-    color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.bottomLine {
+  width: 5.5rem;
+  height: 3px;
+  margin-top: 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
 }
 
 .feedbacksContainer {
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   width: 100%;
-  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
 }
 
 .feedbacks {
   display: flex;
-  animation: scroll 20s linear infinite;
-  margin-left: 1300px;
-  
+  width: max-content;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  animation: scroll 32s linear infinite;
 }
 
-
-
 .feedbackCard {
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(7.5px);
-  padding: 20px;
-  margin: 10px;
-  min-width: 300px;
-  text-align: left;
+  position: relative;
+  flex: 0 0 auto;
+  width: 18.5rem;
+  min-height: 12rem;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   flex-direction: column;
-  height: auto;
-  
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.15rem 1.2rem;
+  text-align: left;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  box-shadow: var(--depth);
+  overflow: hidden;
+  will-change: border-color, box-shadow;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      320px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+      rgba(255, 138, 0, 0.22),
+      rgba(255, 100, 0, 0.06) 45%,
+      transparent 80%
+    );
+    opacity: var(--spotlight-opacity, 0);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.feedbackCard:hover {
+  border-color: var(--border-strong);
+}
+
+.FeedbackMsg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.FeedbackMsg:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.feedbackText {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.readMore {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.meta {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+
+.feedbackAuthor {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: var(--primary);
+  background-clip: text;
+  color: transparent;
+}
+
+.feedbackEv {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
 }
 
 @keyframes scroll {
-  0% {
+  from {
     transform: translateX(0);
   }
-  100% {
+  to {
     transform: translateX(-50%);
   }
 }
 
-
-.feedbackText {
-  font-size: 1em;
-  margin-bottom: 20px;
-  white-space: normal; /* Allow text to wrap */
-}
-
-.feedbackAuthor {
-  background: var(--primary);
-    background-clip: text;
-    color: transparent;
-  font-weight: bold;
-  margin-bottom: 5px;
-  white-space: normal;
-}
-
-.feedbackEv {
-  font-size: 0.9em;
-  color: #cccccc;
-  white-space: normal;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .feedbackContainer h2 {
-    font-size: 1.5em;
-  }
-
-  .heading {
-    font-size: 2rem;
+@media (max-width: 640px) {
+  .feedbackContainer {
+    padding: 2.75rem 0 3.25rem;
   }
 
   .feedbackCard {
-    min-width: 250px;
-    padding: 15px;
+    width: 16rem;
+    min-height: 11rem;
+    padding: 1rem;
   }
 
-  .feedbackContainer .upQuote,
-  .feedbackContainer .downQuote {
-    width: 100px;
-    height: 60px;
-  }
-}
-
-@media (max-width: 480px) {
-  .feedbackContainer{
-    width: 100%;
-  }
-  
-  .FeedbackMsg{
-    width: 220px;
-    height: 100px;
-    overflow-y: scroll;
-  }
-  .feedbackContainer h2 {
-    font-size: 30px;
-  }
-
-  .bottomLine{
-    width: 7rem;
-  }
-
-  .feedbackCard {
-    min-width: 240px;
-    padding: 15px;
-  }
-  
-  .heading {
-    font-size: 1.8rem;
-    margin-top: 20px;
-  }
-
-  .feedbackText {
-    font-size: 0.86em;
-    margin-bottom: 15px;
-  }
-
-  .feedbackAuthor {
-    font-size: 0.7em;
-  }
-
-  .feedbackEv {
-    font-size: 0.6em;
+  .upQuote,
+  .downQuote {
+    width: 3.75rem;
+    opacity: 0.22;
   }
 
   .feedbacks {
-    display: flex;
-    animation: scroll 17s linear infinite;
-    margin-left: -1500px;
-    margin-right: -2000px;
-  
+    animation-duration: 26s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedbacks {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 44rem;
+    margin: 0 auto;
+    justify-content: center;
+    padding: 0 1rem;
   }
 
-  .feedbackContainer .upQuote,
-  .feedbackContainer .downQuote {
-    width: 80px;
-    height: 50px;
-  }
-  
-  .feedbackContainer .upQuote {
-    top: 37%;
-  }
-
-  .feedbackContainer .downQuote {
-    bottom: 5%;
+  .feedbacksContainer {
+    mask-image: none;
   }
 }

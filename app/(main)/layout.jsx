@@ -2,7 +2,10 @@
 
 import { usePathname } from "next/navigation";
 
-import Navbar from "@/src/layouts/Navbar/Navbar";
+// The revamped navbar. Its links point at the canonical capitalised routes
+// (/Events, /Team, /Blog), so it drives the existing pages rather than
+// replacing them. The previous SCSS navbar is still in the tree, unused.
+import Navbar from "@/app/components/Navbar";
 import Footer from "@/src/layouts/Footer/Footer";
 
 /**
@@ -23,12 +26,28 @@ import Footer from "@/src/layouts/Footer/Footer";
  */
 export default function MainLayout({ children }) {
   const pathname = usePathname();
-  const isOmegaPage = pathname?.toLowerCase() === "/omega";
+  const path = pathname?.toLowerCase() ?? "";
+  const isOmegaPage = path === "/omega";
+
+  // The navbar is fixed, so every page has to reserve space for it or its first
+  // element renders behind the pill. `.page` used to carry `margin-top: 88px`
+  // for exactly this, but globals.css zeroes it with `!important` across body,
+  // .page and main — which is what put the headings on /Team, /Alumni and
+  // /profile underneath the navbar.
+  //
+  // Home and Omega opt out: both open with a full-bleed hero that is meant to
+  // run up behind a transparent navbar, and an offset there would leave a band
+  // of empty page above it.
+  const isFullBleed = path === "/" || isOmegaPage;
 
   return (
     <div>
       <Navbar />
-      <div className={`page ${isOmegaPage ? "omega-page" : ""}`}>
+      <div
+        className={`page ${isOmegaPage ? "omega-page" : ""} ${
+          isFullBleed ? "" : "page--nav-offset"
+        }`}
+      >
         {children}
       </div>
       <Footer />

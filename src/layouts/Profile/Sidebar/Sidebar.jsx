@@ -73,11 +73,16 @@ const Sidebar = ({ activepage, handleChange }) => {
   // Check if user is attendance-only
   const isAttendanceOnly = authCtx.user.email === "attendance@fedkiit.com";
 
-  // Modified: Now shows Attendance instead of Blogs in mobile view
+  // Modified: Now shows Attendance instead of Blogs in mobile view.
+  //
+  // Only for admins. This menu also renders for SENIOR_EXECUTIVE_CREATIVE (they
+  // manage blogs), and /profile/attendance is now gated to ADMIN — so on a
+  // phone that role was being offered a link that just bounces back here. They
+  // keep the Blogs entry, which is the one they can actually use.
   const renderBlogMenu = () => {
     const isMobile = window.innerWidth <= 768;
 
-    if (isMobile) {
+    if (isMobile && authCtx.user.access === "ADMIN") {
       return (
         <div
           onClick={() => handleChange("Attendance")}

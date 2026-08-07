@@ -87,7 +87,7 @@ function BlogCard(props) {
 
   const getCardClass = () => {
     let cardClass = styles.card;
-    if (expandDescription) cardClass += ` ${styles.expandedCard}`;
+    if (expandDescription) cardClass += ``;
     if (props.isRecentCard) cardClass += ` ${styles.recentCard}`;
     if (cardType === 'recent') cardClass += ` ${styles.recentCard}`;
     if (cardType === 'trending') cardClass += ` ${styles.trendingCard}`;
@@ -109,7 +109,6 @@ function BlogCard(props) {
             resolutionX={32}
             resolutionY={32}
             punch={1}
-            className={styles.blurhash}
           />
         )}
         <img

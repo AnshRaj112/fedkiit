@@ -3,7 +3,7 @@
 import { useContext, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import AuthContext from "../context/AuthContext";
+import AuthContext, { clearServerSession } from "../context/AuthContext";
 import { Alert, Loading } from "../microInteraction";
 
 /**
@@ -34,7 +34,12 @@ const ProtectedRoute = ({ children }) => {
       duration: 3000,
     });
 
-    router.replace("/Login");
+    // Drop the httpOnly cookie before leaving. Without this the two halves of
+    // the session can disagree — no localStorage here, but a cookie proxy.ts
+    // still accepts — and the redirect below becomes a loop: proxy.ts sends
+    // /Login straight back to /profile, which lands here again. The visible
+    // symptom is a Login button that does nothing.
+    clearServerSession().finally(() => router.replace("/Login"));
   }, [authCtx.isLoading, authCtx.isLoggedIn, pathname, searchParams, router]);
 
   if (authCtx.isLoading || !authCtx.isLoggedIn) {

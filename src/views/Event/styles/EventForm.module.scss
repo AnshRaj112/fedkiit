@@ -1,0 +1,81 @@
+// Registration page shell. The form card itself is styled by
+// Preview.module.scss (.pagePreviewWrapper); this only owns the page frame.
+
+.page {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-2);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-3);
+  }
+}
+
+/* ----------------------------------------------------------------- missing */
+
+.missing {
+  width: min(560px, 100%);
+  margin: 3rem auto 0;
+  padding: 2.5rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-1);
+  text-align: center;
+}
+
+.missingTitle {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.missingBody {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.missingAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding-inline: 22px;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  box-shadow: var(--depth);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--text-inverse);
+  transition: background-color var(--dur) var(--ease);
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+}

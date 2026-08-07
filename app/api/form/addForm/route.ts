@@ -56,7 +56,16 @@ export async function POST(request: Request) {
       isPublic: text("isPublic") === "true",
       isRegistrationClosed: text("isRegistrationClosed") === "true",
       isEventPast: text("isEventPast") === "true",
-      receiverDetails: { upi: text("upi") ?? null, media: null as string | null },
+      receiverDetails: {
+        upi: text("upi") ?? null,
+        media: null as string | null,
+        // Anything other than "Link" is QR — that is the historical behaviour
+        // and the safe default if the field is missing or malformed.
+        mode: text("paymentMode") === "Link" ? "Link" : "QR",
+        link: text("paymentLink") || null,
+        buttonText: text("paymentButtonText") || null,
+        message: text("paymentMessage") || null,
+      },
     };
 
     const eventImg = form.get("eventImg");
