@@ -347,8 +347,7 @@
 }
 
 .skeletonMedia {
-  // Tracks .media in EventCard.module.scss; a mismatch is a layout shift.
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   background-color: var(--surface-3);
 }
 
