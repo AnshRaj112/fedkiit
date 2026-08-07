@@ -194,3 +194,41 @@
 .noScroll {
   overflow: hidden;
 }
+
+/* ------------------------------------------------------------------ mobile */
+
+@media (max-width: 768px) {
+  /* The field row is a wrapping flexbox with a 3rem column gap and a 2rem left
+   * pad — sensible for the two-up desktop form, but on a phone each field
+   * became a shrink-to-content flex item about 200px wide inside a 340px card,
+   * and the left pad pushed everything off centre. One field per row, each
+   * filling the width. */
+  .formFieldContainer {
+    flex-direction: column;
+    align-items: stretch;
+    column-gap: 0;
+    padding: 0.75rem;
+  }
+
+  .formFieldContainer > * {
+    width: 100%;
+  }
+
+  /* The overlay reserves a gutter for its own scrollbar. The page variant has
+   * no scrollbar, and at this width the gutter is visible as a lopsided margin. */
+  .previewContainer {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .previewContainer > * {
+    padding-right: 0;
+  }
+
+  .inlineContainer {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .pagePreviewWrapper {
+    border-radius: var(--radius-md);
+  }
+}

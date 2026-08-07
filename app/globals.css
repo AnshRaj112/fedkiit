@@ -26,11 +26,15 @@
 
   /* Vertical space the fixed navbar occupies, plus breathing room.
    *
-   * Measured, not estimated: the bar sits at `top: 1.25rem` and renders 80px
-   * tall, so its lower edge is 100px down the viewport. 8rem leaves about 28px
-   * of clearance. Declared once here so pages cannot each guess their own
-   * value — which is how /Events ended up reserving the space twice. */
-  --fed-navbar-offset: 8rem;
+   * Measured, not estimated: the bar sits at `top: 1.25rem` and renders 62px
+   * tall, so its lower edge is at 82px. 6.5rem (104px) leaves about 22px of
+   * clearance. It was 8rem, set from an earlier 80px reading of the bar — that
+   * reserved 46px of empty band above every page and was enough, on a short
+   * laptop viewport, to push the Events spotlight card off the bottom.
+   *
+   * Declared once here so pages cannot each guess their own value — which is
+   * how /Events ended up reserving the space twice. */
+  --fed-navbar-offset: 6.5rem;
 }
 
 /* ─── Base ───────────────────────────────────────────────────────── */
@@ -1254,4 +1258,22 @@ main>div {
  * rule above sets `margin-top: 0 !important`; declared after it so it wins. */
 .page--nav-offset {
   margin-top: var(--fed-navbar-offset) !important;
+}
+
+/* ─── Mobile form fields ─────────────────────────────────────────── */
+
+/* Safari on iOS zooms the viewport in whenever a focused field renders its text
+ * below 16px, and never zooms back out. A global floor rather than a per
+ * component fix because the offenders are not all ours: react-select injects
+ * its own hidden text inputs at 12–13px, and focusing one when the dropdown
+ * opens was enough to magnify the whole sign-up page mid-form.
+ *
+ * Applies only below the tablet breakpoint, so the compact desktop styling of
+ * the admin forms is untouched. */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }

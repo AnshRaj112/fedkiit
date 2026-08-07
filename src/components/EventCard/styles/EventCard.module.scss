@@ -324,15 +324,40 @@ $poster-stretch: 1.19;
   display: none;
 }
 
+// Spotlight artwork, at every width.
+//
+// Sized as a share of the viewport rather than in fixed pixels, so the card
+// occupies about the same proportion of the screen on a phone, a short laptop
+// and a desktop instead of running off the bottom on one and looking lost on
+// another. The clamp bounds stop it collapsing on a tiny screen or ballooning
+// on a very tall one.
+.featured .media {
+  aspect-ratio: auto;
+  height: clamp(190px, 30vh, 340px);
+}
+
+// The crop/stretch trade — see $poster-stretch. Declared outside the desktop
+// query so the spotlight is treated the same on a phone, which is where most
+// registrations start.
+.featured .image {
+  height: calc(100% * #{$poster-stretch});
+  object-fit: fill;
+}
+
 @media (min-width: 900px) {
   .featured {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     grid-template-rows: 1fr auto;
-    // Was 320px, which against the ~570px image column made the media box a
-    // 1.8:1 letterbox — a square poster lost 44% of its height to fill it.
-    // Taller box, squarer ratio, far less thrown away.
-    min-height: 430px;
+    // Was a flat 320px, which against the ~570px image column made the media
+    // box a 1.8:1 letterbox — a square poster lost 44% of its height to fill
+    // it. Taller box, squarer ratio, far less thrown away.
+    //
+    // Bounded against the viewport rather than fixed at 430px: on a short
+    // laptop the fixed value ran the card off the bottom of the screen, so the
+    // spotlight could not be seen without scrolling. It gives up height on
+    // short viewports and keeps the full 430 wherever there is room.
+    min-height: clamp(320px, 46vh, 430px);
   }
 
   // Schematic line work sits behind the copy on the right - blueprint grid,
@@ -374,25 +399,25 @@ $poster-stretch: 1.19;
   .featured .media {
     grid-row: 1 / -1;
     aspect-ratio: auto;
+    // The card's own min-height governs here, so the artwork fills the row
+    // rather than keeping the phone-sized band above.
+    height: 100%;
     border-bottom: 0;
     border-right: 1px solid var(--border);
     z-index: 1;
   }
 
-  // The spotlight, and only the spotlight, trades a little stretch for a much
-  // smaller crop — see $poster-stretch. `fill` rather than `cover` because the
-  // stretch is the point; the overflow is clipped by `.media`'s `overflow:
-  // hidden` and falls entirely off the bottom.
+  // Taken out of flow so a tall poster cannot stretch the whole card. The
+  // height and `fill` come from the unscoped rule above.
+  //
+  // Explicitly `bottom: auto` rather than `inset: 0` — pinning both edges would
+  // over-constrain the box and defeat that stretch height.
   .featured .image {
     position: absolute;
-    // Explicitly `bottom: auto` rather than `inset: 0` — pinning both edges
-    // would over-constrain the box and defeat the stretch height above.
     top: 0;
     right: 0;
     left: 0;
     bottom: auto;
-    height: calc(100% * #{$poster-stretch});
-    object-fit: fill;
   }
 
   .featured .body {
