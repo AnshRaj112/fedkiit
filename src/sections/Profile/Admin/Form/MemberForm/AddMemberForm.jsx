@@ -172,12 +172,26 @@ function AddMemberForm() {
   };
   
 
+  const isSafeImagePreviewUrl = (url) => {
+    return (
+      typeof url === "string" &&
+      (url.startsWith("blob:") || url.startsWith("data:image/"))
+    );
+  };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (!file.type || !file.type.startsWith("image/")) {
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePrv(reader.result);
+        if (isSafeImagePreviewUrl(reader.result)) {
+          setImagePrv(reader.result);
+        } else {
+          setImagePrv(null);
+        }
       };
       reader.readAsDataURL(file);
       setSelectedFile(file);
@@ -194,7 +208,11 @@ function AddMemberForm() {
   };
 
   const updateImagePreview = (url) => {
-    setImagePrv(url);
+    if (isSafeImagePreviewUrl(url)) {
+      setImagePrv(url);
+    } else {
+      setImagePrv(null);
+    }
     // selectedFile(imageFile);
   };
 
