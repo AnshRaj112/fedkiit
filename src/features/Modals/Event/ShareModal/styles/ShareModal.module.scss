@@ -1,48 +1,73 @@
 .shareContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 50;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  z-index: 5;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
 }
 
 .maindiv {
-  z-index: 1000;
-
-  border-radius: 10px;
-  padding: 2rem;
   position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface-1, #141414);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: 9rem;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary, #ffffff);
+  }
 }
 
 .closebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-secondary, #aaaaaa);
   cursor: pointer;
-  position: absolute;
-  right: 2.5rem;
-  top: 2.4rem;
-  font-size: 1.2rem;
-  color: white;
-  z-index: 20;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 85, 0, 0.2);
+    color: #ff5500;
+  }
 }
-
-.closebtn:hover {
-  color: #D14206;
-  transition:.2s linear;
-}
-
-

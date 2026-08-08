@@ -72,9 +72,9 @@ const Chatbot = () => {
     // Suggested prompts
     const suggestedPrompts = [
         "What is FED?",
-        "Who is the president?",
-        "Tell me about FED events",
-        "Show me FED blogs"
+        "Who is the President of FED?",
+        "Show me the Upcoming Events",
+        "Show me FED Insights"
     ];
 
     // Navigation patterns - FIXED: /Blog not /Blogs

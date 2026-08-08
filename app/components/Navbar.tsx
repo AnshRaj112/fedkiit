@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout, MdChevronRight } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 
 import AuthContext from "@/src/context/AuthContext";
 import defaultImg from "@/src/assets/images/defaultImg.jpg";
@@ -196,59 +197,95 @@ export default function Navbar() {
           </div>
 
           {/* Dynamic Island Expandable Content (Mobile Only) */}
-          <div
-            className={`fed-mobile-menu-container ${mobileOpen ? "fed-mobile-menu--open" : "fed-mobile-menu--closed"
-              }`}
-          >
-            <div className="fed-mobile-menu-list">
-              {navLinks.map((link) => {
-                const isActive = checkIsActive(link.href);
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`clay-nav-item ${isActive ? "clay-nav-item--active" : ""}`}
-                  >
-                    <span>{link.label}</span>
-                  </Link>
-                );
-              })}
+          <AnimatePresence initial={false}>
+            {mobileOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{
+                  height: "auto",
+                  opacity: 1,
+                  transition: {
+                    height: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+                    opacity: { duration: 0.28, ease: "easeOut" }
+                  }
+                }}
+                exit={{
+                  height: 0,
+                  opacity: 0,
+                  transition: {
+                    height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                    opacity: { duration: 0.2, ease: "easeIn" }
+                  }
+                }}
+                className="fed-mobile-menu-container"
+                style={{ overflow: "hidden" }}
+              >
+                <div className="fed-mobile-menu-list">
+                  {navLinks.map((link) => {
+                    const isActive = checkIsActive(link.href);
+                    return (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`clay-nav-item ${isActive ? "clay-nav-item--active" : ""}`}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <span>{link.label}</span>
+                      </Link>
+                    );
+                  })}
 
-              <div className="fed-mobile-login-wrapper">
-                {!authCtx.isLoading && authCtx.isLoggedIn ? (
-                  <>
-                    <Link
-                      href="/profile"
-                      className="fed-mobile-profile"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={authCtx.user.img || defaultImg.src}
-                        alt=""
-                        className="fed-avatar fed-avatar--sm"
-                      />
-                      <span>{authCtx.user.name || "Profile"}</span>
-                    </Link>
-                    <button
-                      type="button"
-                      className="fed-btn-orange fed-btn-orange--full"
-                      onClick={() => {
-                        setMobileOpen(false);
-                        authCtx.logout();
-                      }}
-                    >
-                      Logout <MdOutlineLogout size={18} />
-                    </button>
-                  </>
-                ) : (
-                  <Link href="/Login" className="fed-btn-orange fed-btn-orange--full">
-                    Login →
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
+                  <div className="fed-mobile-login-wrapper">
+                    {!authCtx.isLoading && authCtx.isLoggedIn ? (
+                      <>
+                        <Link
+                          href="/profile"
+                          className={`clay-nav-item ${checkIsActive("/profile") ? "clay-nav-item--active" : ""}`}
+                          onClick={() => setMobileOpen(false)}
+                          style={{ marginBottom: "0.5rem" }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={authCtx.user.img || defaultImg.src}
+                              alt=""
+                              style={{
+                                width: "28px",
+                                height: "28px",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                                border: "1px solid rgba(255, 255, 255, 0.2)",
+                              }}
+                            />
+                            <span>{authCtx.user.name || "Profile"}</span>
+                          </div>
+                          <MdChevronRight size={22} style={{ opacity: 0.8 }} />
+                        </Link>
+                        <button
+                          type="button"
+                          className="fed-btn-orange fed-btn-orange--full"
+                          onClick={() => {
+                            setMobileOpen(false);
+                            authCtx.logout();
+                          }}
+                        >
+                          Logout <MdOutlineLogout size={18} />
+                        </button>
+                      </>
+                    ) : (
+                      <Link
+                        href="/Login"
+                        className="fed-btn-orange fed-btn-orange--full"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        Login →
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </header>
     </>

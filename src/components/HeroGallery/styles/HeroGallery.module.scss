@@ -28,6 +28,7 @@
   background: var(--surface-2);
   box-shadow: var(--depth);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition:
     transform 0.55s var(--ease),
     opacity 0.45s var(--ease),
@@ -135,6 +136,7 @@
   cursor: pointer;
   overflow: hidden;
   box-shadow: var(--depth);
+  -webkit-tap-highlight-color: transparent;
   transition:
     border-color 0.25s var(--ease),
     background 0.25s var(--ease),
@@ -195,6 +197,7 @@
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.28);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition:
     width 0.3s var(--ease),
     background 0.3s var(--ease);

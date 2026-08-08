@@ -548,55 +548,66 @@ $border-radius-medium: 16px;
 
 .inputArea {
     display: flex;
-    align-items: center; // Vertically align input and buttons
-    padding: 10px $spacing-md; // Reduced vertical padding
-    background: linear-gradient(135deg, rgba(28, 28, 28, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
+    align-items: center;
+    padding: 12px 14px;
+    background: #25252a;
     border-radius: 0 0 24px 24px;
-    border-top: 1px solid $border-subtle;
-    gap: $spacing-sm;
-    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .messageInput {
     flex: 1;
-    height: 44px; // Match mic and send button height
-    padding: 0 18px;
-    border: 1px solid $border-subtle;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.08);
-    color: $light-text;
-    font-size: 0.9rem;
-    font-family: 'Open Sans', sans-serif;
-    transition: all $transition-fast;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    font-size: 0.88rem;
+    line-height: normal;
+    font-family: inherit;
+    transition: all 0.2s ease;
 
     &::placeholder {
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 0.85rem;
+        line-height: normal;
     }
 
     &:focus {
         outline: none;
         background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 190, 11, 0.5);
-        box-shadow: 0 0 0 3px rgba(255, 190, 11, 0.1);
+        border-color: #ff5500;
+        box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.25);
     }
 }
 
 .voiceButton {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
     width: 44px;
     height: 44px;
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: $light-text;
-    transition: all $transition-fast;
+    color: #ffffff;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.25);
     }
 
     &:active {
@@ -604,30 +615,34 @@ $border-radius-medium: 16px;
     }
 
     &.listening {
-        background: $primary-gradient;
+        background: linear-gradient(135deg, #ff5500 0%, #ff8a00 100%);
         border-color: transparent;
         animation: pulse 1.5s ease-in-out infinite;
-        box-shadow: 0 0 20px rgba(255, 140, 40, 0.5);
+        box-shadow: 0 0 20px rgba(255, 85, 0, 0.5);
     }
 }
 
 .sendButton {
-    background: $primary-gradient;
-    border: none;
-    border-radius: 12px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #ff5500 0%, #ff8a00 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
     width: 44px;
     height: 44px;
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: $light-text;
-    transition: all $transition-fast;
-    box-shadow: 0 4px 12px rgba(244, 43, 3, 0.3);
+    color: #ffffff;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(255, 85, 0, 0.35);
 
     &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(244, 43, 3, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(255, 85, 0, 0.5);
     }
 
     &:active:not(:disabled) {
@@ -646,14 +661,16 @@ $border-radius-medium: 16px;
 
 @media (max-width: $desktop) {
     .chatbotContainer {
-        height: 65vh;
+        height: min(600px, 70vh);
     }
 }
 
 @media (max-width: $tablet) {
     .chatbotContainer {
-        width: calc(100% - 40px);
-        height: 70vh;
+        width: calc(100vw - 32px);
+        height: min(580px, 75vh);
+        bottom: 16px;
+        right: 16px;
     }
 
     .promptsGrid {
@@ -663,18 +680,35 @@ $border-radius-medium: 16px;
 
 @media (max-width: $mobile) {
     .chatbotContainer {
-        width: calc(100% - 20px);
-        height: 80vh;
-        bottom: $spacing-sm;
-        right: $spacing-sm;
-        border-radius: $border-radius-medium;
+        width: calc(100vw - 24px);
+        height: min(560px, 80vh);
+        bottom: 12px;
+        right: 12px;
+        border-radius: 20px;
+    }
+
+    .inputArea {
+        padding: 10px 10px;
+        gap: 6px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .messageInput {
+        height: 40px;
+        padding: 0 12px;
+        font-size: 0.82rem;
+    }
+
+    .voiceButton, .sendButton {
+        width: 40px;
+        height: 40px;
     }
 
     .chatbotToggle {
-        bottom: $spacing-md;
-        right: $spacing-md;
-        width: 64px;
-        height: 64px;
+        bottom: 16px;
+        right: 16px;
+        width: 60px;
+        height: 60px;
     }
 
     .message {

@@ -51,11 +51,12 @@ export async function GET(
     });
     if (!form) return expressError(404, "Form not found");
 
-    if (form.formAnalytics.length === 0) {
-      return expressError(404, "No users have registered to this form yet");
-    }
-
-    const formAnalytics = form.formAnalytics[0];
+    const formAnalytics = form.formAnalytics[0] || {
+      count: 0,
+      regUserEmails: [],
+      teams: [],
+      userData: [],
+    };
 
     // Registrant counts bucketed by the first word of `year` ("2nd Year" -> "2nd").
     // A user with no year lands under the key "null", exactly as before: the

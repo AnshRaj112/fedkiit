@@ -604,10 +604,23 @@ const PreviewForm = ({
       if (receiverDetails.upi) {
         navigator.clipboard.writeText(receiverDetails.upi)
           .then(() => {
-            alert("UPI ID copied to clipboard!");
+            setAlert({ type: "success", message: "UPI ID copied to clipboard!", position: "bottom-right", duration: 3000 });
           })
           .catch(() => {
-            alert("Failed to copy UPI ID.");
+            setAlert({ type: "error", message: "Failed to copy UPI ID.", position: "bottom-right", duration: 3000 });
+          });
+      }
+    };
+
+    const handleCopyLink = () => {
+      const targetLink = safeLink || receiverDetails.link || receiverDetails.upi;
+      if (targetLink) {
+        navigator.clipboard.writeText(targetLink)
+          .then(() => {
+            setAlert({ type: "success", message: "Payment Link copied to clipboard!", position: "bottom-right", duration: 3000 });
+          })
+          .catch(() => {
+            setAlert({ type: "error", message: "Failed to copy link.", position: "bottom-right", duration: 3000 });
           });
       }
     };
@@ -620,46 +633,82 @@ const PreviewForm = ({
       return (
         <div
           style={{
-            margin: "8px auto",
+            margin: "12px auto",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            width: "100%",
+            textAlign: "center",
           }}
         >
           <p
             style={{
-              fontSize: 13,
-              color: "lightgray",
+              fontSize: 14,
+              color: "#e0e0e0",
               textAlign: "center",
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             Amount payable:{" "}
-            <strong style={{ color: "#fff" }}>&#8377;{eventAmount}</strong>
+            <strong style={{ color: "#ff8a00", fontSize: 16 }}>&#8377;{eventAmount}</strong>
           </p>
 
-          {safeLink ? (
-            <a
-              href={safeLink}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+            {safeLink ? (
+              <a
+                href={safeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "0.65rem 1.6rem",
+                  borderRadius: "14px",
+                  background: "linear-gradient(135deg, #ff5500 0%, #ff8a00 100%)",
+                  color: "#ffffff",
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  textAlign: "center",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  boxShadow: "inset -2px -2px 6px rgba(0, 0, 0, 0.35), inset 2px 2px 6px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(255, 85, 0, 0.4)",
+                  cursor: "pointer",
+                  height: "42px",
+                  boxSizing: "border-box",
+                }}
+              >
+                {receiverDetails.buttonText || "Pay Now"}
+              </a>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={handleCopyLink}
               style={{
-                display: "inline-block",
-                padding: "10px 24px",
-                borderRadius: "30px",
-                backgroundColor: "#FF8A00",
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: 500,
-                textDecoration: "none",
-                textAlign: "center",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.65rem 1.6rem",
+                borderRadius: "14px",
+                background: "rgba(255, 255, 255, 0.08)",
+                color: "#ffffff",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                border: "1px solid rgba(255, 255, 255, 0.16)",
+                boxShadow: "inset -2px -2px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.15), 0 6px 16px rgba(0, 0, 0, 0.3)",
+                cursor: "pointer",
+                height: "42px",
+                boxSizing: "border-box",
               }}
             >
-              {receiverDetails.buttonText || "Pay Now"}
-            </a>
-          ) : (
-            <p style={{ fontSize: 12, color: "#ff6b6b", textAlign: "center" }}>
+              Copy Link
+            </button>
+          </div>
+
+          {!safeLink && !receiverDetails.upi && (
+            <p style={{ fontSize: 12, color: "#ff6b6b", textAlign: "center", marginTop: 12 }}>
               The payment link for this event is missing or invalid. Please
               contact fedkiit@gmail.com before continuing.
             </p>
@@ -686,11 +735,13 @@ const PreviewForm = ({
       return (
         <div
           style={{
-            margin: "8px auto",
+            margin: "12px auto",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            width: "100%",
+            textAlign: "center",
           }}
         >
           {receiverDetails.media && (
@@ -705,26 +756,72 @@ const PreviewForm = ({
                 width: 200,
                 height: 200,
                 objectFit: "contain",
+                borderRadius: "12px",
+                backgroundColor: "#fff",
+                padding: "8px",
               }}
             />
           )}
 
-          {/* ✅ Download & Copy Buttons */}
-          <div style={{ display: "flex", gap: "10px", marginTop: 10 }}>
-            <Button onClick={handleDownloadQR}>Download QR</Button>
-            <Button onClick={handleCopyUPIID}>Copy UPI ID</Button>
+          {/* ✅ Download & Copy Link Buttons */}
+          <div style={{ display: "flex", gap: "12px", marginTop: 14, flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+            <button
+              type="button"
+              onClick={handleDownloadQR}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.65rem 1.4rem",
+                borderRadius: "14px",
+                background: "linear-gradient(135deg, #ff5500 0%, #ff8a00 100%)",
+                color: "#ffffff",
+                fontSize: "0.9rem",
+                fontWeight: 700,
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                boxShadow: "inset -2px -2px 6px rgba(0, 0, 0, 0.35), inset 2px 2px 6px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(255, 85, 0, 0.4)",
+                cursor: "pointer",
+                height: "42px",
+                boxSizing: "border-box",
+              }}
+            >
+              Download QR
+            </button>
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.65rem 1.4rem",
+                borderRadius: "14px",
+                background: "rgba(255, 255, 255, 0.08)",
+                color: "#ffffff",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                border: "1px solid rgba(255, 255, 255, 0.16)",
+                boxShadow: "inset -2px -2px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.15), 0 6px 16px rgba(0, 0, 0, 0.3)",
+                cursor: "pointer",
+                height: "42px",
+                boxSizing: "border-box",
+              }}
+            >
+              Copy Link
+            </button>
           </div>
 
           <p
             style={{
               fontSize: 12,
-              marginTop: 12,
+              marginTop: 14,
               color: "lightgray",
               textAlign: "center",
+              lineHeight: 1.5,
             }}
           >
             Make the payment of{" "}
-            <strong style={{ color: "#fff" }}>&#8377;{eventAmount}</strong>{" "}
+            <strong style={{ color: "#ff8a00" }}>&#8377;{eventAmount}</strong>{" "}
             using QR-Code or Pay using UPI ID:{" "}
             <strong style={{ color: "#fff" }}>{receiverDetails.upi} (No Refund Policy)</strong>
           </p>
@@ -819,11 +916,33 @@ const PreviewForm = ({
                   }}
                 >
                   {inboundList() && inboundList().backSection && (
-                    <Button style={{ marginRight: "10px" }} onClick={onBack}>
+                    <Button
+                      style={{
+                        marginRight: "12px",
+                        borderRadius: "14px",
+                        height: "44px",
+                        padding: "0.65rem 1.6rem",
+                        background: "rgba(255, 255, 255, 0.08)",
+                        color: "#ffffff",
+                        border: "1px solid rgba(255, 255, 255, 0.16)",
+                        boxShadow: "inset -2px -2px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.15)",
+                      }}
+                      onClick={onBack}
+                    >
                       Back
                     </Button>
                   )}
                   <Button
+                    style={{
+                      borderRadius: "14px",
+                      height: "44px",
+                      padding: "0.65rem 2.2rem",
+                      background: "linear-gradient(135deg, #ff5500 0%, #ff8a00 100%)",
+                      color: "#ffffff",
+                      fontWeight: 700,
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      boxShadow: "inset -2px -2px 6px rgba(0, 0, 0, 0.35), inset 2px 2px 6px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(255, 85, 0, 0.4)",
+                    }}
                     onClick={
                       inboundList() && inboundList().nextSection
                         ? onNext

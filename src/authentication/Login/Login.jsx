@@ -159,7 +159,7 @@ const Login = () => {
             style={{
               paddingTop: "10px",
               background: "var(--primary)",
-              width: "20%",
+              width: "max-content",
               WebkitBackgroundClip: "text",
               color: "transparent",
             }}
@@ -218,7 +218,7 @@ const Login = () => {
               style={{
                 fontSize: "0.7rem",
                 cursor: "pointer",
-                width: "40%",
+                width: "max-content",
                 marginLeft: "0.4rem",
                 background: "var(--primary)",
                 WebkitBackgroundClip: "text",
