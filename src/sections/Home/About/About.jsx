@@ -75,7 +75,6 @@ export default function About() {
                   <img src={block.image} alt={block.alt} loading="lazy" />
                 </div>
                 <div className={styles.copy}>
-                  <span className={styles.index}>0{index + 1}</span>
                   <h3 id={`about-${block.key}`} className={styles.boxhead}>
                     <span className={styles.accent}>{block.accent}</span>{" "}
                     {block.title}

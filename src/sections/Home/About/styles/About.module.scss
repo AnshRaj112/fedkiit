@@ -72,17 +72,15 @@
   grid-template-columns: minmax(12rem, 0.85fr) minmax(0, 1.15fr);
   gap: 2rem 3rem;
   align-items: center;
-  padding: 2rem 2.5rem;
-  border-radius: var(--radius-xl, 20px);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(8px);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 2rem 0px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(255, 85, 0, 0.3);
-    box-shadow: 0 14px 40px rgba(255, 85, 0, 0.1);
+    box-shadow: none;
   }
 }
 
