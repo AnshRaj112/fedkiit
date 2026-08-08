@@ -49,6 +49,10 @@ const Sponser = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth <= 768) {
+      return undefined;
+    }
+
     const track = trackRef.current;
     if (!track) return undefined;
 

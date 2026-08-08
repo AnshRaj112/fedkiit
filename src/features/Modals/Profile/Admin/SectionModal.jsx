@@ -3,10 +3,34 @@
 import { Input } from "../../../../components";
 import styles from "./styles/Preview.module.scss";
 
+const getFieldPlaceholder = (field) => {
+  if (field.type === "select") return `Choose ${field.name}`;
+  if (field.placeholder) return field.placeholder;
+
+  const nameLower = (field.name || "").toLowerCase();
+  if (nameLower.includes("roll")) {
+    return "Enter Roll Number";
+  }
+  if (nameLower.includes("whatsapp") || nameLower.includes("phone") || nameLower.includes("contact")) {
+    return "Enter WhatsApp Number";
+  }
+  if (nameLower.includes("email")) {
+    return "Enter Email Address";
+  }
+  if (
+    field.value &&
+    typeof field.value === "string" &&
+    !field.value.toLowerCase().includes("whatsapp")
+  ) {
+    return field.value;
+  }
+  return `Enter ${field.name || "detail"}`;
+};
+
 const Section = ({ section, handleChange }) => {
   const getInputFields = (field) => {
-    const valiedTypes = ["checkbox", "radio"];
-    if (valiedTypes.includes(field.type)) {
+    const validTypes = ["checkbox", "radio"];
+    if (validTypes.includes(field.type)) {
       const valueToArray = field.value.split(",");
       return valueToArray.map((value, index) => (
         <div
@@ -50,17 +74,20 @@ const Section = ({ section, handleChange }) => {
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        {team.map((field, index) => (
+        {team.map((field, idx) => (
           <div
-            key={index}
+            key={idx}
             style={{
-              width: "30%",
+              flex: "1 1 30%",
+              minWidth: "200px",
             }}
           >
             <Input
-              placeholder={field.value}
+              placeholder={getFieldPlaceholder(field)}
               label={`${field.name} ${field.isRequired ? "*" : ""}`}
               type={field.type}
               name={field.name}
@@ -99,11 +126,7 @@ const Section = ({ section, handleChange }) => {
               <div key={field._id}>
                 {field.type !== "checkbox" && field.type !== "radio" ? (
                   <Input
-                    placeholder={
-                      field.type === "select"
-                        ? `Choose ${field.name}`
-                        : field.value
-                    }
+                    placeholder={getFieldPlaceholder(field)}
                     label={`${field.name} ${field.isRequired ? "*" : ""}`}
                     type={field.type}
                     name={field.name}
