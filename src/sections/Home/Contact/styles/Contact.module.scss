@@ -169,6 +169,7 @@
   .imageSection img {
     width: min(100%, 14rem);
     margin: 0 auto;
+    filter: none; /* Disable filter on mobile to fix drop-shadow background rendering bug */
   }
 }
 

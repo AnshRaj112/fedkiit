@@ -6,7 +6,7 @@ import { MdLogout } from "react-icons/md";
 import { TbUserEdit } from "react-icons/tb";
 import { SlCalender } from "react-icons/sl";
 import { SiReacthookform } from "react-icons/si";
-import { FaRegNewspaper, FaCertificate } from "react-icons/fa";
+import { FaRegNewspaper, FaCertificate, FaChevronDown } from "react-icons/fa";
 import { LuClipboardList } from "react-icons/lu";
 import AuthContext from "../../../context/AuthContext";
 import styles from "./styles/Sidebar.module.scss";
@@ -23,6 +23,7 @@ const Sidebar = ({ activepage, handleChange }) => {
   const authCtx = useContext(AuthContext);
   const [imagePrv, setimagePrv] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const imgRef = useRef(null);
   const router = useRouter();
@@ -44,6 +45,26 @@ const Sidebar = ({ activepage, handleChange }) => {
       setDesignation("Member");
     }
   }, [authCtx.user.access, authCtx.user.email]);
+
+  const handleMenuClick = (page) => {
+    handleChange(page);
+    setIsMobileMenuOpen(false);
+
+    const pathMap = {
+      "Blogs": "/profile/BlogForm",
+      "Events": "/profile/events",
+      "events": "/profile/events",
+      "Form": "/profile/Form",
+      "Members": "/profile/members",
+      "Attendance": "/profile/attendance",
+      "Certificates": "/profile/certificates",
+      "Profile": "/profile"
+    };
+    
+    if (pathMap[page]) {
+      router.push(pathMap[page]);
+    }
+  };
 
   const handleLogout = () => {
     router.push("/");
@@ -73,43 +94,10 @@ const Sidebar = ({ activepage, handleChange }) => {
   // Check if user is attendance-only
   const isAttendanceOnly = authCtx.user.email === "attendance@fedkiit.com";
 
-  // Modified: Now shows Attendance instead of Blogs in mobile view.
-  //
-  // Only for admins. This menu also renders for SENIOR_EXECUTIVE_CREATIVE (they
-  // manage blogs), and /profile/attendance is now gated to ADMIN — so on a
-  // phone that role was being offered a link that just bounces back here. They
-  // keep the Blogs entry, which is the one they can actually use.
   const renderBlogMenu = () => {
-    const isMobile = window.innerWidth <= 768;
-
-    if (isMobile && authCtx.user.access === "ADMIN") {
-      return (
-        <div
-          onClick={() => handleChange("Attendance")}
-          style={{
-            background:
-              activepage === "Attendance" ? "var(--primary)" : "transparent",
-            WebkitBackgroundClip:
-              activepage === "Attendance" ? "text" : "initial",
-            backgroundClip: activepage === "Attendance" ? "text" : "initial",
-            color: activepage === "Attendance" ? "transparent" : "inherit",
-          }}
-        >
-          <LuClipboardList
-            size={17}
-            style={{
-              color: activepage === "Attendance" ? "#FF8A00" : "white",
-              marginRight: "10px",
-            }}
-          />{" "}
-          <Link href={"/profile/attendance"}>Attendance</Link>
-        </div>
-      );
-    }
-
     return (
       <div
-        onClick={() => handleChange("Blogs")}
+        onClick={() => handleMenuClick("Blogs")}
         style={{
           background: activepage === "Blogs" ? "var(--primary)" : "transparent",
           WebkitBackgroundClip: activepage === "Blogs" ? "text" : "initial",
@@ -132,7 +120,7 @@ const Sidebar = ({ activepage, handleChange }) => {
   const renderAdminMenu = () => (
     <>
       <div
-        onClick={() => handleChange("Events")}
+        onClick={() => handleMenuClick("Events")}
         style={{
           background: activepage === "Events" ? "var(--primary)" : "transparent",
           WebkitBackgroundClip: activepage === "Events" ? "text" : "initial",
@@ -151,7 +139,7 @@ const Sidebar = ({ activepage, handleChange }) => {
       </div>
 
       <div
-        onClick={() => handleChange("Form")}
+        onClick={() => handleMenuClick("Form")}
         style={{
           background: activepage === "Form" ? "var(--primary)" : "transparent",
           WebkitBackgroundClip: activepage === "Form" ? "text" : "initial",
@@ -170,7 +158,7 @@ const Sidebar = ({ activepage, handleChange }) => {
       </div>
 
       <div
-        onClick={() => handleChange("Members")}
+        onClick={() => handleMenuClick("Members")}
         style={{
           background:
             activepage === "Members" ? "var(--primary)" : "transparent",
@@ -191,7 +179,7 @@ const Sidebar = ({ activepage, handleChange }) => {
       </div>
 
       <div
-        onClick={() => handleChange("Attendance")}
+        onClick={() => handleMenuClick("Attendance")}
         style={{
           background:
             activepage === "Attendance" ? "var(--primary)" : "transparent",
@@ -217,7 +205,7 @@ const Sidebar = ({ activepage, handleChange }) => {
   // Render attendance-only menu
   const renderAttendanceOnlyMenu = () => (
     <div
-      onClick={() => handleChange("Attendance")}
+      onClick={() => handleMenuClick("Attendance")}
       style={{
         background: activepage === "Attendance" ? "var(--primary)" : "transparent",
         WebkitBackgroundClip: activepage === "Attendance" ? "text" : "initial",
@@ -238,7 +226,7 @@ const Sidebar = ({ activepage, handleChange }) => {
 
   const renderCertificateMenu = () => (
     <div
-      onClick={() => handleChange("Certificates")}
+      onClick={() => handleMenuClick("Certificates")}
       style={{
         background: activepage === "Certificates" ? "var(--primary)" : "transparent",
         WebkitBackgroundClip: activepage === "Certificates" ? "text" : "initial",
@@ -263,7 +251,7 @@ const Sidebar = ({ activepage, handleChange }) => {
         <div className={styles.profile}>
           <div
             style={{ width: "auto", position: "relative", cursor: "pointer" }}
-            onClick={() => handleChange("Profile")}
+            onClick={() => handleMenuClick("Profile")}
           >
             <Link href={"/profile"}>
               <img
@@ -313,7 +301,15 @@ const Sidebar = ({ activepage, handleChange }) => {
           </div>
         </div>
         
-        <div className={styles.menu}>
+        <div 
+          className={styles.mobileMenuToggle} 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <span>Menu Options</span>
+          <FaChevronDown style={{ transform: isMobileMenuOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s' }} />
+        </div>
+        
+        <div className={`${styles.menu} ${isMobileMenuOpen ? styles.menuOpen : ""}`}>
           {isAttendanceOnly ? (
             // Show only Attendance menu for attendance@fedkiit.com
             renderAttendanceOnlyMenu()
@@ -326,7 +322,7 @@ const Sidebar = ({ activepage, handleChange }) => {
                 renderBlogMenu()}
               {designation !== "Admin" && (
                 <div
-                  onClick={() => handleChange("events")}
+                  onClick={() => handleMenuClick("events")}
                   style={{ color: activepage === "events" ? "#FF8A00" : "white" }}
                 >
                   <Link href={"/profile/events"}>

@@ -662,7 +662,7 @@ const EventCard = (props) => {
             aria-label="View analytics"
             onClick={() => router.push("/profile/events/Analytics/" + data.id)}
           >
-            <BarChart3 size={15} aria-hidden="true" />
+            <BarChart3 size={14} aria-hidden="true" /> Analytics
           </button>
         </div>
       )}

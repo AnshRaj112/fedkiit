@@ -321,8 +321,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: $page-color;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 85, 0, 0.15) 0%, #090909 75%);
   overflow: hidden;
+  position: relative;
+  padding: 2rem 1rem;
 }
 
 .pageExt {
